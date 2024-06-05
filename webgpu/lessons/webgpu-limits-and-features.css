@@ -1,0 +1,20 @@
+.limits td,
+.features td {
+  padding: 0.25em;
+}
+.limits table {
+  text-align: right;
+}
+.limits td:nth-child(2),
+.limits td:nth-child(3) {
+  text-align: right;
+}
+.features table {
+  text-align: left;
+}
+.features td:nth-child(2) {
+  text-align: center;
+}
+.exceeds-limit {
+  color: var(--good-fg-color);
+}

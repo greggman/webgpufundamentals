@@ -1,0 +1,20 @@
+.blend-setting {
+  display: flex;
+}
+.blend-setting pre {
+  width: 300px;
+  box-shadow: none;
+  margin: 1em;
+}
+.blend-info hr {
+  margin: 1em 0 1em;
+}
+.blend-heading {
+  margin: 0 0 1em;
+}
+
+@media (max-width: 650px) {
+  .blend-setting {
+    flex-direction: column-reverse;
+  }
+}

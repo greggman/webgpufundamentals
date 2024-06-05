@@ -1,0 +1,8 @@
+:root {
+    --article-font-family: Georgia, -apple-system, BlinkMacSystemFont,
+        Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC,
+        Noto Sans CJK SC, WenQuanYi Micro Hei, serif;
+    --headline-font-family: Georgia, -apple-system, BlinkMacSystemFont,
+        Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC,
+        Noto Sans CJK SC, WenQuanYi Micro Hei, serif;
+}

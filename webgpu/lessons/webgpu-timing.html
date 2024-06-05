@@ -1,0 +1,1217 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/webgpu-timing.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Timing operations in WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-timing_en.jpg">
+
+<meta property="og:title" content="WebGPU Timing Performance">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-timing_en.jpg">
+<meta property="og:description" content="Timing operations in WebGPU">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU Timing Performance">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html">
+<meta name="twitter:description" content="Timing operations in WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-timing_en.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-timing_en.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html",
+      "inLanguage":"en",
+      "name":"WebGPU Timing Performance",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU Timing Performance</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-timing.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-timing.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-timing.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-timing.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-timing.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-timing.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-timing.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Table of Contents</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU Timing Performance</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <div class="warn">The `'timestamp-query'` feature used in this article
+should be available in Chrome 121 or 122. If it's not available you can probably
+turn it on by enabling on <a href="chrome://flags/#enable-webgpu-developer-features">enable-webgpu-developer-features</a> in <a href="chrome://flags/#enable-webgpu-developer-features">about:flags</a>.
+</div>
+<p>Let’s go over various things you might want
+to time for performance. We’ll time 3 things:</p>
+<ul>
+<li>The frame rate in frames per second (fps)</li>
+<li>The time spent in JavaScript per frame</li>
+<li>The time spent on the GPU per frame</li>
+</ul>
+<p>First, let’s take a circle example from
+<a href="webgpu-vertex-buffers.html">the article on vertex buffers</a>
+and lets animate them so we have something that’s easy
+to see changes in how much time things take.</p>
+<p>In that example we had 3 vertex buffers. One was for
+the positions and brightness of the vertices for a circle.
+One was for things that are per instance but static
+which included the circle’s offset and color. And, the last
+one was for things that change each time we render, in this
+case it was the scale so we could keep the aspect ratio of
+the circles correct so they stayed circles and not ellipses
+as the user changed the size of the window.</p>
+<p>We want to animate them moving so let’s move the offset
+to the same buffer as the scale. First we’ll change the
+render pipeline to move the offset to the same buffer
+as the scale.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'per vertex color',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: 2 * 4 + 4, // 2 floats, 4 bytes each + 4 bytes
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+            {shaderLocation: 4, offset: 8, format: 'unorm8x4'},   // perVertexColor
+          ],
+        },
+        {
+-          arrayStride: 4 + 2 * 4, // 4 bytes + 2 floats, 4 bytes each
++          arrayStride: 4, // 4 bytes
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 1, offset: 0, format: 'unorm8x4'},   // color
+-            {shaderLocation: 2, offset: 4, format: 'float32x2'},  // offset
+          ],
+        },
+        {
+-          arrayStride: 2 * 4, // 2 floats, 4 bytes each
++          arrayStride: 4 * 4, // 4 floats, 4 bytes each
+          stepMode: 'instance',
+          attributes: [
+-            {shaderLocation: 3, offset: 0, format: 'float32x2'},   // scale
++            {shaderLocation: 2, offset: 0, format: 'float32x2'},  // offset
+-            {shaderLocation: 3, offset: 0, format: 'float32x2'},   // scale
++            {shaderLocation: 3, offset: 8, format: 'float32x2'},   // scale
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>Then we’ll change the part that sets up the vertex buffers
+to move the offsets together with the scales.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // create 2 vertex buffers
+  const staticUnitSize =
+-    4 +     // color is 4 bytes
+-    2 * 4;  // offset is 2 32bit floats (4bytes each)
++    4;     // color is 4 bytes
+  const changingUnitSize =
+-    2 * 4;  // scale is 2 32bit floats (4bytes each)
++    2 * 4 + // offset is 2 32bit floats (4bytes each)
++    2 * 4;  // scale is 2 32bit floats (4bytes each)
+  const staticVertexBufferSize = staticUnitSize * kNumObjects;
+  const changingVertexBufferSize = changingUnitSize * kNumObjects;
+
+  const staticVertexBuffer = device.createBuffer({
+    label: 'static vertex for objects',
+    size: staticVertexBufferSize,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+
+  const changingVertexBuffer = device.createBuffer({
+    label: 'changing storage for objects',
+    size: changingVertexBufferSize,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+
+  // offsets to the various uniform values in float32 indices
+  const kColorOffset = 0;
+-  const kOffsetOffset = 1;
++
+-  const kScaleOffset = 0;
++  const kOffsetOffset = 0;
++  const kScaleOffset = 2;
+
+  {
+    const staticVertexValuesU8 = new Uint8Array(staticVertexBufferSize);
+-    const staticVertexValuesF32 = new Float32Array(staticVertexValuesU8.buffer);
+    for (let i = 0; i &lt; kNumObjects; ++i) {
+      const staticOffsetU8 = i * staticUnitSize;
+-      const staticOffsetF32 = staticOffsetU8 / 4;
+
+      // These are only set once so set them now
+      staticVertexValuesU8.set(        // set the color
+          [rand() * 255, rand() * 255, rand() * 255, 255],
+          staticOffsetU8 + kColorOffset);
+
+-      staticVertexValuesF32.set(      // set the offset
+-          [rand(-0.9, 0.9), rand(-0.9, 0.9)],
+-          staticOffsetF32 + kOffsetOffset);
+
+      objectInfos.push({
+        scale: rand(0.2, 0.5),
++        offset: [rand(-0.9, 0.9), rand(-0.9, 0.9)],
++        velocity: [rand(-0.1, 0.1), rand(-0.1, 0.1)],
+      });
+    }
+-    device.queue.writeBuffer(staticVertexBuffer, 0, staticVertexValuesF32);
++    device.queue.writeBuffer(staticVertexBuffer, 0, staticVertexValuesU8);
+  }
+</pre>
+<p>At render time we can update the offsets of the circles based on their velocity and then upload those to the GPU.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const euclideanModulo = (x, a) =&gt; x - a * Math.floor(x / a);
+
++  let then = 0;
+-  function render() {
+  function render(now) {
++    now *= 0.001;  // convert to seconds
++    const deltaTime = now - then;
++    then = now;
+
+...
+      // set the scales for each object
+-    objectInfos.forEach(({scale}, ndx) =&gt; {
+-      const offset = ndx * (changingUnitSize / 4);
+-      vertexValues.set([scale / aspect, scale], offset + kScaleOffset); // set the scale
++    objectInfos.forEach(({scale, offset, veloctiy}, ndx) =&gt; {
++      // -1.5 to 1.5
++      offset[0] = euclideanModulo(offset[0] + velocity[0] * deltaTime + 1.5, 3) - 1.5;
++      offset[1] = euclideanModulo(offset[1] + velocity[1] * deltaTime + 1.5, 3) - 1.5;
+
++      const off = ndx * (changingUnitSize / 4);
++      vertexValues.set(offset, off + kOffsetOffset);
+      vertexValues.set([scale / aspect, scale], off + kScaleOffset);
+    });
+
+...
+
++    requestAnimationFrame(render);
+  }
++  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+-      // re-render
+-      render();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>We also switched to a rAF loop<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
+<p><a id="a-euclidianModulo"></a>The code above uses <code class="notranslate" translate="no">euclideanModulo</code> to update the offset.
+<code class="notranslate" translate="no">euclideanModulo</code> returns the remainder of a division where
+the remainder always is always positive and in the same direction.
+For example</p>
+<div class="webgpu_center">
+  <div class="center">
+    <div class="data-table center" data-table="{
+  &quot;cols&quot;: [&quot;value&quot;, &quot;% operator&quot;, &quot;euclideanModulo&quot;],
+  &quot;classNames&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;],
+  &quot;rows&quot;: [
+    [ &quot;0.3&quot;, &quot;0.3&quot;, &quot;0.3&quot; ],
+    [ &quot;2.3&quot;, &quot;0.3&quot;, &quot;0.3&quot; ],
+    [ &quot;4.3&quot;, &quot;0.3&quot;, &quot;0.3&quot; ],
+    [ &quot;-1.7&quot;, &quot;-1.7&quot;, &quot;0.3&quot; ],
+    [ &quot;-3.7&quot;, &quot;-1.7&quot;, &quot;0.3&quot; ]
+  ]
+}">
+     </div>
+  </div>
+  <div>modulo 2 of % vs euclideanModulo</div>
+</div>
+<p>To put it another way, here’s a graph of the <code class="notranslate" translate="no">%</code> operator vs <code class="notranslate" translate="no">euclideanModulo</code></p>
+<div class="webgpu_center">
+  <img style="width: 700px" src="resources/euclidean-modulo.svg">
+  <div>euclideanModule(v, 2)</div>
+</div>
+<div class="webgpu_center">
+  <img style="width: 700px" src="resources/modulo.svg">
+  <div>v % 2</div>
+</div>
+<p>So, the code above takes the offset, which is in clip space, and adds 1.5. It then takes the euclideanModulo
+by 3 which will give us a number that is wrapped between 0.0 and 3.0
+and then subtracts 1.5.  This gives us numbers
+that stay between -1.5 and +1.5 and lets them wrap
+around to the other side. We use -1.5 to +1.5 so that
+the circles don’t wrap until they are off the screen. <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>To give us something to adjust, lets make it so we can
+set how many circles to draw.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const kNumObjects = 100;
++  const kNumObjects = 10000;
+
+
+...
+
+  const settings = {
+    numObjects: 100,
+  };
+
+  const gui = new GUI();
+  gui.add(settings, 'numObjects', 0, kNumObjects, 1);
+
+  ...
+
+    // set the scale and offset for each object
+-    objectInfos.forEach(({scale, offset, veloctiy}, ndx) =&gt; {
++    for (let ndx = 0; ndx &lt; settings.numObjects; ++ndx) {
++      const {scale, offset, velocity} = objectInfos[ndx];
+
+      // -1.5 to 1.5
+      offset[0] = euclideanModulo(offset[0] + velocity[0] * deltaTime + 1.5, 3) - 1.5;
+      offset[1] = euclideanModulo(offset[1] + velocity[1] * deltaTime + 1.5, 3) - 1.5;
+
+      const off = ndx * (changingUnitSize / 4);
+      vertexValues.set(offset, off + kOffsetOffset);
+      vertexValues.set([scale / aspect, scale], off + kScaleOffset);
+-    });
++    }
+
+    // upload all offsets and scales at once
+-    device.queue.writeBuffer(changingVertexBuffer, 0, vertexValues);
++    device.queue.writeBuffer(
+        changingVertexBuffer, 0,
+        vertexValues, 0, settings.numObjects * changingUnitSize / 4);
+
+-    pass.draw(numVertices, kNumObjects);
++    pass.draw(numVertices, settings.numObjects);
+</pre>
+<p>So now we should have something that animates
+and we can adjust how much work is done by setting
+the number of circles.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-timing-animated.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-timing-animated.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>To that, let’s add frames per second (fps) and
+time spent in JavaScript</p>
+<p>First we need a way to display this info so lets
+add an <code class="notranslate" translate="no">&lt;pre&gt;</code> element positioned on top of the canvas.</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">  &lt;body&gt;
+    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;pre id="info"&gt;&lt;/pre&gt;
+  &lt;/body&gt;
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
++#info {
++  position: absolute;
++  top: 0;
++  left: 0;
++  margin: 0;
++  padding: 0.5em;
++  background-color: rgba(0, 0, 0, 0.8);
++  color: white;
++}
+</pre>
+<p>We already have the data needed to display
+frames per second. It’s the <code class="notranslate" translate="no">deltaTime</code> we
+computed above.</p>
+<p>For JavaScript time, we can record the time
+our <code class="notranslate" translate="no">requestAnimationFrame</code> started and the
+time it ended.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  let then = 0;
+  function render(now) {
+    now *= 0.001;  // convert to seconds
+    const deltaTime = now - then;
+    then = now;
+
++    const startTime = performance.now();
+
+    ...
+
++    const jsTime = performance.now() - startTime;
+
++    infoElem.textContent = `\
++fps: ${(1 / deltaTime).toFixed(1)}
++js: ${jsTime.toFixed(1)}ms
++`;
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>And that gives us our first two timing measurements.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-timing-with-fps-js-time.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-timing-with-fps-js-time.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<h2 id="timing-the-gpu"><a id="a-timestamp-query"></a> Timing the GPU</h2>
+<p>WebGPU provides an <strong>optional</strong> <code class="notranslate" translate="no">'timestamp-query'</code> feature for checking how long an operation takes on the GPU.
+Since it’s an optional feature we need to see if it
+exists and request it like we covered in <a href="webgpu-limits-and-features.html">the article on limits and features</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+-  const device = await adapter?.requestDevice();
++  const canTimestamp = adapter.features.has('timestamp-query');
++  const device = await adapter?.requestDevice({
++    requiredFeatures: [
++      ...(canTimestamp ? ['timestamp-query'] : []),
++     ],
++  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+</pre>
+<p>Above, we set <code class="notranslate" translate="no">canTimestamp</code> to true or false based on if the adapter supports
+the <code class="notranslate" translate="no">'timestamp-query'</code> feature. If it does we require that feature when we
+create our device.</p>
+<p>With the feature enabled we can ask WebGPU for <em>timestamps</em> for a render pass or
+compute pass. You do this by making a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUQuerySet"><code class="notranslate" translate="no">GPUQuerySet</code></a> and adding it to your
+compute or render pass. A <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUQuerySet"><code class="notranslate" translate="no">GPUQuerySet</code></a> is effectively an array of query
+results. You tell WebGPU which element in the array to record the time the pass started
+and which element in the array to record when the pass ended. You can then copy those
+timestamps to a buffer and map the buffer to read the results.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>So, first we create a query set.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const querySet = device.createQuerySet({
+     type: 'timestamp',
+     count: 2,
+  });
+</pre>
+<p>We need count to be at least 2 so we can write
+both a start and end timestamp.</p>
+<p>We need a buffer to convert the querySet info
+into data we can access.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const resolveBuffer = device.createBuffer({
+    size: querySet.count * 8,
+    usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC,
+  });
+</pre>
+<p>Each element in a querySet takes 8 bytes.
+We need to give it a usage of <code class="notranslate" translate="no">QUERY_RESOLVE</code>
+and, if we want be able to read the results
+back in JavaScript we need the <code class="notranslate" translate="no">COPY_SRC</code> usage
+so we can copy the result to a mappable buffer.</p>
+<p>Finally we create a mappable buffer to read the
+results.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const resultBuffer = device.createBuffer({
+    size: resolveBuffer.size,
+    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+  });
+</pre>
+<p>We need to wrap this code in a way that only
+creates these things if the feature exists, otherwise we’ll
+get an error trying to make a <code class="notranslate" translate="no">'timestamp'</code> querySet.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const { querySet, resolveBuffer, resultBuffer } = (() =&gt; {
++    if (!canTimestamp) {
++      return {};
++    }
+
+    const querySet = device.createQuerySet({
+       type: 'timestamp',
+       count: 2,
+    });
+    const resolveBuffer = device.createBuffer({
+      size: querySet.count * 8,
+      usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC,
+    });
+    const resultBuffer = device.createBuffer({
+      size: resolveBuffer.size,
+      usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+    });
++    return {querySet, resolveBuffer, resultBuffer };
++  })();
+</pre>
+<p>In our render pass descriptor we tell it the
+querySet to use and the index of the elements
+in the querySet to write the start and ending
+timestamps.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass with timing',
+    colorAttachments: [
+      {
+        // view: &lt;- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+    ...(canTimestamp &amp;&amp; {
+      timestampWrites: {
+        querySet,
+        beginningOfPassWriteIndex: 0,
+        endOfPassWriteIndex: 1,
+      },
+    }),
+  };
+</pre>
+<p>Above, if the feature exists, we add a <code class="notranslate" translate="no">timestampWrites</code> section to our
+renderPassDescriptor and pass in the querySet and tell it to write the start to
+element 0 of the set and the end to element 1.</p>
+<p>After we end the pass, we need to call <code class="notranslate" translate="no">resolveQuerySet</code>. This takes the results
+of the query and puts them in a buffer. We pass it the querySet, the first index
+in the query set where to start resolving, the number of entries to resolve, a
+buffer to resolve to, and an offset in that buffer where to store the result.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    pass.end();
+
++    if (canTimestamp) {
++      encoder.resolveQuerySet(querySet, 0, querySet.count, resolveBuffer, 0);
++    }
+</pre>
+<p>We also want to copy the <code class="notranslate" translate="no">resolveBuffer</code> to our <code class="notranslate" translate="no">resultsBuffer</code> so we can map it
+and look at the results in JavaScript. We have an issue though. We can not copy
+to our <code class="notranslate" translate="no">resultsBuffer</code> while it’s mapped. Fortunately buffers have a <code class="notranslate" translate="no">mapState</code>
+property we can check. If it’s set to <code class="notranslate" translate="no">unmapped</code>, the value it starts with, then
+it’s safe to copy to it. Other values are <code class="notranslate" translate="no">'pending'</code>, the value it becomes the
+moment we call <code class="notranslate" translate="no">mapAsync</code>, and <code class="notranslate" translate="no">'mapped'</code>, the value it is when <code class="notranslate" translate="no">mapAsync</code>
+resolves. After we <code class="notranslate" translate="no">unmap</code> it it goes back to <code class="notranslate" translate="no">'unmapped'</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    if (canTimestamp) {
+      encoder.resolveQuerySet(querySet, 0, 2, resolveBuffer, 0);
++      if (resultBuffer.mapState === 'unmapped') {
++        encoder.copyBufferToBuffer(resolveBuffer, 0, resultBuffer, 0, resultBuffer.size);
++      }
+    }
+</pre>
+<p>After we’ve submitted the command buffer we can map the <code class="notranslate" translate="no">resultBuffer</code>. Like
+above, only want to map it if it’s <code class="notranslate" translate="no">'unmapped'</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let gpuTime = 0;
+
+   ...
+
+   function render(now) {
+
+    ...
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
++    if (canTimestamp &amp;&amp; resultBuffer.mapState === 'unmapped') {
++      resultBuffer.mapAsync(GPUMapMode.READ).then(() =&gt; {
++        const times = new BigInt64Array(resultBuffer.getMappedRange());
++        gpuTime = Number(times[1] - times[0]);
++        resultBuffer.unmap();
++      });
++    }
+</pre>
+<p>Query set results are in nanoseconds and are stored in 64bit integers. To read
+them in JavaScript we can use a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt64Array"><code class="notranslate" translate="no">BigInt64Array</code></a> typedarray view. Using
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt64Array"><code class="notranslate" translate="no">BigInt64Array</code></a> requires special care. When you read an element from a
+<code class="notranslate" translate="no">BitInt64Array</code> the type is a <code class="notranslate" translate="no">bigint</code>, not a <code class="notranslate" translate="no">number</code> so you can’t use with
+with lots of math functions. Also, when you convert them to numbers they may
+lose precision because a <code class="notranslate" translate="no">number`` can only hold integers of 53 bits in size. So, first we subtract the 2 </code>bigint<code class="notranslate" translate="no">s which stays a </code>bigint`. Then we convert
+the result to a number so we can use it as normal.</p>
+<p>In the code above, we are are only copying the results to <code class="notranslate" translate="no">resultBuffer</code> some
+times, when it’s not mapped. That means we’ll only be reading the time on some
+frames. Most likely every other frame but there is no strict guarantee how long
+it will take until <code class="notranslate" translate="no">mapAsync</code> resolves. Because of that, we update <code class="notranslate" translate="no">gpuTime</code>
+which we can use at anytime to get the last recorded time.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    infoElem.textContent = `\
+fps: ${(1 / deltaTime).toFixed(1)}
+js: ${jsTime.toFixed(1)}ms
++gpu: ${canTimestamp ? `${(gpuTime / 1000).toFixed(1)}µs` : 'N/A'}
+`;
+</pre>
+<p>And with that we get a GPU time from WebGPU</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-timing-with-timestamp.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-timing-with-timestamp.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>For me, the numbers change too often to see anything
+useful. One way to fix that is to compute a rolling
+average. Here’s a class to help compute a rolling
+average.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class RollingAverage {
+  #total = 0;
+  #samples = [];
+  #cursor = 0;
+  #numSamples;
+  constructor(numSamples = 30) {
+    this.#numSamples = numSamples;
+  }
+  addSample(v) {
+    this.#total += v - (this.#samples[this.#cursor] || 0);
+    this.#samples[this.#cursor] = v;
+    this.#cursor = (this.#cursor + 1) % this.#numSamples;
+  }
+  get() {
+    return this.#total / this.#samples.length;
+  }
+}
+</pre>
+<p>It keeps an array of values and a total. When a new value is added the
+oldest value is subtracted from the total as the new value is added.</p>
+<p>We can use it like this.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const fpsAverage = new RollingAverage();
++const jsAverage = new RollingAverage();
++const gpuAverage = new RollingAverage();
+
+function render(now) {
+  ...
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    if (canTimestamp &amp;&amp; resultBuffer.mapState === 'unmapped') {
+      resultBuffer.mapAsync(GPUMapMode.READ).then(() =&gt; {
+        const times = new BigInt64Array(resultBuffer.getMappedRange());
+        gpuTime = Number(times[1] - times[0]);
++        gpuAverage.addSample(gpuTime / 1000);
+        resultBuffer.unmap();
+      });
+    }
+
+    const jsTime = performance.now() - startTime;
+
++    fpsAverage.addSample(1 / deltaTime);
++    jsAverage.addSample(jsTime);
+
+    infoElem.textContent = `\
+-fps: ${(1 / deltaTime).toFixed(1)}
+-js: ${jsTime.toFixed(1)}ms
+-gpu: ${canTimestamp ? `${(gpuTime / 1000).toFixed(1)}µs` : 'N/A'}
++fps: ${fpsAverage.get().toFixed(1)}
++js: ${jsAverage.get().toFixed(1)}ms
++gpu: ${canTimestamp ? `${gpuAverage.get().toFixed(1)}µs` : 'N/A'}
+`;
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+</pre>
+<p>And now the numbers are a little more stable.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-timing-with-timestamp-w-average.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-timing-with-timestamp-w-average.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<h2 id="using-a-helper"><a id="a-timing-helper"></a> Using a helper</h2>
+<p>For me, I find all of this a little tedious and probably easy to get something
+wrong. We had to make 3 things, a querySet and 2 buffers. We had to change our
+renderPassDescriptor. We had to resolve the results and copy to a mappable
+buffer.</p>
+<p>One way to make this less tedious would be to make a class to helps us do the
+timing. Here’s one example of a helper that might help with some of these issues.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function assert(cond, msg = '') {
+  if (!cond) {
+    throw new Error(msg);
+  }
+}
+
+class TimingHelper {
+  #canTimestamp;
+  #device;
+  #querySet;
+  #resolveBuffer;
+  #resultBuffer;
+  #resultBuffers = [];
+  // state can be 'free', 'need resolve', 'wait for result'
+  #state = 'free';
+
+  constructor(device) {
+    this.#device = device;
+    this.#canTimestamp = device.features.has('timestamp-query');
+    this.#querySet = device.createQuerySet({
+       type: 'timestamp',
+       count: 2,
+    });
+    this.#resolveBuffer = device.createBuffer({
+      size: this.#querySet.count * 8,
+      usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC,
+    });
+  }
+
+  #beginTimestampPass(encoder, fnName, descriptor) {
+    if (this.#canTimestamp) {
+      assert(this.#state === 'free', 'state not free');
+      this.#state = 'need resolve';
+
+      const pass = encoder[fnName]({
+        ...descriptor,
+        ...{
+          timestampWrites: {
+            querySet: this.#querySet,
+            beginningOfPassWriteIndex: 0,
+            endOfPassWriteIndex: 1,
+          },
+        },
+      });
+
+      const resolve = () =&gt; this.#resolveTiming(encoder);
+      pass.end = (function(origFn) {
+        return function() {
+          origFn.call(this);
+          resolve();
+        };
+      })(pass.end);
+
+      return pass;
+    } else {
+      return encoder[fnName](descriptor);
+    }
+  }
+
+  beginRenderPass(encoder, descriptor = {}) {
+    return this.#beginTimestampPass(encoder, 'beginRenderPass', descriptor);
+  }
+
+  beginComputePass(encoder, descriptor = {}) {
+    return this.#beginTimestampPass(encoder, 'beginComputePass', descriptor);
+  }
+
+  #resolveTiming(encoder) {
+    if (!this.#canTimestamp) {
+      return;
+    }
+    assert(this.#state === 'need resolve', 'must call addTimestampToPass');
+    this.#state = 'wait for result';
+
+    this.#resultBuffer = this.#resultBuffers.pop() || this.#device.createBuffer({
+      size: this.#resolveBuffer.size,
+      usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+    });
+
+    encoder.resolveQuerySet(this.#querySet, 0, this.#querySet.count, this.#resolveBuffer, 0);
+    encoder.copyBufferToBuffer(this.#resolveBuffer, 0, this.#resultBuffer, 0, this.#resultBuffer.size);
+  }
+
+  async getResult() {
+    if (!this.#canTimestamp) {
+      return 0;
+    }
+    assert(this.#state === 'wait for result', 'must call resolveTiming');
+    this.#state = 'free';
+
+    const resultBuffer = this.#resultBuffer;
+    await resultBuffer.mapAsync(GPUMapMode.READ);
+    const times = new BigInt64Array(resultBuffer.getMappedRange());
+    const duration = Number(times[1] - times[0]);
+    resultBuffer.unmap();
+    this.#resultBuffers.push(resultBuffer);
+    return duration;
+  }
+}
+</pre>
+<p>The asserts are there to helps us not use this class wrong. For example if we
+end a pass but don’t resolve it or, if we resolve it but don’t read the result.</p>
+<p>With this class, we can remove much of the code we had before.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const canTimestamp = adapter.features.has('timestamp-query');
+  const device = await adapter?.requestDevice({
+    requiredFeatures: [
+      ...(canTimestamp ? ['timestamp-query'] : []),
+     ],
+  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
++  const timingHelper = new TimingHelper(device);
+
+  ...
+
+-  const { querySet, resolveBuffer, resultBuffer } = (() =&gt; {
+-    if (!canTimestamp) {
+-      return {};
+-    }
+-
+-    const querySet = device.createQuerySet({
+-       type: 'timestamp',
+-       count: 2,
+-    });
+-    const resolveBuffer = device.createBuffer({
+-      size: querySet.count * 8,
+-      usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC,
+-    });
+-    const resultBuffer = device.createBuffer({
+-      size: resolveBuffer.size,
+-      usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+-    });
+-    return {querySet, resolveBuffer, resultBuffer };
+-  })();
+
+  ...
+
+  function render(now) {
+
+    ...
+
+-    const pass = encoder.beginRenderPass(renderPassDescriptor);
++    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
+
+    ...
+
+    pass.end();
+
+    -if (canTimestamp) {
+    -  encoder.resolveQuerySet(querySet, 0, querySet.count, resolveBuffer, 0);
+    -  if (resultBuffer.mapState === 'unmapped') {
+    -    encoder.copyBufferToBuffer(resolveBuffer, 0, resultBuffer, 0, resultBuffer.size);
+    -  }
+    -}
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
++    timingHelper.getResult().then(gpuTime =&gt; {
++        gpuAverage.addSample(gpuTime / 1000);
++    });
+
+    ...
+</pre>
+<p>A few points about the <code class="notranslate" translate="no">TimingHelper</code> class:</p>
+<ul>
+<li>
+<p>You still have to manually request the <code class="notranslate" translate="no">'timestamp-query'</code> feature when you
+create your device but, the class handles whether it exists or not on the
+device.</p>
+</li>
+<li>
+<p>When you call <code class="notranslate" translate="no">timerHelper.beginRenderPass</code> or <code class="notranslate" translate="no">timerHelper.beginComputePass</code>
+it automatically adds the appropriate properties to the pass descriptor. It
+also returns a pass encoder who’s <code class="notranslate" translate="no">end</code> function automatically resolves the
+queries.</p>
+</li>
+<li>
+<p>It’s designed so if you use it wrong it will complain.</p>
+</li>
+<li>
+<p>It only handles 1 pass.</p>
+<p>There are a bunch of tradeoffs here and without more exploration it’s not
+clear what would be best.</p>
+<p>A class that handles multiple passes could be useful but, ideally, you’d use a
+single <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUQuerySet"><code class="notranslate" translate="no">GPUQuerySet</code></a> that has enough space for all of your passes, rather than
+1 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUQuerySet"><code class="notranslate" translate="no">GPUQuerySet</code></a> per pass.</p>
+<p>But, in order to do that you’d either need to have the user tell you up front
+the maximum number of passes they’ll use. Or, you need to make the code more
+complicated where it starts with a small <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUQuerySet"><code class="notranslate" translate="no">GPUQuerySet</code></a> and deletes it and
+makes a new larger one if you use more. But then, at least for 1 frame, you’d
+need to handle having multiple <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUQuerySet"><code class="notranslate" translate="no">GPUQuerySet</code></a>s</p>
+<p>All of that seemed overkill so for now it seemed best to make it handle one
+pass and you can build on top of it until you decide it needs to be changed.</p>
+</li>
+</ul>
+<p>You could also make a <code class="notranslate" translate="no">NoTimingHelper</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class NoTimingHelper {
+  constructor() { }
+  beginRenderPass(encoder, descriptor = {}) {
+    return encoder.beginTimestampPass(descriptor);
+  }
+
+  beginComputePass(encoder, descriptor = {}) {
+    return encoder.beginComputePass(descriptor);
+  }
+  async getResult() { return 0; }
+}
+</pre>
+<p>As one possible way to make so you can add timing and turn it off without having
+to change too much code.</p>
+<p>In any case, I’ve used the <code class="notranslate" translate="no">TimingHelper</code> class to time the various
+examples from <a href="webgpu-compute-shaders-histogram.html">the articles on using compute shaders to compute image histograms</a>. Here’s
+a list of them. Since only the video example runs continuously it’s probably
+the best example</p>
+<ul>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-video-w-timing.html">4 channel video histogram</a></li>
+</ul>
+<p>The rest just run once and print their result to the JavaScript console.</p>
+<ul>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-4ch-optimized-more-w-timing.html">4 channel workgroup per chunk histogram with reduce</a></li>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-4ch-race-fixed-w-timing.html">4 channel workgroup per pixel histogram</a></li>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-4ch-javascript-w-timing.html">4 channel JavaScript histogram</a></li>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-optimized-more-w-timing.html">1 channel workgroup per chunk histogram with reduce</a></li>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-optimized-w-timing.html">1 channel workgroup per chunk histogram with sum</a></li>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-race-fixed-w-timing.html">1 channel workgroup per pixel histogram </a></li>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-slow-w-timing.html">1 channel single core histogram</a></li>
+<li><a target="_blank" href="../webgpu-compute-shaders-histogram-javascript-w-timing.html">1 channel JavaScript histogram</a></li>
+</ul>
+<div class="webgpu_bottombar">By default the `'timestamp-query'` time values
+are quantized to 100µ seconds. In Chrome, if you enable <a href="chrome://flags/#enable-webgpu-developer-features" target="_blank">"enable-webgpu-developer-features"</a> in <a href="chrome://flags/#enable-webgpu-developer-features" target="_blank">about:flags</a>, the time values may not be quantized. This would
+theoretically give you more accurate timings. That said, normally 100µ second quantized values should be enough for you to compare shaders techniques for performance.
+</div>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><code class="notranslate" translate="no">rAF</code> is short for <code class="notranslate" translate="no">requestAnimationFrame</code> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>This only works if the radius of the circle is less than 0.5
+but it seemed best not to bloat the code with complicated checks for size. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Copying the query results to mappable buffer is only for
+the purpose of reading the values from JavaScript. If your use-case only needs the
+results to stay on the GPU, for example as input to something else, then you don’t need
+to copy the results to a mappable buffer. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-timing.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-timing.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-timing.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-timing.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-timing.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-timing.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-timing.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Basics</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
+<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+<li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
+<li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-textures.html">Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-importing-textures.html">Loading Images</a></li>
+<li><a href="/webgpu/lessons/webgpu-textures-external-video.html">Using Video</a></li>
+<li><a href="/webgpu/lessons/webgpu-cube-maps.html">Cube Maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
+<li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
+<li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+        </ul>
+  <li>3D Math</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>Compute Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>Misc</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Questions? <a href="http://stackoverflow.com/questions/tagged/webgpu">Ask on stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Suggestion</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU Timing Performance`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

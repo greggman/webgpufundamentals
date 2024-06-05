@@ -1,0 +1,227 @@
+<!-- Licensed under a BSD license. See license.html for license -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Spot Lighting Diagram</title>
+<style>
+:root {
+  color-scheme: light dark;
+}
+html, body {
+  margin: 0;
+  height: 100%;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+@media (prefers-color-scheme: dark) {
+  canvas {
+    background: #444;
+  }
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>
+<script type="module">
+import GUI from '/3rdparty/muigui-0.x.module.js';
+import * as twgl from '/3rdparty/twgl-full.module.js';
+import * as diagram from './diagram.js';
+import { rgb, hsl } from './utils.js';
+const { v3 } = twgl;
+
+function main() {
+  const ctx = document.querySelector('#canvas').getContext('2d');
+  const settings = {
+    rotation: 0,
+    direction: degToRad(35),
+    limit: degToRad(20),
+  };
+
+  function degToRad(deg) {
+    return deg * Math.PI / 180;
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+  const radToDegOptions = { min: -70, max: 70, step: 1, converters: GUI.converters.radToDeg };
+  const gui = new GUI();
+  GUI.setTheme('float');
+  gui.onChange(render);
+  gui.add(settings, 'rotation', radToDegOptions);
+  gui.add(settings, 'direction', radToDegOptions);
+  gui.add(settings, 'limit', { min: 0, max: 180, step: 1, converters: GUI.converters.radToDeg });
+
+  const darkColors = {
+    base: '#DDD',
+    background: '#444',
+    cone: '#663',
+    angleLines: '',
+    angleNumbersInLight: '#AAA',
+    angleNumbers: '#222',
+    surfaceNormalOutline: '#444',
+  };
+  const lightColors = {
+    base: '#000',
+    background: '#FFF',
+    cone: '#FFC',
+    angleNumbersInLight: '#888',
+    angleNumbers: '#EEE',
+    surfaceNormalOutline: '#FFF',
+  };
+
+  const darkMatcher = window.matchMedia('(prefers-color-scheme: dark)');
+  darkMatcher.addEventListener('change', render);
+
+  function render() {
+    const { rotation, direction, limit } = settings;
+    const isDarkMode = darkMatcher.matches;
+    const colors = isDarkMode ? darkColors : lightColors;
+    twgl.resizeCanvasToDisplaySize(ctx.canvas, window.devicePixelRatio);
+    const width  = 250;
+    const height = 200;
+
+    const baseScale = Math.min(ctx.canvas.width / width,  ctx.canvas.height / height);
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.save();
+
+    ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+    ctx.scale(baseScale, baseScale);
+    ctx.lineWidth = 1 / baseScale;
+
+    ctx.font = '6px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const lx = 0;
+    const ly = -height / 4;
+
+    const sx = 0;
+    const sy = height / 2 - 40;
+
+    const ldx = Math.sin(direction);
+    const ldy = Math.cos(direction);
+
+    ctx.save();
+    ctx.translate(lx, ly);
+    ctx.rotate(direction + Math.PI * .5);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, 500, -limit, limit, false);
+    ctx.fillStyle = colors.cone;
+    ctx.fill();
+    ctx.restore();
+
+    const numArrows = 64;
+    for (let ii = 0; ii <= numArrows; ++ii) {
+      const u = ii / numArrows;
+      const r = (u * 2 - 1) * Math.PI;
+
+      const rayDx = Math.sin(r);
+      const rayDy = Math.cos(r);
+
+      const cutOffDot = clamp(v3.dot([ldx, ldy, 0], [rayDx, rayDy, 0]), -1, 1);
+      const cutOffAngle = Math.acos(cutOffDot);
+      const inLight = cutOffAngle <= limit;
+
+      ctx.save();
+      ctx.translate(lx, ly);
+      ctx.rotate(r);
+      ctx.fillStyle = colors.angleLines;
+      ctx.strokeStyle = colors.angleLines;
+      diagram.arrow(ctx, 0, 0, 0, 400, false, true, 0.5);
+      ctx.fillStyle = inLight ? colors.angleNumbersInLight : colors.angleNumbers;
+      ctx.strokeStyle = inLight ? colors.angleNumbersInLight : colors.angleNumbers;
+      diagram.arrow(ctx, 0, 0, 0, 100, false, true, 0.5);
+      ctx.translate(0, 90);
+      ctx.rotate(Math.PI * .5);
+      //ctx.fillText(cutOffDot.toFixed(2), 0, 0);
+      ctx.strokeStyle = colors.background;
+      diagram.outlineText(ctx, cutOffDot.toFixed(3), 0, 0);
+      ctx.restore();
+    }
+
+    ctx.save();
+    ctx.translate(lx, ly);
+    ctx.rotate(direction);
+    ctx.fillStyle = colors.base;
+    ctx.strokeStyle = colors.base;
+    diagram.arrow(ctx, 0, 0, 0, 80, false, true, 0.5);
+    ctx.restore();
+
+//    ctx.strokeStyle = "#F00";
+    ctx.fillStyle = 'orange';
+    diagram.drawSun(ctx, lx, ly, width / 20);
+
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.rotate(rotation);
+
+    // draw surface
+    ctx.strokeStyle = '#000';
+    const surfaceWidth = 200;
+    diagram.roundedRect(ctx, -surfaceWidth / 2, 0, surfaceWidth, 20);
+
+    const gradient =  ctx.createLinearGradient(-surfaceWidth / 2, 0, surfaceWidth / 2, 10);
+
+    const numPoints = 200;
+    for (let p = 0; p <= numPoints; ++p) {
+        const pos = p / numPoints;
+
+        const r = pos * surfaceWidth - surfaceWidth / 2;
+        const c = Math.cos(rotation);
+        const s = Math.sin(rotation);
+        const x = c * r;
+        const y = s * r + sy;
+        const dx = x - lx;
+        const dy = y - ly;
+        const sp = v3.normalize([dx, dy, 0]);
+
+        const dot = clamp(v3.dot([sp[0], sp[1], 0], [-s, c, 0]), -1, 1);
+
+        // This is strange to me but I'm sure if I walked through the binary maybe
+        // I'd get it. We can see that ldx, ldy are sin,cos. And we can see that
+        // sp has to also be sin,cos has it's a normalized vector. But, sometimes,
+        // it doesn't normalize perfect, it's length is like 1.000000002. That's
+        // end up making dot not return a value -1 to 1 which ends up being out of
+        // range for acos and it returns NaN
+        const cutOffDot = clamp(v3.dot([ldx, ldy, 0], [-sp[0], sp[1], 0]), -1, 1);
+        const cutOffAngle = Math.acos(cutOffDot);
+        const inLight = cutOffAngle <= limit;
+
+        gradient.addColorStop(pos, hsl(0, 1, inLight ? dot : 0));
+    }
+
+    ctx.fillStyle = gradient; //rgb(1,0,0);
+
+    ctx.fill();
+    ctx.strokeStyle = rgb(0, 0, 0);
+    ctx.stroke();
+
+    ctx.restore();
+
+    ctx.translate(-100, -50);
+    ctx.fillStyle = colors.base;
+    ctx.strokeStyle = colors.background;
+    ctx.font = '8px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    diagram.outlineText(ctx, `dot limit = ${Math.cos(limit).toFixed(3)}`, 10, 20);
+
+    ctx.restore();
+  }
+  render();
+  window.addEventListener('resize', render);
+}
+
+main();
+</script>
+

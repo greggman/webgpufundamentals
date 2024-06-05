@@ -1,0 +1,1087 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/webgpu-wgsl.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="An introduction to WebGPU Shading Language">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_en.jpg">
+
+<meta property="og:title" content="WebGPU WGSL">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_en.jpg">
+<meta property="og:description" content="An introduction to WebGPU Shading Language">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU WGSL">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html">
+<meta name="twitter:description" content="An introduction to WebGPU Shading Language">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_en.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_en.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html",
+      "inLanguage":"en",
+      "name":"WebGPU WGSL",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU WGSL</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-wgsl.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-wgsl.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-wgsl.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-wgsl.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-wgsl.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-wgsl.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-wgsl.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Table of Contents</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU WGSL</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>For an in-depth overview of WGSL see <a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a>.
+There’s also <a href="https://www.w3.org/TR/WGSL/">the actual WGSL spec</a> though it can be hard
+to process since it’s written for <a href="http://catb.org/jargon/html/L/language-lawyer.html">language lawyers</a> 😂</p>
+<p>This article assumes you already know how to program. It’s probably way too
+terse but hopefully it can give you some help in understanding and writing WGSL
+shader programs.</p>
+<h2 id="wgsl-is-strictly-typed">WGSL is strictly typed</h2>
+<p>Unlike JavaScript, WGSL requires knowing the types of every variable, struct field,
+function parameter and function return type. If you’ve used typescript, rust, C++, C#,
+Java, Swift, Kotlin, etc then you’re used to this.</p>
+<h3 id="plain-types">plain types</h3>
+<p>The <em>plain</em> types in WGSL are:</p>
+<ul>
+<li><code class="notranslate" translate="no">i32</code> a 32 bit signed integer</li>
+<li><code class="notranslate" translate="no">u32</code> a 32 bit unsigned integer</li>
+<li><code class="notranslate" translate="no">f32</code> a 32 bit floating point number</li>
+<li><code class="notranslate" translate="no">bool</code> a boolean value</li>
+<li><code class="notranslate" translate="no">f16</code> a 16 bit floating point number (this is an optional feature you need to check for and request)</li>
+</ul>
+<h3 id="variable-declaration">variable declaration</h3>
+<p>In JavaScript you can declare variables and functions like this.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">var a = 1;
+let c = 3;
+function d(e) { return e * 2; }
+</pre>
+<p>In WGSL the full form of those would be</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">var a: f32 = 1;
+let c: f32 = 3;
+fn d(e: f32) -&gt; f32 { return e * 2; }
+</pre>
+<p>The important thing to note from above is having to add <code class="notranslate" translate="no">: &lt;type&gt;</code> like <code class="notranslate" translate="no">: f32</code>
+for the variable declarations and <code class="notranslate" translate="no">-&gt; &lt;type&gt;</code> to function declarations.</p>
+<h3 id="auto-types">auto types</h3>
+<p>WGSL has a <em>shortcut</em> for variables. Similar to typescript, if you don’t
+declare the type of the variable then it automatically becomes the type of
+the expression on the right.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn foo() -&gt; bool { return false; }
+
+var a = 1;     // a is an i32
+let b = 2.0;   // b is an f32
+var c = 3u;    // c is a u32
+var d = foo(); // d is bool
+</pre>
+<h3 id="type-conversion">type conversion</h3>
+<p>Further, being strictly type means you often have to convert types.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;     // a is an i32
+let b = 2.0;   // b is a f32
+*let c = a + b; // ERROR can't add an i32 to an f32
+</pre>
+<p>The fix is to convert one to the other.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;     // a is an i32
+let b = 2.0;   // b is a f32
+let c = f32(a) + b; // ok
+</pre>
+<p>but!, WGSL has what are called “AbstractInt” and “AbstractFloat”. You can
+think of them as numbers that have not yet decided their type. These
+are compile time only features.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;            // a is an i32
+let b = 2.0;          // b is a f32
+*let c = a + b;       // ERROR can't add an i32 to an f32
+let d = 1 + 2.0;      // d is a f32
+</pre>
+<h3 id="numeric-suffixes">numeric suffixes</h3>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">2i   // i32
+3u   // u32
+4f   // f32
+4.5f // f32
+5h   // f16
+5.6h // f16
+6    // AbstractInt
+7.0  // AbstractFloat
+</pre>
+<h2 id="let-var-and-const-mean-different-things-in-wgsl-vs-javascript"><code class="notranslate" translate="no">let</code> <code class="notranslate" translate="no">var</code> and <code class="notranslate" translate="no">const</code> mean different things in WGSL vs JavaScript</h2>
+<p>In JavaScript <code class="notranslate" translate="no">var</code> is a variable with function scope. <code class="notranslate" translate="no">let</code> is a variable with block scope. <code class="notranslate" translate="no">const</code> is a constant variable (can’t be changed) <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> with block scope.</p>
+<p>In WGSL all variables have block scope. <code class="notranslate" translate="no">var</code> is a variable that has storage and so is mutable. <code class="notranslate" translate="no">let</code> is a constant value.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn foo() {
+  let a = 1;
+*  a = a + 1;  // ERROR: a is a constant expression
+  var b = 2;
+  b = b + 1;  // ok
+}
+</pre>
+<p><code class="notranslate" translate="no">const</code> is not a variable, it’s a compile time constant. You can
+not use <code class="notranslate" translate="no">const</code> for something that happens at runtime.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const one = 1;              // ok
+const two = one * 2;        // ok
+const PI = radians(180.0);  // ok
+
+fn add(a: f32, b: f32) -&gt; f32 {
+*  const result = a + b;   // ERROR! const can only be used with compile time expressions
+  return result;
+}
+</pre>
+<h2 id="vector-types">vector types</h2>
+<p>WGSL has 3 vector types <code class="notranslate" translate="no">vec2</code>, <code class="notranslate" translate="no">vec3</code>, and <code class="notranslate" translate="no">vec4</code>. Their basic style is <code class="notranslate" translate="no">vec?&lt;type&gt;</code>
+so <code class="notranslate" translate="no">vec2&lt;i32&gt;</code> (a vector of two i32s), <code class="notranslate" translate="no">vec3&lt;f32&gt;</code> (a vector of 3 f32s), <code class="notranslate" translate="no">vec4&lt;u32&gt;</code>(a vector of 4 u32s),
+<code class="notranslate" translate="no">vec3&lt;bool&gt;</code> a vector of 3 boolean values.</p>
+<p>Examples:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec2&lt;i32&gt;(1, -2);
+let b = vec3&lt;f32&gt;(3.4, 5.6, 7.8);
+let c = vec4&lt;u32&gt;(9, 10, 11, 12);
+</pre>
+<h3 id="accessors">accessors</h3>
+<p>You can access the values inside a vector with various accessors.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = a.z;   // via x,y,z,w
+let c = a.b;   // via r,g,b,a
+let d = a[2];  // via array element accessors
+</pre>
+<p>Above, <code class="notranslate" translate="no">b</code>, <code class="notranslate" translate="no">c</code>, and <code class="notranslate" translate="no">d</code> are all the same. They are all accessing the 3rd element of <code class="notranslate" translate="no">a</code>. They are all ‘3’.</p>
+<h3 id="swizzles">swizzles</h3>
+<p>You can also access more than 1 element.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = a.zx;   // via x,y,z,w
+let c = a.br;   // via r,g,b,a
+let d = vec2&lt;f32&gt;(a[2], a[0]);
+</pre>
+<p>Above, <code class="notranslate" translate="no">b</code>, <code class="notranslate" translate="no">c</code>, and <code class="notranslate" translate="no">d</code> are all the same. They are all a <code class="notranslate" translate="no">vec2&lt;f32&gt;(3, 1)</code>.</p>
+<p>You can also repeat elements.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = vec3&lt;f32&gt;(a.z, a.z, a.y);
+let c = a.zzy;
+</pre>
+<p>Above <code class="notranslate" translate="no">b</code> and <code class="notranslate" translate="no">c</code> are the same. They both <code class="notranslate" translate="no">vec3&lt;f32&gt;</code> who contents is 3, 3, 2.</p>
+<h3 id="vector-shortcuts">vector shortcuts</h3>
+<p>There are shortcuts for the base types. Change the <code class="notranslate" translate="no">&lt;i32&gt;</code> =&gt; <code class="notranslate" translate="no">i</code>, <code class="notranslate" translate="no">&lt;f32&gt;</code> =&gt; <code class="notranslate" translate="no">f</code>, <code class="notranslate" translate="no">&lt;u32&gt;</code> to <code class="notranslate" translate="no">u</code> and <code class="notranslate" translate="no">&lt;f16&gt;</code> to <code class="notranslate" translate="no">h</code> so</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = vec4f(1, 2, 3, 4);
+</pre>
+<p><code class="notranslate" translate="no">a</code> and <code class="notranslate" translate="no">b</code> are the same type.</p>
+<h3 id="vector-construction">vector construction</h3>
+<p>vectors can be constructed with smaller types.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec2f(2, 3);
+let c = vec4f(1, b, 4);
+let d = vec2f(1, a.yz, 4);
+let e = vec2f(a.xyz, 4);
+let f = vec2f(1, a.yzw);
+</pre>
+<p><code class="notranslate" translate="no">a</code>, <code class="notranslate" translate="no">c</code>, <code class="notranslate" translate="no">d</code>, <code class="notranslate" translate="no">e</code> and <code class="notranslate" translate="no">f</code> are the same.</p>
+<h3 id="vector-math">vector math</h3>
+<p>You can do math on vectors.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec4f(5, 6, 7, 8);
+let c = a + b;  // c is vec4f(6, 8, 10, 12)
+let d = a * b;  // d is vec4f(5, 12, 21, 32)
+let e = a - b;  // e is vec4f(-4, -4, -4, -4)
+</pre>
+<p>Many functions also work on vectors.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec4f(5, 6, 7, 8);
+let c = mix(a, b, 0.5);                   // c is vec4f(3, 4, 5, 6)
+let d = mix(a, b, vec4f(0, 0.5, 0.5, 1)); // d is vec4f(1, 4, 5, 8)
+</pre>
+<h2 id="matrices">matrices</h2>
+<p>WGSL has a bunch of matrix types. Matrices are arrays of vectors.
+The format is <code class="notranslate" translate="no">mat&lt;numVectors&gt;x&lt;vectorSize&gt;&lt;&lt;type&gt;&gt;</code> so for example
+<code class="notranslate" translate="no">mat3x4&lt;f32&gt;</code> is an array of 3 <code class="notranslate" translate="no">vec4&lt;f32&gt;</code>s. Like vectors, matrices
+have the same shortcuts</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a: mat4x4&lt;f32&gt; = ...
+let b: mat4x4f = ...
+</pre>
+<p><code class="notranslate" translate="no">a</code> and <code class="notranslate" translate="no">b</code> are the same type.</p>
+<h3 id="matrix-vector-access">matrix vector access</h3>
+<p>You can reference a vector of a matrix with array syntax.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = mat4x4f(...);
+let b = a[2];   // b is a vec4f of the 3rd vector of a
+</pre>
+<p>The most common matrix type for 3D computation is <code class="notranslate" translate="no">mat4x4f</code> and can be multiplied directly
+with a <code class="notranslate" translate="no">vec4f</code> to produce another <code class="notranslate" translate="no">vec4f</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = mat4x4f(....);
+let b = vec4f(1, 2, 3, 4);
+let c = a * b;  // c is a vec4f and the result of a * b
+</pre>
+<h2 id="arrays">arrays</h2>
+<p>Arrays in WGSL are declared with the <code class="notranslate" translate="no">array&lt;type, numElements&gt;</code> syntax.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = array&lt;f32, 5&gt;;   // an array of five f32s
+let b = array&lt;vec4f, 6&gt;; // an array of six vec4fs
+</pre>
+<p>But there’s also the <code class="notranslate" translate="no">array</code> constructor. It takes any number of arguments
+and returns an array. The arguments must all be of the same type.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl;" translate="no">let arrOf3Vec3fsA = array(vec3f(1,2,3), vec3f(4,5,6), vec3f(7,8,9));
+let arrOf3Vec3fsB = array&lt;vec3f, 3&gt;(vec3f(1,2,3), vec3f(4,5,6), vec3f(7,8,9));
+</pre>
+<p>Above <code class="notranslate" translate="no">arrOf3Vec3fsA</code> is the same as <code class="notranslate" translate="no">arrOf3Vec3fsB</code>.</p>
+<p>Unfortunately, as of version 1 of WGSL there is no way to get the size of
+fixed size array.</p>
+<h3 id="runtime-sized-arrays">runtime sized arrays</h3>
+<p>Arrays that are at the root scope storage declarations or as the last
+field in a root scope struct
+are the only arrays that can be specified with no size.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Stuff {
+  color: vec4f,
+  size: f32,
+  verts: array&lt;vec3f&gt;,
+};
+@group(0) @binding(0) var&lt;storage&gt; foo: array&lt;mat4x4f&gt;;
+@group(0) @binding(1) var&lt;storage&gt; bar: Stuff;
+</pre>
+<p>The number of elements in <code class="notranslate" translate="no">foo</code> and in <code class="notranslate" translate="no">bar.verts</code> is defined by the settings
+of the bind group used at runtime. You can query this size in your WGSL with
+<code class="notranslate" translate="no">arrayLength</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage&gt; foo: array&lt;mat4x4f&gt;;
+@group(0) @binding(1) var&lt;storage&gt; bar: Stuff;
+
+...
+  let numMatrices = arrayLength(&amp;foo);
+  let numVerts = arrayLength(&amp;bar.verts);
+</pre>
+<h2 id="functions">functions</h2>
+<p>Functions in WGSL follow the pattern <code class="notranslate" translate="no">fn name(parameters) -&gt; returnType { ..body... }</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn add(a: f32, b: f32) -&gt; f32 {
+  return a + b;
+}
+</pre>
+<h2 id="entry-points">entry points</h2>
+<p>WGSL programs need an entry point. An entry point is designated by either <code class="notranslate" translate="no">@vertex</code>, <code class="notranslate" translate="no">@fragment</code> or <code class="notranslate" translate="no">@compute</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn myFunc(a: f32, b: f32) -&gt; @builtin(position): vec4f {
+  return vec4f(0, 0, 0, 0);
+}
+</pre>
+<h2 id="shaders-only-use-what-their-entry-point-accesses">shaders only use what their entry point accesses</h2>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;uniforms&gt; uni: vec4f;
+
+vec4f fn foo() {
+  return uni;
+}
+
+@vertex fn vs1(): @builtin(position) vec4f {
+  return vec4f(0);
+}
+
+@vertex fn vs2(): @builtin(position) vec4f {
+  return foo();
+}
+</pre>
+<p>Above <code class="notranslate" translate="no">uni</code> is not accessed by <code class="notranslate" translate="no">vs1</code> and so will not show up as a required
+binding if you use <code class="notranslate" translate="no">vs1</code> in a pipeline. <code class="notranslate" translate="no">vs2</code> does reference <code class="notranslate" translate="no">uni</code> indirectly through
+calling <code class="notranslate" translate="no">foo</code> so it will show up as a required binding when using <code class="notranslate" translate="no">vs2</code> in a pipeline.</p>
+<h2 id="attributes">attributes</h2>
+<p>The word <em>attributes</em> has 2 meanings in WebGPU. One is <em>vertex attributes</em> which is covered in <a href="webgpu-vertex-buffers.html">the article on vertex buffers</a>.
+The other is in WGSL where an attribute starts with <code class="notranslate" translate="no">@</code>.</p>
+<h3 id="locationnumber"><code class="notranslate" translate="no">@location(number)</code></h3>
+<p><code class="notranslate" translate="no">@location(number)</code> is used to defined inputs and outputs of shaders.</p>
+<h4 id="vertex-shader-inputs">vertex shader inputs</h4>
+<p>For a vertex shader, inputs are defined by the <code class="notranslate" translate="no">@location</code> attributes
+of the entry point function of the vertex shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex vs1(@location(0) foo: f32, @location(1) bar: vec4f) ...
+
+struct Stuff {
+  @location(0) foo: f32,
+  @location(1) bar: vec4f,
+};
+@vertex vs2(s: Stuff) ...
+</pre>
+<p>Both <code class="notranslate" translate="no">vs1</code> and <code class="notranslate" translate="no">vs2</code> declare inputs to the vertex shader on locations 0 and 1 which need to be supplied by <a href="webgpu-vertex-buffers.html">vertex buffers</a>.</p>
+<h4 id="inter-stage-variables">inter stage variables</h4>
+<p>For inter stage variables, <code class="notranslate" translate="no">@location</code> attributes define the location where the variables are passed between shaders.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VSOut {
+  @builtin(position) pos: vec4f,
+  @location(0) color: vec4f,
+  @location(1) texcoords: vec2f,
+};
+
+struct FSIn {
+  @location(1) uv: vec2f,
+  @location(0) diffuse: vec4f,
+};
+
+@vertex fn foo(...) -&gt; VSOut { ... }
+@fragment fn bar(moo: FSIn) ... 
+</pre>
+<p>Above, the vertex shader <code class="notranslate" translate="no">foo</code> passes <code class="notranslate" translate="no">color</code> as <code class="notranslate" translate="no">vec4f</code> on <code class="notranslate" translate="no">location(0)</code> and <code class="notranslate" translate="no">texcoords</code> as a <code class="notranslate" translate="no">vec2f</code> on <code class="notranslate" translate="no">location(1)</code>.
+The fragment shader <code class="notranslate" translate="no">bar</code> receives them as <code class="notranslate" translate="no">uv</code> and <code class="notranslate" translate="no">diffuse</code> because their locations match.</p>
+<h4 id="fragment-shader-outputs">fragment shader outputs</h4>
+<p>For fragment shaders, <code class="notranslate" translate="no">@location</code> specifies which <code class="notranslate" translate="no">GPURenderPassDescriptor.colorAttachment</code> to store the result in.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct FSOut {
+  @location(0) albedo: vec4f;
+  @location(1) normal: vec4f;
+}
+@fragment fn bar(...) -&gt; FSOut { ... }
+</pre>
+<h3 id="builtinname"><code class="notranslate" translate="no">@builtin(name)</code></h3>
+<p>The <code class="notranslate" translate="no">@builtin</code> attribute is used to specify that a particular variable’s value comes
+from a built-in feature of WebGPU.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs1(@builtin(vertex_index) foo: u32, @builtin(instance_index) bar: u32) ... {
+  ...
+}
+</pre>
+<p>Above <code class="notranslate" translate="no">foo</code> gets its value from the builtin <code class="notranslate" translate="no">vertex_index</code> and <code class="notranslate" translate="no">bar</code> gets its value from the builtin <code class="notranslate" translate="no">instance_index</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Foo {
+  @builtin(vertex_index) vNdx: u32,
+  @builtin(instance_index) iNdx: u32,
+}
+@vertex fn vs1(blap: Foo) ... {
+  ...
+}
+</pre>
+<p>Above <code class="notranslate" translate="no">blap.vNdx</code> gets its value from the builtin <code class="notranslate" translate="no">vertex_index</code> and <code class="notranslate" translate="no">blap.iNdx</code> gets its value from the builtin <code class="notranslate" translate="no">instance_index</code>.</p>
+<div class="webgpu_center center data-table">
+<table class="data">
+  <thead>
+    <tr>
+      <th>Builtin Name</th>
+      <th>Stage</th>
+      <th>IO</th>
+      <th>Type</th>
+      <th>Description </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-vertex_index">vertex_index</dfn> </td>
+      <td>vertex </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">
+       Index of the current vertex within the current API-level draw command,
+         independent of draw instancing. 
+       <p>For a non-indexed draw, the first vertex has an index equal to the <code class="notranslate" translate="no">firstVertex</code> argument
+         of the draw, whether provided directly or indirectly.
+         The index is incremented by one for each additional vertex in the draw instance.</p>
+       <p>For an indexed draw, the index is equal to the index buffer entry for the
+         vertex, plus the <code class="notranslate" translate="no">baseVertex</code> argument of the draw, whether provided directly or indirectly.</p></td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-instance_index">instance_index</dfn> </td>
+      <td>vertex </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">
+       Instance index of the current vertex within the current API-level draw command. 
+       <p>The first instance has an index equal to the <code class="notranslate" translate="no">firstInstance</code> argument of the draw,
+         whether provided directly or indirectly.
+         The index is incremented by one for each additional instance in the draw.</p></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-position">position</dfn> </td>
+      <td>vertex </td>
+      <td>output </td>
+      <td>vec4&lt;f32&gt; </td>
+      <td style="width:50%">Output position of the current vertex, using homogeneous coordinates.
+      After homogeneous normalization (where each of the <em>x</em>, <em>y</em>, and <em>z</em> components
+      are divided by the <em>w</em> component), the position is in the WebGPU normalized device
+      coordinate space.
+      See <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td>fragment </td>
+      <td>input </td>
+      <td>vec4&lt;f32&gt; </td>
+      <td style="width:50%">Framebuffer position of the current fragment in <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#framebuffer" id="ref-for-framebuffer">framebuffer</a> space.
+      (The <em>x</em>, <em>y</em>, and <em>z</em> components have already been scaled such that <em>w</em> is now 1.)
+      See <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-front_facing">front_facing</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>bool </td>
+      <td style="width:50%">True when the current fragment is on a <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#front-facing" id="ref-for-front-facing">front-facing</a> primitive.
+         False otherwise. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-frag_depth">frag_depth</dfn> </td>
+      <td>fragment </td>
+      <td>output </td>
+      <td>f32 </td>
+      <td style="width:50%">Updated depth of the fragment, in the viewport depth range.
+      See <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_id">local_invocation_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#local-invocation-id" id="ref-for-local-invocation-id①">local invocation ID</a>,
+            i.e. its position in the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid①">workgroup grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_index">local_invocation_index</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#local-invocation-index" id="ref-for-local-invocation-index">local invocation index</a>, a linearized index of
+          the invocation’s position within the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid②">workgroup grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-global_invocation_id">global_invocation_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#global-invocation-id" id="ref-for-global-invocation-id">global invocation ID</a>,
+          i.e. its position in the <a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">compute shader grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-workgroup_id">workgroup_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#workgroup-id" id="ref-for-workgroup-id">workgroup ID</a>,
+          i.e. the position of the workgroup in the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid③">workgroup grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-num_workgroups">num_workgroups</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">The <a data-link-type="dfn" href="#dispatch-size" id="ref-for-dispatch-size">dispatch size</a>, <code class="notranslate" translate="no">vec&lt;u32&gt;(group_count_x, group_count_y, group_count_z)</code>, of the compute shader <a href="https://www.w3.org/TR/webgpu/#compute-pass-encoder-dispatch">dispatched</a> by the API. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_index">sample_index</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample index for the current fragment.
+         The value is least 0 and at most <code class="notranslate" translate="no">sampleCount</code>-1, where <code class="notranslate" translate="no">sampleCount</code> is the MSAA sample <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-count" id="ref-for-dom-gpumultisamplestate-count">count</a></code> specified for the GPU render pipeline. <br>See <a href="https://www.w3.org/TR/webgpu/#gpurenderpipeline"><cite>WebGPU</cite> § 10.3 GPURenderPipeline</a>. </td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_mask">sample_mask</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample coverage mask for the current fragment.
+         It contains a bitmask indicating which samples in this fragment are covered
+         by the primitive being rendered. <br>See <a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
+    </tr>
+    <tr>
+      <td>fragment </td>
+      <td>output </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample coverage mask control for the current fragment.
+         The last value written to this variable becomes the <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#shader-output-mask" id="ref-for-shader-output-mask">shader-output mask</a>.
+         Zero bits in the written value will cause corresponding samples in
+         the color attachments to be discarded. <br>See <a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<h2 id="flow-control">flow control</h2>
+<p>Like most computer languages, WGSL has flow control statements.</p>
+<h3 id="for">for</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; i++) { ... }
+</pre>
+<h3 id="if">if</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    if (i &lt; 5) {
+      ...
+    } else if (i &gt; 7) {
+      ..
+    } else {
+      ...
+    }
+</pre>
+<h3 id="while">while</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var j = 0;
+  while (j &lt; 5) {
+    ...
+    j++;
+  }
+</pre>
+<h3 id="loop">loop</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    if (k &gt;= 5) {
+      break;
+    }
+  }
+</pre>
+<h3 id="break">break</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    if (k &gt;= 5) {
+      break;
+    }
+  }
+</pre>
+<h3 id="break-if">break if</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    break if (k &gt;= 5);
+  }
+</pre>
+<h3 id="continue">continue</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; ++i) {
+    if (i % 2 == 1) {
+      continue;
+    }
+    ...
+  }
+</pre>
+<h3 id="continuing">continuing</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; ++i) {
+    if (i % 2 == 1) {
+      continue;
+    }
+    ...
+
+    continuing {
+      // continue goes here
+      ...
+    }
+  }
+</pre>
+<h3 id="discard">discard</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">   if (v &lt; 0.5) {
+     discard;
+   }
+</pre>
+<p><code class="notranslate" translate="no">discard</code> exits the shader. It can only be used in a fragment shader.</p>
+<h3 id="switch">switch</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">var a : i32;
+let x : i32 = generateValue();
+switch x {
+  case 0: {      // The colon is optional
+    a = 1;
+  }
+  default {      // The default need not appear last
+    a = 2;
+  }
+  case 1, 2, {   // Multiple selector values can be used
+    a = 3;
+  }
+  case 3, {      // The trailing comma is optional
+    a = 4;
+  }
+  case 4 {
+    a = 5;
+  }
+}
+</pre>
+<p><code class="notranslate" translate="no">switch</code> only works with <code class="notranslate" translate="no">u32</code> or <code class="notranslate" translate="no">i32</code> and cases must be constants.</p>
+<h2 id="operators">Operators</h2>
+<div class="webgpu_center center data-table">
+<table class="data">
+  <thead>
+    <tr>
+      <th>Name </th>
+      <th>Operators </th>
+      <th>Associativity </th>
+      <th>Binding </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Parenthesized </td>
+      <td><code class="notranslate" translate="no">(...)</code> </td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Primary </td>
+      <td><code class="notranslate" translate="no">a()</code>, <code class="notranslate" translate="no">a[]</code>, <code class="notranslate" translate="no">a.b</code> </td>
+      <td>Left-to-right </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Unary </td>
+      <td><code class="notranslate" translate="no">-a</code>, <code class="notranslate" translate="no">!a</code>, <code class="notranslate" translate="no">~a</code>, <code class="notranslate" translate="no">*a</code>, <code class="notranslate" translate="no">&amp;a</code> </td>
+      <td>Right-to-left </td>
+      <td>All above </td>
+    </tr>
+    <tr>
+      <td>Multiplicative </td>
+      <td><code class="notranslate" translate="no">a * b</code>, <code class="notranslate" translate="no">a / b</code>, <code class="notranslate" translate="no">a % b</code> </td>
+      <td>Left-to-right </td>
+      <td>All above </td>
+    </tr>
+    <tr>
+      <td>Additive </td>
+      <td><code class="notranslate" translate="no">a + b</code>, <code class="notranslate" translate="no">a - b</code> </td>
+      <td>Left-to-right </td>
+      <td>All above </td>
+    </tr>
+    <tr>
+      <td>Shift </td>
+      <td><code class="notranslate" translate="no">a &lt;&lt; b</code>, <code class="notranslate" translate="no">a &gt;&gt; b</code> </td>
+      <td>Requires parentheses </td>
+      <td>Unary </td>
+    </tr>
+    <tr>
+      <td>Relational </td>
+      <td><code class="notranslate" translate="no">a &lt; b</code>, <code class="notranslate" translate="no">a &gt; b</code>, <code class="notranslate" translate="no">a &lt;= b</code>, <code class="notranslate" translate="no">a &gt;= b</code>, <code class="notranslate" translate="no">a == b</code>, <code class="notranslate" translate="no">a != b</code> </td>
+      <td>Requires parentheses </td>
+      <td>All above </td>
+    </tr>
+    <tr>
+      <td>Binary AND </td>
+      <td><code class="notranslate" translate="no">a &amp; b</code> </td>
+      <td>Left-to-right </td>
+      <td>Unary </td>
+    </tr>
+    <tr>
+      <td>Binary XOR </td>
+      <td><code class="notranslate" translate="no">a ^ b</code> </td>
+      <td>Left-to-right </td>
+      <td>Unary </td>
+    </tr>
+    <tr>
+      <td>Binary OR </td>
+      <td><code class="notranslate" translate="no">a | b</code> </td>
+      <td>Left-to-right </td>
+      <td>Unary </td>
+    </tr>
+    <tr>
+      <td>Short-circuit AND </td>
+      <td><code class="notranslate" translate="no">a &amp;&amp; b</code> </td>
+      <td>Left-to-right </td>
+      <td>Relational </td>
+    </tr>
+    <tr>
+      <td>Short-circuit OR </td>
+      <td><code class="notranslate" translate="no">a || b</code> </td>
+      <td>Left-to-right </td>
+      <td>Relational </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h2 id="builtin-functions">Builtin functions</h2>
+<p>See <a href="webgpu-wgsl-function-reference.html">the WGSL Function reference</a>.</p>
+<h2 id="differences-with-other-languages">Differences with other languages</h2>
+<h3 id="if-while-switch-break-if-expressions-dont-need-parenthesizes"><code class="notranslate" translate="no">if</code>, <code class="notranslate" translate="no">while</code>, <code class="notranslate" translate="no">switch</code>, <code class="notranslate" translate="no">break-if</code> expressions don’t need parenthesizes.</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">if a &lt; 5 {
+  doTheThing();
+}
+</pre>
+<h3 id="no-ternary-operator">no ternary operator</h3>
+<p>Many languages have a ternary operator <code class="notranslate" translate="no">condition ? trueExpression : falseExpression</code>
+WGSL does not. WGSL does have <code class="notranslate" translate="no">select</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let a = select(falseExpression, trueExpression, condition);
+</pre>
+<h3 id="-and----are-statements-not-expressions"><code class="notranslate" translate="no">++</code> and <code class="notranslate" translate="no">--</code> are statements, not expressions.</h3>
+<p>Many languages have <em>pre-increment</em> and <em>post-increment</em> operators.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// JavaScript
+let a = 5;
+let b = a++;  // b = 5, a = 6  (post-increment)
+let c = ++a;  // c = 7, a = 7  (pre-increment)
+</pre>
+<p>WGSL has neither. It just has the increment and decrement statements.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">// WGSL
+var a = 5;
+a++;          // is now 6
+*++a;          // ERROR: no such thing as pre-increment
+*let b = a++;  // ERROR: a++ is not an expression, it's a statement
+</pre>
+<h2 id="---are-not-expressions-theyre-assignment-statements"><code class="notranslate" translate="no">+=</code>, <code class="notranslate" translate="no">-=</code> are not expressions, they’re assignment statements</h2>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// JavaScript
+let a = 5;
+a += 2;          // a = 7
+let b = a += 2;  // a = 9, b = 9
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">// WGSL
+let a = 5;
+a += 2;           // a is 7
+*let b = a += 2;  // ERROR: a += 2 is not an expression
+</pre>
+<h2 id="swizzles-can-not-appear-on-the-left">Swizzles can not appear on the left</h2>
+<p>In some languages but not WGSL.</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">var color = vec4f(0.25, 0.5, 0.75, 1);
+*color.rgb = color.bgr; // ERROR
+color = vec4(color.bgr, color.a);  // Ok
+</pre>
+<p>Note: there is a proposal to add this feature.</p>
+<h2 id="phony-assignment-to-_">Phony assignment to <code class="notranslate" translate="no">_</code></h2>
+<p><code class="notranslate" translate="no">_</code> is a special variable you can assign to to make something appear used but not actually use it.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;uniforms&gt; uni1: vec4f;
+@group(0) @binding(0) var&lt;uniforms&gt; uni2: mat4x4f;
+
+@vertex fn vs1(): @builtin(position) vec4f {
+  return vec4f(0);
+}
+
+@vertex fn vs2(): @builtin(position) vec4f {
+  _ = uni1;
+  _ = uni2;
+  return vec4f(0);
+}
+</pre>
+<p>Above neither <code class="notranslate" translate="no">uni1</code> nor <code class="notranslate" translate="no">uni2</code> are accessed by <code class="notranslate" translate="no">vs1</code> and so they will not show up as a required
+bindings if you use <code class="notranslate" translate="no">vs1</code> in a pipeline. <code class="notranslate" translate="no">vs2</code> does reference both <code class="notranslate" translate="no">uni1</code> and <code class="notranslate" translate="no">uni2</code>
+so they will both show up as a required bindings when using <code class="notranslate" translate="no">vs2</code> in a pipeline.</p>
+<p class="copyright" data-fill-with="copyright">  <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Variables in JavaScript hold base types of <code class="notranslate" translate="no">undefined</code>, <code class="notranslate" translate="no">null</code>, <code class="notranslate" translate="no">boolean</code>, <code class="notranslate" translate="no">number</code>, <code class="notranslate" translate="no">string</code>, <code class="notranslate" translate="no">reference-to-object</code>.
+It can be confusing for people new to programming that <code class="notranslate" translate="no">const o = {name: 'foo'}; o.name = 'bar';</code> works because <code class="notranslate" translate="no">o</code> was declared as <code class="notranslate" translate="no">const</code>.
+The thing is, <code class="notranslate" translate="no">o</code> is const. It is a constant reference to the object. You can not change which object <code class="notranslate" translate="no">o</code> references. You can change object itself. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-wgsl.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-wgsl.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-wgsl.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-wgsl.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-wgsl.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-wgsl.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-wgsl.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Basics</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
+<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+<li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
+<li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-textures.html">Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-importing-textures.html">Loading Images</a></li>
+<li><a href="/webgpu/lessons/webgpu-textures-external-video.html">Using Video</a></li>
+<li><a href="/webgpu/lessons/webgpu-cube-maps.html">Cube Maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
+<li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
+<li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+        </ul>
+  <li>3D Math</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>Compute Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>Misc</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Questions? <a href="http://stackoverflow.com/questions/tagged/webgpu">Ask on stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Suggestion</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU WGSL`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 150 150" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-30,-40)">
+        <path d="M70.404,70.073L70.404,160L140.296,70.073L70.404,70.073Z" style="fill:rgb(0,205,143);"/>
+    </g>
+    <g transform="matrix(1,0,0,1,58.7998,35.9268)">
+        <path d="M53.296,84.073L-16.704,84.073L53.296,-6.927L53.296,84.073Z" style="fill:rgb(0,205,143);"/>
+    </g>
+    <g transform="matrix(0.75,0,0,0.75,-12.5,-22.5)">
+        <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+    </g>
+    <g transform="matrix(1,0,0,1,-28.3853,-35.7828)">
+        <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">0</text>
+    </g>
+    <g transform="matrix(0.75,0,0,0.75,-12.0957,67.5)">
+        <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+    </g>
+    <g transform="matrix(1,0,0,1,-28.4458,54.2172)">
+        <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">1</text>
+    </g>
+    <g transform="matrix(0.75,0,0,0.75,57.5,-22.5)">
+        <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+    </g>
+    <g transform="matrix(1,0,0,1,41.6147,-35.7828)">
+        <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">2</text>
+    </g>
+    <g transform="matrix(1,0.000412534,0.000412534,1.07143,-30.0476,-48.243)">
+        <g transform="matrix(0.999998,-0.000385032,-0.000385032,0.933336,30.029,45.0153)">
+            <path d="M46.315,94.466L40.419,112.5L34.315,94.535L46.315,94.466Z"/>
+            <path d="M39.986,37.5C39.986,37.5 40.21,76.317 40.336,98.1" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+    </g>
+    <g transform="matrix(1.01341,-0.0173357,-0.0173357,1.02242,-28.3665,-42.1123)">
+        <g transform="matrix(0.987057,0.0167362,0.0167362,0.978358,28.7042,41.6756)">
+            <path d="M90.301,45.853L106.078,35.313L99.78,53.211L90.301,45.853Z"/>
+            <path d="M45,114C45,114 80.328,68.486 97.248,46.689" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+    </g>
+    <g transform="matrix(1.10897,0,0,1,-41.6657,-40)">
+        <g transform="matrix(0.90174,-0,-0,1,37.5716,40)">
+            <path d="M65.5,36L47.5,30L65.5,24L65.5,36Z"/>
+            <path d="M102.5,30L61.9,30" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+    </g>
+    <g transform="matrix(0.75,0,0,0.75,60,67.5)">
+        <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+    </g>
+    <g transform="matrix(1,0,0,1,43.6987,54.144)">
+        <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">3</text>
+    </g>
+    <g transform="matrix(1,0,0,1,-41.9043,-39)">
+        <g transform="matrix(1,-0,-0,1,41.9043,39)">
+            <path d="M61.815,104.517L46,115L52.362,97.125L61.815,104.517Z"/>
+            <path d="M107,37C107,37 71.79,82.023 54.871,103.657" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+    </g>
+    <g transform="matrix(1,0,0,1,-42.9043,-40)">
+        <g transform="matrix(1,-0,-0,1,42.9043,40)">
+            <path d="M87,114L105,120L87,126L87,114Z"/>
+            <path d="M48.096,120L90.6,120" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+    </g>
+    <g transform="matrix(1,0,0,1,-42.9043,-40)">
+        <g transform="matrix(1,-0,-0,1,42.9043,40)">
+            <path d="M106.192,55.032L112.096,37L118.192,54.968L106.192,55.032Z"/>
+            <path d="M112.5,112.5C112.5,112.5 112.29,73.31 112.173,51.4" style="fill:none;stroke:black;stroke-width:1px;"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Simple Textured Quad MipFilter</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+#msg {
+  position: fixed;
+  top: 40%;
+  left: 0;
+  font-size: 3vh;
+  padding: 0.5em;
+  background-color: black;
+  pointer-events: none;
+  user-select: none;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <pre id="msg">click to
+switch 
+textures</pre>
+  </body>
+  <script type="module">
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
+import {mat4} from '/3rdparty/wgpu-matrix.module.js';
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+
+  const module = device.createShaderModule({
+    label: 'our hardcoded textured quad shaders',
+    code: `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+      };
+
+      @group(0) @binding(2) var<uniform> uni: Uniforms;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -> OurVertexShaderOutput {
+        let pos = array(
+
+          vec2f( 0.0,  0.0),  // center
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 0.0,  1.0),  // center, top
+
+          // 2st triangle
+          vec2f( 0.0,  1.0),  // center, top
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 1.0,  1.0),  // right, top
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(1, 50);
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var ourSampler: sampler;
+      @group(0) @binding(1) var ourTexture: texture_2d<f32>;
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -> @location(0) vec4f {
+        return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: 'hardcoded textured quad pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const mix = (a, b, t) => a.map((v, i) => lerp(v, b[i], t));
+  const bilinearFilter = (tl, tr, bl, br, t1, t2) => {
+    const t = mix(tl, tr, t1);
+    const b = mix(bl, br, t1);
+    return mix(t, b, t2);
+  };
+
+  const createNextMipLevelRgba8Unorm = ({data: src, width: srcWidth, height: srcHeight}) => {
+    // compute the size of the next mip
+    const dstWidth = Math.max(1, srcWidth / 2 | 0);
+    const dstHeight = Math.max(1, srcHeight / 2 | 0);
+    const dst = new Uint8Array(dstWidth * dstHeight * 4);
+
+    const getSrcPixel = (x, y) => {
+      const offset = (y * srcWidth + x) * 4;
+      return src.subarray(offset, offset + 4);
+    };
+
+    for (let y = 0; y < dstHeight; ++y) {
+      for (let x = 0; x < dstWidth; ++x) {
+        // compute texcoord of the center of the destination texel
+        const u = (x + 0.5) / dstWidth;
+        const v = (y + 0.5) / dstHeight;
+
+        // compute the same texcoord in the source - 0.5 a pixel
+        const au = (u * srcWidth - 0.5);
+        const av = (v * srcHeight - 0.5);
+
+        // compute the src top left texel coord (not texcoord)
+        const tx = au | 0;
+        const ty = av | 0;
+
+        // compute the mix amounts between pixels
+        const t1 = au % 1;
+        const t2 = av % 1;
+
+        // get the 4 pixels
+        const tl = getSrcPixel(tx, ty);
+        const tr = getSrcPixel(tx + 1, ty);
+        const bl = getSrcPixel(tx, ty + 1);
+        const br = getSrcPixel(tx + 1, ty + 1);
+
+        // copy the "sampled" result into the dest.
+        const dstOffset = (y * dstWidth + x) * 4;
+        dst.set(bilinearFilter(tl, tr, bl, br, t1, t2), dstOffset);
+      }
+    }
+    return { data: dst, width: dstWidth, height: dstHeight };
+  };
+
+  const generateMips = (src, srcWidth) => {
+    const srcHeight = src.length / 4 / srcWidth;
+
+    // populate with first mip level (base level)
+    let mip = { data: src, width: srcWidth, height: srcHeight, };
+    const mips = [mip];
+
+    while (mip.width > 1 || mip.height > 1) {
+      mip = createNextMipLevelRgba8Unorm(mip);
+      mips.push(mip);
+    }
+    return mips;
+  };
+
+  const createCheckedMipmap = () => {
+    const ctx = document.createElement('canvas').getContext('2d', {willReadFrequently: true});
+    const levels = [
+      { size: 64, color: 'rgb(128,0,255)', },
+      { size: 32, color: 'rgb(0,255,0)', },
+      { size: 16, color: 'rgb(255,0,0)', },
+      { size:  8, color: 'rgb(255,255,0)', },
+      { size:  4, color: 'rgb(0,0,255)', },
+      { size:  2, color: 'rgb(0,255,255)', },
+      { size:  1, color: 'rgb(255,0,255)', },
+    ];
+    return levels.map(({size, color}, i) => {
+      ctx.canvas.width = size;
+      ctx.canvas.height = size;
+      ctx.fillStyle = i & 1 ? '#000' : '#fff';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, size / 2, size / 2);
+      ctx.fillRect(size / 2, size / 2, size / 2, size / 2);
+      return ctx.getImageData(0, 0, size, size);
+    });
+  };
+
+  const createBlendedMipmap = () => {
+    const w = [255, 255, 255, 255];
+    const r = [255,   0,   0, 255];
+    const b = [  0,  28, 116, 255];
+    const y = [255, 231,   0, 255];
+    const g = [ 58, 181,  75, 255];
+    const a = [ 38, 123, 167, 255];
+    const data = new Uint8Array([
+      w, r, r, r, r, r, r, a, a, r, r, r, r, r, r, w,
+      w, w, r, r, r, r, r, a, a, r, r, r, r, r, w, w,
+      w, w, w, r, r, r, r, a, a, r, r, r, r, w, w, w,
+      w, w, w, w, r, r, r, a, a, r, r, r, w, w, w, w,
+      w, w, w, w, w, r, r, a, a, r, r, w, w, w, w, w,
+      w, w, w, w, w, w, r, a, a, r, w, w, w, w, w, w,
+      w, w, w, w, w, w, w, a, a, w, w, w, w, w, w, w,
+      b, b, b, b, b, b, b, b, a, y, y, y, y, y, y, y,
+      b, b, b, b, b, b, b, g, y, y, y, y, y, y, y, y,
+      w, w, w, w, w, w, w, g, g, w, w, w, w, w, w, w,
+      w, w, w, w, w, w, r, g, g, r, w, w, w, w, w, w,
+      w, w, w, w, w, r, r, g, g, r, r, w, w, w, w, w,
+      w, w, w, w, r, r, r, g, g, r, r, r, w, w, w, w,
+      w, w, w, r, r, r, r, g, g, r, r, r, r, w, w, w,
+      w, w, r, r, r, r, r, g, g, r, r, r, r, r, w, w,
+      w, r, r, r, r, r, r, g, g, r, r, r, r, r, r, w,
+    ].flat());
+    return generateMips(data, 16);
+  };
+
+  const createTextureWithMips = (mips, label) => {
+    const texture = device.createTexture({
+      label,
+      size: [mips[0].width, mips[0].height],
+      mipLevelCount: mips.length,
+      format: 'rgba8unorm',
+      usage:
+        GPUTextureUsage.TEXTURE_BINDING |
+        GPUTextureUsage.COPY_DST,
+    });
+    mips.forEach(({data, width, height}, mipLevel) => {
+      device.queue.writeTexture(
+          { texture, mipLevel },
+          data,
+          { bytesPerRow: width * 4 },
+          { width, height },
+      );
+    });
+    return texture;
+  };
+
+  const textures = [
+    createTextureWithMips(createBlendedMipmap(), 'blended'),
+    createTextureWithMips(createCheckedMipmap(), 'checker'),
+  ];
+
+  // offsets to the various uniform values in float32 indices
+  const kMatrixOffset = 0;
+
+  const objectInfos = [];
+  for (let i = 0; i < 8; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: 'repeat',
+      addressModeV: 'repeat',
+      magFilter: (i & 1) ? 'linear' : 'nearest',
+      minFilter: (i & 2) ? 'linear' : 'nearest',
+      mipmapFilter: (i & 4) ? 'linear' : 'nearest',
+    });
+
+    // create a buffer for the uniform values
+    const uniformBufferSize =
+      16 * 4; // matrix is 16 32bit floats (4bytes each)
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms for quad',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    // create a typedarray to hold the values for the uniforms in JavaScript
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+    const matrix = uniformValues.subarray(kMatrixOffset, 16);
+
+    const bindGroups = textures.map(texture =>
+      device.createBindGroup({
+        layout: pipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: sampler },
+          { binding: 1, resource: texture.createView() },
+          { binding: 2, resource: { buffer: uniformBuffer }},
+        ],
+      }));
+
+    // Save the data we need to render this object.
+    objectInfos.push({
+      bindGroups,
+      matrix,
+      uniformValues,
+      uniformBuffer,
+    });
+  }
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  let texNdx = 0;
+
+  function render() {
+    const fov = 60 * Math.PI / 180;  // 60 degrees in radians
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const zNear  = 1;
+    const zFar   = 2000;
+    const projectionMatrix = mat4.perspective(fov, aspect, zNear, zFar);
+
+    const cameraPosition = [0, 0, 2];
+    const up = [0, 1, 0];
+    const target = [0, 0, 0];
+    const viewMatrix = mat4.lookAt(cameraPosition, target, up);
+    const viewProjectionMatrix = mat4.multiply(projectionMatrix, viewMatrix);
+
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const encoder = device.createCommandEncoder({
+      label: 'render quad encoder',
+    });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
+    objectInfos.forEach(({bindGroups, matrix, uniformBuffer, uniformValues}, i) => {
+      const bindGroup = bindGroups[texNdx];
+
+      const xSpacing = 1.2;
+      const ySpacing = 0.7;
+      const zDepth = 50;
+
+      const x = i % 4 - 1.5;
+      const y = i < 4 ? 1 : -1;
+
+      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+      mat4.rotateX(matrix, 0.5 * Math.PI, matrix);
+      mat4.scale(matrix, [1, zDepth * 2, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+
+      // copy the values from JavaScript to the GPU
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // call our vertex shader 6 times
+    });
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      render();
+    }
+  });
+  observer.observe(canvas);
+
+  canvas.addEventListener('click', () => {
+    texNdx = (texNdx + 1) % textures.length;
+    render();
+  });
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

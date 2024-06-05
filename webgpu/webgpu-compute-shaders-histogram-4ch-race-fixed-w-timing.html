@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Compute Shaders - Histogram, race fixed, draw with JavaScript</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+      canvas {
+        display: block;
+        max-width: 256px;
+        border: 1px solid #888;
+        background-color: #333;
+      }
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+import TimingHelper from './resources/js/timing-helper.js';
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
+import {
+  loadImageBitmap,
+  createTextureFromSource,
+} from '../3rdparty/webgpu-utils-1.x.module.js';
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const canTimestamp = adapter?.features.has('timestamp-query');
+  const device = await adapter?.requestDevice({
+    requiredFeatures: [
+      ...(canTimestamp ? ['timestamp-query'] : []),
+    ],
+  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  const timingHelper = new TimingHelper(device);
+
+  const module = device.createShaderModule({
+    label: 'histogram shader',
+    code: `
+      @group(0) @binding(0) var<storage, read_write> histogram: array<array<atomic<u32>, 4>>;
+      @group(0) @binding(1) var ourTexture: texture_2d<f32>;
+
+      const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+      fn srgbLuminance(color: vec3f) -> f32 {
+        return saturate(dot(color, kSRGBLuminanceFactors));
+      }
+
+      @compute @workgroup_size(1, 1, 1)
+      fn cs(@builtin(global_invocation_id) global_invocation_id: vec3u) {
+        let position = global_invocation_id.xy;
+        let numBins = f32(arrayLength(&histogram));
+        let lastBinIndex = u32(numBins - 1);
+        var channels = textureLoad(ourTexture, position, 0);
+        channels.w = srgbLuminance(channels.rgb);
+        for (var ch = 0; ch < 4; ch++) {
+          let ndx = min(u32(channels[ch] * numBins), lastBinIndex);
+          atomicAdd(&histogram[ndx][ch], 1u);
+        }
+      }
+    `,
+  });
+
+  const pipeline = device.createComputePipeline({
+    label: 'histogram',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+
+  const imgBitmap = await loadImageBitmap('resources/images/pexels-chevanon-photography-1108099.jpg'); /* webgpufundamentals: url */
+  const texture = createTextureFromSource(device, imgBitmap);
+
+  const numBins = 256;
+  const histogramBuffer = device.createBuffer({
+    size: numBins * 4 * 4, // 256 entries * 4 (rgba) * 4 bytes per (u32)
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+  });
+
+  const resultBuffer = device.createBuffer({
+    size: histogramBuffer.size,
+    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+  });
+
+  const bindGroup = device.createBindGroup({
+    label: 'histogram bindGroup',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: histogramBuffer }},
+      { binding: 1, resource: texture.createView() },
+    ],
+  });
+
+  const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
+  const pass = timingHelper.beginComputePass(encoder);
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(texture.width, texture.height);
+  pass.end();
+
+  encoder.copyBufferToBuffer(histogramBuffer, 0, resultBuffer, 0, resultBuffer.size);
+
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+
+  timingHelper.getResult().then(duration => {
+    console.log(`duration: ${duration}ns`);
+  });
+
+  await resultBuffer.mapAsync(GPUMapMode.READ);
+  const histogram = new Uint32Array(resultBuffer.getMappedRange());
+
+  showImageBitmap(imgBitmap);
+
+  // draw the red, green, and blue channels
+  drawHistogram(histogram, [0, 1, 2]);
+
+  // draw the luminosity channel
+  drawHistogram(histogram, [3]);
+
+  resultBuffer.unmap();
+}
+
+function drawHistogram(histogram, channels, height = 100) {
+  // find the highest value for each channel
+  const max = [0, 0, 0, 0];
+  const total = [0, 0, 0, 0];
+  histogram.forEach((v, i) => {
+    const ch = i % 4;
+    max[ch] = Math.max(max[ch], v);
+    total[ch] += v;
+  });
+  console.log('total:', total);
+
+  const numBins = histogram.length / 4;
+  const canvas = document.createElement('canvas');
+  canvas.width = numBins;
+  canvas.height = height;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  const colors = [
+    'rgb(255, 0, 0)',
+    'rgb(0, 255, 0)',
+    'rgb(0, 0, 255)',
+    'rgb(255, 255, 255)',
+  ];
+
+  ctx.globalCompositeOperation = 'screen';
+
+  for (let x = 0; x < numBins; ++x) {
+    const offset = x * 4;
+    for (const ch of channels) {
+      const scale = 0.2 * numBins / total[ch];
+      const v = histogram[offset + ch] * scale * height;
+      ctx.fillStyle = colors[ch];
+      ctx.fillRect(x, height - v, 1, v);
+    }
+  }
+}
+
+function showImageBitmap(imageBitmap) {
+  const canvas = document.createElement('canvas');
+
+  // we have to see the canvas size because of a firefox bug
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1850871
+  canvas.width = imageBitmap.width;
+  canvas.height = imageBitmap.height;
+
+  const bm = canvas.getContext('bitmaprenderer');
+  bm.transferFromImageBitmap(imageBitmap);
+  document.body.appendChild(canvas);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

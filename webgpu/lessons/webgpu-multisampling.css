@@ -1,0 +1,7 @@
+
+.multisample-example {
+  flex: 1 1;
+}
+.multisample-example [data-diagram] {
+  display: inline-block; max-width: 400px; min-width: 300px; width: 100%;
+}

@@ -1,0 +1,851 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/uk/webgpu-storage-buffers.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="uk"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Передача великих об’ємів даних в шейдери">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-buffers_uk.jpg">
+
+<meta property="og:title" content="Буфери зберігання в WebGPU">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-buffers_uk.jpg">
+<meta property="og:description" content="Передача великих об’ємів даних в шейдери">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-storage-buffers.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="Буфери зберігання в WebGPU">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-storage-buffers.html">
+<meta name="twitter:description" content="Передача великих об’ємів даних в шейдери">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-buffers_uk.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-storage-buffers.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-buffers_uk.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-storage-buffers.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-storage-buffers.html",
+      "inLanguage":"uk",
+      "name":"Буфери зберігання в WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-storage-buffers.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>Буфери зберігання в WebGPU</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-storage-buffers.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-storage-buffers.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-storage-buffers.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-storage-buffers.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-storage-buffers.html" selected="">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Зміст</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/webgpu/lessons/uk/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>Буфери зберігання в WebGPU</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>В цій статті ми розглянемо буфери зберігання і продовжимо
+з того місця, на якому ми зупинились в <a href="webgpu-uniforms.html">попередній статті</a>.</p>
+<p>Буфери зберігання в багатьох аспектах є схожими до юніформ
+буферів. Якщо ми просто змінимо <code class="notranslate" translate="no">UNIFORM</code> на <code class="notranslate" translate="no">STORAGE</code> в
+нашому JavaScript коді та <code class="notranslate" translate="no">var&lt;uniform&gt;</code> на <code class="notranslate" translate="no">var&lt;storage, read&gt;</code>
+в нашому WGSL коді з попередньої статті, то усе працюватиме як
+і працювало.</p>
+<p>Насправді, ось і усі ці зміни (не враховуючи необхідність
+перейменувати змінні для кращого читання):</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const staticUniformBuffer = device.createBuffer({
+      label: `static uniforms for obj: ${i}`,
+      size: staticUniformBufferSize,
+-      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+
+
+...
+
+    const uniformBuffer = device.createBuffer({
+      label: `changing uniforms for obj: ${i}`,
+      size: uniformBufferSize,
+-      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+</pre>
+<p>і зміни в WSGL коді:</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">-@group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+-@group(0) @binding(1) var&lt;uniform&gt; otherStruct: OtherStruct;
++@group(0) @binding(0) var&lt;storage, read&gt; ourStruct: OurStruct;
++@group(0) @binding(1) var&lt;storage, read&gt; otherStruct: OtherStruct;
+</pre>
+<p>Без жодних додаткових змін усе працює як і до того.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-storage-split-minimal-changes.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-storage-split-minimal-changes.html" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<h2 id="різниця-між-юніформ-буферами-та-буферами-зберігання">Різниця між юніформ буферами та буферами зберігання</h2>
+<p>Основні відмінності між юніформ буферами та буферами зберігання
+такі:</p>
+<ol>
+<li>
+<p>Юніформ буфери можуть бути швидшими в певних типових для
+них випадках використання.</p>
+<p>Це справді дуже залежить від випадку використання. Типовий
+додаток хотітиме намалювати багато різних речей. Скажімо
+це 3D гра. Такий додаток буде малювати машини, будівлі,
+каміння, кущі, людей та багато іншого. Кожна з цих речей
+потребуватиме даних про орієнтацію в просторі та характеристики
+матеріалі. В цьому випадку рекомендовано використовувати
+юніформ буфери.</p>
+</li>
+<li>
+<p>Буфери зберігання можуть бути значно більшими ніж юніформ
+буфери.</p>
+<ul>
+<li>Мінімальний максимальний розмір юніформ буфера - 64k</li>
+<li>Мінімальний максимальний розмір буфера зберігання - 128meg</li>
+</ul>
+<p>Під мінімальним максимальним значенням розуміється те, що
+існує нижня планка максимального розміру для кожного типу буфера. Для юніформ буфера цей розмір становить мінімум 64k.
+Для буфера зберігання це мінімум 128meg. Ми розглянемо ліміти
+в <a href="webgpu-limits-and-features.html">іншій статті</a>.</p>
+</li>
+<li>
+<p>Буфери зберігання можуть працювати в режимі читання та
+запису, а юніформ буфери працюють тільки в режимі читання.</p>
+<p>Ми уже бачили приклад запису в буфер зберігання в
+обчислювальному шейдері з нашої <a href="webgpu-fundamentals.html">першої статті</a>.</p>
+</li>
+</ol>
+<h2 id="створення-однакових-екземплярів-з-допомогою-буферів-зберігання"><a id="a-instancing"></a>Створення однакових екземплярів з допомогою буферів зберігання</h2>
+<p>Враховуючи перших два пункти вище, візьмемо наш приклад і змінимо його
+так, щоб намалювати усі 100 трикутників одним викликом функції. Це той
+випадок використання, який <em>може</em> підійти для буферів зберігання.
+Я вживаю слово може через те, що WebGPU дуже схожий до інших мов
+програмування. А це означає, що є багато різних способів досягнути
+однієї цілі. Наприклад, <code class="notranslate" translate="no">array.forEach</code> чи <code class="notranslate" translate="no">for (const elem of array)</code>,
+або <code class="notranslate" translate="no">for (let i = 0; i &lt; array.length; ++i)</code>. Кожен з цих варіантів
+має своє місце. Так само і в WebGPU. Кожна річ, яку ми хочемо зробити
+має кілька способів як її досягнути. Коли йдеться про малювання
+трикутників, все про що WebGPU переймається це значення, яке ми вертаємо
+з вершинного шейдера в <code class="notranslate" translate="no">builtin(position)</code> та значення кольору з фрагментного
+шейдера в <code class="notranslate" translate="no">location(0)</code>.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>Перше, що нам потрібно зробити це змінити тип нашого буфера на масив.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(0) var&lt;storage, read&gt; ourStruct: OurStruct;
+-@group(0) @binding(1) var&lt;storage, read&gt; otherStruct: OtherStruct;
++@group(0) @binding(0) var&lt;storage, read&gt; ourStructs: array&lt;OurStruct&gt;;
++@group(0) @binding(1) var&lt;storage, read&gt; otherStructs: array&lt;OtherStruct&gt;;
+</pre>
+<p>Далі ми змінюємо наш шейдер так, щоб він використовував ці нові значення.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32,
++  @builtin(instance_index) instanceIndex: u32
+) -&gt; @builtin(position) {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
+
++  let otherStruct = otherStructs[instanceIndex];
++  let ourStruct = ourStructs[instanceIndex];
+
+   return vec4f(
+     pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+}
+</pre>
+<p>Ми додали новий параметр <code class="notranslate" translate="no">instanceIndex</code> до нашого шейдера з
+атрибутом <code class="notranslate" translate="no">@builtin(instance_index)</code>, що означає те, що це
+значення буде отримано від WebGPU для кожного “екземпляра” (instance)
+малювання. Коли ми викликаємо функцію <code class="notranslate" translate="no">draw</code>, ми можемо передати
+другий аргумент <em>кількості екземплярів</em> і під час малювання
+кожного з цих екземплярів, ми будемо отримувати кількість екземплярів,
+які уже було оброблено.</p>
+<p>Використовуючи <code class="notranslate" translate="no">instanceIndex</code>, ми можемо отримати конкретну структуру з
+нашого масиву структур.</p>
+<p>Нам також потрібно буде отримати колір з правильного елемента масиву
+і використати це значення в фрагментному шейдері. Фрагментний шейдер
+не має доступу до <code class="notranslate" translate="no">@builtin(instance_index)</code>. Тому могли б передати
+це значення як <a href="webgpu-inter-stage-variables.html">міжетапну змінну</a>
+але краще знайти значення кольору в вершинному шейдері і передати
+саме колір.</p>
+<p>Для цього ми використаємо іншу структуру так, як ми це робили в
+<a href="webgpu-inter-stage-variables.html">цій статті про міжетапні змінні</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VSOutput {
++  @builtin(position) position: vec4f,
++  @location(0) color: vec4f,
++}
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32,
+  @builtin(instance_index) instanceIndex: u32
+-) -&gt; @builtin(position) vec4f {
++) -&gt; VSOutput {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
+
+  let otherStruct = otherStructs[instanceIndex];
+  let ourStruct = ourStructs[instanceIndex];
+
+-  return vec4f(
+-    pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++  var vsOut: VSOutput;
++  vsOut.position = vec4f(
++      pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++  vsOut.color = ourStruct.color;
++  return vsOut;
+}
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return ourStruct.color;
++@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
++  return vsOut.color;
+}
+
+</pre>
+<p>Тепер, коли ми змінили наші WGSL шейдери, давайте оновимо наш
+JavaScript код.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumObjects = 100;
+  const objectInfos = [];
+
+  // створюємо 2 буфери зберігання
+  const staticUnitSize =
+    4 * 4 + // color is 4 32bit floats (4bytes each)
+    2 * 4 + // offset is 2 32bit floats (4bytes each)
+    2 * 4;  // padding
+  const changingUnitSize =
+    2 * 4;  // scale is 2 32bit floats (4bytes each)
+  const staticStorageBufferSize = staticUnitSize * kNumObjects;
+  const changingStorageBufferSize = changingUnitSize * kNumObjects;
+
+  const staticStorageBuffer = device.createBuffer({
+    label: 'static storage for objects',
+    size: staticStorageBufferSize,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+
+  const changingStorageBuffer = device.createBuffer({
+    label: 'changing storage for objects',
+    size: changingStorageBufferSize,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+
+  // зміщення для кожного елемента буфера
+  const kColorOffset = 0;
+  const kOffsetOffset = 4;
+
+  const kScaleOffset = 0;
+
+  {
+    const staticStorageValues = new Float32Array(staticStorageBufferSize / 4);
+    for (let i = 0; i &lt; kNumObjects; ++i) {
+      const staticOffset = i * (staticUnitSize / 4);
+
+      // ці значення встановлюються лише раз, тому ми робимо це тут
+      staticStorageValues.set([rand(), rand(), rand(), 1], staticOffset + kColorOffset);        // встановлюємо колір
+      staticStorageValues.set([rand(-0.9, 0.9), rand(-0.9, 0.9)], staticOffset + kOffsetOffset);      // встановлюємо зміщення
+
+      objectInfos.push({
+        scale: rand(0.2, 0.5),
+      });
+    }
+    device.queue.writeBuffer(staticStorageBuffer, 0, staticStorageValues);
+  }
+
+  // типізований масив, який ми будемо використовувати для оновлення changingStorageBuffer
+  const storageValues = new Float32Array(changingStorageBufferSize / 4);
+
+  const bindGroup = device.createBindGroup({
+    label: 'bind group for objects',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: staticStorageBuffer }},
+      { binding: 1, resource: { buffer: changingStorageBuffer }},
+    ],
+  });
+</pre>
+<p>Вище ми створили 2 буфери зберігання. Один для масиву структур
+<code class="notranslate" translate="no">OurStruct</code> та інший для масиву структур <code class="notranslate" translate="no">OtherStruct</code>.</p>
+<p>Далі ми заповнюємо значеннями зміщень та кольорів масив з <code class="notranslate" translate="no">OurStruct</code>
+і завантажуємо ці дані в <code class="notranslate" translate="no">staticStorageBuffer</code>.</p>
+<p>Ми створили тільки одну групу прив’язки, яка вказує на обидва буфери.</p>
+<p>Тепер код рендерингу виглядає так:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
+    // Set the uniform values in our JavaScript side Float32Array
+    const aspect = canvas.width / canvas.height;
+
+-    for (const {scale, bindGroup, uniformBuffer, uniformValues} of objectInfos) {
+-      uniformValues.set([scale / aspect, scale], kScaleOffset); // set the scale
+-      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+-
+-      pass.setBindGroup(0, bindGroup);
+-      pass.draw(3);  // call our vertex shader 3 times
+-    }
+
++    // set the scales for each object
++    objectInfos.forEach(({scale}, ndx) =&gt; {
++      const offset = ndx * (changingUnitSize / 4);
++      storageValues.set([scale / aspect, scale], offset + kScaleOffset); // set the scale
++    });
++    // upload all scales at once
++    device.queue.writeBuffer(changingStorageBuffer, 0, storageValues);
++
++    pass.setBindGroup(0, bindGroup);
++    pass.draw(3, kNumObjects);  // call our vertex shader 3 times for each instance
+
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>Код вище намалює кількість екземплярів, що дорівнюватиме <code class="notranslate" translate="no">kNumObjects</code>.
+Для кожного екземпляру WebGPU викличе вершинний шейдер 3 рази з значенням
+<code class="notranslate" translate="no">vertex_index</code> - 0, 1, 2 та <code class="notranslate" translate="no">instance_index</code> - від 0 до <code class="notranslate" translate="no">kNumObjects</code> - 1.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-storage-buffer-split.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-storage-buffer-split.html" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<p>Ми зуміли намалювати 100 трикутників, кожен з різним масштабом, кольором та
+відступом з допомогою лише одного виклику функції <code class="notranslate" translate="no">draw</code>. У випадках, де
+вам потрібно намалювати багато екземплярів одного і того ж об’єкта, це
+один із способів це досягти.</p>
+<h2 id="використання-буферів-зберігання-для-даних-вершин">Використання буферів зберігання для даних вершин</h2>
+<p>До цього моменту ми використовували захардкоджені трикутники прямо в нашому
+шейдері. Один із способів використання буферів зберігання - зберігання
+даних вершин. Так само, як ми індексували поточний буфер зберігання з
+допомогою <code class="notranslate" translate="no">instance_index</code>, ми можемо індексувати іще один буфер з
+допомогою <code class="notranslate" translate="no">vertex_index</code>.</p>
+<p>Давайте зробимо це!</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurStruct {
+  color: vec4f,
+  offset: vec2f,
+};
+
+struct OtherStruct {
+  scale: vec2f,
+};
+
++struct Vertex {
++  position: vec2f,
++};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;storage, read&gt; ourStructs: array&lt;OurStruct&gt;;
+@group(0) @binding(1) var&lt;storage, read&gt; otherStructs: array&lt;OtherStruct&gt;;
++@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32,
+  @builtin(instance_index) instanceIndex: u32
+) -&gt; VSOutput {
+-  let pos = array(
+-    vec2f( 0.0,  0.5),  // top center
+-    vec2f(-0.5, -0.5),  // bottom left
+-    vec2f( 0.5, -0.5)   // bottom right
+-  );
+
+  let otherStruct = otherStructs[instanceIndex];
+  let ourStruct = ourStructs[instanceIndex];
+
+  var vsOut: VSOutput;
+  vsOut.position = vec4f(
+-      pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++      pos[vertexIndex].position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+  vsOut.color = ourStruct.color;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vsOut.color;
+}
+</pre>
+<p>Тепер ми маємо створити ще один буфер зберігання з даними про вершини.
+Спочатку, давайте зробимо функцію для генерування цих даних. Наприклад,
+зробимо коло.
+<a id="a-create-circle"></a></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCircleVertices({
+  radius = 1,
+  numSubdivisions = 24,
+  innerRadius = 0,
+  startAngle = 0,
+  endAngle = Math.PI * 2,
+} = {}) {
+  // 2 triangles per subdivision, 3 verts per tri, 2 values (xy) each.
+  const numVertices = numSubdivisions * 3 * 2;
+  const vertexData = new Float32Array(numSubdivisions * 2 * 3 * 2);
+
+  let offset = 0;
+  const addVertex = (x, y) =&gt; {
+    vertexData[offset++] = x;
+    vertexData[offset++] = y;
+  };
+
+  // 2 triangles per subdivision
+  //
+  // 0--1 4
+  // | / /|
+  // |/ / |
+  // 2 3--5
+  for (let i = 0; i &lt; numSubdivisions; ++i) {
+    const angle1 = startAngle + (i + 0) * (endAngle - startAngle) / numSubdivisions;
+    const angle2 = startAngle + (i + 1) * (endAngle - startAngle) / numSubdivisions;
+
+    const c1 = Math.cos(angle1);
+    const s1 = Math.sin(angle1);
+    const c2 = Math.cos(angle2);
+    const s2 = Math.sin(angle2);
+
+    // first triangle
+    addVertex(c1 * radius, s1 * radius);
+    addVertex(c2 * radius, s2 * radius);
+    addVertex(c1 * innerRadius, s1 * innerRadius);
+
+    // second triangle
+    addVertex(c1 * innerRadius, s1 * innerRadius);
+    addVertex(c2 * radius, s2 * radius);
+    addVertex(c2 * innerRadius, s2 * innerRadius);
+  }
+
+  return {
+    vertexData,
+    numVertices,
+  };
+}
+</pre>
+<p>Коди вище створює коло, яке сформоване з трикутників так, як на малюнку нижче.</p>
+<div class="webgpu_center"><div class="center"><div data-diagram="circle" style="width: 300px;"></div></div></div>
+<p>Тепер, ми можемо використовувати це для заповнення нашого буфера вершинами
+цього кола.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // setup a storage buffer with vertex data
+  const { vertexData, numVertices } = createCircleVertices({
+    radius: 0.5,
+    innerRadius: 0.25,
+  });
+  const vertexStorageBuffer = device.createBuffer({
+    label: 'storage buffer vertices',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
+</pre>
+<p>Нам також потрібно додати цей буфер в нашу групу прив’язки.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    label: 'bind group for objects',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: staticStorageBuffer }},
+      { binding: 1, resource: { buffer: changingStorageBuffer }},
++      { binding: 2, resource: { buffer: vertexStorageBuffer }},
+    ],
+  });
+</pre>
+<p>Нарешті, в момент рендерингу, ми маємо попросити намалювати всі вершини
+нашого кола.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    pass.draw(3, kNumObjects);  // call our vertex shader 3 times for several instances
++    pass.draw(numVertices, kNumObjects);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-storage-buffer-vertices.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-storage-buffer-vertices.html" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<p>Вище ми використали цю структуру:</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">struct Vertex {
+  pos: vec2f;
+};
+
+@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
+</pre>
+<p>Ми могли б не використовувати цю структуру і просто напряму
+передати дані в <code class="notranslate" translate="no">vec2f</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
++@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;vec2f&gt;;
+...
+-pos[vertexIndex].position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+</pre>
+<p>Проте, використовуючи саме структуру, ми полегшуємо додавання додаткових
+даних для вершини в майбутньому.</p>
+<p>Передавання даних про вершини через буфери зберігання набирає
+певну популярність. Проте, мені казали, що для певних старіших
+пристроїв цей метод повільніший ніж <em>класичний</em> спосіб, який
+ми розглянемо в статті про <a href="webgpu-vertex-buffers.html">буфери вершин</a>.</p>
+<!-- keep this at the bottom of the article -->
+<script type="module" src=".././webgpu-storage-buffers.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Ми можемо мати декілька прив’язок кольорів иа
+повертати з фрагментного шейдера більше даних для <code class="notranslate" translate="no">location(1)</code>,
+<code class="notranslate" translate="no">location(2)</code> і так далі. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-storage-buffers.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-storage-buffers.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-storage-buffers.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-storage-buffers.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-storage-buffers.html" selected="">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Основи</li>
+        <ul>
+          <li><a href="/webgpu/lessons/uk/webgpu-fundamentals.html">Основи</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-inter-stage-variables.html">Міжетапні змінні</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-uniforms.html">Юніформи</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-storage-buffers.html">Буфери зберігання</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Текстури</li>
+        <ul>
+          <li><a href="/webgpu/lessons/uk/webgpu-textures.html">Textures</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-importing-textures.html">Loading Images</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-textures-external-video.html">Using Video</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-cube-maps.html">Cube Maps</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/uk/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-memory-layout.html">Схема розміщення даних в пам’яті</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-how-it-works.html">How It Works</a></li>
+        </ul>
+  <li>3D математика</li>
+        <ul>
+          <li><a href="/webgpu/lessons/uk/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Освітлення</li>
+        <ul>
+          <li><a href="/webgpu/lessons/uk/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Техніки</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/uk/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/uk/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>Обчислювальні шейдери</li>
+        <ul>
+          <li><a href="/webgpu/lessons/uk/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>Різне</li>
+        <ul>
+          <li><a href="/webgpu/lessons/uk/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Запитання? <a href="http://stackoverflow.com/questions/tagged/webgpu">Запитати на stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Пропозиція</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Запит</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Проблема</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Помилка</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Буфери зберігання в WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

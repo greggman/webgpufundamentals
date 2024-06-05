@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Blend - compare to canvas</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+img,
+canvas {
+  background-color: #404040;
+  background-image:
+     linear-gradient(45deg, #808080 25%, transparent 25%),
+     linear-gradient(-45deg, #808080 25%, transparent 25%),
+     linear-gradient(45deg, transparent 75%, #808080 75%),
+     linear-gradient(-45deg, transparent 75%, #808080 75%);
+  background-size: 32px 32px;
+  background-position: 0 0, 0 16px, 16px -16px, -16px 0px;
+}
+    </style>
+  </head>
+  <body>
+    <canvas width="300" height="300" style="display: none";></canvas>
+  </body>
+  <script type="module">
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
+import {mat4} from '/3rdparty/wgpu-matrix.module.js';
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
+import {createTextureFromSource} from '/3rdparty/webgpu-utils-1.x.module.js';
+
+const hsl = (h, s, l) => `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
+const hsla = (h, s, l, a) => `hsla(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%, ${a})`;
+
+function createSourceImage(size) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.translate(size / 2, size / 2);
+
+  ctx.globalCompositeOperation = 'screen';
+  const numCircles = 3;
+  for (let i = 0; i < numCircles; ++i) {
+    ctx.rotate(Math.PI * 2 / numCircles);
+    ctx.save();
+    ctx.translate(size / 6, 0);
+    ctx.beginPath();
+
+    const radius = size / 3;
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+
+    const gradient = ctx.createRadialGradient(0, 0, radius / 2, 0, 0, radius);
+    const h = i / numCircles;
+    gradient.addColorStop(0.5, hsla(h, 1, 0.5, 1));
+    gradient.addColorStop(1, hsla(h, 1, 0.5, 0));
+
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    ctx.restore();
+  }
+  return canvas;
+}
+
+function createDestinationImage(size) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  const gradient = ctx.createLinearGradient(0, 0, size, size);
+  for (let i = 0; i <= 6; ++i) {
+    gradient.addColorStop(i / 6, hsl(i / -6, 1, 0.5));
+  }
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, size, size);
+
+  ctx.fillStyle = 'rgba(0, 0, 0, 255)';
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.rotate(Math.PI / -4);
+  for (let i = 0; i < size * 2; i += 32) {
+    ctx.fillRect(-size, i, size * 2, 16);
+  }
+
+  return canvas;
+}
+
+const size = 300;
+const srcCanvas = createSourceImage(size);
+const dstCanvas = createDestinationImage(size);
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+
+  const module = device.createShaderModule({
+    label: 'our hardcoded textured quad shaders',
+    code: `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+      };
+
+      @group(0) @binding(2) var<uniform> uni: Uniforms;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -> OurVertexShaderOutput {
+        let pos = array(
+
+          vec2f( 0.0,  0.0),  // center
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 0.0,  1.0),  // center, top
+
+          // 2st triangle
+          vec2f( 0.0,  1.0),  // center, top
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 1.0,  1.0),  // right, top
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy;
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var ourSampler: sampler;
+      @group(0) @binding(1) var ourTexture: texture_2d<f32>;
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -> @location(0) vec4f {
+        return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+      }
+    `,
+  });
+
+  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      { binding: 0, visibility: GPUShaderStage.FRAGMENT , sampler: { }, },
+      { binding: 1, visibility: GPUShaderStage.FRAGMENT , texture: { } },
+      { binding: 2, visibility: GPUShaderStage.VERTEX , buffer: { } },
+    ],
+  });
+
+  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [
+      bindGroupLayout,
+    ],
+  });
+
+  const srcTextureUnpremultipliedAlpha = createTextureFromSource(device, srcCanvas, {mips: true});
+  const dstTextureUnpremultipliedAlpha = createTextureFromSource(device, dstCanvas, {mips: true});
+
+  const srcTexturePremultipliedAlpha = createTextureFromSource(device, srcCanvas, {mips: true, premultipliedAlpha: true});
+  const dstTexturePremultipliedAlpha = createTextureFromSource(device, dstCanvas, {mips: true, premultipliedAlpha: true});
+
+  // offsets to the various uniform values in float32 indices
+  const kMatrixOffset = 0;
+
+  const sampler = device.createSampler({
+    magFilter: 'linear',
+    minFilter: 'linear',
+    mipmapFilter: 'linear',
+  });
+
+  // create a buffer for the uniform values
+  const uniformBufferSize =
+    16 * 4; // matrix is 16 32bit floats (4bytes each)
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms for quad',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  // create a typedarray to hold the values for the uniforms in JavaScript
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+  const matrix = uniformValues.subarray(kMatrixOffset, 16);
+
+  const srcBindGroupUnpremultipliedAlpha = device.createBindGroup({
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: srcTextureUnpremultipliedAlpha.createView() },
+      { binding: 2, resource: { buffer: uniformBuffer }},
+    ],
+  });
+
+  const dstBindGroupUnpremultipliedAlpha = device.createBindGroup({
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: dstTextureUnpremultipliedAlpha.createView() },
+      { binding: 2, resource: { buffer: uniformBuffer }},
+    ],
+  });
+
+  const srcBindGroupPremultipliedAlpha = device.createBindGroup({
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: srcTexturePremultipliedAlpha.createView() },
+      { binding: 2, resource: { buffer: uniformBuffer }},
+    ],
+  });
+
+  const dstBindGroupPremultipliedAlpha = device.createBindGroup({
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: dstTexturePremultipliedAlpha.createView() },
+      { binding: 2, resource: { buffer: uniformBuffer }},
+    ],
+  });
+
+  const clearValue = [0, 0, 0, 0];
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue,
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  const color = {
+    operation: 'add',
+    srcFactor: 'one',
+    dstFactor: 'one-minus-src',
+  };
+
+  const alpha = {
+    operation: 'add',
+    srcFactor: 'one',
+    dstFactor: 'one-minus-src',
+  };
+
+  const presets = {
+    'default (copy)': {
+      color: {
+        operation: 'add',
+        srcFactor: 'one',
+        dstFactor: 'zero',
+      },
+    },
+    'premultiplied blend (source-over)': {
+      color: {
+        operation: 'add',
+        srcFactor: 'one',
+        dstFactor: 'one-minus-src-alpha',
+      },
+    },
+    'un-premultiplied blend': {
+      color: {
+        operation: 'add',
+        srcFactor: 'src-alpha',
+        dstFactor: 'one-minus-src-alpha',
+      },
+    },
+    'destination-over': {
+      color: {
+        operation: 'add',
+        srcFactor: 'one-minus-dst-alpha',
+        dstFactor: 'one',
+      },
+    },
+    'source-in': {
+      color: {
+        operation: 'add',
+        srcFactor: 'dst-alpha',
+        dstFactor: 'zero',
+      },
+    },
+    'destination-in': {
+      color: {
+        operation: 'add',
+        srcFactor: 'zero',
+        dstFactor: 'src-alpha',
+      },
+    },
+    'source-out': {
+      color: {
+        operation: 'add',
+        srcFactor: 'one-minus-dst-alpha',
+        dstFactor: 'zero',
+      },
+    },
+    'destination-out': {
+      color: {
+        operation: 'add',
+        srcFactor: 'zero',
+        dstFactor: 'one-minus-src-alpha',
+      },
+    },
+    'source-atop': {
+      color: {
+        operation: 'add',
+        srcFactor: 'dst-alpha',
+        dstFactor: 'one-minus-src-alpha',
+      },
+    },
+    'destination-atop': {
+      color: {
+        operation: 'add',
+        srcFactor: 'one-minus-dst-alpha',
+        dstFactor: 'src-alpha',
+      },
+    },
+    'additive (lighter)': {
+      color: {
+        operation: 'add',
+        srcFactor: 'one',
+        dstFactor: 'one',
+      },
+    },
+  };
+
+  const constant = {
+    color: [1, 0.5, 0.25],
+    alpha: 1,
+  };
+  const clear = {
+    color: [0, 0, 0],
+    alpha: 0,
+    premultiply: true,
+  };
+  const settings = {
+    alphaMode: 'premultiplied',
+    textureSet: 0,
+    preset: 'default (copy)',
+    color,
+    alpha,
+  };
+
+  const textureSets = [
+    {
+      srcTexture: srcTexturePremultipliedAlpha,
+      dstTexture: dstTexturePremultipliedAlpha,
+      srcBindGroup: srcBindGroupPremultipliedAlpha,
+      dstBindGroup: dstBindGroupPremultipliedAlpha,
+    },
+    {
+      srcTexture: srcTextureUnpremultipliedAlpha,
+      dstTexture: dstTextureUnpremultipliedAlpha,
+      srcBindGroup: srcBindGroupUnpremultipliedAlpha,
+      dstBindGroup: dstBindGroupUnpremultipliedAlpha,
+    },
+  ];
+
+  const dstPipeline = device.createRenderPipeline({
+    label: 'hardcoded textured quad pipeline',
+    layout: pipelineLayout,
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [
+        {
+          format: presentationFormat,
+          blend: {
+            color,
+            alpha,
+          },
+        },
+      ],
+    },
+  });
+
+  function makeBlendComponentValid(blend) {
+    const { operation } = blend;
+    if (operation === 'min' || operation === 'max') {
+      blend.srcFactor = 'one';
+      blend.dstFactor = 'one';
+    }
+  }
+
+  function render() {
+    makeBlendComponentValid(color);
+    makeBlendComponentValid(alpha);
+
+    const srcPipeline = device.createRenderPipeline({
+      label: 'hardcoded textured quad pipeline',
+      layout: pipelineLayout,
+      vertex: {
+        module,
+      },
+      fragment: {
+        module,
+        targets: [
+          {
+            format: presentationFormat,
+            blend: {
+              color,
+              alpha,
+            },
+          },
+        ],
+      },
+    });
+
+    const {
+      srcTexture,
+      dstTexture,
+      srcBindGroup,
+      dstBindGroup,
+    } = textureSets[settings.textureSet];
+
+    const encoder = device.createCommandEncoder({ label: 'render quad encoder' });
+
+    context.configure({
+      device,
+      format: presentationFormat,
+      alphaMode: settings.alphaMode,
+    });
+
+    const canvasTexture = context.getCurrentTexture();
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
+    {
+      const { alpha, color, premultiply } = clear;
+      const mult = premultiply ? alpha : 1;
+      clearValue[0] = color[0] * mult;
+      clearValue[1] = color[1] * mult;
+      clearValue[2] = color[2] * mult;
+      clearValue[3] = alpha;
+    }
+
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+    const projectionMatrix = mat4.ortho(0, canvasTexture.width, canvasTexture.height, 0, -1, 1);
+
+    for (let i = 0; i < 1; ++i) {
+      pass.setPipeline(dstPipeline);
+
+      mat4.scale(projectionMatrix, [dstTexture.width, dstTexture.height, 1], matrix);
+
+      // copy the values from JavaScript to the GPU
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, dstBindGroup);
+      pass.draw(6);  // call our vertex shader 6 times
+    }
+
+    for (let i = 0; i < 1; ++i) {
+      pass.setPipeline(srcPipeline);
+
+      mat4.scale(projectionMatrix, [srcTexture.width, srcTexture.height, 1], matrix);
+
+      // copy the values from JavaScript to the GPU
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, srcBindGroup);
+      pass.setBlendConstant([...constant.color, constant.alpha]);
+      pass.draw(6);  // call our vertex shader 6 times
+    }
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+  for (const [key, {color: c, alpha: a}] of Object.entries(presets)) {
+    Object.assign(color, c);
+    Object.assign(alpha, a || c);
+    const compositing = (/\((.*?)\)/.exec(key)?.[1]) || key;
+    const p = document.createElement('p');
+    p.textContent = `${key} - ${compositing}`;
+    document.body.appendChild(p);
+    {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(dstCanvas, 0, 0);
+      ctx.globalCompositeOperation = compositing;
+      ctx.drawImage(srcCanvas, 0, 0);
+      document.body.appendChild(canvas);
+    }
+    render();
+    {
+      const img = new Image();
+      img.src = canvas.toDataURL();
+      document.body.appendChild(img);
+    }
+  }
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      render();
+    }
+  });
+  observer.observe(canvas);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Points - 3d - 1px</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+  </body>
+  <script type="module">
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
+import {mat4} from '/3rdparty/wgpu-matrix.module.js';
+
+function createFibonacciSphereVertices({
+  numSamples,
+  radius,
+}) {
+  const vertices = [];
+  const increment = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < numSamples; ++i) {
+    const offset = 2 / numSamples;
+    const y = ((i * offset) - 1) + (offset / 2);
+    const r = Math.sqrt(1 - Math.pow(y, 2));
+    const phi = (i % numSamples) * increment;
+    const x = Math.cos(phi) * r;
+    const z = Math.sin(phi) * r;
+    vertices.push(x * radius, y * radius, z * radius);
+  }
+  return new Float32Array(vertices);
+}
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+
+  const module = device.createShaderModule({
+    code: `
+      struct Vertex {
+        @location(0) position: vec4f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+      };
+
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+      };
+
+      @group(0) @binding(0) var<uniform> uni: Uniforms;
+
+      @vertex fn vs(
+          vert: Vertex,
+      ) -> VSOutput {
+        var vsOut: VSOutput;
+        let clipPos = uni.matrix * vert.position;
+        vsOut.position = clipPos;
+        return vsOut;
+      }
+
+      @fragment fn fs(vsOut: VSOutput) -> @location(0) vec4f {
+        return vec4f(1, 0.5, 0.2, 1);
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: '3d points with 1px size',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (3) * 4, // 3 floats, 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [
+        {
+         format: presentationFormat,
+        },
+      ],
+    },
+    primitive: {
+      topology: 'point-list',
+    },
+  });
+
+  const vertexData = createFibonacciSphereVertices({
+    radius: 1,
+    numSamples: 1000,
+  });
+  const kNumPoints = vertexData.length / 3;
+
+  const vertexBuffer = device.createBuffer({
+    label: 'vertex buffer vertices',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+
+  const uniformValues = new Float32Array(16);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kMatrixOffset = 0;
+  const matrixValue = uniformValues.subarray(
+      kMatrixOffset, kMatrixOffset + 16);
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: uniformBuffer }},
+    ],
+  });
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  function render(time) {
+    time *= 0.001;
+
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
+    // Set the matrix in the uniform values
+    const fov = 90 * Math.PI / 180;
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(fov, aspect, 0.1, 50);
+    const view = mat4.lookAt(
+      [0, 0, 1.5],  // position
+      [0, 0, 0],    // target
+      [0, 1, 0],    // up
+    );
+    const viewProjection = mat4.multiply(projection, view);
+    mat4.rotateY(viewProjection, time, matrixValue);
+    mat4.rotateX(matrixValue, time * 0.5, matrixValue);
+
+    // Copy the uniform values to the uniform buffer
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setBindGroup(0, bindGroup);
+    pass.draw(kNumPoints);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+    }
+  });
+  observer.observe(canvas);
+}
+
+function fail(msg) {
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Compute Shader Builtins</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+      pre { margin: 0; }
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  const dispatchCount = [4, 2, 3];
+  const workgroupSize = [2, 3, 4];
+
+  // multiply all elements of an array
+  const arrayProd = arr => arr.reduce((a, b) => a * b);
+
+  const numThreadsPerWorkgroup = arrayProd(workgroupSize);
+
+  const code = `
+  // NOTE!: vec3u is padded to by 4 bytes
+  @group(0) @binding(0) var<storage, read_write> globalResult: array<vec3u>;
+  @group(0) @binding(1) var<storage, read_write> id: atomic<u32>;
+
+  @compute @workgroup_size(${workgroupSize}) fn computeSomething(
+      @builtin(global_invocation_id) global_invocation_id : vec3<u32>,
+  ) {
+    let i = atomicAdd(&id, 1u);
+    globalResult[i] = global_invocation_id + vec3u(1);
+  }
+  `;
+
+  const module = device.createShaderModule({code});
+
+  const pipeline = device.createComputePipeline({
+    label: 'compute pipeline',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+
+  const numWorkgroups = arrayProd(dispatchCount);
+  const numResults = numWorkgroups * numThreadsPerWorkgroup;
+  const size = numResults * 4 * 4;  // vec3f * u32
+
+  let usage = GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC;
+  const globalBuffer = device.createBuffer({size, usage});
+  const ndxBuffer = device.createBuffer({
+    size: 4,
+    usage: GPUBufferUsage.STORAGE,
+  });
+
+  usage = GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST;
+  const globalReadBuffer = device.createBuffer({size, usage});
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: globalBuffer }},
+      { binding: 1, resource: { buffer: ndxBuffer }},
+    ],
+  });
+
+  // Encode commands to do the computation
+  const encoder = device.createCommandEncoder({ label: 'compute builtin encoder' });
+  const pass = encoder.beginComputePass({ label: 'compute builtin pass' });
+
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(...dispatchCount);
+  pass.end();
+
+  encoder.copyBufferToBuffer(globalBuffer, 0, globalReadBuffer, 0, size);
+
+  // Finish encoding and submit the commands
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+
+  // Read the results
+  await Promise.all([
+    globalReadBuffer.mapAsync(GPUMapMode.READ),
+  ]);
+
+  const global = new Uint32Array(globalReadBuffer.getMappedRange());
+
+  const get3 = (arr, i) => {
+    const off = i * 4;
+    return `${arr[off]}, ${arr[off + 1]}, ${arr[off + 2]}`;
+  };
+
+  const results = new Map();
+  for (let i = 0; i < numResults; ++i) {
+    if (i % numThreadsPerWorkgroup === 0) {
+      log(`\
+---------------------------------------
+index    global   dispatch: ${i / numThreadsPerWorkgroup}
+         invoc.
+         id
+---------------------------------------`);
+    }
+    const v = get3(global, i);
+    if (results.has(v)) {
+      log(`error: ${i} and ${results.get(v)} have same value: ${v}`);
+    } else {
+      results.set(v, i);
+    }
+    log(`${i.toString().padStart(3)}:      ${v}`);
+  }
+}
+
+function log(...args) {
+  const elem = document.createElement('pre');
+  elem.textContent = args.join(' ');
+  document.body.appendChild(elem);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Blend - dest canvas</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+canvas {
+  background-color: #404040;
+  background-image:
+     linear-gradient(45deg, #808080 25%, transparent 25%),
+     linear-gradient(-45deg, #808080 25%, transparent 25%),
+     linear-gradient(45deg, transparent 75%, #808080 75%),
+     linear-gradient(-45deg, transparent 75%, #808080 75%);
+  background-size: 32px 32px;
+  background-position: 0 0, 0 16px, 16px -16px, -16px 0px;
+}
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+const hsl = (h, s, l) => `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
+
+function createDestinationImage(size) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  const gradient = ctx.createLinearGradient(0, 0, size, size);
+  for (let i = 0; i <= 6; ++i) {
+    gradient.addColorStop(i / 6, hsl(i / -6, 1, 0.5));
+  }
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, size, size);
+
+  ctx.fillStyle = 'rgba(0, 0, 0, 255)';
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.rotate(Math.PI / -4);
+  for (let i = 0; i < size * 2; i += 32) {
+    ctx.fillRect(-size, i, size * 2, 16);
+  }
+
+  return canvas;
+}
+
+const size = 300;
+const dstCanvas = createDestinationImage(size);
+document.body.appendChild(dstCanvas);
+  </script>
+</html>

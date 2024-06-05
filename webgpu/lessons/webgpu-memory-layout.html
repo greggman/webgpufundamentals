@@ -1,0 +1,777 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/webgpu-memory-layout.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="How to layout and prepare data for WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-memory-layout_en.jpg">
+
+<meta property="og:title" content="WebGPU Data Memory Layout">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-memory-layout_en.jpg">
+<meta property="og:description" content="How to layout and prepare data for WebGPU">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU Data Memory Layout">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html">
+<meta name="twitter:description" content="How to layout and prepare data for WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-memory-layout_en.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-memory-layout_en.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html",
+      "inLanguage":"en",
+      "name":"WebGPU Data Memory Layout",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU Data Memory Layout</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-memory-layout.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-memory-layout.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-memory-layout.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-memory-layout.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-memory-layout.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-memory-layout.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Table of Contents</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU Data Memory Layout</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>In WebGPU, nearly all of the data you provide to it needs to
+be layed out in memory to match what you define in your shaders.
+This is a big contrast to JavaScript and TypeScript where memory
+layout issues rarely come up.</p>
+<p>In WGSL when you write your shaders, it’s common to define <code class="notranslate" translate="no">struct</code>s.
+Structs are kind of like JavaScript objects, you declare members of
+a struct, similar to properties of a JavaScript object. But, on top
+of giving each property a name, you also have to give it a type.
+<strong>AND</strong>, when providing the data <strong>it’s up to you</strong> to compute where
+in a buffer that particular member of the struct will appear.</p>
+<p>In <a href="webgpu-wgsl.html">WGSL</a> v1, there are 4 base types</p>
+<ul>
+<li><code class="notranslate" translate="no">f32</code> (a 32bit floating point number)</li>
+<li><code class="notranslate" translate="no">i32</code> (a 32bit integer)</li>
+<li><code class="notranslate" translate="no">u32</code> (a 32bit unsigned integer)</li>
+<li><code class="notranslate" translate="no">f16</code> (a 16bit floating point number) <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></li>
+</ul>
+<p>A byte is 8 bits so a 32 bit value takes 4 bytes and a 16 bit value takes 2 bytes.</p>
+<p>If we declare a struct like this</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurStruct {
+  velocity: f32,
+  acceleration: f32,
+  frameCount: u32,
+};
+</pre>
+<p>A visual representation of that structure might look something like this</p>
+<div class="webgpu_center" data-diagram="ourStructV1"></div>
+<p>Each square block is a byte. Above you can see our data takes 12 bytes.
+<code class="notranslate" translate="no">velocity</code> takes the first 4 bytes. <code class="notranslate" translate="no">acceleration</code> takes the next 4,
+and <code class="notranslate" translate="no">frameCount</code> takes the last 4.</p>
+<p>To pass data to the shader we need to prepare data to match the
+memory layout <code class="notranslate" translate="no">OurStruct</code>. To do that we need to make an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>
+of 12 bytes, then setup <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> views of the correct type so we
+can fill it out.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const kOurStructSizeBytes =
+  4 + // velocity
+  4 + // acceleration
+  4 ; // frameCount
+const ourStructData = new ArrayBuffer(kOurStructSizeBytes);
+const ourStructValuesAsF32 = new Float32Array(ourStructData);
+const ourStructValuesAsU32 = new Uint32Array(ourStructData);
+</pre>
+<p>Above, <code class="notranslate" translate="no">ourStructData</code> is an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a> which is a chunk of memory.
+To look at the contents of this memory we an create views of it.
+<code class="notranslate" translate="no">ourStructValuesAsF32</code> is a view of the memory as 32bit floating point
+values. <code class="notranslate" translate="no">ourStructValuesAsU32</code> is a view of <strong>the same memory</strong> as
+32bit unsigned integer values.</p>
+<p>Now that we have a buffer and 2 views we can set the data in the structure.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const kVelocityOffset = 0;
+const kAccelerationOffset = 1;
+const kFrameCountOffset = 2;
+
+ourStructValuesAsF32[kVelocityOffset] = 1.2;
+ourStructValuesAsF32[kAccelerationOffset] = 3.4;
+ourStructValuesAsU32[kFrameCountOffset] = 56;    // an integer value
+</pre>
+<h2 id="typedarrays"><code class="notranslate" translate="no">TypedArrays</code></h2>
+<p>Note, like many things in programming there are multiple ways we could
+do this. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a>s have a constructor that takes various forms. For example</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">new Float32Array(12)</code></p>
+<p>This version makes a <strong>new</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>, in this case of 12 * 4 bytes. It then creates the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> to view it.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">new Float32Array([4, 5, 6])</code></p>
+<p>This version makes a <strong>new</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>, in this case of 3 * 4 bytes. It then creates the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> to view it. And it sets the initial values
+to 4, 5, 6.</p>
+<p>Note you can also pass another <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a>. For example</p>
+<p><code class="notranslate" translate="no">new Float32Array(someUint8ArrayOf6Values)</code> will make a <strong>new</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a> of size 6 * 4, then create a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> to view it,
+then copy the values from the existing view
+into the new <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a>. The values are copied by number, not in binary.
+In other words, they are copied like this</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">srcArray.forEach((v, i) =&gt; dstArray[i] = v);
+</pre>
+<p>What does “copied by value” mean? Take this example</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const f32s = new Float32Array([0.8, 0.9, 1.0, 1.1, 1.2]);
+const u32s = new Uint32Array(f32s); 
+console.log(u32s);   // produces 0, 0, 1, 1, 1
+</pre>
+<p>The reason is you can’t put values like 0.8 and 1.2 into a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array"><code class="notranslate" translate="no">Uint32Array</code></a></p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">new Float32Array(someArrayBuffer)</code></p>
+<p>This is the case we used before. A new <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> view is made on an
+<strong>existing buffer</strong>.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">new Float32Array(someArrayBuffer, byteOffset)</code></p>
+<p>This makes a new <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> on an <strong>existing buffer</strong> but starts
+the view at <code class="notranslate" translate="no">byteOffset</code></p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">new Float32Array(someArrayBuffer, byteOffset, length)</code></p>
+<p>This makes a new <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> on an <strong>existing buffer</strong>. The view
+starts at <code class="notranslate" translate="no">byteOffset</code> and is <code class="notranslate" translate="no">length</code> units long. So if we passed 3
+for length the view would be 3 float32 values long (12 bytes) of
+<code class="notranslate" translate="no">someArrayBuffer</code></p>
+</li>
+</ul>
+<p>Using this last form we could change the code above to this</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const kOurStructSizeBytes =
+  4 + // velocity
+  4 + // acceleration
+  4 ; // frameCount
+const ourStructData = new ArrayBuffer(kOurStructSizeBytes);
+const velocityView = new Float32Array(ourStructData, 0, 1);
+const accelerationView = new Float32Array(ourStructData, 4, 1);
+const frameCountView = new Uint32Array(ourStructData, 8, 1);
+
+velocityView[0] = 1.2;
+accelerationView[0] = 3.4;
+frameCountView[0] = 56;
+</pre>
+<p>Further, every <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> has the following properties</p>
+<ul>
+<li><code class="notranslate" translate="no">length</code>: number of units</li>
+<li><code class="notranslate" translate="no">byteLength</code>: size in bytes</li>
+<li><code class="notranslate" translate="no">byteOffset</code>: offset in the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a>’s <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a></li>
+<li><code class="notranslate" translate="no">buffer</code>: the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a> this <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> is viewing</li>
+</ul>
+<p>And <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a>s have various methods, many are similar to <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array"><code class="notranslate" translate="no">Array</code></a> but
+one that is not is <code class="notranslate" translate="no">subarray</code>. It creates a new <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> view
+of the same type. Its parameters are <code class="notranslate" translate="no">subarray(begin, end)</code> were
+<code class="notranslate" translate="no">end</code> is not included. So <code class="notranslate" translate="no">someTypedArray.subarray(5, 10)</code> makes
+a new <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> of <strong>the same <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a></strong> of elements 5 to 9
+of <code class="notranslate" translate="no">someTypedArray</code>.</p>
+<p>So we could change the code above to this</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const kOurStructSizeFloat32Units =
+  1 + // velocity
+  1 + // acceleration
+  1 ; // frameCount
+const ourStructDataAsF32 = new Float32Array(kOurStructSizeFloat32Units);
+const ourStructDataAsU32 = new Uint32Array(ourStructDataAsF32.buffer);
+const velocityView = ourStructDataAsF32.subarray(0, 1);
+const accelerationView = ourStructDataAsF32.subarray(1, 2);
+const frameCountView = ourStructDataAsU32.subarray(2, 3);
+
+velocityView[0] = 1.2;
+accelerationView[0] = 3.4;
+frameCountView[0] = 56;
+</pre>
+<h2 id="multiple-views-of-the-same-arraybuffer">Multiple views of the same <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a></h2>
+<p>Having a view of <strong>the same arrayBuffer</strong> means exactly that. For example</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const v1 = new Float32Array(5);
+const v2 = v1.subarray(3, 5);  // view the last 2 floats of v1
+v2[0] = 123;
+v2[1] = 456;
+console.log(v1);  // shows 0, 0, 0, 123, 456
+</pre>
+<p>Similarly if we have different typed views</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const f32 = new Float32Array([1, 1000, -1000])
+const u32 = new Uint32Array(f32.buffer);
+
+console.log(Array.from(u32).map(v =&gt; v.toString(16).padStart(8, '0')));
+// shows '3f800000', '447a0000', 'c47a0000' 
+</pre>
+<p>The values above are the 32bit hex representations of the floating point values for 1, 1000, -1000</p>
+<h2 id="map-issues"><code class="notranslate" translate="no">map</code> issues</h2>
+<p>Be aware, the <code class="notranslate" translate="no">map</code> function of a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> makes a new typed array of the same type!</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const f32a = new Float32Array(1, 2, 3);
+const f32b = f32a.map(v =&gt; v * 2);                    // Ok
+const f32c = f32a.map(v =&gt; `${v} doubled = ${v *2}`); // BAD!
+                    //  you can't put a string in a Float32Array
+</pre>
+<p>If you need to map a typedarray into some other type you’ll either need to loop over the array yourself
+or else convert it to a JavaScript array which you can do with <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.from"><code class="notranslate" translate="no">Array.from</code></a>. Taking the example above</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const f32d = Array.from(f32a).map(v =&gt; `${v} doubled = ${v *2}`); // Ok
+</pre>
+<h2 id="vec-and-mat-types">vec and mat types</h2>
+<p><a href="webgpu-wgsl.html">WGSL</a> has types made from the 4 base types.
+They are:</p>
+<div class="webgpu_center data-table">
+  <div>
+  <style>
+    .wgsl-types tr:nth-child(5n) { height: 1em };
+  </style>
+  <table class="wgsl-types">
+    <thead>
+      <tr><th>type</th><th>description</th><th>short name</th></tr><tr>
+    </tr></thead>
+    <tbody>
+      <tr><td><code class="notranslate" translate="no">vec2&lt;f32&gt;</code></td><td>a type with 2  <code class="notranslate" translate="no">f32</code>s</td><td><code class="notranslate" translate="no">vec2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec2&lt;u32&gt;</code></td><td>a type with 2  <code class="notranslate" translate="no">u32</code>s</td><td><code class="notranslate" translate="no">vec2u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec2&lt;i32&gt;</code></td><td>a type with 2  <code class="notranslate" translate="no">i32</code>s</td><td><code class="notranslate" translate="no">vec2i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec2&lt;f16&gt;</code></td><td>a type with 2  <code class="notranslate" translate="no">f16</code>s</td><td><code class="notranslate" translate="no">vec2h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">vec3&lt;f32&gt;</code></td><td>a type with 3  <code class="notranslate" translate="no">f32</code>s</td><td><code class="notranslate" translate="no">vec3f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec3&lt;u32&gt;</code></td><td>a type with 3  <code class="notranslate" translate="no">u32</code>s</td><td><code class="notranslate" translate="no">vec3u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec3&lt;i32&gt;</code></td><td>a type with 3  <code class="notranslate" translate="no">i32</code>s</td><td><code class="notranslate" translate="no">vec3i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec3&lt;f16&gt;</code></td><td>a type with 3  <code class="notranslate" translate="no">f16</code>s</td><td><code class="notranslate" translate="no">vec3h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">vec4&lt;f32&gt;</code></td><td>a type with 4  <code class="notranslate" translate="no">f32</code>s</td><td><code class="notranslate" translate="no">vec4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec4&lt;u32&gt;</code></td><td>a type with 4  <code class="notranslate" translate="no">u32</code>s</td><td><code class="notranslate" translate="no">vec4u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec4&lt;i32&gt;</code></td><td>a type with 4  <code class="notranslate" translate="no">i32</code>s</td><td><code class="notranslate" translate="no">vec4i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">vec4&lt;f16&gt;</code></td><td>a type with 4  <code class="notranslate" translate="no">f16</code>s</td><td><code class="notranslate" translate="no">vec4h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x2&lt;f32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec2&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x2&lt;u32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec2&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x2u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x2&lt;i32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec2&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x2i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x2&lt;f16&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec2&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x2h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x3&lt;f32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x3f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x3&lt;u32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec3&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x3u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x3&lt;i32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec3&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x3i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x3&lt;f16&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec3&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x3h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x4&lt;f32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec4&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x4&lt;u32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec4&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x4u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x4&lt;i32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec4&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x4i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat2x4&lt;f16&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec4&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x4h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x2&lt;f32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec2&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x2&lt;u32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec2&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x2u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x2&lt;i32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec2&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x2i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x2&lt;f16&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec2&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x2h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x3&lt;f32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x3f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x3&lt;u32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec3&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x3u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x3&lt;i32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec3&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x3i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x3&lt;f16&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec3&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x3h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x4&lt;f32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec4&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x4&lt;u32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec4&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x4u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x4&lt;i32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec4&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x4i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat3x4&lt;f16&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec4&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x4h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x2&lt;f32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec2&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x2&lt;u32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec2&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x2u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x2&lt;i32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec2&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x2i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x2&lt;f16&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec2&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x2h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x3&lt;f32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x3f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x3&lt;u32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec3&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x3u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x3&lt;i32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec3&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x3i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x3&lt;f16&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec3&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x3h</code></td></tr>
+      <tr></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x4&lt;f32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec4&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x4&lt;u32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec4&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x4u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x4&lt;i32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec4&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x4i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">mat4x4&lt;f16&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec4&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x4h</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<p>Given that a <code class="notranslate" translate="no">vec3f</code> is a type with 3 <code class="notranslate" translate="no">f32</code>s and
+<code class="notranslate" translate="no">mat4x4f</code> is an 4x4 matrix of <code class="notranslate" translate="no">f32</code>s, so it’s 16 <code class="notranslate" translate="no">f32</code>s,
+what do think the following struct looks like in memory?</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Ex2 {
+  scale: f32,
+  offset: vec3f,
+  projection: mat4x4f,
+};
+</pre>
+<p>Ready?</p>
+<div class="webgpu_center" data-diagram="ourStructEx2"></div>
+<p>What’s up with that? It turns out every type has alignment requirements.
+For a given type it must be aligned to a multiple of a certain number
+of bytes.</p>
+<p>Here are the sizes and alignments of the various types.</p>
+<div class="webgpu_center data-table" data-diagram="wgslTypeTable" style="width: 95%; columns: 14em;"></div>
+<p>But wait, there’s MORE!</p>
+<p>What do you think the layout of this struct will be?</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Ex3 {
+  transform: mat3x3f,
+  directions: array&lt;vec3f, 4&gt;,
+};
+</pre>
+<p>The <code class="notranslate" translate="no">array&lt;type, count&gt;</code> syntax defines an array of <code class="notranslate" translate="no">type</code> with <code class="notranslate" translate="no">count</code> elements.</p>
+<p>Here’s you go…</p>
+<div class="webgpu_center" data-diagram="ourStructEx3"></div>
+<p>If you look in the alignment table you’ll see <code class="notranslate" translate="no">vec3&lt;f32&gt;</code> has
+an alignment of 16 bytes. That means each <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>, whether
+it’s in a matrix or an array ends up having an extra space.</p>
+<p>Here’s another one</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Ex4a {
+  velocity: vec3f,
+};
+
+struct Ex4 {
+  orientation: vec3f,
+  size: f32,
+  direction: array&lt;vec3f, 1&gt;,
+  scale: f32,
+  info: Ex4a,
+  friction: f32,
+};
+</pre>
+<div class="webgpu_center" data-diagram="ourStructEx4"></div>
+<p>Why did <code class="notranslate" translate="no">size</code> end up at byte offset 12, just after orientation but <code class="notranslate" translate="no">scale</code> and
+<code class="notranslate" translate="no">friction</code> got bumped offsets 32 and 64</p>
+<p>That’s because arrays and structs have their own own special alignment rules so
+even though the array is a single <code class="notranslate" translate="no">vec3f</code> and the <code class="notranslate" translate="no">Ex4a</code> struct is also a single
+<code class="notranslate" translate="no">vec3f</code> they get aligned according to different rules.</p>
+<div class="webgpu_center data-table">
+  <div>
+  <style>
+    .wgsl-types tr:nth-child(5n) { height: 1em };
+  </style>
+  <p></p><table class="wgsl-types">
+    <thead>
+      <tr><th>type</th><th>align</th><th>size</th></tr><tr>
+    </tr></thead>
+    <tbody>
+      <tr><td><code class="notranslate" translate="no">struct</code> S with members M<sub>1</sub>...M<sub>N</sub></td><td>max(AlignOfMember(S,1), ... , AlignOfMember(S,N))</td><td>roundUp(AlignOf(S), justPastLastMember)
+<p>where justPastLastMember = OffsetOfMember(S,N) + SizeOfMember(S,N)</p></td></tr>
+<tr><td><code class="notranslate" translate="no">array&lt;E, N&gt;</code></td><td>AlignOf(E)</td><td>N × roundUp(AlignOf(E), SizeOf(E))</td></tr>
+</tbody>
+  </table>
+  </div>
+</div>
+<p>You can read the rules in more detail <a href="https://www.w3.org/TR/WGSL/#alignment-and-size">here in the WGSL spec</a>.</p>
+<h1 id="computing-offset-and-sizes-is-a-pita">Computing Offset and Sizes is a PITA!</h1>
+<p>Computing sizes and offsets of data in WGSL is probably the largest pain point
+of WebGPU. You are required to compute these offsets yourself and keep them up
+to date. If you add a member somewhere in the middle of a struct in your shaders
+you need to go back to your JavaScript and update all the offsets. Get a single
+byte or length wrong and the data you pass to the shader will be wrong. You
+won’t get an error, but your shader will likely do the wrong thing because it’s
+looking at bad data. Your model won’t draw or your computation will produce
+bad results.</p>
+<p>Fortunately there are libraries to help with this.</p>
+<p>Here’s one: <a href="https://github.com/greggman/webgpu-utils">webgpu-utils</a></p>
+<p>You give it your WGSL code and it gives an API do all of this for you.
+This way you can change your structs and, more often than not, things
+will just work.</p>
+<p>For example, using that last example we can pass it to <code class="notranslate" translate="no">webgpu-utils</code>
+like this</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">import {
+  makeShaderDataDefinitions,
+  makeStructuredView,
+} from 'https://greggman.github.io/webgpu-utils/dist/0.x/webgpu-utils-1.x.module.js';
+
+const code = `
+struct Ex4a {
+  velocity: vec3f,
+};
+
+struct Ex4 {
+  orientation: vec3f,
+  size: f32,
+  direction: array&lt;vec3f, 1&gt;,
+  scale: f32,
+  info: Ex4a,
+  friction: f32,
+};
+@group(0) @binding(0) var&lt;uniform&gt; myUniforms: Ex4;
+
+...
+`;
+
+const defs = makeShaderDataDefinitions(code);
+const myUniformValues = makeStructuredView(defs.uniforms.myUniforms);
+
+// Set some values via set
+myUniformValues.set({
+  orientation: [1, 0, -1],
+  size: 2,
+  direction: [0, 1, 0],
+  scale: 1.5,
+  info: {
+    velocity: [2, 3, 4],
+  },
+  friction: 0.1,
+});
+
+// now pass myUniformValues.arrayBuffer to WebGPU when needed.
+</pre>
+<p>Whether you use this particular library or a different one or
+none at all is up to you. For me, I would often spent 20-30-60 minutes
+trying to figure out why something was not working only to find
+that I manually computed an offset or size wrong so for my own work
+I’d rather use a library and avoid that pain.</p>
+<p>If you do want to do it manually though,
+<a href="resources/wgsl-offset-computer.html">here’s a page that will compute the offsets for you</a></p>
+<!-- keep this at the bottom of the article -->
+<script type="module" src="webgpu-memory-layout.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><code class="notranslate" translate="no">f16</code> support is an <a href="webgpu-limits-and-features.html">optional feature</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-memory-layout.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-memory-layout.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-memory-layout.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-memory-layout.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-memory-layout.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-memory-layout.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Basics</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
+<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+<li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
+<li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-textures.html">Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-importing-textures.html">Loading Images</a></li>
+<li><a href="/webgpu/lessons/webgpu-textures-external-video.html">Using Video</a></li>
+<li><a href="/webgpu/lessons/webgpu-cube-maps.html">Cube Maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
+<li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
+<li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+        </ul>
+  <li>3D Math</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>Compute Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>Misc</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Questions? <a href="http://stackoverflow.com/questions/tagged/webgpu">Ask on stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Suggestion</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU Data Memory Layout`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Compute Shaders - Histogram, optimized more</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+#start {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#start>div {
+  font-size: 200px;
+  cursor: pointer;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <div id="start">
+      <div>▶️</div>
+    </div>
+  </body>
+  <script type="module">
+//import TimingHelper from './resources/js/timing-helper.js';
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
+import { mat4 } from '/3rdparty/wgpu-matrix.module.js';
+
+const range = (i, fn) => new Array(i).fill(0).map((_, i) => fn(i));
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const canTimestamp = adapter?.features.has('timestamp-query');
+  const device = await adapter?.requestDevice({
+    requiredFeatures: [
+      ...(canTimestamp ? ['timestamp-query'] : []),
+    ],
+  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+//  const timingHelper = new TimingHelper(device);
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+
+  const k = {
+    chunkWidth: 256,
+    chunkHeight: 1,
+  };
+  const chunkSize = k.chunkWidth * k.chunkHeight;
+  const sharedConstants = Object.entries(k).map(([k, v]) => `const ${k} = ${v};`).join('\n');
+
+  const histogramChunkModule = device.createShaderModule({
+    label: 'histogram chunk shader',
+    code: `
+      ${sharedConstants}
+      const chunkSize = chunkWidth * chunkHeight;
+      var<workgroup> bins: array<array<atomic<u32>, 4>, chunkSize>;
+      @group(0) @binding(0) var<storage, read_write> chunks: array<array<vec4u, chunkSize>>;
+      @group(0) @binding(1) var ourTexture: texture_external;
+
+      const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+      fn srgbLuminance(color: vec3f) -> f32 {
+        return saturate(dot(color, kSRGBLuminanceFactors));
+      }
+
+      const kEpsilon = 1e-10;
+
+      fn rgb2hcv(rgb: vec3f) -> vec3f {
+        // Based on work by Sam Hocevar and Emil Persson
+        let p = mix(vec4f(rgb.bg, -1.0, 2.0 / 3.0), vec4f(rgb.gb, 0.0, -1.0 / 3.0), step(rgb.b, rgb.g));
+        let q = mix(vec4f(p.xyw, rgb.r), vec4f(rgb.r, p.yzx), step(p.x, rgb.r));
+        let c = q.x - min(q.w, q.y);
+        let h = abs((q.w - q.y) / (6 * c + kEpsilon) + q.z);
+        return vec3f(h, c, q.x);
+      }
+
+      fn rgb2hsl2(RGB: vec3f) -> vec3f {
+        let hcv = rgb2hcv(RGB);
+        let l = hcv.z - hcv.y * 0.5;
+        let s = hcv.y / (1 - abs(l * 2 - 1) + kEpsilon);
+        return vec3f(hcv.x, s, l);
+      }
+
+      fn hsl2rgb(hsl: vec3f) -> vec3f {
+        let c = vec3f(fract(hsl.x), clamp(hsl.yz, vec2f(0), vec2f(1)));
+        let rgb = clamp(abs((c.x * 6.0 + vec3f(0.0, 4.0, 2.0)) % 6.0 - 3.0) - 1.0, vec3f(0), vec3f(1));
+        return c.z + c.y * (rgb - 0.5) * (1.0 - abs(2.0 * c.z - 1.0));
+      }
+
+fn rgb2hsl(rgb: vec3f) -> vec3f {
+  let p = mix(vec4f(rgb.bgr, 2.0 / 3.0), vec4f(rgb.gbr, 1.0 / 3.0), step(rgb.b, rgb.g));
+  let q = mix(p, vec4f(rgb.r, p.xy, 0.0), step(p.x, rgb.r));
+  let l = (q.x + q.y) * 0.5;
+  let d = q.x - q.y;
+  let s = select(q.x - l / min(l, 1 - l), 0.0, l > 0.0 && l < 1.0);
+  let h = select(
+    fract((q.y - q.z) / d + q.w),
+    0,
+    s > 0.0);
+  return vec3f(h, s, l);
+}
+
+      @compute @workgroup_size(chunkWidth, chunkHeight, 1)
+      fn cs(
+        @builtin(workgroup_id) workgroup_id: vec3u,
+        @builtin(local_invocation_id) local_invocation_id: vec3u,
+      ) {
+        let size = textureDimensions(ourTexture);
+        let position = workgroup_id.xy * vec2u(chunkWidth, chunkHeight) + 
+                       local_invocation_id.xy;
+        if (all(position < size)) {
+          let numBins = f32(chunkSize);
+          let lastBinIndex = u32(numBins - 1);
+          var channels = textureLoad(ourTexture, position);
+          channels.w = rgb2hsl(channels.rgb).z;
+          for (var ch = 0; ch < 4; ch++) {
+            let v = channels[ch];
+            let bin = min(u32(v * numBins), lastBinIndex);
+            atomicAdd(&bins[bin][ch], 1u);
+          }
+        }
+
+        workgroupBarrier();
+
+        let chunksAcross = (size.x + chunkWidth - 1) / chunkWidth;
+        let chunk = workgroup_id.y * chunksAcross + workgroup_id.x;
+        let bin = local_invocation_id.y * chunkWidth + local_invocation_id.x;
+
+        chunks[chunk][bin] = vec4u(
+          atomicLoad(&bins[bin][0]),
+          atomicLoad(&bins[bin][1]),
+          atomicLoad(&bins[bin][2]),
+          atomicLoad(&bins[bin][3]),
+        );
+      }
+    `,
+  });
+
+  const chunkSumModule = device.createShaderModule({
+    label: 'chunk sum shader',
+    code: `
+      ${sharedConstants}
+      const chunkSize = chunkWidth * chunkHeight;
+
+      struct Uniforms {
+        stride: u32,
+      };
+
+      @group(0) @binding(0) var<storage, read_write> chunks: array<array<vec4u, chunkSize>>;
+      @group(0) @binding(1) var<uniform> uni: Uniforms;
+
+      @compute @workgroup_size(chunkSize, 1, 1) fn cs(
+        @builtin(local_invocation_id) local_invocation_id: vec3u,
+        @builtin(workgroup_id) workgroup_id: vec3u,
+      ) {
+        let chunk0 = workgroup_id.x * uni.stride * 2;
+        let chunk1 = chunk0 + uni.stride;
+
+        let sum = chunks[chunk0][local_invocation_id.x] +
+                  chunks[chunk1][local_invocation_id.x];
+        chunks[chunk0][local_invocation_id.x] = sum;
+      }
+    `,
+  });
+
+  const maxModule = device.createShaderModule({
+    label: 'max shader',
+    code: `
+      struct Uniforms {
+        numEntries: f32,
+      };
+
+      @group(0) @binding(0) var<storage, read> bins: array<vec4u>;
+      @group(0) @binding(1) var<uniform> uni: Uniforms;
+      @group(0) @binding(2) var<storage, read_write> scale: vec4f;
+      @group(0) @binding(3) var<storage, read_write> newLightness: array<f32>;
+
+      @compute @workgroup_size(1, 1, 1) fn cs() {
+        var m = vec4u(0);
+        var sum = f32(0);
+        let numBins = arrayLength(&bins);
+        for (var i = 0u ; i < numBins; i++) {
+          let v = bins[i];
+          m = max(m, v);
+          sum = sum + f32(v.z) / f32(uni.numEntries);
+          newLightness[i] = sum;
+        }
+        scale = max(1.0 / vec4f(m), vec4f(0.2 * f32(numBins) / uni.numEntries));
+      }
+    `,
+  });
+
+  const drawHistogramModule = device.createShaderModule({
+    label: 'draw histogram shader',
+    code: `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+        colors: array<vec4f, 16>,
+        channelMult: vec4u,
+      };
+
+      @group(0) @binding(0) var<storage, read> bins: array<vec4u>;
+      @group(0) @binding(1) var<uniform> uni: Uniforms;
+      @group(0) @binding(2) var<storage, read_write> scale: vec4f;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -> OurVertexShaderOutput {
+        let pos = array(
+
+          vec2f( 0.0,  0.0),  // center
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 0.0,  1.0),  // center, top
+
+          // 2st triangle
+          vec2f( 0.0,  1.0),  // center, top
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 1.0,  1.0),  // right, top
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy;
+        return vsOutput;
+      }
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -> @location(0) vec4f {
+        let numBins = arrayLength(&bins);
+        let lastBinIndex = u32(numBins - 1);
+        let bin = clamp(
+            u32(fsInput.texcoord.x * f32(numBins)),
+            0,
+            lastBinIndex);
+        let heights = vec4f(bins[bin]) * scale;
+        let bits = heights > vec4f(fsInput.texcoord.y);
+        let ndx = dot(select(vec4u(0), uni.channelMult, bits), vec4u(1));
+        return uni.colors[ndx];
+      }
+    `,
+  });
+
+  const drawNewLightnessModule = device.createShaderModule({
+    label: 'new lightness',
+    code: `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+        color: vec4f,
+      };
+
+      @group(0) @binding(0) var<uniform> uni: Uniforms;
+      @group(0) @binding(1) var<storage, read> newLightness: array<f32>;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -> OurVertexShaderOutput {
+        let numBins = arrayLength(&newLightness);
+        let bin = vertexIndex / 2 + vertexIndex % 2;
+        let y = newLightness[bin];
+        let x = f32(bin) / f32(numBins);
+        var vsOutput = OurVertexShaderOutput();
+        vsOutput.position = uni.matrix * vec4f(x, y, 0.0, 1.0);
+        return vsOutput;
+      }
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -> @location(0) vec4f {
+        return uni.color;
+      }
+    `,
+  });
+
+  const videoModule = device.createShaderModule({
+    label: 'our hardcoded external textured quad shaders',
+    code: `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+      };
+
+      @group(0) @binding(2) var<uniform> uni: Uniforms;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -> OurVertexShaderOutput {
+        let pos = array(
+
+          vec2f( 0.0,  0.0),  // center
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 0.0,  1.0),  // center, top
+
+          // 2st triangle
+          vec2f( 0.0,  1.0),  // center, top
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 1.0,  1.0),  // right, top
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy;
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var ourSampler: sampler;
+      @group(0) @binding(1) var ourTexture: texture_external;
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -> @location(0) vec4f {
+        return textureSampleBaseClampToEdge(
+            ourTexture,
+            ourSampler,
+            fsInput.texcoord,
+        );
+      }
+    `,
+  });
+
+  const videoAdjustedModule = device.createShaderModule({
+    label: 'our hardcoded external textured quad shaders',
+    code: `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+      };
+
+      @group(0) @binding(2) var<uniform> uni: Uniforms;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -> OurVertexShaderOutput {
+        let pos = array(
+
+          vec2f( 0.0,  0.0),  // center
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 0.0,  1.0),  // center, top
+
+          // 2st triangle
+          vec2f( 0.0,  1.0),  // center, top
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 1.0,  1.0),  // right, top
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy;
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var ourSampler: sampler;
+      @group(0) @binding(1) var ourTexture: texture_external;
+      @group(0) @binding(3) var<storage, read> newLightness: array<f32>;
+
+      fn hsl2rgb(hsl: vec3f) -> vec3f {
+        let c = vec3f(fract(hsl.x), clamp(hsl.yz, vec2f(0), vec2f(1)));
+        let rgb = clamp(abs((c.x * 6.0 + vec3f(0.0, 4.0, 2.0)) % 6.0 - 3.0) - 1.0, vec3f(0), vec3f(1));
+        return c.z + c.y * (rgb - 0.5) * (1.0 - abs(2.0 * c.z - 1.0));
+      }
+
+      /*
+      fn rgb2hcv(rgb: vec3f) -> vec3f {
+        // Based on work by Sam Hocevar and Emil Persson
+        let p = mix(vec4f(rgb.bg, -1.0, 2.0 / 3.0), vec4f(rgb.gb, 0.0, -1.0 / 3.0), step(rgb.b, rgb.g));
+        let q = mix(vec4f(p.xyw, rgb.r), vec4f(rgb.r, p.yzx), step(p.x, rgb.r));
+        let c = q.x - min(q.w, q.y);
+        let h = select(0.0, abs((q.w - q.y) / (6 * c) + q.z), c > 0.0);
+        return vec3f(h, c, q.x);
+      }
+
+      fn rgb2hsl2(RGB: vec3f) -> vec3f {
+        let hcv = rgb2hcv(RGB);
+        let l = hcv.z - hcv.y * 0.5;
+        let s = select(0.0, hcv.y / (1 - abs(l * 2 - 1)), l > 0.0 && l < 1.0);
+        return vec3f(hcv.x, s, l);
+      }
+      */
+
+      fn rgb2hsl(rgb: vec3f) -> vec3f {
+        let p = mix(vec4f(rgb.brg, 4.0), vec4f(rgb.gbr, 2.0), step(rgb.b, rgb.g));
+        let q = mix(p, vec4f(rgb, 0.0), step(p.x, rgb.r));
+        // q now contains (maxChannel, compChannel0, compChannel1, hueBase)
+
+        let minChannel = select(q.g, q.b, q.b < q.g);
+        let l = (q.x + minChannel) * 0.5;
+        let d = q.x - minChannel;
+        let s = select(0.0, (q.x - l) / min(l, 1.0 - l), l > 0.0 && l < 1.0);
+
+        // hue = hueBase + (compChannel0 - compChannel1) / deltaMaxMin
+        // where hue goes from 0 to 6 so we divide by 6
+        let h = select(0, fract(((q.y - q.z) / d + q.w) / 6.0), s > 0.0);
+        return vec3f(h, s, l);
+      }
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -> @location(0) vec4f {
+        let c = textureSampleBaseClampToEdge(
+            ourTexture,
+            ourSampler,
+            fsInput.texcoord,
+        );
+
+        let numBins = arrayLength(&newLightness);
+        let hsl = rgb2hsl(c.rgb);
+        let ndx = u32(hsl.z * f32(numBins));
+        let newL = newLightness[ndx];
+        let rgb = hsl2rgb(vec3f(hsl.xy, newL));
+
+        return vec4f(rgb, c.w);
+      }
+    `,
+  });
+
+  const histogramChunkPipeline = device.createComputePipeline({
+    label: 'histogram',
+    layout: 'auto',
+    compute: {
+      module: histogramChunkModule,
+    },
+  });
+
+  const chunkSumPipeline = device.createComputePipeline({
+    label: 'chunk sum',
+    layout: 'auto',
+    compute: {
+      module: chunkSumModule,
+    },
+  });
+
+  const maxPipeline = device.createComputePipeline({
+    label: 'max',
+    layout: 'auto',
+    compute: {
+      module: maxModule,
+    },
+  });
+
+  const drawHistogramPipeline = device.createRenderPipeline({
+    label: 'draw histogram',
+    layout: 'auto',
+    vertex: {
+      module: drawHistogramModule,
+    },
+    fragment: {
+      module: drawHistogramModule,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  const drawNewLightnessPipeline = device.createRenderPipeline({
+    label: 'equalization visualization pipeline',
+    layout: 'auto',
+    vertex: {
+      module: drawNewLightnessModule,
+    },
+    fragment: {
+      module: drawNewLightnessModule,
+      targets: [{ format: presentationFormat }],
+    },
+    primitive: {
+      topology: 'line-list',
+    },
+  });
+
+  const videoPipeline = device.createRenderPipeline({
+    label: 'hardcoded video textured quad pipeline',
+    layout: 'auto',
+    vertex: {
+      module: videoModule,
+    },
+    fragment: {
+      module: videoModule,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  const videoAdjustedPipeline = device.createRenderPipeline({
+    label: 'hardcoded video textured quad pipeline',
+    layout: 'auto',
+    vertex: {
+      module: videoAdjustedModule,
+    },
+    fragment: {
+      module: videoAdjustedModule,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  const videoSampler = device.createSampler({
+    magFilter: 'linear',
+    minFilter: 'linear',
+  });
+
+  // create a typedarray to hold the values for the uniforms in JavaScript
+  const videoUniformValues = new Float32Array(16 * 4);
+  // create a buffer for the uniform values
+  const videoUniformBuffer = device.createBuffer({
+    label: 'uniforms for video',
+    size: videoUniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const videoAdjustedUniformBuffer = device.createBuffer({
+    label: 'uniforms for adjusted video',
+    size: videoUniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kMatrixOffset = 0;
+  const videoMatrix = videoUniformValues.subarray(kMatrixOffset, 16);
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  function startPlayingAndWaitForVideo(video) {
+    return new Promise((resolve, reject) => {
+      video.addEventListener('error', reject);
+      if ('requestVideoFrameCallback' in video) {
+        video.requestVideoFrameCallback(resolve);
+      } else {
+        const timeWatcher = () => {
+          if (video.currentTime > 0) {
+            resolve();
+          } else {
+            requestAnimationFrame(timeWatcher);
+          }
+        };
+        timeWatcher();
+      }
+      video.play().catch(reject);
+    });
+  }
+
+  function waitForClick() {
+    return new Promise(resolve => {
+      window.addEventListener(
+        'click',
+        () => {
+          document.querySelector('#start').style.display = 'none';
+          resolve();
+        },
+        { once: true });
+    });
+  }
+
+  const video = document.createElement('video');
+  video.muted = true;
+  video.loop = true;
+  video.preload = 'auto';
+  //video.src = 'resources/videos/pexels-kosmo-politeska-5750980 (1080p).mp4'; /* webgpufundamentals: url */
+  //video.src = 'resources/videos/production_id_4166349 (540p).mp4'; /* webgpufundamentals: url */
+  video.src = 'resources/videos/production_id_5077580 (1080p).mp4'; /* webgpufundamentals: url */
+  await waitForClick();
+  await startPlayingAndWaitForVideo(video);
+
+  canvas.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  });
+
+  function createHistogramResources(width, height) {
+    const chunksAcross = Math.ceil(width / k.chunkWidth);
+    const chunksDown = Math.ceil(height / k.chunkHeight);
+    const numChunks = chunksAcross * chunksDown;
+
+    const chunksBuffer = device.createBuffer({
+      size: numChunks * chunkSize * 4 * 4,
+      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+    });
+
+    const maxUniformValues = new Float32Array(1);
+    const maxUniformBuffer = device.createBuffer({
+      size: maxUniformValues.byteLength,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    maxUniformValues[0] = width * height;
+    device.queue.writeBuffer(maxUniformBuffer, 0, maxUniformValues);
+
+    const scaleBuffer = device.createBuffer({
+      size: 4 * 4,
+      usage: GPUBufferUsage.STORAGE |
+         GPUBufferUsage.COPY_SRC,  // so we can look at it
+    });
+
+    const newLightnessBuffer = device.createBuffer({
+      size: chunkSize * 4,
+      usage: GPUBufferUsage.STORAGE,
+    });
+
+    const drawNewLightnessUniformValues = new Float32Array(16 + 4);
+    const drawNewLightnessUniformBuffer = device.createBuffer({
+      size: drawNewLightnessUniformValues.byteLength,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    const drawNewLightnessMatrix = drawNewLightnessUniformValues.subarray(0, 16);
+    const drawNewLightnessColor = drawNewLightnessUniformValues.subarray(16, 20);
+    drawNewLightnessColor.set([1, 0, 0, 1]);
+    mat4.identity(drawNewLightnessMatrix);
+    mat4.translate(drawNewLightnessMatrix, [0.05, -1, 0], drawNewLightnessMatrix);
+    mat4.scale(drawNewLightnessMatrix, [0.9, 0.5, 1], drawNewLightnessMatrix);
+    device.queue.writeBuffer(drawNewLightnessUniformBuffer, 0, drawNewLightnessUniformValues);
+
+    const drawNewLightnessBindGroup = device.createBindGroup({
+      layout: drawNewLightnessPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: drawNewLightnessUniformBuffer }},
+        { binding: 1, resource: { buffer: newLightnessBuffer }},
+      ],
+    });
+
+    const maxBindGroup = device.createBindGroup({
+      layout: maxPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
+        { binding: 1, resource: { buffer: maxUniformBuffer }},
+        { binding: 2, resource: { buffer: scaleBuffer }},
+        { binding: 3, resource: { buffer: newLightnessBuffer }},
+      ],
+    });
+
+    const sumBindGroups = [];
+    const thingsToDestroy = [
+      chunksBuffer,
+      maxUniformBuffer,
+      scaleBuffer,
+    ];
+
+    const numSteps = Math.ceil(Math.log2(numChunks));
+    for (let i = 0; i < numSteps; ++i) {
+      const stride = 2 ** i;
+      const uniformBuffer = device.createBuffer({
+        size: 4,
+        usage: GPUBufferUsage.UNIFORM,
+        mappedAtCreation: true,
+      });
+      new Uint32Array(uniformBuffer.getMappedRange()).set([stride]);
+      uniformBuffer.unmap();
+      thingsToDestroy.push(uniformBuffer);
+
+      const chunkSumBindGroup = device.createBindGroup({
+        layout: chunkSumPipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: { buffer: chunksBuffer }},
+          { binding: 1, resource: { buffer: uniformBuffer }},
+        ],
+      });
+      sumBindGroups.push(chunkSumBindGroup);
+    }
+
+    // setup for draw
+    //        matrix: mat4x4f;
+    //        colors: array<vec4f, 16>;
+    //        channelMult; vec4u,
+    function createDrawFn() {
+      const uniformValuesAsF32 = new Float32Array(16 + 64 + 4 + 4);
+      const uniformValuesAsU32 = new Uint32Array(uniformValuesAsF32.buffer);
+      const uniformBuffer = device.createBuffer({
+        label: 'draw histogram uniform buffer',
+        size: uniformValuesAsF32.byteLength,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+      });
+      thingsToDestroy.push(uniformBuffer);
+      const subpart = (view, offset, length) => view.subarray(offset, offset + length);
+      const matrix = subpart(uniformValuesAsF32, 0, 16);
+      const colors = subpart(uniformValuesAsF32, 16, 64);
+      const channelMult = subpart(uniformValuesAsU32, 16 + 64, 4);
+      colors.set([
+        [0, 0, 0, 1],
+        [1, 0, 0, 1],
+        [0, 1, 0, 1],
+        [1, 1, 0, 1],
+        [0, 0, 1, 1],
+        [1, 0, 1, 1],
+        [0, 1, 1, 1],
+        [0.5, 0.5, 0.5, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+      ].flat());
+
+      const drawHistogramBindGroup = device.createBindGroup({
+        layout: drawHistogramPipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
+          { binding: 1, resource: { buffer: uniformBuffer } },
+          { binding: 2, resource: { buffer: scaleBuffer }},
+        ],
+      });
+
+      const renderPassDescriptor = {
+        label: 'our basic renderPass',
+        colorAttachments: [
+          {
+            loadOp: 'load',
+            storeOp: 'store',
+          },
+        ],
+      };
+
+      return function drawHistogram(encoder, channels, worldViewProjection, texture) {
+        channelMult.set(range(4, i => channels.indexOf(i) >= 0 ? 2 ** i : 0));
+
+        matrix.set(worldViewProjection);
+        device.queue.writeBuffer(uniformBuffer, 0, uniformValuesAsF32);
+
+        renderPassDescriptor.colorAttachments[0].view = texture;
+
+        const pass = encoder.beginRenderPass(renderPassDescriptor);
+        pass.setPipeline(drawHistogramPipeline);
+        pass.setBindGroup(0, drawHistogramBindGroup);
+        pass.draw(6);  // call our vertex shader 6 times
+        pass.end();
+      };
+    }
+
+    return {
+      computeHistogram(encoder, texture) {
+        const pass = encoder.beginComputePass();
+        {
+          const histogramBindGroup = device.createBindGroup({
+            layout: histogramChunkPipeline.getBindGroupLayout(0),
+            entries: [
+              { binding: 0, resource: { buffer: chunksBuffer }},
+              { binding: 1, resource: texture },
+            ],
+          });
+
+          pass.setPipeline(histogramChunkPipeline);
+          pass.setBindGroup(0, histogramBindGroup);
+          pass.dispatchWorkgroups(chunksAcross, chunksDown);
+
+          pass.setPipeline(chunkSumPipeline);
+          let chunksLeft = numChunks;
+          sumBindGroups.forEach(bindGroup => {
+            pass.setBindGroup(0, bindGroup);
+            const dispatchCount = Math.floor(chunksLeft / 2);
+            chunksLeft -= dispatchCount;
+            pass.dispatchWorkgroups(dispatchCount);
+          });
+        }
+
+        {
+          pass.setPipeline(maxPipeline);
+          pass.setBindGroup(0, maxBindGroup);
+          pass.dispatchWorkgroups(1);
+
+        }
+        pass.end();
+      },
+      createDrawFn,
+      destroy() {
+        thingsToDestroy.forEach(t => t.destroy());
+      },
+      newLightnessBuffer,
+      drawEqualization(encoder, texture) {
+        const pass = encoder.beginRenderPass({
+          label: 'our basic renderPass',
+          colorAttachments: [
+            {
+              view: texture,
+              loadOp: 'load',
+              storeOp: 'store',
+            },
+          ],
+        });
+        pass.setPipeline(drawNewLightnessPipeline);
+        pass.setBindGroup(0, drawNewLightnessBindGroup);
+        pass.draw((chunkSize - 1) * 2);
+        pass.end();
+      },
+    };
+  }
+
+  let lastWidth = 0;
+  let lastHeight = 0;
+  let histogramHelper;
+  let drawFn1;
+  let drawFn2;
+
+  const videoPipelines = [
+    {
+      pipeline: videoPipeline,
+      videoUniformBuffer,
+      addEntries(entries) {
+        return entries;
+      },
+    },
+    {
+      pipeline: videoAdjustedPipeline,
+      videoUniformBuffer: videoAdjustedUniformBuffer,
+      addEntries(entries) {
+        entries.push(
+          { binding: 3, resource: { buffer: histogramHelper.newLightnessBuffer }}
+        );
+        return entries;
+      },
+    },
+  ];
+
+  function render() {
+    const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
+
+    const videoTexture = device.importExternalTexture({source: video});
+    if (videoTexture.width !== lastWidth || videoTexture.height !== lastHeight) {
+      lastWidth = videoTexture.width;
+      lastHeight = videoTexture.height;
+      if (histogramHelper) {
+        histogramHelper.destroy();
+      }
+      histogramHelper = createHistogramResources(video.videoWidth, video.videoHeight);
+      drawFn1 = histogramHelper.createDrawFn();
+      drawFn2 = histogramHelper.createDrawFn();
+    }
+
+    histogramHelper.computeHistogram(encoder, videoTexture);
+
+    const canvasTexture = context.getCurrentTexture().createView();
+
+    // Draw video
+    {
+      renderPassDescriptor.colorAttachments[0].view = canvasTexture;
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+      videoPipelines.forEach(({pipeline, videoUniformBuffer, addEntries}, i) => {
+        const bindGroup = device.createBindGroup({
+          layout: pipeline.getBindGroupLayout(0),
+          entries: addEntries([
+            { binding: 0, resource: videoSampler },
+            { binding: 1, resource: videoTexture },
+            { binding: 2, resource: { buffer: videoUniformBuffer }},
+          ]),
+        });
+
+        const matrix = mat4.identity(videoMatrix);
+        mat4.translate(matrix, [-1 + i, 1, 0], matrix);
+        mat4.scale(matrix, [1, -2, 1], matrix);
+
+        device.queue.writeBuffer(videoUniformBuffer, 0, videoUniformValues);
+
+        pass.setPipeline(pipeline);
+        pass.setBindGroup(0, bindGroup);
+        pass.draw(6);  // call our vertex shader 6 times
+      });
+
+      pass.end();
+    }
+
+    // Draw Histogram colors
+    {
+      const matrix = mat4.identity();
+      mat4.translate(matrix, [-0.95, -1, 0], matrix);
+      mat4.scale(matrix, [0.9, 0.5, 1], matrix);
+
+      drawFn1(encoder, [0, 1, 2], matrix, canvasTexture);
+    }
+
+    // Draw Histogram luminance
+    {
+      const matrix = mat4.identity();
+      mat4.translate(matrix, [0.05, -1, 0], matrix);
+      mat4.scale(matrix, [0.9, 0.5, 1], matrix);
+
+      drawFn2(encoder, [3], matrix, canvasTexture);
+    }
+
+    // Draw Equalization
+    histogramHelper.drawEqualization(encoder, canvasTexture);
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+    }
+  });
+  observer.observe(canvas);
+
+  //timingHelper.getResult().then(duration => {
+  //  console.log(`duration 1: ${duration}ns`);
+  //});
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

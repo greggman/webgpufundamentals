@@ -1,0 +1,18 @@
+{
+	language: '日本語',
+	langCode: 'ja',
+	defaultExampleCaption: "クリックして別のウインドウを開く",
+	title: 'WebGPUを基本から学ぶ',
+	description: 'この記事はWebGPUの基本から教える記事である。',
+	link: 'https://webgpufundamentals.org/webgpu/lessons/ja',
+	commentSectionHeader: '<div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>',
+	missing: "ごめん！この記事はまだ翻訳されていない。[翻訳してくれますか？](https://github.com/webgpu/webgpufundamentals)! 😄\n\n[ここに英語版がある]({{{origLink}}}).",
+	toc: '目次',
+	categoryMapping: {
+		'basics': "基本",
+		'misc': "その他のトピック",
+		'reference': 'リファレンス',
+		'3d-math': '3Dの数学',
+		'compute-shaders': 'コンピュートシェーダ',
+	},
+}

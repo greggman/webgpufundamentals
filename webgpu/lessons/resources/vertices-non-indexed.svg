@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 150 150" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,5.5957,-0.5)">
+        <g transform="matrix(1,0,0,1,-40,-40)">
+            <path d="M70.404,70.073L70.404,160L140.296,70.073L70.404,70.073Z" style="fill:rgb(0,205,143);"/>
+        </g>
+        <g transform="matrix(0.75,0,0,0.75,-22.5,-22.5)">
+            <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-38.3853,-35.7828)">
+            <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">0</text>
+        </g>
+        <g transform="matrix(0.75,0,0,0.75,-22.0957,67.5)">
+            <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-37.981,54.2172)">
+            <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">1</text>
+        </g>
+        <g transform="matrix(0.75,0,0,0.75,47.5,-22.5)">
+            <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,31.6147,-35.7828)">
+            <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">2</text>
+        </g>
+        <g transform="matrix(1,0,0,1,-40,-40)">
+            <g transform="matrix(1,-0,-0,1,34.4043,40.5)">
+                <path d="M38.951,102.984L36,112L32.952,103.016L38.951,102.984Z"/>
+                <path d="M35.596,37C35.596,37 35.86,86.022 35.961,104.8" style="fill:none;stroke:black;stroke-width:1px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1,-40,-40)">
+            <g transform="matrix(1,-0,-0,1,34.4043,40.5)">
+                <path d="M93.688,40.741L101.596,35.5L98.415,44.438L93.688,40.741Z"/>
+                <path d="M40.596,113.5C40.596,113.5 83.124,59.12 97.16,41.172" style="fill:none;stroke:black;stroke-width:1px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1,-40,-40)">
+            <g transform="matrix(1,-0,-0,1,34.4043,40.5)">
+                <path d="M52.092,32.512L43.096,29.5L52.1,26.512L52.092,32.512Z"/>
+                <path d="M98.596,29.573C98.596,29.573 65.313,29.529 50.296,29.51" style="fill:none;stroke:black;stroke-width:1px;"/>
+            </g>
+        </g>
+    </g>
+    <g transform="matrix(1,0,0,1,1.0957,-0.5)">
+        <g transform="matrix(1,0,0,1,61.7041,35.9268)">
+            <path d="M53.296,84.073L-16.704,84.073L53.296,-5.854L53.296,84.073Z" style="fill:rgb(0,205,143);"/>
+        </g>
+        <g transform="matrix(0.75,0,0,0.75,62.5,-22.5)">
+            <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,46.6147,-35.7828)">
+            <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">3</text>
+        </g>
+        <g transform="matrix(0.75,0,0,0.75,-7.5,67.5)">
+            <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-23.3853,54.2172)">
+            <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">4</text>
+        </g>
+        <g transform="matrix(0.75,0,0,0.75,62.9043,67.5)">
+            <circle cx="70" cy="70" r="10" style="fill:rgb(0,219,255);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,46.4858,53.9047)">
+            <text x="65.497px" y="70.095px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">5</text>
+        </g>
+        <g transform="matrix(1,0,0,1,-40,-40)">
+            <g transform="matrix(1,-0,-0,1,38.9043,40.5)">
+                <path d="M58.961,108.196L51.096,113.5L54.205,104.537L58.961,108.196Z"/>
+                <path d="M111.096,35.5C111.096,35.5 69.32,89.809 55.486,107.793" style="fill:none;stroke:black;stroke-width:1px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1,-40,-40)">
+            <g transform="matrix(1,-0,-0,1,38.9043,40.5)">
+                <path d="M100.096,116.5L109.096,119.5L100.096,122.5L100.096,116.5Z"/>
+                <path d="M54.096,119.5L101.896,119.5" style="fill:none;stroke:black;stroke-width:1px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1,-40,-40)">
+            <g transform="matrix(1,-0,-0,1,38.9043,40.5)">
+                <path d="M113.5,45.5L116.5,36.5L119.5,45.5L113.5,45.5Z"/>
+                <path d="M116.5,112L116.5,43.7" style="fill:none;stroke:black;stroke-width:1px;"/>
+            </g>
+        </g>
+    </g>
+</svg>

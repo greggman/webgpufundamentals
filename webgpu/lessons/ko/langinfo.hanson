@@ -1,0 +1,36 @@
+{
+  language: '한국어',
+  langCode: 'ko',
+  defaultExampleCaption: "새 창으로 보려면 여기를 클릭하세요",
+  title: 'WebGPU 기초',
+  description: 'WebGPU 기초를 배워봅시다.',
+  link: 'https://webgpufundamentals.org/webgpu/lessons/ko',
+  commentSectionHeader: `
+<div>질문이 있나요? <a href="http://stackoverflow.com/questions/tagged/webgpu">Stack Overflow</a>에 물어보세요.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=suggested+topic&template=suggest-topic.md&title=%5BSUGGESTION%5D">제안</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=&template=request.md&title=">요청 사항</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">이슈</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">버그</a>
+</div>
+<div class="lesson-comment-notes">
+   코드 블럭의 경우 <b>&lt;pre&gt;&lt;code&gt;</b>코드<b>&lt;/code&gt;&lt;/pre&gt;</b>을 사용하세요.
+</div>
+  `,
+  missing: `
+죄송합니다. 이 글은 아직 번역이 되지 않았습니다.
+
+[번역을 도와주세요](https://github.com/webgpu/webgpufundamentals)! 😄
+
+[여기서 원문을 볼 수 있습니다]({{{origLink}}}).
+  `,
+  contribTemplate: '<a href="${html_url}"><img src="${avatar_url}"> ${login}</a>님<br> 당신의 <a href="https://github.com/${owner}/${repo}/commits?author=${login}">${contributions} 기여에 감사드립니다.</a>',
+  toc: '목차',
+  categoryMapping: {
+    'basics': '기초',
+    'misc': '기타',
+    'reference': '참조',
+    '3d-math': '3D 수학',
+    'compute-shaders': '컴퓨트 셰이더',
+  },
+}

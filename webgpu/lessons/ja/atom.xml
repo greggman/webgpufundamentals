@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id/>
+    <title>WebGPUを基本から学ぶ</title>
+    <updated>2024-06-05T20:47:58.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <author>
+        <name>webgpufundamentals Contributors</name>
+        <uri>https://webgpufundamentals.org/contributors.html</uri>
+    </author>
+    <link rel="alternate" href="https://webgpufundamentals.org/webgpu/lessons/ja"/>
+    <subtitle>この記事はWebGPUの基本から教える記事である。</subtitle>
+    <logo>https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg</logo>
+    <entry>
+        <title type="html"><![CDATA[WebGPUの基本]]></title>
+        <id>https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-fundamentals.html</id>
+        <link href="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-fundamentals.html"/>
+        <updated>2024-06-05T20:47:58.000Z</updated>
+        <author>
+            <name>webgpufundamentals Contributors</name>
+            <uri>https://webgpufundamentals.org/contributors.html</uri>
+        </author>
+        <published>2024-06-05T20:47:58.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[inter-stage(シェーダ間)変数]]></title>
+        <id>https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-inter-stage-variables.html</id>
+        <link href="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-inter-stage-variables.html"/>
+        <updated>2024-06-05T20:47:58.000Z</updated>
+        <author>
+            <name>webgpufundamentals Contributors</name>
+            <uri>https://webgpufundamentals.org/contributors.html</uri>
+        </author>
+        <published>2024-06-05T20:47:58.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[構造体とメモリレイアウト]]></title>
+        <id>https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-memory-layout.html</id>
+        <link href="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-memory-layout.html"/>
+        <updated>2024-06-05T20:47:58.000Z</updated>
+        <author>
+            <name>webgpufundamentals Contributors</name>
+            <uri>https://webgpufundamentals.org/contributors.html</uri>
+        </author>
+        <published>2024-06-05T20:47:58.000Z</published>
+    </entry>
+</feed>

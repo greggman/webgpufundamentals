@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Textured Cube Map</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+canvas {
+  margin-right: 5px;
+}
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+function generateFace(size, {faceColor, textColor, text}) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = faceColor;
+  ctx.fillRect(0, 0, size, size);
+  ctx.font = `${size * 0.7}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = textColor;
+  ctx.fillText(text, size / 2, size / 2);
+  return canvas;
+}
+
+const faceSize = 128;
+const faceCanvases = [
+  { faceColor: '#F00', textColor: '#0FF', text: '+X' },
+  { faceColor: '#FF0', textColor: '#00F', text: '-X' },
+  { faceColor: '#0F0', textColor: '#F0F', text: '+Y' },
+  { faceColor: '#0FF', textColor: '#F00', text: '-Y' },
+  { faceColor: '#00F', textColor: '#FF0', text: '+Z' },
+  { faceColor: '#F0F', textColor: '#0F0', text: '-Z' },
+].map(faceInfo => generateFace(faceSize, faceInfo));
+
+// show the results
+for (const canvas of faceCanvases) {
+  document.body.appendChild(canvas);
+}
+  </script>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Compute Shaders - Histogram, race fixed, draw with JavaScript</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+      canvas {
+        display: block;
+        max-width: 256px;
+        border: 1px solid #888;
+        background-color: #333;
+      }
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+import TimingHelper from './resources/js/timing-helper.js';
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
+import {
+  loadImageBitmap,
+  createTextureFromSource,
+} from '../3rdparty/webgpu-utils-1.x.module.js';
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const canTimestamp = adapter?.features.has('timestamp-query');
+  const device = await adapter?.requestDevice({
+    requiredFeatures: [
+      ...(canTimestamp ? ['timestamp-query'] : []),
+    ],
+  });
+  if (!device) {
+    fail('need webgpu');
+    return;
+  }
+
+  const timingHelper = new TimingHelper(device);
+
+  const k = {
+    chunkWidth: 16,
+    chunkHeight: 16,
+  };
+  const sharedConstants = Object.entries(k)
+    .map(([k, v]) => `const ${k} = ${v};`)
+    .join('\n');
+  const module = device.createShaderModule({
+    label: 'histogram shader',
+    code: `
+      ${sharedConstants}
+      @group(0) @binding(0) var<storage, read_write> bins: array<atomic<u32>>;
+      @group(0) @binding(1) var ourTexture: texture_2d<f32>;
+
+      const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+      fn srgbLuminance(color: vec3f) -> f32 {
+        return saturate(dot(color, kSRGBLuminanceFactors));
+      }
+
+      @compute @workgroup_size(chunkWidth, chunkHeight, 1)
+      fn cs(@builtin(global_invocation_id) global_invocation_id: vec3u) {
+        let size = textureDimensions(ourTexture, 0);
+        let position = global_invocation_id.xy;
+        if (all(position < size)) {
+          let numBins = f32(arrayLength(&bins));
+          let lastBinIndex = u32(numBins - 1);
+          let color = textureLoad(ourTexture, position, 0);
+          let v = srgbLuminance(color.rgb);
+          let bin = min(u32(v * numBins), lastBinIndex);
+          atomicAdd(&bins[bin], 1u);
+        }
+      }
+    `,
+  });
+
+  const pipeline = device.createComputePipeline({
+    label: 'histogram',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+
+  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg'); /* webgpufundamentals: url */
+  const texture = createTextureFromSource(device, imgBitmap);
+
+  const numBins = 256;
+  const histogramBuffer = device.createBuffer({
+    size: numBins * 4, // 256 entries * 4 bytes per (u32)
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+  });
+
+  const resultBuffer = device.createBuffer({
+    size: histogramBuffer.size,
+    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+  });
+
+  const bindGroup = device.createBindGroup({
+    label: 'histogram bindGroup',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: histogramBuffer }},
+      { binding: 1, resource: texture.createView() },
+    ],
+  });
+
+  const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
+  const pass = timingHelper.beginComputePass(encoder);
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(Math.ceil(texture.width / k.chunkWidth), Math.ceil(texture.height / k.chunkHeight));
+  pass.end();
+
+  encoder.copyBufferToBuffer(histogramBuffer, 0, resultBuffer, 0, resultBuffer.size);
+
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+
+  timingHelper.getResult().then(duration => {
+    console.log(`duration: ${duration}ns`);
+  });
+
+  await resultBuffer.mapAsync(GPUMapMode.READ);
+  const histogram = new Uint32Array(resultBuffer.getMappedRange());
+
+  showImageBitmap(imgBitmap);
+
+  const numEntries = texture.width * texture.height;
+  drawHistogram(histogram, numEntries);
+
+  resultBuffer.unmap();
+}
+
+function drawHistogram(histogram, numEntries, height = 100) {
+  const numBins = histogram.length;
+  const max = Math.max(...histogram);
+  const scale = Math.max(1 / max, 0.2 * numBins / numEntries);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = numBins;
+  canvas.height = height;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#fff';
+
+  for (let x = 0; x < numBins; ++x) {
+    const v = histogram[x] * scale * height;
+    ctx.fillRect(x, height - v, 1, v);
+  }
+}
+
+function showImageBitmap(imageBitmap) {
+  const canvas = document.createElement('canvas');
+  canvas.width = imageBitmap.width;
+  canvas.height = imageBitmap.height;
+
+  const bm = canvas.getContext('bitmaprenderer');
+  bm.transferFromImageBitmap(imageBitmap);
+  document.body.appendChild(canvas);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

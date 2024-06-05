@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="lesson.css" rel="stylesheet">
+    <script src="prettify.js"></script>
+  </head>
+  <body>
+    <script type="module">
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
+import {
+  makeShaderDataDefinitions,
+} from '/3rdparty/webgpu-utils-1.x.module.js';
+import {
+  createByteDiagramForType,
+  getCodeForUniform,
+} from './data-byte-diagram.js';
+import { createElem as el } from './elem.js';
+
+const code = `
+struct Ex4a {
+  velocity: vec3f,
+};
+ 
+struct Ex4 {
+  orientation: vec3f,
+  size: f32,
+  direction: array<vec3f, 1>,
+  scale: f32,
+  info: Ex4a,
+  friction: f32,
+};
+
+struct V3Align {
+      v3f: vec3f,
+      f1: f32,  // this should be at offset 12
+      v3fArr: array<vec3f, 1>,
+      f2: f32,  // this should be at offset 32
+};
+
+struct Test {
+  m_i32: i32, 
+  m_u32: u32, 
+  m_f32: f32, 
+  m_f16: f16, 
+
+  m_vec2f: vec2f,
+  m_vec2i: vec2i,
+  m_vec2u: vec2u,
+  m_vec2h: vec2h,
+  m_vec3i: vec3i,
+  m_vec3u: vec3u,
+  m_vec3f: vec3f,
+  m_vec3h: vec3h,
+  m_vec4i: vec4i,
+  m_vec4u: vec4u,
+  m_vec4f: vec4f,
+  m_vec4h: vec4h,
+  m_mat2x2f: mat2x2f,
+  m_mat2x2h: mat2x2h,
+  m_mat3x2f: mat3x2f,
+  m_mat3x2h: mat3x2h,
+  m_mat4x2f: mat4x2f,
+  m_mat4x2h: mat4x2h,
+  m_mat2x3f: mat2x3f,
+  m_mat2x3h: mat2x3h,
+  m_mat3x3f: mat3x3f,
+  m_mat3x3h: mat3x3h,
+  m_mat4x3f: mat4x3f,
+  m_mat4x3h: mat4x3h,
+  m_mat2x4f: mat2x4f,
+  m_mat2x4h: mat2x4h,
+  m_mat3x4f: mat3x4f,
+  m_mat3x4h: mat3x4h,
+  m_mat4x4f: mat4x4f,
+  m_mat4x4h: mat4x4h,
+};
+
+struct TestArr {
+  m_i32: array<i32, 5>, 
+  m_u32: array<u32, 5>, 
+  m_f32: array<f32, 5>, 
+  m_f16: array<f16, 5>, 
+
+  m_vec2f: array<vec2f, 3>,
+  m_vec2i: array<vec2i, 3>,
+  m_vec2u: array<vec2u, 3>,
+  m_vec2h: array<vec2h, 3>,
+  m_vec3i: array<vec3i, 3>,
+  m_vec3u: array<vec3u, 3>,
+  m_vec3f: array<vec3f, 3>,
+  m_vec3h: array<vec3h, 3>,
+  m_vec4i: array<vec4i, 3>,
+  m_vec4u: array<vec4u, 3>,
+  m_vec4f: array<vec4f, 3>,
+  m_vec4h: array<vec4h, 3>,
+  m_mat2x2f: array<mat2x2f, 3>,
+  m_mat2x2h: array<mat2x2h, 3>,
+  m_mat3x2f: array<mat3x2f, 3>,
+  m_mat3x2h: array<mat3x2h, 3>,
+  m_mat4x2f: array<mat4x2f, 3>,
+  m_mat4x2h: array<mat4x2h, 3>,
+  m_mat2x3f: array<mat2x3f, 3>,
+  m_mat2x3h: array<mat2x3h, 3>,
+  m_mat3x3f: array<mat3x3f, 3>,
+  m_mat3x3h: array<mat3x3h, 3>,
+  m_mat4x3f: array<mat4x3f, 3>,
+  m_mat4x3h: array<mat4x3h, 3>,
+  m_mat2x4f: array<mat2x4f, 3>,
+  m_mat2x4h: array<mat2x4h, 3>,
+  m_mat3x4f: array<mat3x4f, 3>,
+  m_mat3x4h: array<mat3x4h, 3>,
+  m_mat4x4f: array<mat4x4f, 3>,
+  m_mat4x4h: array<mat4x4h, 3>,
+};
+
+struct MyUniforms {
+   color: vec4<f32>,
+   kernal: vec3<u32>,
+   brightness: f32,
+   kernel: array<f32, 9>,
+   foo: array<vec3f, 3>,
+   projectionMatrix: mat4x4<f32>,
+};
+
+struct Foo {
+   color: vec4<f32>,
+   bar: array<MyUniforms, 3>,
+   moo: u32,
+};
+
+@group(0) @binding(1) var<uniform> myUniformsV3b: Ex4;
+@group(0) @binding(1) var<uniform> myUniformsV3: V3Align;
+@group(0) @binding(1) var<uniform> myUniforms0: Test;
+@group(0) @binding(1) var<uniform> myUniformsA: TestArr;
+@group(0) @binding(1) var<uniform> myUniforms1: MyUniforms;
+@group(0) @binding(2) var<uniform> myUniforms2: f32;
+@group(0) @binding(3) var<uniform> myUniforms3: array<f32, 6>;
+@group(0) @binding(4) var<uniform> myUniforms4: Foo;
+`;
+
+const topElem = document.body;
+const defs = makeShaderDataDefinitions(code);
+// console.log(JSON.stringify(defs, null, 2));
+
+
+for (const [name, uniform] of Object.entries(defs.uniforms)) {
+  //if (name !== 'myUniformsA') {
+  //  continue;
+  //}
+  topElem.appendChild(el('hr'));
+  topElem.appendChild(createByteDiagramForType(name, uniform));
+
+  topElem.appendChild(el('hr'));
+  const pre = el('pre', {className: 'prettyprint', textContent: getCodeForUniform(name, uniform)});
+  topElem.appendChild(pre);
+  window.prettyPrint(pre);
+}
+    </script>
+  </body>
+</html>

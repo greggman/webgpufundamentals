@@ -1,0 +1,698 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ko/webgpu-copying-data.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="ko"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="버퍼와 텍스처로/로부터 데이터 복사">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_ko.jpg">
+
+<meta property="og:title" content="WebGPU 데이터 복사하기">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_ko.jpg">
+<meta property="og:description" content="버퍼와 텍스처로/로부터 데이터 복사">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-copying-data.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU 데이터 복사하기">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-copying-data.html">
+<meta name="twitter:description" content="버퍼와 텍스처로/로부터 데이터 복사">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_ko.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-copying-data.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_ko.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-copying-data.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-copying-data.html",
+      "inLanguage":"ko",
+      "name":"WebGPU 데이터 복사하기",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-copying-data.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU 데이터 복사하기</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/ko/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-copying-data.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-copying-data.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-copying-data.html" selected="">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-copying-data.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-copying-data.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-copying-data.html">简体中文
+</option></select>
+
+
+    <a href="#toc">목차</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/webgpu/lessons/ko/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU 데이터 복사하기</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>지금까지 대부분의 글에서 버퍼에 데이터를 넣기 위해서 <code class="notranslate" translate="no">writeBuffer</code>를 사용하고 텍스처에 데이터를 넣기 위해서 <code class="notranslate" translate="no">writeTexture</code>를 사용했습니다.
+버퍼나 텍스처에 데이터를 전달하는 다양한 방법이 있습니다.</p>
+<h2 id="writebuffer"><code class="notranslate" translate="no">writeBuffer</code></h2>
+<p><code class="notranslate" translate="no">writeBuffer</code>는 자바스크립트의 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> 또는 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>로부터 버퍼로 데이터를 복사합니다.
+이는 버퍼로 데이터를 전달하는 가장 직관적인 방법입니다.</p>
+<p><code class="notranslate" translate="no">writeBuffer</code>는 아래와 같은 포맷을 따릅니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeBuffer(
+  destBuffer,  // 데이터를 쓸 대상 버퍼
+  destOffset,  // 대상의 어디에서부터 데이터를 쓰기 시작할 것인지
+  srcData,     // typedArray 또는 arrayBuffer
+  srcOffset?,  // srcData의 어떤 **요소(element)**부터 복사할 것인지 오프셋
+  size?,       // 복사항 srcData의 **요소**단위 크기
+)
+</pre>
+<p><code class="notranslate" translate="no">srcOffset</code>이 전달되지 않았으면 <code class="notranslate" translate="no">0</code>을 사용합니다.
+<code class="notranslate" translate="no">size</code>가 전달되지 않았다면 <code class="notranslate" translate="no">srcData</code>의 크기가 사용됩니다.</p>
+<blockquote>
+<p>중요: <code class="notranslate" translate="no">srcOffset</code>과 <code class="notranslate" translate="no">size</code>는 <code class="notranslate" translate="no">srcData</code>의 요소 단위입니다.</p>
+<p>다시 말해,</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeBuffer(someBuffer, someOffset, someFloat32Array, 6, 7);
+</pre>
+<p>위 코드는 float32의 6번째부터 7개의 데이터를 복사합니다.
+다른 방식으로 말하자면 <code class="notranslate" translate="no">someFloat32Array</code>의 뷰(view)로 arrayBuffer의 24바이트 위치부터 시작해서 28 바이트를 복사합니다.</p>
+</blockquote>
+<h2 id="writetexture"><code class="notranslate" translate="no">writeTexture</code></h2>
+<p><code class="notranslate" translate="no">writeTexture</code>는 자바스크립트의 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> 또는 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>로부터 텍스처로 데이터를 복사합니다.</p>
+<p><code class="notranslate" translate="no">writeTexture</code>는 아래와 같은 시그니처(signature)를 갖습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.writeTexture(
+  // 복사 대상의 세부사항
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 소스 데이터
+  srcData,
+
+  // 소스 데이터 세부사항
+  { offset: 0, bytesPerRow, rowsPerImage },
+
+  // 크기:
+  [width, height, depthOrArrayLayers]
+);
+</pre>
+<p>주의 사항으로:</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">texture</code>에 <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code> usage가 있어야 합니다.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">mipLevel</code>, <code class="notranslate" translate="no">origin</code>, <code class="notranslate" translate="no">aspect</code> 는 모두 기본값이 있어서 생략하는 경우가 많습니다.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">bytesPerRow</code>: 이 값은 다음 *블럭 행(block row)*의 데이터를 얻기 위해 알마나 많은 바이트를 건너가야 하는지에 대한 값입니다.</p>
+<p>이는 하나 이상의 <em>블럭 행</em>을 복사할 떄 필요합니다.
+거의 대분 하나 이상의 <em>블럭 행</em>을 복사하기 때문에 거의 대부분의 경우에 값을 명시해야 합니다.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">rowsPerImage</code>: 이 값은 하나의 이미지에서부터 다음 이미지까지 얼마나 많은 <em>블럭 행</em>을 건너가야 하는지에 대한 값입니다.</p>
+<p>이는 하나 이상의 레이어를 복사할 때 필요합니다.
+다시 말해, 크기 인자의 <code class="notranslate" translate="no">depthOrArrayLayers</code>가 1 이상이라면 이 값을 명시해야 합니다.</p>
+</li>
+</ul>
+<p>복사는 아래와 같은 방식으로 동작한다고 생각할 수 있습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// pseudo code
+const [x, y, z] = origin || [0, 0, 0];
+const [blockWidth, blockHeight] = getBlockSizeForTextureFormat(texture.format);
+
+const blocksAcross = width / blockWidth;
+const blocksDown = height / blockHeight;
+
+for (layer = 0; layer &lt; depthOrArrayLayers; layer) {
+  for (row = 0; row &lt; blocksDown; ++row) {
+    const start = offset + (layer * rowsPerImage + row) * bytesPerRow;
+    copyRowToTexture(
+      texture, // texture to copy to
+      x,
+      y + row,
+      z + layer, // where in texture to copy to
+      srcDataAsBytes + start,
+      bytesPerRow
+    );
+  }
+}
+</pre>
+<h3 id="블럭-행block-row"><a id="a-block-rows"></a><strong>블럭 행(block row)</strong></h3>
+<p>텍스처는 블럭과 같은 구조입니다.
+대부분의 <em>일반적인</em> 텍스처는 블럭 행과 열이 모두 1입니다.
+압축된(compressed) 텍스처에서는 상황이 변합니다.
+예를들어 <code class="notranslate" translate="no">bc1-rgba-unorm</code> 포맷은 블럭의 너비와 높이가 4입니다.
+즉 width를 8로, 높이를 12로 설정했다면 여섯 개의 블럭만 복사됩니다.
+첫 번째와 두 번째 행에서는 2개씩, 세 번째 행에서 2개가 복사됩니다.</p>
+<p>압축된 텍스처에서는 크기와 원점(origin)이 블럭의 크기와 정렬되어야 합니다.</p>
+<blockquote>
+<p>주의: WebGPU에서 (<code class="notranslate" translate="no">GPUExtent3D</code>로 정의된)크기를 입력받는 경우 1~3개의 숫자로 이루어진 배열이거나, 1~3개의 속성을 갖는 객체입니다.
+<code class="notranslate" translate="no">height</code>와 <code class="notranslate" translate="no">depthOrArrayLayers</code>의 기본값은 1입니다. 따라서,</p>
+<ul>
+<li><code class="notranslate" translate="no">[2]</code> width = 2, height = 1, depthOrArrayLayers = 1</li>
+<li><code class="notranslate" translate="no">[2, 3]</code> width = 2, height = 3, depthOrArrayLayers = 1</li>
+<li><code class="notranslate" translate="no">[2, 3, 4]</code> width = 2, height = 3, depthOrArrayLayers = 4</li>
+<li><code class="notranslate" translate="no">{ width: 2 }</code> width = 2, height = 1, depthOrArrayLayers = 1</li>
+<li><code class="notranslate" translate="no">{ width: 2, height: 3 }</code> width = 2, height = 3, depthOrArrayLayers = 1</li>
+<li><code class="notranslate" translate="no">{ width: 2, height: 3, depthOrArrayLayers: 4 }</code> width = 2, height = 3, depthOrArrayLayers = 4</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>같은 방식으로 (<code class="notranslate" translate="no">GPUOrigin3D</code>로 정의된) 원점에 대해서는 3개의 숫자로 이루어진 배열이거나 <code class="notranslate" translate="no">x</code>, <code class="notranslate" translate="no">y</code>, <code class="notranslate" translate="no">z</code> 속성을 갖는 객체입니다.
+기본값은 모두 0입니다. 따라서,</p>
+<ul>
+<li><code class="notranslate" translate="no">[5]</code> an origin where x = 5, y = 0, z = 0</li>
+<li><code class="notranslate" translate="no">[5, 6]</code> an origin where x = 5, y = 6, z = 0</li>
+<li><code class="notranslate" translate="no">[5, 6, 7]</code> an origin where x = 5, y = 6, z = 7</li>
+<li><code class="notranslate" translate="no">{ x: 5 }</code> an origin where x = 5, y = 0, z = 0</li>
+<li><code class="notranslate" translate="no">{ x: 5, y: 6 }</code> an origin where x = 5, y = 6, z = 0</li>
+<li><code class="notranslate" translate="no">{ x: 5, y: 6, z: 7 }</code> an origin where x = 5, y = 6, z = 7</li>
+</ul>
+</blockquote>
+<ul>
+<li><code class="notranslate" translate="no">aspect</code>는 깊이-스텐실(stencil) 포맷으로 데이터를 복사할 때만 관여합니다.
+각 aspect마다 한 번씩 데이터를 복사해야 하며 <code class="notranslate" translate="no">depth-only</code> 또는 <code class="notranslate" translate="no">stencil-only</code>를 사용해야 합니다.</li>
+</ul>
+<h2 id="copybuffertobuffer"><code class="notranslate" translate="no">copyBufferToBuffer</code></h2>
+<p><code class="notranslate" translate="no">copyBufferToBuffer</code>는 이름 그대로 하나의 버퍼에서 다른 버퍼로 데이터를 복사합니다.</p>
+<p>시그니처는:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyBufferToBuffer(
+  source, // 복사할 값을 얻어올 버퍼
+  sourceOffset, // 어느 위치부터 가져올 것인지
+  dest, // 복사할 대상 버퍼
+  destOffset, // 어느 위치부터 넣을 것인지
+  size // 몇 바이트를 복사할 것인지
+);
+</pre>
+<ul>
+<li><code class="notranslate" translate="no">source</code>는 <code class="notranslate" translate="no">GPUBufferUsage.COPY_SRC</code>여야 합니다.</li>
+<li><code class="notranslate" translate="no">dest</code>는 <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>여야 합니다.</li>
+<li><code class="notranslate" translate="no">size</code>는 4의 배수여야 합니다.</li>
+</ul>
+<h2 id="copybuffertotexture"><code class="notranslate" translate="no">copyBufferToTexture</code></h2>
+<p><code class="notranslate" translate="no">copyBufferToTexture</code>는 이름 그대로 버퍼에서 텍스처로 데이터를 복사합니다.</p>
+<p>시그니처는:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encode.copyBufferToTexture(
+  // 소스 버퍼 세부사항
+  { buffer, offset: 0, bytesPerRow, rowsPerImage },
+
+  // 대상 텍스처 세부사항
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 크기:
+  [width, height, depthOrArrayLayers]
+);
+</pre>
+<p><code class="notranslate" translate="no">writeTexture</code>와 거의 동일한 매개변수를 갖습니다.
+가장 큰 차이는 <code class="notranslate" translate="no">bytesPerRow</code>이며 <strong>256의 배수여야 합니다!!</strong></p>
+<ul>
+<li><code class="notranslate" translate="no">texture</code>는 <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code>여야 합니다.</li>
+<li><code class="notranslate" translate="no">buffer</code>는 <code class="notranslate" translate="no">GPUBufferUsage.COPY_SRC</code>여야 합니다.</li>
+</ul>
+<h2 id="copytexturetobuffer"><code class="notranslate" translate="no">copyTextureToBuffer</code></h2>
+<p><code class="notranslate" translate="no">copyTextureToBuffer</code>는 이름 그대로 텍스처에서 버퍼로 데이터를 복사합니다.</p>
+<p>시그니처는:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encode.copyTextureToBuffer(
+  // 소스 텍스처 세부사항
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 대상 버퍼 세부사항
+  { buffer, offset: 0, bytesPerRow, rowsPerImage },
+
+  // 크기:
+  [width, height, depthOrArrayLayers]
+);
+</pre>
+<p>이는 <code class="notranslate" translate="no">copyBufferToTexture</code>와 비슷한 매개변수를 가지며, 텍스처(여기서는 소스)와 버퍼(여기서는 대상)가 바뀐 형태입니다.
+<code class="notranslate" translate="no">copyTextureToBuffer</code>에서처럼 <code class="notranslate" translate="no">bytesPerRow</code>는 <strong>256의 배수여야 합니다!!</strong></p>
+<ul>
+<li><code class="notranslate" translate="no">texture</code>는 <code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code>여야 합니다.</li>
+<li><code class="notranslate" translate="no">buffer</code>는<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>여야 합니다.</li>
+</ul>
+<h2 id="copytexturetotexture"><code class="notranslate" translate="no">copyTextureToTexture</code></h2>
+<p><code class="notranslate" translate="no">copyTextureToTexture</code>는 텍스처의 일부분을 다른 텍스처에 복사합니다.</p>
+<p>두 텍스처는 모두 같은 포맷이거나 접미어인 <code class="notranslate" translate="no">'-srgb'</code>만 달라야 합니다.</p>
+<p>시그니처는:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encode.copyTextureToBuffer(
+  // 소스 텍스처 세부사항
+  src: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 대상 텍스처 세부사항
+  dst: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 크기:
+  [ width, height, depthOrArrayLayers ]
+);
+</pre>
+<ul>
+<li>src.<code class="notranslate" translate="no">texture</code>는 <code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code>여야 합니다.</li>
+<li>dst.<code class="notranslate" translate="no">texture</code>는 <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code>여야 합니다.</li>
+<li><code class="notranslate" translate="no">width</code>는 블럭 너비의 배수여야 합니다.</li>
+<li><code class="notranslate" translate="no">height</code>는 블럭 높이의 배수여야 합니다.</li>
+<li>src.<code class="notranslate" translate="no">origin[0]</code> 또는 <code class="notranslate" translate="no">.x</code> 는 너비의 배수여야 합니다.</li>
+<li>src.<code class="notranslate" translate="no">origin[1]</code> 또는 <code class="notranslate" translate="no">.y</code> 는 높이의 배수여야 합니다.</li>
+<li>dst.<code class="notranslate" translate="no">origin[0]</code> 또는 <code class="notranslate" translate="no">.x</code> 는 너비의 배수여야 합니다.</li>
+<li>dst.<code class="notranslate" translate="no">origin[1]</code> 또는 <code class="notranslate" translate="no">.y</code> 는 높이의 배수여야 합니다.</li>
+</ul>
+<h2 id="셰이더">셰이더</h2>
+<p>셰이더는 스토리지 버퍼, 스토리지 텍스처에 값을 쓸 수 있으며 간접적으로 텍스처에 렌더링을 할 수 있습니다.
+이러한 방법들이 버퍼나 텍스처에 값을 쓰는 방법입니다.
+즉 데이터를 생성하는 셰이더를 만들 수 있습니다.</p>
+<h2 id="버퍼-맵핑mapping">버퍼 맵핑(mapping)</h2>
+<p>버퍼를 맵핑할 수 있습니다.
+버퍼를 맵핑한다는 뜻은 자바스크립트에서 값을 읽거나 쓸 수 있도록 한다는 뜻입니다.
+최소한 WebGPU의 버전 1에서 맵핑 가능한(mappable) 버퍼에는 심각한 제약사항이 있습니다.
+이는 맵핑 가능한 버퍼가 데이터를 복사항 임시 공간으로만 사용 가능한 점입니다.
+맵핑 가능한 버퍼는 다른 종류의 버퍼(Uniform 버퍼, 정점 버퍼, 인덱스 버퍼, 스토리지 버퍼 등)로 사용할 수 없습니다. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>맵핑가능한 버퍼는 두 종류의 사용법 플래그의 조합으로 만들 수 있습니다.</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_READ | GPU_BufferUsage.COPY_DST</code></p>
+<p>다른 버퍼나 텍스처로부터 데이터를 복사하는 커맨드를 사용할 수 있는 버퍼로, 맵핑하여 자바스크립트로부터 데이터를 읽을 수 있습니다.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE | GPU_BufferUsage.COPY_SRC</code></p>
+<p>자바스크립트에서 맵핑하여 데이터를 넣을 수 있는 버퍼입니다.
+그리고 언맵핑(unmap)하여 위에서 설명한 복사 커맨드로 그 내용을 다른 버퍼나 텍스처에 복사할 수 있습니다.</p>
+</li>
+</ul>
+<p>버퍼의 맵핑 과정은 비동기적입니다.
+<code class="notranslate" translate="no">offset</code>과 <code class="notranslate" translate="no">size</code>를 바이트 단위로 하여 <code class="notranslate" translate="no">buffer.mapAsync(mode, offset = 0, size?)</code>를 호출할 수 있습니다.
+<code class="notranslate" translate="no">size</code>가 명시되어 있지 않으면 전체 버퍼 크기를 의미합니다.
+<code class="notranslate" translate="no">mode</code>는 <code class="notranslate" translate="no">GPUMapMode.READ</code> 또는 <code class="notranslate" translate="no">GPUMapMode.WRITE</code>여야 하며 당연히 버퍼를 생성할 때 사용한 <code class="notranslate" translate="no">MAP_</code> 사용법 플래그와 일치해야 합니다.</p>
+<p><code class="notranslate" translate="no">mapAsync</code>는 프라미스(Promise)를 반환합니다.
+프라미스가 해소(resolve)되면 버퍼는 맵핑 가능한 상태가 됩니다.
+이후에 <code class="notranslate" translate="no">buffer.getMappedRange(offset = 0, size?)</code>를 호출해서 버퍼의 일부 또는 전체를 볼 수 있으며, 여기서 <code class="notranslate" translate="no">offset</code>은 맵핑한 버퍼의 일부분에 대한 바이트 오프셋입니다.
+<code class="notranslate" translate="no">getMappedRange</code>는 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>를 반환하니 이 값을 사용하기 위해서는 일반적으로 이 값을 가지고 TypedArray를 만들게 됩니다.</p>
+<p>아래는 버퍼 맵핑의 한 예입니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer = device.createBuffer({
+  size: 1024,
+  usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+});
+
+// map the entire buffer
+await buffer.mapAsync(GPUMapMode.READ);
+
+// get the entire buffer
+const f32 = new Float32Array(buffer.getMappedRange())
+
+...
+
+buffer.unmap();
+</pre>
+<p>Note: 한 번 맵핑이 되면, 버퍼는 <code class="notranslate" translate="no">unmap</code>을 호출하기 전까지는 WebGPU에서 사용 불가능한 상태가 됩니다.
+<code class="notranslate" translate="no">unmap</code>을 호출한 순간 버퍼는 자바스크립트에서 사라집니다.
+다시 말해 위 예제를 기반으로 설명하자면 아래와 같습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const f32 = new Float32Array(buffer.getMappedRange());
+
+f32[0] = 123;
+console.log(f32[0]); // prints 123
+
+buffer.unmap();
+
+console.log(f32[0]); // prints undefined
+</pre>
+<p>데이터를 읽기 위해 버퍼를 맵핑하는 예제는 이미 본 적이 있습니다.
+<a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">첫 번째 글</a>에서 스토리지 버퍼의 숫자를 두 배로 늘리고 이를 맵핑 가능한 버퍼에 복사하고 그 결과를 읽기 위해서 맵핑하였습니다.</p>
+<p>다른 예시는 <a href="../webgpu-compute-shaders.md">컴퓨트 셰이더 기본</a>에 있는데, 컴퓨트 셰이더의 여러 <code class="notranslate" translate="no">@builtin</code> 값을 스토리지 버퍼에 맵핑하였습니다.
+그리고 그 결과를 맵핑 가능한 버퍼에 복사하고 맵핑하여 값을 읽어옵니다.</p>
+<h2 id="mappedatcreation"><a id="a-mapped-at-creation"></a>mappedAtCreation</h2>
+<p><code class="notranslate" translate="no">mappedAtCreation: true</code>은 버퍼를 생성할 때 추가할 수 있는 플래그입니다.
+이 경우 버퍼는 <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>와 <code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE</code> 사용법 플래스를 명시할 필요가 없어집니다.</p>
+<p>이는 버퍼 생성시에 데이터를 넣을 수 있도록 하는 특별한 플래그입니다.
+버퍼를 생성할 때 <code class="notranslate" translate="no">mappedAtCreation: true</code>를 추가할 수 있습니다.
+버퍼가 생성되면, 이미 값을 쓸 수 있도록 맵핑 가능한 상태가 됩니다.
+그 예로:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer = device.createBuffer({
+  size: 16,
+  usage: GPUBufferUsage.UNIFORM,
+  mappedAtCreation: true,
+});
+const arrayBuffer = buffer.getMappedRange(0, buffer.size);
+const f32 = new Float32Array(arrayBuffer);
+f32.set([1, 2, 3, 4]);
+buffer.unmap();
+</pre>
+<p>좀더 간결하게는,</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer = device.createBuffer({
+  size: 16,
+  usage: GPUBufferUsage.UNIFORM,
+  mappedAtCreation: true,
+});
+new Float32Array(buffer.getMappedRange(0, buffer.size)).set([1, 2, 3, 4]);
+buffer.unmap();
+</pre>
+<h2 id="맵핑가능한-버퍼의-효율적인-사용"><a id="a-efficient"></a>맵핑가능한 버퍼의 효율적인 사용</h2>
+<p>위에서 우리는 버퍼 맵핑이 비동기적이라고 했습니다.
+즉 <code class="notranslate" translate="no">mapAsync</code>를 호출하여 버퍼를 맵핑하기를 요청하는 시점부터, 맵핑이 되어 <code class="notranslate" translate="no">getMappedRange</code>를 호출할 수 있게되는 시점까지의 시간이 미정이라는 뜻입니다.</p>
+<p>이를 해결하는 일반적인 방법은 몇몇 버퍼들을 항상 맵핑 상태로 두는 것입니다.
+그러면 이미 맵핑이 되어 있어서 바로 사용 가능하게 됩니다.
+사용한 후에 언맵핑을 하고, 어떤 커맨드든 해당 버퍼를 사용하는 커맨드를 제출하고 나면 다시 맵핑하도록 요청합니다.
+프라미스가 해소되면 이를 다시 이미 맵핑된 버퍼 풀(pool)로 되돌립니다.
+맵핑 가능한 버퍼가 필요한데 사용할 수 있는게 없으면 새로운 버퍼를 만들어 풀에 넣으면 됩니다.</p>
+<p>TBD: Example</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><code class="notranslate" translate="no">mappedAtCreation: true</code>로 설정할 때는 예외인데, <a href="#a-mapped-at-creation">mappedAtCreation</a>를 참고하세요. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-copying-data.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-copying-data.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-copying-data.html" selected="">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-copying-data.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-copying-data.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-copying-data.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>기초</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-fundamentals.html">기초</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-vertex-buffers.html">정점 버퍼</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-textures.html">텍스처</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-importing-textures.html">이미지 로딩</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-textures-external-video.html">비디오 사용하기</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
+        </ul>
+  <li>3D 수학</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>컴퓨트 셰이더</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-compute-shaders.html">컴퓨트 셰이더 기초</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>기타</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>질문이 있나요? <a href="http://stackoverflow.com/questions/tagged/webgpu">Stack Overflow</a>에 물어보세요.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">제안</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">요청 사항</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">이슈</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">버그</a>
+</div>
+<div class="lesson-comment-notes">
+   코드 블럭의 경우 <b>&lt;pre&gt;&lt;code&gt;</b>코드<b>&lt;/code&gt;&lt;/pre&gt;</b>을 사용하세요.
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 데이터 복사하기`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "<a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a>님<br> 당신의 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 기여에 감사드립니다.</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

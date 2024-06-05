@@ -1,0 +1,1528 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/webgpu-transparency.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Blending Pixels in WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-transparency_en.jpg">
+
+<meta property="og:title" content="WebGPU Transparency and Blending">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-transparency_en.jpg">
+<meta property="og:description" content="Blending Pixels in WebGPU">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-transparency.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU Transparency and Blending">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-transparency.html">
+<meta name="twitter:description" content="Blending Pixels in WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-transparency_en.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-transparency.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-transparency_en.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-transparency.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-transparency.html",
+      "inLanguage":"en",
+      "name":"WebGPU Transparency and Blending",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-transparency.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU Transparency and Blending</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-transparency.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-transparency.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-transparency.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-transparency.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-transparency.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-transparency.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-transparency.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Table of Contents</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU Transparency and Blending</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>It’s hard to cover transparency and blending because often, what you need
+to do for one situation is different than for another. So, this article
+will mostly be a tour of WebGPU features so we can refer back here when
+we cover specific techniques.</p>
+<h2 id="canvas-alphamode"><a href="a-alphamode"></a> Canvas <code class="notranslate" translate="no">alphaMode</code></h2>
+<p>The first thing we need to be aware of, there is transparent and blending within WebGPU
+but there is also transparency and blending with a WebGPU canvas and the HTML page.</p>
+<p>By default a WebGPU canvas is opaque. Its alpha channel is ignored. To make it not
+ignored we have to set its <code class="notranslate" translate="no">alphaMode</code> to <code class="notranslate" translate="no">'premultiplied'</code> when we call <code class="notranslate" translate="no">configure</code>.
+The default is <code class="notranslate" translate="no">'opaque'</code></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  context.configure({
+    device,
+    format: presentationFormat,
++    alphaMode: 'premultiplied',
+  });
+</pre>
+<p>It’s important to understand what <code class="notranslate" translate="no">alphaMode: 'premultiplied'</code> means. It means,
+the colors you put in the canvas must have their color values already multiplied
+by the alpha value.</p>
+<p>Let’s make the smallest example we can. We’ll just create a render pass and set
+the clear color.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
++    alphaMode: 'premultiplied',
+  });
+
+  const clearValue = [1, 0, 0, 0.01];
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: &lt;- to be filled out when we render
+        clearValue,
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  function render() {
+    const encoder = device.createCommandEncoder({ label: 'clear encoder' });
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      render();
+    }
+  });
+  observer.observe(canvas);
+}
+</pre>
+<p>Let’s also set the canvas’s CSS background to a gray checkerboard</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">canvas {
+  background-color: #404040;
+  background-image:
+     linear-gradient(45deg, #808080 25%, transparent 25%),
+     linear-gradient(-45deg, #808080 25%, transparent 25%),
+     linear-gradient(45deg, transparent 75%, #808080 75%),
+     linear-gradient(-45deg, transparent 75%, #808080 75%);
+  background-size: 32px 32px;
+  background-position: 0 0, 0 16px, 16px -16px, -16px 0px;
+}
+</pre>
+<p>To that let’s add a UI so we can set the alpha and color of
+the clear value as well as whether or not it’s premultiplied</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+import GUI from '/3rdparty/muigui-0.x.module.js';
+
+...
+
++  const color = [1, 0, 0];
++  const settings = {
++    premultiply: false,
++    color,
++    alpha: 0.01,
++  };
++
++  const gui = new GUI().onChange(render);
++  gui.add(settings, 'premultiply');
++  gui.add(settings, 'alpha', 0, 1);
++  gui.addColor(settings, 'color');
+
+  function render() {
+    const encoder = device.createCommandEncoder({ label: 'clear encoder' });
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
++    const { alpha } = settings;
++    clearValue[3] = alpha;
++    if (settings.premultiply) {
++      // premultiply the colors by the alpha
++      clearValue[0] = color[0] * alpha;
++      clearValue[1] = color[1] * alpha;
++      clearValue[2] = color[2] * alpha;
++    } else {
++      // use un-premultiplied colors
++      clearValue[0] = color[0];
++      clearValue[1] = color[1];
++      clearValue[2] = color[2];
++    }
+
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>If we run that I hope you’ll see an issue</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-canvas-alphamode-premultiplied.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-canvas-alphamode-premultiplied.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>What colors appear here is <strong>UNDEFINED</strong>!!!</p>
+<p>On my machine I got these colors</p>
+<img src="resources/canvas-invalid-color.png" class="center" style="width: 440px">
+<p>Do you see what’s wrong? We have the alpha set to 0.01. The background colors
+are supposed to be medium and dark gray. The color is set to red (1, 0, 0).
+Putting 0.01 amount of red on top of a medium/dark gray checkerboard should be
+nearly imperceptible so why is it 2 bright shades of pink?</p>
+<p>The reason is, <strong>THIS IS AN ILLEGAL COLOR!</strong>. The color of
+our canvas is <code class="notranslate" translate="no">1, 0, 0, 0.01</code> but that is not a premultiplied
+color. “premultiplied” means the colors we put in the canvas
+must already be multiplied by the alpha value. Given an alpha
+value of 0.01, no other value should be greater than 0.01.</p>
+<p>If you click the ‘premultiplied’ checkbox then the code will
+premultiply the color. The value put in the canvas will be
+<code class="notranslate" translate="no">0.01, 0, 0, 0.01</code> and it will look correct, almost imperceptible.</p>
+<p>With ‘premultiplied’ checked, adjust the alpha and
+you’ll see it fades to red as the alpha approaches 1.</p>
+<blockquote>
+<p>Note: Because the example <code class="notranslate" translate="no">1, 0, 0, 0.01</code> is an illegal color,
+how it is displayed is undefined. It’s up to the browser what
+happens with illegal colors so don’t use illegal colors and
+expect the same results across devices.</p>
+</blockquote>
+<p>Let’s say our color is 1, 0.5, 0.25 which is orange and we want it to be 33%
+transparent so our alpha is 0.33. Then, our “premultiplied color” would be</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">                      premultiplied
+   ---------------------------------
+   r = 1    * 0.33   = 0.33
+   g = 0.5  * 0.33   = 0.165
+   g = 0.25 * 0.33   = 0.0825
+   a = 0.33          = 0.33
+</pre>
+<p>How you get a pre-multiplied color is up to you. If you have un-premultiplied
+colors then in the shader you could premultiply with code like this.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">   return vec4f(color.rgb * color.a, color.a)`;
+</pre>
+<p>The function, <code class="notranslate" translate="no">copyExternalImageToTexture</code> which we covered in
+<a href="webgpu-importing-textures.html">the article on importing textures</a>
+takes a <code class="notranslate" translate="no">premultipliedAlpha: true</code> option. (<a href="#copyExternalImageToTexture">see below</a>)
+This means when you load the image into the texture by calling
+<code class="notranslate" translate="no">copyExternalImageToTexture</code> you can tell WebGPU to premultiply the colors for
+you as it copies them to the texture. That way when you call <code class="notranslate" translate="no">textureSample</code> the value
+you get will already be premultiplied.</p>
+<p>The point of this section was</p>
+<ol>
+<li>
+<p>To explain `alphaMode: ‘premultiplied’ WebGPU canvas configuration option.</p>
+<p>This lets a WebGPU canvas have transparency</p>
+</li>
+<li>
+<p>To introduce the concept of premultiplied alpha colors</p>
+<p>How you get premultiplied colors is up to you. In the
+example above we created a premultiplied <code class="notranslate" translate="no">clearValue</code>
+in JavaScript.</p>
+<p>We can also return colors from fragment shaders (and/or)
+other shaders. We might provide premultiplied colors
+to those shaders. We might do the multiplication in
+the shader itself. We might run a post processing pass
+to premultiply the colors. What’s important is that
+the colors in the canvas, one way or another, end up
+premultiplied if we’re using <code class="notranslate" translate="no">alphaMode: 'premultiplied'</code></p>
+<p>A good reference for other premultiplied vs un-premultiplied
+colors is this article:
+<a href="https://www.realtimerendering.com/blog/gpus-prefer-premultiplication/">GPUs prefer premultiplication</a>.</p>
+</li>
+</ol>
+<h2 id="discard"><a href="a-discard"></a> Discard</h2>
+<p><code class="notranslate" translate="no">discard</code> is a WGSL statement that you can use in a fragment
+shader to discard the current fragment or in other words, to
+not draw a pixel.</p>
+<p>Let’s take our example that draws a checkerboard in the fragment
+shader using the <code class="notranslate" translate="no">@builtin(position)</code> from <a href="webgpu-inter-stage-variables.html#a-builtin-position">the article on inter-stage variables</a>.</p>
+<p>Instead of drawing a 2 color checkerboard, we’ll discard
+for one of the two cases.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+-  let red = vec4f(1, 0, 0, 1);
+  let cyan = vec4f(0, 1, 1, 1);
+
+  let grid = vec2u(fsInput.position.xy) / 8;
+  let checker = (grid.x + grid.y) % 2 == 1;
+
++        if (checker) {
++          discard;
++        }
++
++        return cyan;
+
+-  return select(red, cyan, checker);
+}
+</pre>
+<p>A few other changes, we’ll add in the CSS above to make the
+canvas have a CSS checkerboard background. We’ll also set
+<code class="notranslate" translate="no">alphaMode: 'premultiplied</code>. And we’ll set the <code class="notranslate" translate="no">clearValue</code>
+to <code class="notranslate" translate="no">[0, 0, 0, 0]</code></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  context.configure({
+    device,
+    format: presentationFormat,
++    alphaMode: 'premultiplied',
+  });
+
+  ...
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: &lt;- to be filled out when we render
+-        clearValue: [0.3, 0.3, 0.3, 1],
++        clearValue: [0, 0, 0, 0],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+...
+
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-transparency-fragment-shader-discard.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-transparency-fragment-shader-discard.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>You should see that every other square is “transparent” in that
+it wasn’t even drawn.</p>
+<p>It’s common in a shader used for transparency to discard based
+on the alpha value. Something like</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+    let color = ... compute a color ....
+
+    if (color.a &lt; threshold) {
+      discard;
+    }
+
+    return color;
+}
+</pre>
+<p>Where <code class="notranslate" translate="no">threshold</code> might be a value from a uniform or a constant
+or whatever is appropriate.</p>
+<p>This is probably most commonly used for sprites and for foliage like grass and
+leaves because, if we are drawing and we’re using a depth texture, like we
+introduced in <a href="webgpu-orthograpic-projection.html#a-depth-textures">the article on orthographic projection</a>,
+then when we draw a sprite, leaf, or blade of grass, none of the sprites,
+leaves, or grass behind the thing we’re currently drawing will be drawn, even if
+the alpha value is 0 because we’ll still be updating the depth texture. So,
+instead of drawing we discard. We’ll go over this more in another article.</p>
+<h2 id="blend-settings"><a href="a-blending"></a> Blend Settings</h2>
+<p>Finally we get to blend settings. When you create a render pipeline, for each
+<code class="notranslate" translate="no">target</code> in the fragment shader, you can set blending state. In other words,
+here’s a typical pipeline from our other examples so far</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const pipeline = device.createRenderPipeline({
+      label: 'hardcoded textured quad pipeline',
+      layout: pipelineLayout,
+      vertex: {
+        module,
+      },
+      fragment: {
+        module,
+        targets: [
+          {
+            format: presentationFormat,
+          },
+        ],
+      },
+    });
+</pre>
+<p>And here it is with blending added to <code class="notranslate" translate="no">target[0]</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const pipeline = device.createRenderPipeline({
+      label: 'hardcoded textured quad pipeline',
+      layout: pipelineLayout,
+      vertex: {
+        module,
+      },
+      fragment: {
+        module,
+        targets: [
+          {
+            format: presentationFormat,
++            blend: {
++              color: {
++                srcFactor: 'one',
++                dstFactor: 'one-minus-src-alpha'
++              },
++              alpha: {
++                srcFactor: 'one',
++                dstFactor: 'one-minus-src-alpha'
++              },
++            },
+          },
+        ],
+      },
+    });
+</pre>
+<p>The full list of default settings are:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">blend: {
+  color: {
+    operation: 'add',
+    srcFactor: 'one',
+    dstFactor: 'zero',
+  },
+  alpha: {
+    operation: 'add',
+    srcFactor: 'one',
+    dstFactor: 'zero',
+  },
+}
+</pre>
+<p>Where <code class="notranslate" translate="no">color</code> is what happens to the <code class="notranslate" translate="no">rgb</code> portion of a color and <code class="notranslate" translate="no">alpha</code> is
+what happens to the <code class="notranslate" translate="no">a</code> (alpha) portion.</p>
+<p><code class="notranslate" translate="no">operation</code> can be one of</p>
+<ul>
+<li>‘add’</li>
+<li>‘subtract’</li>
+<li>‘reverse-subtract’</li>
+<li>‘min’</li>
+<li>‘max’</li>
+</ul>
+<p><code class="notranslate" translate="no">srcFactor</code> and <code class="notranslate" translate="no">dstFactor</code> can each be one of</p>
+<ul>
+<li>‘zero’</li>
+<li>‘one’</li>
+<li>‘src’</li>
+<li>‘one-minus-src’</li>
+<li>‘src-alpha’</li>
+<li>‘one-minus-src-alpha’</li>
+<li>‘dst’</li>
+<li>‘one-minus-dst’</li>
+<li>‘dst-alpha’</li>
+<li>‘one-minus-dst-alpha’</li>
+<li>‘src-alpha-saturated’</li>
+<li>‘constant’</li>
+<li>‘one-minus-constant’</li>
+</ul>
+<p>Most of them are relatively straight forward to understand. Think of it as</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">   result = operation((src * srcFactor),  (dst * dstFactor))
+</pre>
+<p>Where <code class="notranslate" translate="no">src</code> is the value returned by your fragment shader and <code class="notranslate" translate="no">dst</code> is the value
+already in the texture you are drawing to.</p>
+<p>Consider the default where <code class="notranslate" translate="no">operation</code> is <code class="notranslate" translate="no">'add'</code>, <code class="notranslate" translate="no">srcFactor</code> is <code class="notranslate" translate="no">'one'</code> and
+<code class="notranslate" translate="no">dstFactor</code> is <code class="notranslate" translate="no">'zero'</code>. This gives us</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">   result = add((src * 1), (dst * 0))
+   result = add(src * 1, dst * 0)
+   result = add(src, 0)
+   result = src;
+</pre>
+<p>As you can see, the default result ends up being just <code class="notranslate" translate="no">src</code>.</p>
+<p>Of the blend factors above, 2 mention a constant, <code class="notranslate" translate="no">'constant'</code> and
+<code class="notranslate" translate="no">'one-minus-constant'</code>. The constant referred to here is set in a render pass
+with the <code class="notranslate" translate="no">setBlendConstant</code> command and defaults to <code class="notranslate" translate="no">[0, 0, 0, 0]</code>. This lets
+you change it between draws.</p>
+<p>Probably the most common setting for blending is</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
+  operation: 'add',
+  srcFactor: 'one',
+  dstFactor: 'one-minus-src-alpha'
+}
+</pre>
+<p>This mode is used most often with “premultiplied alpha” meaning it expects that
+the “src” has already had its RGB colors “premultiplied” by the alpha value as
+we covered above.</p>
+<p>Let’s make an example that shows these options.</p>
+<p>First let’s make some JavaScript that creates two canvas 2D images
+with some alpha. We’ll load these 2 canvases into WebGPU textures.</p>
+<p>First, some code for making an image we’ll use for our dst texture.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const hsl = (h, s, l) =&gt; `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
+
+function createDestinationImage(size) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+
+  const gradient = ctx.createLinearGradient(0, 0, size, size);
+  for (let i = 0; i &lt;= 6; ++i) {
+    gradient.addColorStop(i / 6, hsl(i / -6, 1, 0.5));
+  }
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, size, size);
+
+  ctx.fillStyle = 'rgba(0, 0, 0, 255)';
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.rotate(Math.PI / -4);
+  for (let i = 0; i &lt; size * 2; i += 32) {
+    ctx.fillRect(-size, i, size * 2, 16);
+  }
+
+  return canvas;
+}
+</pre>
+<p>And here it is running.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-blend-dest-canvas.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-blend-dest-canvas.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Here’s some code for making an image we’ll use for our
+src texture.</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const hsla = (h, s, l, a) =&gt; `hsla(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%, ${a})`;
+
+function createSourceImage(size) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.translate(size / 2, size / 2);
+
+  ctx.globalCompositeOperation = 'screen';
+  const numCircles = 3;
+  for (let i = 0; i &lt; numCircles; ++i) {
+    ctx.rotate(Math.PI * 2 / numCircles);
+    ctx.save();
+    ctx.translate(size / 6, 0);
+    ctx.beginPath();
+
+    const radius = size / 3;
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+
+    const gradient = ctx.createRadialGradient(0, 0, radius / 2, 0, 0, radius);
+    const h = i / numCircles;
+    gradient.addColorStop(0.5, hsla(h, 1, 0.5, 1));
+    gradient.addColorStop(1, hsla(h, 1, 0.5, 0));
+
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    ctx.restore();
+  }
+  return canvas;
+}
+</pre>
+<p>And here’s that running.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-blend-src-canvas.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-blend-src-canvas.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Now that we have both, we can modify the canvas importing example from
+<a href="webgpu-import-textures.html#a-loading-canvas">the article on importing textures</a>.</p>
+<p>First, let’s make the 2 canvas images</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const size = 300;
+const srcCanvas = createSourceImage(size);
+const dstCanvas = createDestinationImage(size);
+</pre>
+<p>Let’s modify the shader so it doesn’t multiply
+the texture coords by 50 since we will not be trying to
+draw a long plane into the distance.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+  let pos = array(
+
+    vec2f( 0.0,  0.0),  // center
+    vec2f( 1.0,  0.0),  // right, center
+    vec2f( 0.0,  1.0),  // center, top
+
+    // 2st triangle
+    vec2f( 0.0,  1.0),  // center, top
+    vec2f( 1.0,  0.0),  // right, center
+    vec2f( 1.0,  1.0),  // right, top
+  );
+
+  var vsOutput: OurVertexShaderOutput;
+  let xy = pos[vertexIndex];
+  vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+-  vsOutput.texcoord = xy * vec2f(1, 50);
++  vsOutput.texcoord = xy;
+  return vsOutput;
+}
+</pre>
+<p>Let’s update the <code class="notranslate" translate="no">createTextureFromSource</code> function so we can pass <code class="notranslate" translate="no">premultipliedAlpha: true/false</code> to
+it and it will pass it on to <code class="notranslate" translate="no">copyExternalTextureToImage</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function copySourceToTexture(device, texture, source, {flipY} = {}) {
++  function copySourceToTexture(device, texture, source, {flipY, premultipliedAlpha} = {}) {
+    device.queue.copyExternalImageToTexture(
+      { source, flipY, },
+-      { texture },
++      { texture, premultipliedAlpha },
+      { width: source.width, height: source.height },
+    );
+
+    if (texture.mipLevelCount &gt; 1) {
+      generateMips(device, texture);
+    }
+  }
+</pre>
+<p>Then, let’s use that to create two versions of each texture, one premultiplied, one “un-premultiplied” or
+or “not premultiplied”</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const srcTextureUnpremultipliedAlpha =
+      createTextureFromSource(
+          device, srcCanvas,
+          {mips: true});
+  const dstTextureUnpremultipliedAlpha =
+      createTextureFromSource(
+          device, dstCanvas,
+          {mips: true});
+
+  const srcTexturePremultipliedAlpha =
+      createTextureFromSource(
+          device, srcCanvas,
+          {mips: true, premultipliedAlpha: true});
+  const dstTexturePremultipliedAlpha =
+      createTextureFromSource(
+          device, dstCanvas,
+          {mips: true, premultipliedAlpha: true});
+</pre>
+<p>Note: We could add an option to premultiply in the shader but that’s
+arguably not common. Rather it’s more common
+to decide, based on your needs, whether all textures containing color are premultiplied
+or not premultiplied. So, we’ll stick with different textures and add UI options to
+select the premultiplied ones or un-premultiplied ones.</p>
+<p>We need a uniform buffer for each of our 2 draws just in case we want to draw
+in 2 different places or the textures are 2 different sizes.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function makeUniformBufferAndValues(device) {
+    // offsets to the various uniform values in float32 indices
+    const kMatrixOffset = 0;
+
+    // create a buffer for the uniform values
+    const uniformBufferSize =
+      16 * 4; // matrix is 16 32bit floats (4bytes each)
+    const buffer = device.createBuffer({
+      label: 'uniforms for quad',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    // create a typedarray to hold the values for the uniforms in JavaScript
+    const values = new Float32Array(uniformBufferSize / 4);
+    const matrix = values.subarray(kMatrixOffset, 16);
+    return { buffer, values, matrix };
+  }
+  const srcUniform = makeUniformBufferAndValues(device);
+  const dstUniform = makeUniformBufferAndValues(device);
+</pre>
+<p>We need a sampler and we need a bindGroup for each texture. This brings up an issue.
+A bindGroup needs a bindGroup layout. Most of the examples on this site
+get their layout from a pipeline by calling <code class="notranslate" translate="no">somePipeline.getBindGroupLayout(groupNumber)</code>.
+In our case though, we’re going to create a pipeline based on the blend state settings
+we choose. So, we won’t have the pipeline to get a bindGroupLayout from until render
+time.</p>
+<p>We could create the bindGroups at render time. OR, we could create our own
+bindGroupLayout and tell the pipelines to use it. This way we can create the bindGroups
+at init time and they’ll be compatible with any pipeline that uses the same bindGroupLayout.</p>
+<p>The details of creating a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout">bindGroupLayout</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout">pipelineLayout</a>
+are covered <a href="webgpu-bindgrouplayout.html">in another article</a>. For now, here’s the code to create
+them that match our shader module</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      { binding: 0, visibility: GPUShaderStage.FRAGMENT, sampler: { }, },
+      { binding: 1, visibility: GPUShaderStage.FRAGMENT, texture: { } },
+      { binding: 2, visibility: GPUShaderStage.VERTEX, buffer: { } },
+    ],
+  });
+
+  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [
+      bindGroupLayout,
+    ],
+  });
+</pre>
+<p>With the bindGroupLayout created, we can use it to make bindGroups.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const sampler = device.createSampler({
+    magFilter: 'linear',
+    minFilter: 'linear',
+    mipmapFilter: 'linear',
+  });
+
+
+  const srcBindGroupUnpremultipliedAlpha = device.createBindGroup({
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: srcTextureUnpremultipliedAlpha.createView() },
+      { binding: 2, resource: { buffer: srcUniform.buffer }},
+    ],
+  });
+
+  const dstBindGroupUnpremultipliedAlpha = device.createBindGroup({
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: dstTextureUnpremultipliedAlpha.createView() },
+      { binding: 2, resource: { buffer: dstUniform.buffer }},
+    ],
+  });
+
+  const srcBindGroupPremultipliedAlpha = device.createBindGroup({
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: srcTexturePremultipliedAlpha.createView() },
+      { binding: 2, resource: { buffer: srcUniform.buffer }},
+    ],
+  });
+
+  const dstBindGroupPremultipliedAlpha = device.createBindGroup({
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: dstTexturePremultipliedAlpha.createView() },
+      { binding: 2, resource: { buffer: dstUniform.buffer }},
+    ],
+  });
+</pre>
+<p>Now that we have bindGroups and textures let’s make an array of
+the premultiplied texture vs the un-premultiplied textures so we can
+easily select one set or the other</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const textureSets = [
+    {
+      srcTexture: srcTexturePremultipliedAlpha,
+      dstTexture: dstTexturePremultipliedAlpha,
+      srcBindGroup: srcBindGroupPremultipliedAlpha,
+      dstBindGroup: dstBindGroupPremultipliedAlpha,
+    },
+    {
+      srcTexture: srcTextureUnpremultipliedAlpha,
+      dstTexture: dstTextureUnpremultipliedAlpha,
+      srcBindGroup: srcBindGroupUnpremultipliedAlpha,
+      dstBindGroup: dstBindGroupUnpremultipliedAlpha,
+    },
+  ];
+</pre>
+<p>In our render pass descriptor we’ll pull out the <code class="notranslate" translate="no">clearValue</code> so we can more
+easily access it</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const clearValue = [0, 0, 0, 0];
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: &lt;- to be filled out when we render
+-        clearValue: [0.3, 0.3, 0.3, 1];
++        clearValue,
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+</pre>
+<p>We’ll need 2 render pipelines. One to draw the dest texture, this one will
+not use blending. Notice we’re passing in the pipelineLayout instead of using
+<code class="notranslate" translate="no">auto</code> as we’ve done in most examples so far.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const dstPipeline = device.createRenderPipeline({
+    label: 'hardcoded textured quad pipeline',
+    layout: pipelineLayout,
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [ { format: presentationFormat } ],
+    },
+  });
+</pre>
+<p>The other pipeline will be created at render time with whatever blend options we choose</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const color = {
+    operation: 'add',
+    srcFactor: 'one',
+    dstFactor: 'one-minus-src',
+  };
+
+  const alpha = {
+    operation: 'add',
+    srcFactor: 'one',
+    dstFactor: 'one-minus-src',
+  };
+
+  function render() {
+    ...
+
+    const srcPipeline = device.createRenderPipeline({
+      label: 'hardcoded textured quad pipeline',
+      layout: pipelineLayout,
+      vertex: {
+        module,
+      },
+      fragment: {
+        module,
+        targets: [
+          {
+            format: presentationFormat,
+            blend: {
+              color,
+              alpha,
+            },
+          },
+        ],
+      },
+    });
+
+</pre>
+<p>To render we choose a texture set and then render the dst texture
+with the dstPipeline (no blending), and then on top of that we render
+the src texture with the srcPipeline (with blending)</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const settings = {
++    textureSet: 0,
++  };
+
+  function render() {
+    const srcPipeline = device.createRenderPipeline({
+      label: 'hardcoded textured quad pipeline',
+      layout: pipelineLayout,
+      vertex: {
+        module,
+      },
+      fragment: {
+        module,
+        targets: [
+          {
+            format: presentationFormat,
+            blend: {
+              color,
+              alpha,
+            },
+          },
+        ],
+      },
+    });
+
++    const {
++      srcTexture,
++      dstTexture,
++      srcBindGroup,
++      dstBindGroup,
++    } = textureSets[settings.textureSet];
+
+    const canvasTexture = context.getCurrentTexture();
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
++    function updateUniforms(uniform, canvasTexture, texture) {
++      const projectionMatrix = mat4.ortho(0, canvasTexture.width, canvasTexture.height, 0, -1, 1);
++
++      mat4.scale(projectionMatrix, [texture.width, texture.height, 1], uniform.matrix);
++
++      // copy the values from JavaScript to the GPU
++      device.queue.writeBuffer(uniform.buffer, 0, uniform.values);
++    }
++    updateUniforms(srcUniform, canvasTexture, srcTexture);
++    updateUniforms(dstUniform, canvasTexture, dstTexture);
+
+    const encoder = device.createCommandEncoder({ label: 'render with blending' });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
++    // draw dst
++    pass.setPipeline(dstPipeline);
++    pass.setBindGroup(0, dstBindGroup);
++    pass.draw(6);  // call our vertex shader 6 times
++
++    // draw src
++    pass.setPipeline(srcPipeline);
++    pass.setBindGroup(0, srcBindGroup);
++    pass.draw(6);  // call our vertex shader 6 times
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>Now let’s make some UI to set these values</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const operations = [
++    'add',
++    'subtract',
++    'reverse-subtract',
++    'min',
++    'max',
++  ];
++
++  const factors = [
++    'zero',
++    'one',
++    'src',
++    'one-minus-src',
++    'src-alpha',
++    'one-minus-src-alpha',
++    'dst',
++    'one-minus-dst',
++    'dst-alpha',
++    'one-minus-dst-alpha',
++    'src-alpha-saturated',
++    'constant',
++    'one-minus-constant',
++  ];
+
+  const color = {
+    operation: 'add',
+    srcFactor: 'one',
+    dstFactor: 'one-minus-src',
+  };
+
+  const alpha = {
+    operation: 'add',
+    srcFactor: 'one',
+    dstFactor: 'one-minus-src',
+  };
+
+  const settings = {
+    textureSet: 0,
+  };
+
++  const gui = new GUI().onChange(render);
++  gui.add(settings, 'textureSet', ['premultiplied alpha', 'un-premultiplied alpha']);
++  const colorFolder = gui.addFolder('color');
++  colorFolder.add(color, 'operation', operations);
++  colorFolder.add(color, 'srcFactor', factors);
++  colorFolder.add(color, 'dstFactor', factors);
++  const alphaFolder = gui.addFolder('alpha');
++  alphaFolder.add(alpha, 'operation', operations);
++  alphaFolder.add(alpha, 'srcFactor', factors);
++  alphaFolder.add(alpha, 'dstFactor', factors);
+</pre>
+<p>If the operation is <code class="notranslate" translate="no">'min'</code> or <code class="notranslate" translate="no">'max'</code> we must set <code class="notranslate" translate="no">srcFactor</code> and <code class="notranslate" translate="no">dstFactor</code> to
+<code class="notranslate" translate="no">'one'</code> or else we’ll get an error</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function makeBlendComponentValid(blend) {
++    const { operation } = blend;
++    if (operation === 'min' || operation === 'max') {
++      blend.srcFactor = 'one';
++      blend.dstFactor = 'one';
++    }
++  }
+
+  function render() {
++    makeBlendComponentValid(color);
++    makeBlendComponentValid(alpha);
++    gui.updateDisplay();
+
+    ...
+</pre>
+<p>Let’s also make it possible to set the blend constant for when we pick
+<code class="notranslate" translate="no">'constant'</code> or <code class="notranslate" translate="no">'one-minus-constant'</code> as a factor.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const constant = {
++    color: [1, 0.5, 0.25],
++    alpha: 1,
++  };
+
+  const settings = {
+    textureSet: 0,
+  };
+
+  const gui = new GUI().onChange(render);
+  gui.add(settings, 'textureSet', ['premultiplied alpha', 'un-premultiplied alpha']);
+  ...
++  const constantFolder = gui.addFolder('constant');
++  constantFolder.addColor(constant, 'color');
++  constantFolder.add(constant, 'alpha', 0, 1);
+
+  ...
+
+  function render() {
+    ...
+
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+    // draw dst
+    pass.setPipeline(dstPipeline);
+    pass.setBindGroup(0, dstBindGroup);
+    pass.draw(6);  // call our vertex shader 6 times
+
+    // draw src
+    pass.setPipeline(srcPipeline);
+    pass.setBindGroup(0, srcBindGroup);
++    pass.setBlendConstant([...constant.color, constant.alpha]);
+    pass.draw(6);  // call our vertex shader 6 times
+
+    pass.end();
+  }
+</pre>
+<p>As there are 13 * 13 * 5 * 13 * 13 * 5 possible settings there are
+just too many to explore so let’s provide a list of presets. If
+there is no <code class="notranslate" translate="no">alpha</code> setting we’ll just repeat the <code class="notranslate" translate="no">color</code> setting.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const presets = {
++    'default (copy)': {
++      color: {
++        operation: 'add',
++        srcFactor: 'one',
++        dstFactor: 'zero',
++      },
++    },
++    'premultiplied blend (source-over)': {
++      color: {
++        operation: 'add',
++        srcFactor: 'one',
++        dstFactor: 'one-minus-src-alpha',
++      },
++    },
++    'un-premultiplied blend': {
++      color: {
++        operation: 'add',
++        srcFactor: 'src-alpha',
++        dstFactor: 'one-minus-src-alpha',
++      },
++    },
++    'destination-over': {
++      color: {
++        operation: 'add',
++        srcFactor: 'one-minus-dst-alpha',
++        dstFactor: 'one',
++      },
++    },
++    'source-in': {
++      color: {
++        operation: 'add',
++        srcFactor: 'dst-alpha',
++        dstFactor: 'zero',
++      },
++    },
++    'destination-in': {
++      color: {
++        operation: 'add',
++        srcFactor: 'zero',
++        dstFactor: 'src-alpha',
++      },
++    },
++    'source-out': {
++      color: {
++        operation: 'add',
++        srcFactor: 'one-minus-dst-alpha',
++        dstFactor: 'zero',
++      },
++    },
++    'destination-out': {
++      color: {
++        operation: 'add',
++        srcFactor: 'zero',
++        dstFactor: 'one-minus-src-alpha',
++      },
++    },
++    'source-atop': {
++      color: {
++        operation: 'add',
++        srcFactor: 'dst-alpha',
++        dstFactor: 'one-minus-src-alpha',
++      },
++    },
++    'destination-atop': {
++      color: {
++        operation: 'add',
++        srcFactor: 'one-minus-dst-alpha',
++        dstFactor: 'src-alpha',
++      },
++    },
++    'additive (lighten)': {
++      color: {
++        operation: 'add',
++        srcFactor: 'one',
++        dstFactor: 'one',
++      },
++    },
++  };
+
+  ...
+
+  const settings = {
+    textureSet: 0,
++    preset: 'default (copy)',
+  };
+
+  const gui = new GUI().onChange(render);
+  gui.add(settings, 'textureSet', ['premultiplied alpha', 'un-premultiplied alpha']);
++  gui.add(settings, 'preset', Object.keys(presets))
++    .name('blending preset')
++    .onChange(presetName =&gt; {
++      const preset = presets[presetName];
++      Object.assign(color, preset.color);
++      Object.assign(alpha, preset.alpha || preset.color);
++      gui.updateDisplay();
++    });
+
+  ...
+</pre>
+<p>Let’s also let you choose the canvas configuration for <code class="notranslate" translate="no">alphaMode</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
++    alphaMode: 'premultiplied',
+    textureSet: 0,
+    preset: 'default (copy)',
+  };
+
+  const gui = new GUI().onChange(render);
++  gui.add(settings, 'alphaMode', ['opaque', 'premultiplied']).name('canvas alphaMode');
+  gui.add(settings, 'textureSet', ['premultiplied alpha', 'un-premultiplied alpha']);
+
+  ...
+
+  function render() {
+    ...
+
++    context.configure({
++      device,
++      format: presentationFormat,
++      alphaMode: settings.alphaMode,
++    });
+
+    const canvasTexture = context.getCurrentTexture();
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
+</pre>
+<p>And finally, lets let you pick the clearValue for the render pass.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const clear = {
++    color: [0, 0, 0],
++    alpha: 0,
++    premultiply: true,
++  };
+
+  const settings = {
+    alphaMode: 'premultiplied',
+    textureSet: 0,
+    preset: 'default (copy)',
+  };
+
+  const gui = new GUI().onChange(render);
+
+  ...
+
++  const clearFolder = gui.addFolder('clear color');
++  clearFolder.add(clear, 'premultiply');
++  clearFolder.add(clear, 'alpha', 0, 1);
++  clearFolder.addColor(clear, 'color');
+
+  function render() {
+    ...
+
+    const canvasTexture = context.getCurrentTexture();
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
++    {
++      const { alpha, color, premultiply } = clear;
++      const mult = premultiply ? alpha : 1;
++      clearValue[0] = color[0] * mult;
++      clearValue[1] = color[1] * mult;
++      clearValue[2] = color[2] * mult;
++      clearValue[3] = alpha;
++    }
+</pre>
+<p>That was a lot of options. Maybe too many 😅. In any case, we now have an
+example where we can play around with the blend settings</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-blend.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-blend.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Given our source images</p>
+<div class="webgpu_center">
+  <div data-diagram="original"></div>
+</div>
+<p>Here’s some known useful blend settings</p>
+<div class="webgpu_center">
+  <div data-diagram="blend-premultiplied blend (source-over)"></div>
+</div>
+<div class="webgpu_center">
+  <div data-diagram="blend-destination-over"></div>
+</div>
+<div class="webgpu_center">
+  <div data-diagram="blend-additive (lighten)"></div>
+</div>
+<div class="webgpu_center">
+  <div data-diagram="blend-source-in"></div>
+</div>
+<div class="webgpu_center">
+  <div data-diagram="blend-destination-in"></div>
+</div>
+<div class="webgpu_center">
+  <div data-diagram="blend-source-out"></div>
+</div>
+<div class="webgpu_center">
+  <div data-diagram="blend-destination-out"></div>
+</div>
+<div class="webgpu_center">
+  <div data-diagram="blend-source-atop"></div>
+</div>
+<div class="webgpu_center">
+  <div data-diagram="blend-destination-atop"></div>
+</div>
+<hr>
+<p>These blend setting names are from the Canvas 2D
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation"><code class="notranslate" translate="no">globalCompositeOperation</code></a>
+options. There are more options listed in that spec but most of the rest require
+more math than can be done with only these base blending settings and so require
+different solutions.</p>
+<p>Now that we have these fundamentals of blending in WebGPU we can refer to them as we
+cover various techniques.</p>
+<!-- keep this at the bottom of the article -->
+<link href="webgpu-transparency.css" rel="stylesheet">
+<script type="module" src="webgpu-transparency.js"></script>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-transparency.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-transparency.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-transparency.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-transparency.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-transparency.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-transparency.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-transparency.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Basics</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
+<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+<li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
+<li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-textures.html">Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-importing-textures.html">Loading Images</a></li>
+<li><a href="/webgpu/lessons/webgpu-textures-external-video.html">Using Video</a></li>
+<li><a href="/webgpu/lessons/webgpu-cube-maps.html">Cube Maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
+<li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
+<li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+        </ul>
+  <li>3D Math</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>Compute Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>Misc</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Questions? <a href="http://stackoverflow.com/questions/tagged/webgpu">Ask on stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Suggestion</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU Transparency and Blending`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

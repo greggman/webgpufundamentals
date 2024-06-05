@@ -1,0 +1,163 @@
+<!-- Licensed under a BSD license. See license.html for license -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Directional Lighting Diagram</title>
+<style>
+:root {
+  color-scheme: light dark;
+}
+html, body {
+  margin: 0;
+  height: 100%;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+@media (prefers-color-scheme: dark) {
+  canvas {
+    background: #444;
+  }
+}
+</style>
+<link href="muigui-plain.css" rel="stylesheet">
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+<script type="module">
+import GUI from '/3rdparty/muigui-0.x.module.js';
+import * as twgl from '/3rdparty/twgl-full.module.js';
+import * as diagram from './diagram.js';
+import { rgb, hsl } from './utils.js';
+
+function main() {
+  const opt = getQueryParams();
+  const lang = {
+    lightDir: opt.lightDir || 'light direction',
+    dot: opt.dot || 'dot(reverseLightDirection,surfaceDirection) = ',
+    surface1: opt.surface1 || 'surface',
+    surface2: opt.surface2 || 'direction',
+  };
+
+  const darkColors = {
+    arrow: '#DDD',
+    surfaceDir: '#0C0',
+  };
+  const lightColors = {
+    arrow: '#000',
+    surfaceDir: '#080',
+  };
+
+  const darkMatcher = window.matchMedia('(prefers-color-scheme: dark)');
+  darkMatcher.addEventListener('change', render);
+
+  const ctx = document.querySelector('#canvas').getContext('2d');
+  const settings = {
+    direction: 0,
+  };
+
+  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
+  const gui = new GUI();
+  GUI.setTheme('float');
+  gui.onChange(render);
+  gui.add(settings, 'direction', radToDegOptions);
+
+
+  function render() {
+    const { direction } = settings;
+    const isDarkMode = darkMatcher.matches;
+    const colors = isDarkMode ? darkColors : lightColors;
+
+    twgl.resizeCanvasToDisplaySize(ctx.canvas, window.devicePixelRatio);
+    const width  = 250;
+    const height = 200;
+
+    const baseScale = Math.min(ctx.canvas.width / width,  ctx.canvas.height / height);
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.save();
+    ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+    ctx.scale(baseScale, baseScale);
+
+    ctx.font = '8px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const lx = 0;
+    const ly = -height / 5;
+
+    ctx.save();
+    ctx.translate(lx, ly);
+
+    ctx.fillStyle = colors.arrow;
+    ctx.strokeStyle = colors.arrow;
+    const numArrows = 5;
+    for (let ii = 0; ii <= numArrows; ++ii) {
+      const u = ii / numArrows;
+      const x = (u * 2 - 1) * 70;
+      ctx.save();
+      ctx.translate(x, 0);
+      ctx.rotate(direction);
+      diagram.arrow(ctx, 0, -20, 0, 20, false, true, 0.5);
+      ctx.restore();
+    }
+    ctx.fillText(lang.lightDir, 0, -30);
+
+    ctx.restore();
+
+    const sx = 0;
+    const sy = height / 6 + 10;
+
+    ctx.save();
+    ctx.translate(sx, sy);
+
+    // draw surface
+    diagram.roundedRect(ctx, -100, 0, 200, 20);
+    const d  = twgl.v3.dot([0, 1, 0], [Math.sin(direction), Math.cos(direction), 0]);
+    ctx.fillStyle = hsl(0, 1, d - 0.5);
+    ctx.fill();
+    ctx.strokeStyle = rgb(0, 0, 0);
+    ctx.stroke();
+
+    ctx.fillStyle = '#FFF';
+    ctx.fillText(lang.dot + d.toFixed(2), 0, 10);
+
+    const nx = 0;
+    const ny = -20;
+    ctx.fillStyle = colors.surfaceDir;
+    ctx.strokeStyle = colors.surfaceDir;
+    diagram.arrow(ctx, 0, 0, nx, ny, false, true);
+    ctx.fillText(lang.surface1, nx, ny - 22);
+    ctx.fillText(lang.surface2, nx, ny - 14);
+
+    ctx.restore();
+
+    ctx.restore();
+  }
+  render();
+  window.addEventListener('resize', render);
+}
+
+function getQueryParams() {
+  const params = {};
+  if (window.location.search) {
+    window.location.search.substring(1).split('&').forEach(function(pair) {
+      const keyValue = pair.split('=').map(function(kv) {
+        return decodeURIComponent(kv);
+      });
+      params[keyValue[0]] = keyValue[1];
+    });
+  }
+  return params;
+}
+
+main();
+</script>
+</html>
+

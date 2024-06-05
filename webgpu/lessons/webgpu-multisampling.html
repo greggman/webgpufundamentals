@@ -1,0 +1,758 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/webgpu-multisampling.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Multisampling / MSAA">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_en.jpg">
+
+<meta property="og:title" content="WebGPU Multisampling">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_en.jpg">
+<meta property="og:description" content="Multisampling / MSAA">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-multisampling.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU Multisampling">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-multisampling.html">
+<meta name="twitter:description" content="Multisampling / MSAA">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_en.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-multisampling.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_en.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-multisampling.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-multisampling.html",
+      "inLanguage":"en",
+      "name":"WebGPU Multisampling",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-multisampling.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU Multisampling</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-multisampling.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-multisampling.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-multisampling.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-multisampling.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-multisampling.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-multisampling.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-multisampling.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Table of Contents</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU Multisampling</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>MSAA stands for Multi-Sampling Anti-aliasing. Anti-aliasing
+means, trying to prevent the problem of aliasing where aliasing
+is the blocky problem we get when we try to draw a vector shape as
+discrete pixels.</p>
+<p>We showed how WebGPU draws things in <a href="webgpu-fundamentals.html">the article on fundamentals</a>.
+It takes the clip space vertices we return for the <code class="notranslate" translate="no">@builtin(position)</code> value in the vertex shader
+and for every 3 it computes a triangle and then calls the fragment shader for each pixel’s center
+that is inside that triangle to ask what color to make the pixel.</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels"></div>
+    <div>drag the vertices</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-result"></div>
+    <div>result</div>
+  </div>
+</div>
+<p>The triangle above is very blocky. We can increase the resolution but, the highest resolution we can
+show is the resolution of the display, which might not be enough to not look blocky.</p>
+<p>One solution is to render at a higher resolution. For example, say we raise the resolution 4x
+(2x in both width and height) and then “bilinear filter” the result into the canvas.
+We covered “bilinear filtering” in
+<a href="webgpu-textures.html">the article on textures</a>.</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x"></div>
+    <div>4x resolution</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x-result"></div>
+    <div>bilinear filtered result</div>
+  </div>
+</div>
+<p>This solution works but it’s wasteful. Every 2x2 pixels in the image on the left gets converted
+into 1 pixel in the image on the right but often, all 4 of those pixels are inside the triangle
+so there is no need for anti-aliasing. All 4 pixels are red.</p>
+<div class="webgpu_center side-by-side flex-gap">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x-waste"></div>
+    <div>3 of every 4 <span style="color: cyan;">cyan</span> pixels are wasted</div>
+  </div>
+</div>
+<p>Drawing 4 red pixels instead of 1 pixel is a waste of time.
+The GPU called our fragment shader 4 times. Fragment shaders can be fairly large and do a lots
+of work so we’d like to call them as few times as possible. Even when the triangle crosses 3 pixels
+we get this</p>
+<div class="webgpu_center">
+  <img src="resources/antialias-4x.svg" width="600">
+</div>
+<p>Above, with 4x rendering and the triangle covering 3 pixels’ centers, the fragment shader is called 3 times.
+Later we then bilinear filter the result.</p>
+<p>This is where multisampling is more efficient. We create a special “multisample texture”.
+When we draw a triangle to a multisample texture, If any of the 4 <em>samples</em>
+are inside the triangle, the GPU calls our fragment shader one time, it then writes
+the result in only those <em>samples</em> that are inside the triangle.</p>
+<div class="webgpu_center">
+  <img src="resources/antialias-multisample-4.svg" width="600">
+</div>
+<p>Above, with multisampled rendering and the triangle covering 3 <em>samples</em>, the fragment shader is called only 1 time.
+We then <em>resolve</em> the result. The process would be similar if the triangle covered all 4 sample points. The fragment
+shader would only be called once but its result would be written to all 4 samples.</p>
+<p>Notice that, unlike the 4x rendering where the CPU checked if the centers of the 4 pixels were inside the triangle,
+with multisampled rendering the GPU checks “sample positions” which are not in a grid. Similarly, the sample
+values themselves do not represent a grid so the process of “resolving” them is not bilinear filtering but rather
+up to the GPU. These un-centered sample positions apparently result in better anti-aliasing for most situations.</p>
+<h2 id="how-to-use-multisampling"><a id="a-multisampling"></a> How to use multisampling.</h2>
+<p>So how do we use multisampling? We do it via 3 basic steps</p>
+<ol>
+<li>Set our pipeline to render to a multisample texture</li>
+<li>Create a multisample texture the same size as the final texture.</li>
+<li>Set our render pass to render to the multisample texture and <em>resolve</em> to the final texture (our canvas)</li>
+</ol>
+<p>To keep it simple, lets take our responsive triangle example at the end of <a href="webgpu-fundamentals.html#a-resizing">the article on fundamentals</a> and add multisampling.</p>
+<h3 id="set-our-pipeline-to-render-to-a-multisample-texture">Set our pipeline to render to a multisample texture</h3>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded red triangle pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
++    multisample: {
++      count: 4,
++    },
+  });
+</pre>
+<p>Adding the <code class="notranslate" translate="no">multisample</code> setting above makes this pipeline able to render to a multisample
+texture.</p>
+<h3 id="create-a-multisample-texture-the-same-size-as-our-final-texture">Create a multisample texture the same size as our final texture</h3>
+<p>Our final texture is the canvas’s texture. Since the canvas might change size, like when the user resizes the window, we’ll create this texture when we render.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let multisampleTexture;
+
+  function render() {
++    // Get the current texture from the canvas context
++    const canvasTexture = context.getCurrentTexture();
++
++    // If the multisample texture doesn't exist or
++    // is the wrong size then make a new one.
++    if (!multisampleTexture ||
++        multisampleTexture.width !== canvasTexture.width ||
++        multisampleTexture.height !== canvasTexture.height) {
++
++      // If we have an existing multisample texture destroy it.
++      if (multisampleTexture) {
++        multisampleTexture.destroy();
++      }
++
++      // Create a new multisample texture that matches our
++      // canvas's size
++      multisampleTexture = device.createTexture({
++        format: canvasTexture.format,
++        usage: GPUTextureUsage.RENDER_ATTACHMENT,
++        size: [canvasTexture.width, canvasTexture.height],
+*        sampleCount: 4,
++      });
++    }
+
+  ...
+</pre>
+<p>The code above creates a multisample texture if (a) we don’t have one
+or (b) the one we have does not match the size of the canvas.
+We create a texture the same size as the canvas but we add <code class="notranslate" translate="no">sampleCount: 4</code>
+to make it a multisample texture.</p>
+<h3 id="set-our-render-pass-to-render-to-the-multisample-texture-and-resolve-to-the-final-texture-our-canvas">Set our render pass to render to the multisample texture and <em>resolve</em> to the final texture (our canvas)</h3>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    // Get the current texture from the canvas context and
+-    // set it as the texture to render to.
+-    renderPassDescriptor.colorAttachments[0].view =
+-        context.getCurrentTexture().createView();
+
++    // Set the multisample texture as the texture to render to
++    renderPassDescriptor.colorAttachments[0].view =
++        multisampleTexture.createView();
++    // Set the canvas texture as the texture to "resolve"
++    // the multisample texture to.
++    renderPassDescriptor.colorAttachments[0].resolveTarget =
++        canvasTexture.createView();
+</pre>
+<p><em>Resolving</em> is the process of taking the multisample texture and converting it to a
+the size of the texture we really wanted. In this case, our canvas. Above, in our
+4x version we did this step manually by bilinear filtering the 4x texture to the 1x
+texture. This is a similar process but it’s not actually bilinear filter with multisampled
+textures. <a href="#a-not-a-grid">See below</a></p>
+<p>And here is</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-simple.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-simple.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>There isn’t much to see but if we were to compare them side by side at low-resolution,
+the original on the left without multisampling and the one on the right with, we can
+see the one on the right has been antialiased.</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="simple-triangle"></div>
+    <div>original</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="simple-triangle-multisample"></div>
+    <div>with multisampling</div>
+  </div>
+</div>
+<p>Some things to note:</p>
+<h2 id="count-must-be-4"><code class="notranslate" translate="no">count</code> must be <code class="notranslate" translate="no">4</code></h2>
+<p>In WebGPU version 1, you can only set <code class="notranslate" translate="no">multisample: { count }</code> on a render pipeline
+to 4 or 1. Similarly you can only set the <code class="notranslate" translate="no">sampleCount</code> on a texture to 4 or 1.
+1 is the default and means the texture is not multisampled.</p>
+<h2 id="multisampling-does-not-use-a-grid"><a id="a-not-a-grid"></a> Multisampling does not use a grid</h2>
+<p>As pointed out above, multisampling does not happen on a grid. For sampleCount = 4
+the sample locations are like this.</p>
+<div class="webgpu_center">
+  <img src="resources/multisample-4x.svg" width="256">
+  <div class="center">count: 4</div>
+</div>
+<div class="webgpu_center">
+  <img src="resources/multisample-2x.svg" width="256">
+  <div class="center">count: 2</div>
+</div>
+<div class="webgpu_center">
+  <img src="resources/multisample-8x.svg" width="256">
+  <div class="center">count: 8</div>
+</div>
+<div class="webgpu_center">
+  <img src="resources/multisample-16x.svg" width="256">
+  <div class="center">count: 16</div>
+</div>
+<p><strong>WebGPU currently only supports a count of 4</strong></p>
+<h2 id="you-do-not-have-to-set-a-resolve-target-on-every-render-pass">You do not have to set a resolve target on every render pass</h2>
+<p>Setting <code class="notranslate" translate="no">colorAttachment[0].resolveTarget</code> says to WebGPU, "when all the drawing in this render pass has finished,
+downscale the multisample texture into the texture set on <code class="notranslate" translate="no">resolveTarget</code>. If you have multiple
+render passes you probably don’t want to resolve until the last pass. While it’s fastest to
+resolve in the last pass it’s also perfectly acceptable
+to make an empty last render pass to do nothing but resolve.
+Just make sure you set the <code class="notranslate" translate="no">loadOp</code> to <code class="notranslate" translate="no">'load'</code>
+and not <code class="notranslate" translate="no">'clear'</code> in all the passes except the first pass otherwise it will be cleared.</p>
+<h2 id="you-can-optionally-run-the-fragment-shader-on-each-sample-point">You can optionally run the fragment shader on each sample point.</h2>
+<p>Above we said that the fragment shader only runs once for every 4 samples in the multisample
+texture. It runs it once and then it stores the result in the samples that were actually inside
+the triangle. This is why it’s faster than rendering at 4x the resolution.</p>
+<p>In <a href="webgpu-inter-stage-variables.html#a-interpolate">the article on inter-stage variables</a>
+we brought up that you can mark how to interpolate inter-stage variables
+with the <code class="notranslate" translate="no">@interpolate(...)</code> attribute. One option
+is <code class="notranslate" translate="no">sample</code>, in which case the fragment shader will be run once for each sample.
+There are also builtins like <code class="notranslate" translate="no">@builtin(sample_index)</code>, which will tell you which sample
+you are currently working on, and <code class="notranslate" translate="no">@builtin(sample_mask)</code>, which, as an input, will tell you which
+samples were inside the triangle, and, as an output, will let you prevent sample points
+from getting updated.</p>
+<h2 id="center-vs-centroid"><code class="notranslate" translate="no">center</code> vs <code class="notranslate" translate="no">centroid</code></h2>
+<p>There are 3 <em>sampling</em> interpolation modes. Above we mentioned <code class="notranslate" translate="no">'sample'</code> mode
+where the fragment shader is called once for each sample. The other two modes are
+<code class="notranslate" translate="no">'center'</code>, which is the default, and <code class="notranslate" translate="no">'centroid'</code>.</p>
+<ul>
+<li><code class="notranslate" translate="no">'center'</code> interpolates values relative to the center of the pixel.</li>
+</ul>
+<div class="webgpu_center">
+  <img src="resources/multisample-centroid-issue.svg" width="400">
+</div>
+<p>Above we can see a single pixel/texel where
+sample points <code class="notranslate" translate="no">s1</code> and <code class="notranslate" translate="no">s3</code> are inside the triangle. Our fragment shader will be called one
+time and it will be passed inter-stage variables with their values interpolated relative
+to the center (<code class="notranslate" translate="no">c</code>) of the pixel. The problem is, <strong><code class="notranslate" translate="no">c</code> is outside of the triangle</strong>.</p>
+<p>This might not matter, but it’s possible you have some math that assumes the value is inside
+the triangle. I don’t know of a good example but imagine we add barycentric coordinates, one
+at each point. Barycentric coordinate are basically 3 coordinates that go from zero to
+one where each value represents how far from one of the vertices of the triangle a specific
+position is. To do this, we just add barycentric points like this.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VOut {
++  @builtin(position) position: vec4f,
++  @location(0) baryCoord: vec3f,
++};
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+-) -&gt; @builtin(position) vec4f {
++) -&gt; VOut {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
++  let bary = array(
++    vec3f(1, 0, 0),
++    vec3f(0, 1, 0),
++    vec3f(0, 0, 1),
++  );
+-    return vec4f(pos[vertexIndex], 0.0, 1.0);
++  var vout: VOut;
++  vout.position = vec4f(pos[vertexIndex], 0.0, 1.0);
++  vout.baryCoord = bary[vertexIndex];
++  return vout;
+}
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return vec4f(1, 0, 0, 1);
++@fragment fn fs(vin: VOut) -&gt; @location(0) vec4f {
++  let allAbove0 = all(vin.baryCoord &gt;= vec3f(0));
++  let allBelow1 = all(vin.baryCoord &lt;= vec3f(1));
++  let inside = allAbove0 &amp;&amp; allBelow1;
++  let red = vec4f(1, 0, 0, 1);
++  let yellow = vec4f(1, 1, 0, 1);
++  return select(yellow, red, inside);
+}
+</pre>
+<p>Above we’re associating <code class="notranslate" translate="no">1, 0, 0</code> with the first point, <code class="notranslate" translate="no">0, 1, 0</code> with the 2nd,
+and <code class="notranslate" translate="no">0, 0, 1</code> with the 3rd. Interpolating between them, no value should be below
+0 or above 1.</p>
+<p>In the fragment shader we test if all three (x, y, and z) of those interpolated values are <code class="notranslate" translate="no">&gt;= 0</code> with
+<code class="notranslate" translate="no">all(vin.baryCoord &gt;= vec3f(0))</code>. We also test if they are all <code class="notranslate" translate="no">&lt;= 1</code> with
+<code class="notranslate" translate="no">all(vin.baryCoord &lt;= vec3f(1))</code>. Finally we <code class="notranslate" translate="no">&amp;</code> the 2 together. This tells
+us if we’re inside or outside the triangle. The end selects red if we’re inside
+and yellow if not inside. Since we’re interpolating <em>between</em> the vertices
+you’d expect them to always be inside.</p>
+<p>To try it out let also make our example be lower resolution so it’s easier
+to see the results</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+-      const width = entry.contentBoxSize[0].inlineSize;
+-      const height = entry.contentBoxSize[0].blockSize;
++      const width = entry.contentBoxSize[0].inlineSize / 16 | 0;
++      const height = entry.contentBoxSize[0].blockSize / 16 | 0;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // re-render
+      render();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>and some CSS</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">canvas {
++  image-rendering: pixelated;
++  image-rendering: crisp-edges;
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+</pre>
+<p>Which if we run we see this</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-center-issue.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-center-issue.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>We can see, some of the edge pixels have yellow in them. This is because, as
+pointed out above, the interpolated inter-stage variable values that are
+passed to the fragment shader are relative to the center of the pixel.
+That center is outside the triangle in the cases where we’re seeing
+yellow.</p>
+<p>Switching the interpolation sample mode to <code class="notranslate" translate="no">'centroid'</code> tries to fix this
+issue. In <code class="notranslate" translate="no">'centroid'</code> mode, the GPU uses the centroid of the area of the triangle
+that’s inside the pixel.</p>
+<div class="webgpu_center">
+  <img src="resources/multisample-centroid-fix.svg" width="400">
+</div>
+<p>If we take our sample and change the interpolation mode to <code class="notranslate" translate="no">'centroid'</code></p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VOut {
+  @builtin(position) position: vec4f,
+-  @location(0) baryCoord: vec3f,
++  @location(0) @interpolate(perspective, centroid) baryCoord: vec3f,
+};
+</pre>
+<p>Now the GPU passes the inter-stage variables interpolated values relative
+to the centroid and the issue of the yellow pixels goes away.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-centroid.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-centroid.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<blockquote>
+<p>Note: The GPU may or may not actually compute the centroid
+of the area of the triangle inside the pixel. All that is guaranteed
+is that the inter-stage variables will be interpolated relative to
+some area inside the part of the triangle that intersects the pixel.</p>
+</blockquote>
+<h2 id="what-about-anti-aliasing-inside-a-triangle">What about anti-aliasing inside a triangle?</h2>
+<p>Multisampling generally only helps the edges of triangles. Since it’s only calling the fragment
+shader once, when all sample positions are inside the triangle we just get the same result of the fragment shader
+written to all samples, which means the result will be no different than if we were not multisampling.</p>
+<p>In the example above, since we were drawing solid red, there’s clearly nothing wrong.
+What about when we’re sampling from with a texture, there may be contrasty colors next to each other inside the triangle.
+Don’t we want each sample’s color to come from a different place in the texture?</p>
+<p>Inside the triangle we use <a href="webgpu-textures.html">mipmaps and filtering</a> to pick the appropriate color
+so anti-aliasing may be less important inside a triangle. On the other hand, this can also be a problem
+with certain rendering techniques which is why there are other solutions to anti-aliasing and also possibly
+why you can use <code class="notranslate" translate="no">@interpolate(..., sample)</code> if you want to do per sample processing.</p>
+<h2 id="multisampling-is-not-the-only-solution-for-anti-aliasing">Multisampling is not the only solution for anti-aliasing.</h2>
+<p>We mentioned 2 solutions on this page.
+(1) Drawing to a higher resolution texture and then drawing that texture at a lower resolution.
+(2) Using multisampling. There are many others though.
+<a href="https://vr.arvilab.com/blog/anti-aliasing">Here’s an article that covers a few of them</a>.</p>
+<p>Some other resources:</p>
+<ul>
+<li><a href="https://therealmjp.github.io/posts/msaa-overview/">A Quick overview of MSAA</a></li>
+<li><a href="https://www.rastergrid.com/blog/gpu-tech/2021/10/multisampling-primer/">Multisampling primer</a></li>
+</ul>
+<!-- keep this at the bottom of the article -->
+<link href="webgpu-multisampling.css" rel="stylesheet">
+<script type="module" src="webgpu-multisampling.js"></script>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-multisampling.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-multisampling.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-multisampling.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-multisampling.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-multisampling.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-multisampling.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-multisampling.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Basics</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
+<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+<li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
+<li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-textures.html">Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-importing-textures.html">Loading Images</a></li>
+<li><a href="/webgpu/lessons/webgpu-textures-external-video.html">Using Video</a></li>
+<li><a href="/webgpu/lessons/webgpu-cube-maps.html">Cube Maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
+<li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
+<li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+        </ul>
+  <li>3D Math</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>Compute Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>Misc</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Questions? <a href="http://stackoverflow.com/questions/tagged/webgpu">Ask on stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Suggestion</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU Multisampling`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

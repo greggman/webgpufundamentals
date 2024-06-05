@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 562 364" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1.89112,0,0,1.89112,-121.53,-253.222)">
+        <text x="83.923px" y="292.354px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">Counter Clockwise</text>
+        <text x="101.604px" y="304.746px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">Front Facing</text>
+        <text x="114.928px" y="317.139px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">T<tspan x="121.596px 126.266px " y="317.139px 317.139px ">ri</tspan>angle</text>
+    </g>
+    <g transform="matrix(1.89112,0,0,1.89112,182.865,-252.121)">
+        <text x="108.588px" y="292.354px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">Clockwise</text>
+        <text x="102.588px" y="304.746px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">Back Facing</text>
+        <text x="114.928px" y="317.139px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">T<tspan x="121.596px 126.266px " y="317.139px 317.139px ">ri</tspan>angle</text>
+    </g>
+    <path d="M12.143,218.066L241.582,250.066L153.143,10.066L12.143,218.066Z" style="fill:rgb(140,236,98);"/>
+    <path d="M321.143,218.066L550.143,250.066L463.143,12.066L321.143,218.066Z" style="fill:rgb(98,190,236);"/>
+    <g>
+        <path d="M208.284,234.235L240.143,250.066L205.157,256.516L208.284,234.235Z"/>
+        <path d="M12.143,218.066C12.143,218.066 153.184,237.862 213.405,246.314" style="fill:none;stroke:black;stroke-width:3px;"/>
+        <path d="M154.123,45.629L153.143,10.066L175.264,37.928L154.123,45.629Z"/>
+        <path d="M240.558,250.066C240.558,250.066 184.86,97.146 162.383,35.436" style="fill:none;stroke:black;stroke-width:3px;"/>
+        <path d="M40.392,196.443L12.143,218.066L21.768,183.818L40.392,196.443Z"/>
+        <path d="M153.143,10.066C153.143,10.066 63.706,142.002 27.293,195.717" style="fill:none;stroke:black;stroke-width:3px;"/>
+    </g>
+    <g>
+        <path d="M434.774,33.533L463.143,12.066L453.328,46.261L434.774,33.533Z"/>
+        <path d="M321.143,219.066C321.143,219.066 411.188,87.803 447.869,34.331" style="fill:none;stroke:black;stroke-width:3px;stroke-miterlimit:1.5;"/>
+        <path d="M549.122,214.505L550.143,250.066L527.989,222.23L549.122,214.505Z"/>
+        <path d="M463.143,12.066C463.143,12.066 518.456,163.382 540.873,224.708" style="fill:none;stroke:black;stroke-width:3px;stroke-miterlimit:1.5;"/>
+        <path d="M353.691,233.892L321.829,218.066L356.814,211.61L353.691,233.892Z"/>
+        <path d="M550.143,250.066C550.143,250.066 408.851,230.263 348.567,221.814" style="fill:none;stroke:black;stroke-width:3px;stroke-miterlimit:1.5;"/>
+    </g>
+</svg>

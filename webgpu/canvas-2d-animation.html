@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Canvas 2D animation</title>
+    <style>
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+const size = 256;
+const half = size / 2;
+
+const ctx = document.createElement('canvas').getContext('2d');
+ctx.canvas.width = size;
+ctx.canvas.height = size;
+
+const hsl = (h, s, l) => `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
+
+function update2DCanvas(time) {
+  time *= 0.0005;
+  ctx.clearRect(0, 0, size, size);
+  ctx.save();
+  ctx.translate(half, half);
+  const num = 20;
+  for (let i = 0; i < num; ++i) {
+    ctx.fillStyle = hsl(i / num * 0.2 + time * 0.1, 1, i % 2 * 0.5);
+    ctx.fillRect(-half, -half, size, size);
+    ctx.rotate(time * 0.5);
+    ctx.scale(0.85, 0.85);
+    ctx.translate(size / 16, 0);
+  }
+  ctx.restore();
+}
+
+function render(time) {
+  update2DCanvas(time);
+  requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+
+document.body.appendChild(ctx.canvas);
+  </script>
+</html>

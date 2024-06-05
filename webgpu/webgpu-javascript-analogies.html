@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<style>
+  pre { margin: 0; }
+</style>
+<body></body>
+<script type="module">
+/* eslint no-unused-vars: 0 */
+
+// Wrap console log so we don't have to explain some `log` function.
+console.log = (origFn => {
+  return function(...args) {
+    const elem = document.createElement('pre');
+    elem.textContent = args.join(' ');
+    document.body.appendChild(elem);
+    origFn(...args);
+  };
+})(console.log.bind(console));
+
+section('run by count');
+{
+  function draw(count, vertexShaderFn) {
+    const internalBuffer = [];
+    for (let i = 0; i < count; ++i) {
+      internalBuffer[i] = vertexShaderFn(i);
+    }
+    console.log(JSON.stringify(internalBuffer));
+  }
+  const shader = v => v * 2;
+  draw(4, shader);
+}
+
+section('uniforms');
+{
+   function draw(count, vertexShaderFn, bindings) {
+     const internalBuffer = [];
+     for (let i = 0; i < count; ++i) {
+       internalBuffer[i] = vertexShaderFn(i, bindings);
+     }
+     console.log(JSON.stringify(internalBuffer));
+   }
+
+   const vertexShader = (v, bindings) => {
+     const uniforms = bindings[0];
+     return v * uniforms.multiplier;
+   };
+   const uniforms1 = {multiplier: 3};
+   const uniforms2 = {multiplier: 5};
+   const bindings1 = [uniforms1];
+   const bindings2 = [uniforms2];
+   const count = 4;
+   draw(count, vertexShader, bindings1);
+   // outputs [0, 3, 6, 9]
+   draw(count, vertexShader, bindings2);
+   // outputs [0, 5, 10, 15]
+
+}
+
+section('attributes');
+{
+   function draw(count, vertexShaderFn, bindings, attribsSpec) {
+     const internalBuffer = [];
+     for (let i = 0; i < count; ++i) {
+       const attribs = getAttribs(attribsSpec, i);
+       internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+     }
+     console.log(JSON.stringify(internalBuffer));
+   }
+
+   function getAttribs(attribs, ndx) {
+     return attribs.map(({source, offset, stride}) => source[ndx * stride + offset]);
+   }
+
+   const buffer1 = [0, 1, 2, 3, 4, 5, 6, 7];
+   const buffer2 = [11, 22, 33, 44];
+   const attribsSpec = [
+     { source: buffer1, offset: 0, stride: 2, },
+     { source: buffer1, offset: 1, stride: 2, },
+     { source: buffer2, offset: 0, stride: 1, },
+   ];
+   const vertexShader = (v, bindings, attribs) => (attribs[0] + attribs[1]) * attribs[2];
+   const bindings = [];
+   const count = 4;
+   draw(count, vertexShader, bindings, attribsSpec);
+}
+
+section('buffers');
+{
+   function getAttribs(attribs, ndx) {
+     return attribs.map(({source, offset, stride}) => source[ndx * stride + offset]);
+   }
+
+   function draw(count, vertexShaderFn, bindings, attribsSpec) {
+     const internalBuffer = [];
+     for (let i = 0; i < count; ++i) {
+       const attribs = getAttribs(attribsSpec, i);
+       internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+     }
+     console.log(JSON.stringify(internalBuffer));
+   }
+
+   const buffer1 = [0, 1, 2, 3, 4, 5, 6, 7];
+   const buffer2 = [11, 22, 33, 44];
+   const attribsSpec = [];
+   const bindings = [
+     buffer1,
+     buffer2,
+   ];
+   const vertexShader = (ndx, bindings /* , attribs */) =>
+       (bindings[0][ndx * 2] + bindings[0][ndx * 2 + 1]) * bindings[1][ndx];
+   const count = 4;
+   draw(count, vertexShader, bindings, attribsSpec);
+   // outputs [11, 110, 297, 572]
+}
+
+section('textures');
+{
+   function getAttribs(attribs, ndx) {
+     return attribs.map(({source, offset, stride}) => source[ndx * stride + offset]);
+   }
+
+   function draw(count, vertexShaderFn, bindings, attribsSpec) {
+     const internalBuffer = [];
+     for (let i = 0; i < count; ++i) {
+       const attribs = getAttribs(attribsSpec, i);
+       internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+     }
+     console.log(JSON.stringify(internalBuffer));
+   }
+
+   function textureSample(texture, ndx) {
+     const startNdx = ndx | 0;  // round down to an int
+     const fraction = ndx % 1;  // get the fractional part between indices
+     const start = texture[startNdx];
+     const end = texture[startNdx + 1];
+     return start + (end - start) * fraction;  // compute value between start and end
+   }
+
+   const texture = [10, 20, 30, 40, 50, 60, 70, 80];
+   const attribsSpec = [];
+   const bindings = [
+     texture,
+   ];
+   const vertexShader = (ndx, bindings /* , attribs */) =>
+       textureSample(bindings[0], ndx * 1.75);
+   const count = 4;
+   draw(count, vertexShader, bindings, attribsSpec);
+   // outputs [10, 27.5, 45, 62.5]
+}
+
+section('interStageVariables: calcLine');
+{
+   const line = calcLine([10, 10], [13, 13]);
+   for (let i = 0; i < line.numPixels; ++i) {
+     const p = calcLinePoint(line, i);
+     console.log(p);
+   }
+}
+
+section('interStageVariables: output 2 values per iteration');
+{
+   function getAttribs(attribs, ndx) {
+     return attribs.map(({source, offset, stride}) => source[ndx * stride + offset]);
+   }
+
+   function draw(count, vertexShaderFn, bindings, attribsSpec) {
+     const internalBuffer = [];
+     for (let i = 0; i < count; ++i) {
+       const attribs = getAttribs(attribsSpec, i);
+       internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+     }
+     console.log(JSON.stringify(internalBuffer));
+   }
+
+   const buffer1 = [5, 0, 25, 4];
+   const attribsSpec = [
+     {source: buffer1, offset: 0, stride: 2},
+     {source: buffer1, offset: 1, stride: 2},
+   ];
+   const bindings = [];
+   // const dest = new Array(2);
+   const vertexShader = (ndx, bindings, attribs) => [attribs[0], attribs[1]];
+   const count = 2;
+   draw(count, vertexShader, bindings, attribsSpec);
+   // outputs [[5, 0], [25, 4]]
+}
+
+section('interStageVariables: draw line with constant value');
+{
+   function rasterizeLines(dest, destWidth, inputs, fragShaderFn, bindings) {
+     for (let ndx = 0; ndx < inputs.length - 1; ndx += 2) {
+       const p0 = inputs[ndx    ];
+       const p1 = inputs[ndx + 1];
+       const line = calcLine(p0, p1);
+       for (let i = 0; i < line.numPixels; ++i) {
+         const p = calcLinePoint(line, i);
+         const offset = p[1] * destWidth + p[0];  // y * width + x
+         dest[offset] = fragShaderFn(bindings);
+       }
+     }
+   }
+
+   function getAttribs(attribs, ndx) {
+     return attribs.map(({source, offset, stride}) => source[ndx * stride + offset]);
+   }
+
+   function draw(dest, destWidth,
+                 count, vertexShaderFn, fragmentShaderFn,
+                 bindings, attribsSpec,
+   ) {
+     const internalBuffer = [];
+     for (let i = 0; i < count; ++i) {
+       const attribs = getAttribs(attribsSpec, i);
+       internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+     }
+     rasterizeLines(dest, destWidth, internalBuffer,
+                    fragmentShaderFn, bindings);
+   }
+
+   const buffer1 = [5, 0, 25, 4];
+   const attribsSpec = [
+     {source: buffer1, offset: 0, stride: 2},
+     {source: buffer1, offset: 1, stride: 2},
+   ];
+   const bindings = [];
+   const vertexShader = (ndx, bindings, attribs) => [attribs[0], attribs[1]];
+   const count = 2;
+
+   const width = 30;
+   const height = 5;
+   const pixels = new Array(width * height).fill(0);
+   const fragShader = (/* bindings */) => 6;
+
+   draw(
+      pixels, width,
+      count, vertexShader, fragShader,
+      bindings, attribsSpec);
+   logArray2D(pixels, width);
+}
+
+section('interStageVariables: draw line with varying value');
+{
+   function rasterizeLines(dest, destWidth, inputs, fragShaderFn, bindings) {
+     for (let ndx = 0; ndx < inputs.length - 1; ndx += 2) {
+       const p0 = inputs[ndx    ][0];
+       const p1 = inputs[ndx + 1][0];
+       const v0 = inputs[ndx    ].slice(1);  // everything but the first value
+       const v1 = inputs[ndx + 1].slice(1);
+       const line = calcLine(p0, p1);
+       for (let i = 0; i < line.numPixels; ++i) {
+         const p = calcLinePoint(line, i);
+         const t = i / line.numPixels;
+         const interStageVariables = interpolateArrays(v0, v1, t);
+         const offset = p[1] * destWidth + p[0];  // y * width + x
+         dest[offset] = fragShaderFn(bindings, interStageVariables);
+       }
+     }
+   }
+
+   // interpolateArrays([[1,2]], [[3,4]], 0.25) => [[1.5, 2.5]]
+   function interpolateArrays(v0, v1, t) {
+     return v0.map((array0, ndx) => {
+       const array1 = v1[ndx];
+       return interpolateValues(array0, array1, t);
+     });
+   }
+
+   // interpolateValues([1,2], [3,4], 0.25) => [1.5, 2.5]
+   function interpolateValues(array0, array1, t) {
+     return array0.map((a, ndx) => {
+       const b = array1[ndx];
+       return a + (b - a) * t;
+     });
+   }
+
+   function getAttribs(attribs, ndx) {
+     return attribs.map(({source, offset, stride}) => source[ndx * stride + offset]);
+   }
+
+   function draw(dest, destWidth,
+                 count, vertexShaderFn, fragmentShaderFn,
+                 uniforms, attribsSpec, bindings,
+    ) {
+     const internalBuffer = [];
+     for (let i = 0; i < count; ++i) {
+       const attribs = getAttribs(attribsSpec, i);
+       internalBuffer[i] = vertexShaderFn(i, uniforms, attribs, bindings);
+     }
+     rasterizeLines(dest, destWidth, internalBuffer,
+                    fragmentShaderFn, uniforms, bindings);
+   }
+
+   const buffer1 = [5, 0, 25, 4];
+   const buffer2 = [9, 3];
+   const attribsSpec = [
+     {source: buffer1, offset: 0, stride: 2},
+     {source: buffer1, offset: 1, stride: 2},
+     {source: buffer2, offset: 0, stride: 1},
+   ];
+   const bindings = [];
+   // const dest = new Array(2);
+   const vertexShader = (ndx, uniforms, attribs /* , bindings */) =>
+       [[attribs[0], attribs[1]], [attribs[2]]];
+   //const uniforms = {};
+   const count = 2;
+
+   const width = 30;
+   const height = 5;
+   const pixels = new Array(width * height).fill(0);
+   const fragShader = (bindings, interStageVariables) =>
+       interStageVariables[0] | 0;
+
+   draw(
+      pixels, width,
+      count, vertexShader, fragShader,
+      bindings, attribsSpec);
+   logArray2D(pixels, width);
+}
+
+function int(v) {
+  return v | 0;
+}
+
+function calcLine(p1, p2) {
+  const deltaInc = p1.map((v, ndx) => {
+    const d = int(p2[ndx]) - int(v);
+    return {delta: Math.abs(d), inc: Math.sign(d)};
+  });
+
+  const mainAxis = deltaInc[0].delta > deltaInc[1].delta ? 0 : 1;
+  const minAxis = 1 - mainAxis;
+  const minDelta = deltaInc[minAxis].delta;
+  const minInc = deltaInc[minAxis].inc;
+  const mainInc = deltaInc[mainAxis].inc;
+  const numPixels = deltaInc[mainAxis].delta;
+
+  return {
+    p1: p1.map(v => int(v)),
+    mainAxis,
+    numPixels,
+    minDelta,
+    minInc,
+    mainInc,
+  };
+}
+
+function calcLinePoint(line, i) {
+  const {p1, mainAxis, numPixels, minDelta, minInc, mainInc} = line;
+  const minAxis = 1 - mainAxis;
+  const accum = int(numPixels / 2) + minDelta * i;
+  const p = p1.slice();
+  p[mainAxis] += mainInc * i;
+  p[minAxis] += int(minInc * (accum / numPixels));
+  return p;
+}
+
+function section(heading) {
+  console.log(`\n======= [ ${heading} ] =======`);
+}
+
+function logArray2D(arr, width) {
+  const lines = [];
+  for (let i = 0; i < arr.length; i += width) {
+    lines.push(arr.slice(i, i + width).map(v => v || '.').join(''));
+  }
+  console.log(lines.join('\n'));
+}
+</script>

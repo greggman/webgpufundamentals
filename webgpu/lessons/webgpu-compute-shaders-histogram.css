@@ -1,0 +1,56 @@
+.ui {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;  
+}
+.ui select,
+.ui button {
+  min-width: 3em;
+  min-height: 2em;
+  margin-right: 0.25em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ui .select {
+  align-items: stretch;
+}
+.ui button img {
+  filter: none;
+  width: 1.5em;
+  height: 1.5em;
+  display: block;
+}
+
+.compute-diagram {
+    background: #ddd;
+    max-width: 100%;
+    width: 100%;
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+.compute-diagram [data-diagram] {
+  display: inline-block;
+  max-width: 100%;
+  width: 900px;
+}
+.histogram-img {
+  width: 256px;
+  background-color: #777;
+}
+[data-diagram=colors] tbody,
+[data-diagram=luminance] tbody {
+  text-align: center;
+}
+
+.color-cell {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .compute-diagram {
+    background: #222;
+  }
+}

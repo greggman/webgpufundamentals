@@ -1,0 +1,135 @@
+<!-- Licensed under a BSD license. See license.html for license -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link type="text/css" href="../../resources/webgl-tutorials.css" rel="stylesheet" />
+<style>
+:root {
+  color-scheme: light dark;
+}
+html, body {
+  margin: 0;
+  height: 100%;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  canvas {
+    background: #444;
+  }
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>
+<script type="module">
+import GUI from '/3rdparty/muigui-0.x.module.js';
+import * as twgl from '/3rdparty/twgl-full.module.js';
+
+function main() {
+  const ctx = document.querySelector('#canvas').getContext('2d');
+
+  const settings = { power: 1 };
+
+  const gui = new GUI();
+  GUI.setTheme('float');
+  gui.onChange(render);
+  gui.add(settings, 'power', { min: 0, max: 10, step: 0.01 });
+
+  const darkColors = {
+    base: '#DDD',
+    graphFill: '#844',
+    axis: '#888',
+  };
+  const lightColors = {
+    base: '#000',
+    graphFill: '#fCC',
+    axis: '#000',
+  };
+
+  const darkMatcher = window.matchMedia('(prefers-color-scheme: dark)');
+  darkMatcher.addEventListener('change', render);
+
+  function render() {
+    const { power } = settings;
+    const isDarkMode = darkMatcher.matches;
+    const colors = isDarkMode ? darkColors : lightColors;
+    twgl.resizeCanvasToDisplaySize(ctx.canvas, window.devicePixelRatio);
+    const width  = 300;
+    const height = 300;
+
+    const baseScale = Math.min(ctx.canvas.width / width,  ctx.canvas.height / height);
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.save();
+    ctx.scale(baseScale, baseScale);
+    ctx.translate(50, 250);
+
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    function addPowerTop() {
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      const numPoints = 50;
+      for (let ii = 0; ii <= numPoints; ++ii) {
+        const x = ii / numPoints;
+        const y = Math.pow(x, power);
+        ctx.lineTo(x * 200, y * -200);
+      }
+    }
+
+    addPowerTop();
+    ctx.lineTo(200, 0);
+    ctx.lineTo(0, 0);
+    ctx.closePath();
+    ctx.fillStyle = colors.graphFill;
+    ctx.fill();
+
+    ctx.strokeStyle = colors.axis;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-1000, 0);
+    ctx.lineTo(1000, 0);
+    ctx.moveTo(0, -1000);
+    ctx.lineTo(0, 1000);
+    ctx.stroke();
+
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(-1000, -200);
+    ctx.lineTo( 1000, -200);
+    ctx.moveTo(200, -1000);
+    ctx.lineTo(200,  1000);
+    ctx.stroke();
+
+    ctx.fillStyle = colors.base;
+    ctx.fillText('0,0', -15, 10);
+    ctx.fillText('1,1', 215, -190);
+
+    ctx.font = '18px sans-serif';
+    ctx.fillText('y = pow(x, ' + power.toFixed(2) + ')', 100, 20);
+
+
+    addPowerTop();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+
+    ctx.restore();
+  }
+  render();
+  window.addEventListener('resize', render);
+}
+
+main();
+</script>
+

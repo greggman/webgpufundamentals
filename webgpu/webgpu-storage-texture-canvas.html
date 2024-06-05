@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Storage Texture Canvas</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+  </body>
+  <script type="module">
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const hasBGRA8unormStorage = adapter.features.has('bgra8unorm-storage');
+  const device = await adapter?.requestDevice({
+    requiredFeatures: hasBGRA8unormStorage
+      ? ['bgra8unorm-storage']
+      : [],
+  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = hasBGRA8unormStorage
+     ? navigator.gpu.getPreferredCanvasFormat()
+     : 'rgba8unorm';
+  context.configure({
+    device,
+    format: presentationFormat,
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.STORAGE_BINDING,
+  });
+
+  const module = device.createShaderModule({
+    label: 'circles in storage texture',
+    code: `
+      @group(0) @binding(0) var tex: texture_storage_2d<${presentationFormat}, write>;
+
+      @compute @workgroup_size(1) fn cs(
+        @builtin(global_invocation_id) id : vec3u
+      )  {
+        let size = textureDimensions(tex);
+        let center = vec2f(size) / 2.0;
+        let pos = id.xy;
+        let dist = distance(vec2f(pos), center);
+        let stripe = dist / 32.0 % 2.0;
+        let red = vec4f(1, 0, 0, 1);
+        let cyan = vec4f(0, 1, 1, 1);
+        let color = select(red, cyan, stripe < 1.0);
+        textureStore(tex, pos, color);
+      }
+    `,
+  });
+
+  const pipeline = device.createComputePipeline({
+    label: 'circles in storage texture',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+
+  function render() {
+    const texture = context.getCurrentTexture();
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: texture.createView() },
+      ],
+    });
+
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+    const pass = encoder.beginComputePass();
+    pass.setPipeline(pipeline);
+    pass.setBindGroup(0, bindGroup);
+    pass.dispatchWorkgroups(texture.width, texture.height);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // re-render
+      render();
+    }
+  });
+  observer.observe(canvas);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Compute Shaders - Histogram (JavaScript</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+      canvas {
+        display: block;
+        max-width: 256px;
+        border: 1px solid #888;
+        background-color: #333;
+      }
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
+import { loadImageBitmap } from '../3rdparty/webgpu-utils-1.x.module.js';
+
+async function main() {
+  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg'); /* webgpufundamentals: url */
+
+  const imgData = getImageData(imgBitmap);
+  const numBins = 256;
+  const histogram = computeHistogram(numBins, imgData);
+
+  showImageBitmap(imgBitmap);
+
+  const numEntries = imgData.width * imgData.height;
+  drawHistogram(histogram, numEntries);
+}
+
+function computeHistogram(numBins, imgData) {
+  const {width, height, data} = imgData;
+  const bins = new Array(numBins).fill(0);
+  for (let y = 0; y < height; ++y) {
+    for (let x = 0; x < width; ++x) {
+      const offset = (y * width + x) * 4;
+
+      const r = data[offset + 0] / 255;
+      const g = data[offset + 1] / 255;
+      const b = data[offset + 2] / 255;
+      const v = srgbLuminance(r, g, b);
+
+      const bin = Math.min(numBins - 1, v * numBins) | 0;
+      ++bins[bin];
+    }
+  }
+  return bins;
+}
+
+function drawHistogram(histogram, numEntries, height = 100) {
+  const numBins = histogram.length;
+  const max = Math.max(...histogram);
+  const scale = Math.max(1 / max);//, 0.2 * numBins / numEntries);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = numBins;
+  canvas.height = height;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#fff';
+
+  for (let x = 0; x < numBins; ++x) {
+    const v = histogram[x] * scale * height;
+    ctx.fillRect(x, height - v, 1, v);
+  }
+}
+
+// from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+function srgbLuminance(r, g, b) {
+  return r * 0.2126 +
+         g * 0.7152 +
+         b * 0.0722;
+}
+
+function getImageData(imgBitmap) {
+  const canvas = document.createElement('canvas');
+
+  // make the canvas the same size as the image
+  canvas.width = imgBitmap.width;
+  canvas.height = imgBitmap.height;
+
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(imgBitmap, 0, 0);
+  return ctx.getImageData(0, 0, canvas.width, canvas.height);
+}
+
+function showImageBitmap(imageBitmap) {
+  const canvas = document.createElement('canvas');
+  canvas.width = imageBitmap.width;
+  canvas.height = imageBitmap.height;
+
+  const bm = canvas.getContext('bitmaprenderer');
+  bm.transferFromImageBitmap(imageBitmap);
+  document.body.appendChild(canvas);
+}
+
+main();
+  </script>
+</html>

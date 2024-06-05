@@ -1,0 +1,16 @@
+{
+  language: 'Spanish',
+  defaultExampleCaption: "haz click aquí para abrir el enlace en una ventana nueva",
+  title: 'Fundamentos de WebGPU',
+  description: 'Aprende WebGPU',
+  link: 'http://webgpufundamentals.org/webgpu/lessons/es',
+  commentSectionHeader: '<div>Tienes dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en stackoverflow</a>.</div>\n        <div>Encontraste un bug? <a href="http://github.com/webgpu/webgpufundamentals/issues">Compártelo como una incidencia en github</a>.</div>',
+  missing: "Lo sentimos, pero este artículo no se ha traducido todavía. [Cualquier ayuda para traducir los artículos es bien recibida](https://github.com/webgpu/webgpufundamentals)! 😄\n\n[Puedes encontrar el artículo original en inglés aquí]({{{origLink}}}).",
+  toc: "Índice",
+  categoryMapping: {
+    'basics': 'Conceptos básicos',
+    'compute-shaders': 'Compute Shaders',
+    '3d-math': 'Matemáticas 3D',
+    'misc': 'Otros',
+  },
+}

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU WGSL Offset Computer</title>
+    <meta name="description" content="WebGPU WGSL Offset Computer">
+    <meta name="keywords" content="webgpu graphics">
+    <meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl-offset-computer_en.jpg">
+
+    <meta property="og:title" content="WebGPU Fundamentals">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl-offset-computer_en.jpg">
+    <meta property="og:description" content="The fundamentals of WebGPU">
+    <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/resouces/wgsl-offset-computer.html">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@greggman">
+    <meta name="twitter:creator" content="@greggman">
+    <meta name="twitter:domain" content="webgpufundamentals.org">
+    <meta name="twitter:title" content="WebGPU WGSL Offset Computer">
+    <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/wgsl-offset-computer.html">
+    <meta name="twitter:description" content="The fundamentals of WebGPU">
+    <meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl-offset-computer_en.jpg">
+
+    <link href="lesson.css" rel="stylesheet">
+    <style>
+      :root {
+        --error-bg-color: pink;
+        --divider-bg-color: #8cb5ff;
+        --dialog-bg-color: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --error-bg-color: darkred;
+          --divider-bg-color: #45a;
+          --dialog-bg-color: #333;
+        }
+      }
+      html, body {
+        margin: 0;
+        height: 100%;
+        font-family: monospace;
+      }
+      button {
+        font-family: monospace;
+      }
+      #frame {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      #header {
+        flex: 0 0 auto;
+        padding: 0.25em;
+        background-color: var(--divider-bg-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #header a {
+        /* makes it center */
+        display: flex;
+      }
+      #github {
+        display: flex;
+        align-items: center;
+      }
+      #workarea {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+      #split {
+        display: flex;
+        height: 100%;
+      }
+      .h-sep,
+      .v-sep {
+        flex: 0 0 5px;
+        background-color: var(--divider-bg-color);
+      }
+      #left {
+        /*flex: 1 1 50%; */
+        min-height: 0;
+        min-width: 0;
+      }
+      #editor {
+        height: 100%;
+      }
+      #right {
+        /*flex: 1 1 50%; */
+        min-height: 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        container-type: inline-size;
+      }
+      #ui-split {
+        display: flex;
+      }
+      .ui-area {
+        padding: 1em;
+      }
+      #ui {
+        flex: 0 0 auto;
+        font-size: medium;
+        line-height: 1.5;
+      }
+      #output {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+      }
+      #diagram {
+        padding: 1em;
+      }
+      #errors {
+        font-size: small;
+        padding: 1em;
+        background-color: var(--error-bg-color);
+        white-space: pre-line;
+        overflow-x: auto;
+        line-height: 1.2;
+      }
+      pre {
+        margin: 0;
+      }
+      .icon {
+        width: 1em;
+      }
+      .nowrap {
+        white-space: nowrap;
+      }
+      label {
+        display: inline-flex;
+        align-items: center;
+      }
+      label:has([disabled]) {
+        opacity: 50%;
+      }
+      .wgslError {
+        background-color: var(--error-bg-color);
+      }
+      input[type=number] {
+        width: 4em;
+      }
+
+      #docs {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.8);
+      }
+      .dialog {
+        padding: 1em;
+        max-width: 90%;
+        width: 600px;
+        background: var(--dialog-bg-color);
+      }
+
+      /* remove? this is overriding lesson.css. Maybe we should remove lesson.css */
+      pre.prettyprint {
+        border: none;
+        box-shadow: none;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+      pre.prettyprint, code.prettyprint, .dos {
+        width: inherit;
+      }
+
+      @media (prefers-color-scheme: light) {
+        pre.prettyprint {
+          filter: invert(1) brightness(1.2);
+        }
+      }
+      @media (max-width: 860px) {
+        #info,
+        #ui-split>.v-sep {
+          display: none;
+        }
+      }
+      @media (max-width: 800px) {
+        #split {
+          display: block;
+        }
+        #left {
+          height: 40%;
+        }
+        #right {
+          height: 100%;
+        }
+      }
+
+      /* --- split.js --- */
+.gutter {
+    background-color: var(--divider-bg-color);
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
+    cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: row-resize;
+}
+    </style>
+  </head>
+  <body>
+    <div id="frame">
+      <div id="header">
+        <div>wgsl offset computer</div>
+        <div id="github"><a href="https://github.com/webgpu/webgpufundamentals" target="_blank"><img class="icon" src="octocat-icon.svg"></a></div>
+      </div>
+      <div id="workarea">
+        <div id="split">
+          <div id="left">
+            <div id="editor"></div>
+          </div>
+          <div id="right">
+               <div id="ui">
+                 <div id="ui-split">
+                  <div class="ui-area nowrap">
+                    <div>
+                      <label><input name="style" type="radio" value="views" checked>as views</label>
+                      <label><input name="style" type="radio" value="offsets">as offsets</label>
+                      <label><input name="style" type="radio" value="none">none</label>
+                    </div>
+                    <div>
+                      <label><input id="structs" type="checkbox" value="structs" checked>include structs</label>
+                    </div>
+                    <div>
+                      <label><input id="flatten" type="checkbox" value="flatten" checked>flatten intrinsic array views</label>
+                      <a href="https://github.com/greggman/webgpu-utils#the-first-level-of-an-array-of-intrinsic-types-is-flattened-by-default">(?)</a>
+                    </div>
+                    <div>
+                      <label>num elements for unsized arrays:<input id="numElements" type="number" value="5" min="0" max="20"></label>
+                    </div>
+                    <div>
+                      <label><input id="bindGroupLayouts" type="checkbox" value="bindGroupLayouts" checked>show bindGroupLayouts</label>
+                    </div>
+                    <div>
+                      <button type="button" id="process">Process</button>
+                      <button type="button" id="help">Help(?)</button>
+                    </div>
+                  </div>
+                  <div class="v-sep"></div>
+                  <div id="info" class="ui-area">
+                    This site is useful for <a href="https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html">understanding WGSL offsets</a>.
+                    There's a useful <a href="https://github.com/greggman/webgpu-utils">runtime library</a> for this too.
+                  </div>
+                </div>
+              </div>
+              <div class="h-sep"></div>
+              <div id="output">
+                <div id="errors"></div>
+                <pre id="results"></pre>
+                <div id="diagram"></div>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="docs" style="display: none;">
+    <div class="dialog">
+      <div>
+        <h1>WGSL Offset Computer</h1>
+        <p>Paste in WGSL and press "process"</p>
+        <p>Example:</p>
+        <pre class="prettyprint">
+struct Light {
+  specularFactor: f32,
+  direction: vec3f,
+  color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniforms&gt; unis: Light;
+        </pre>
+        <p>
+        Rather than use these offsets directly it's much more convenient to
+        <a target="_blank" href="https://github.com/greggman/webgpu-utils">use a library</a>.
+        </p>
+        <p>
+          Want learn WebGPU? See <a target="_blank" href="https://webgpufundamentals.org">WebGPUFundamentals.org</a>
+        </p>
+        <div style="text-align: right;">
+          <button type="button">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script src="/3rdparty/split.min.js"></script>
+    <script src="/monaco-editor/min/vs/loader.js"></script>
+    <script src="prettify.js"></script>
+    <script src="/3rdparty/lzma.js"></script>
+    <script type="module">
+/* global monaco */
+/* global LZMA */
+/* global Split */
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
+import {
+  makeShaderDataDefinitions,
+  setIntrinsicsToView,
+} from '/3rdparty/webgpu-utils-1.x.module.js';
+import {
+  createByteDiagramForType,
+  getCodeForUniform,
+  makeBindGroupLayoutDescriptorsJS,
+} from './data-byte-diagram.js';
+import { createElem as el } from './elem.js';
+import {
+  convertHexToBytes,
+  convertBytesToHex,
+} from './utils.js';
+const compressor = new LZMA('/3rdparty/lzma_worker.js');
+
+// eslint-disable-next-line new-cap
+Split(['#left', '#right'], {
+    elementStyle: function(dimension, size, gutterSize) {
+        return {
+            'flex-basis': 'calc(' + size + '% - ' + gutterSize + 'px)',
+        };
+    },
+    gutterStyle: function(dimension, gutterSize) {
+        return {
+            'flex-basis': gutterSize + 'px',
+        };
+    },
+});
+
+const examples = {
+  basic: `
+    struct Light {
+      mode: u32,
+      power: f32,
+      range: f32,
+      innerAngle: f32,
+      outerAngle: f32,
+      direction: vec3f,
+      position: vec3f,
+    };
+
+    struct FSInput {
+      colorMult: vec4f,
+      specularFactor: f32,
+      lights: array<Light, 2>,
+    };
+
+    struct VSInput {
+      projectionMatrix: mat4x4f,
+      viewMatrix: mat4x4f,
+      modelMatrix: mat4x4f,
+      normalMatrix: mat4x4f,
+    };
+
+    @group(0) @binding(0) var<uniform> vsUni: VSInput;
+    @group(0) @binding(1) var<uniform> fsUni: FSInput;
+    @group(0) @binding(2) var diffuseSampler: sampler;
+    @group(0) @binding(3) var diffuseTexture: texture_2d<f32>;
+
+    struct Attribs {
+      @location(0) position: vec4f,
+      @location(1) normal: vec3f,
+      @location(2) texcoord: vec2f,
+    };
+
+    struct VSOutput {
+      @builtin(position) position: vec4f,
+      @location(0) texcoord: vec2f,
+      @location(1) normal: vec3f,
+    };
+
+    @vertex fn vs(vin: Attribs) -> VSOutput {
+      var vout: VSOutput;
+      vout.position = vsUni.projectionMatrix * vsUni.viewMatrix * vsUni.modelMatrix * vin.position;
+      vout.texcoord = vin.texcoord;
+      vout.normal = (vsUni.normalMatrix * vec4f(vin.normal, 0)).xyz;
+      return vout;
+    }
+
+    @fragment fn fs(vout: VSOutput) -> @location(0) vec4f {
+      let normal = normalize(vout.normal);
+      var l = 0.0;
+      for (var i = 0; i < 2; i++) {
+        let light = fsUni.lights[i];
+        l += clamp(dot(normal, light.direction), 0.0, 1.0);
+      }
+
+      let color = textureSample(diffuseTexture, diffuseSampler, vout.texcoord);
+      return vec4f(color.rgb * clamp(l, 0.0, 1.0), color.a);
+    }
+  `,
+};
+
+const darkMatcher = window.matchMedia('(prefers-color-scheme: dark)');
+const isDarkMode = darkMatcher.matches;
+
+const resultsElem = document.querySelector('#results');
+const diagramElem = document.querySelector('#diagram');
+const errorsElem = document.querySelector('#errors');
+const structsElem = document.querySelector('#structs');
+const flattenElem = document.querySelector('#flatten');
+const numElementsElem = document.querySelector('#numElements');
+const bindGroupLayoutsElem = document.querySelector('#bindGroupLayouts');
+const helpElem = document.querySelector('#help');
+const docsElem = document.querySelector('#docs');
+const globals = {};
+
+helpElem.addEventListener('click', () => {
+  docsElem.style.display = '';
+  docsElem.focus();
+});
+docsElem.addEventListener('click', () => {
+  docsElem.style.display = 'none';
+});
+document.querySelectorAll('.dialog').forEach(elem => {
+  elem.addEventListener('click', (e) => {
+    e.stopPropagation();
+  }, {passive: false});
+});
+
+function clearResults() {
+  resultsElem.innerHTML = '';
+  diagramElem.innerHTML = '';
+  errorsElem.innerHTML = '';
+  errorsElem.style.display = 'none';
+  resultsElem.className = 'prettyprint';
+}
+
+const dataTypes = {
+  structs: {
+    label: 'struct',
+    toTypeDef: v => v,
+  },
+  uniforms: {
+    label: 'uniform',
+    toTypeDef: v => v.typeDefinition,
+  },
+  storages: {
+    label: 'storage',
+    toTypeDef: v => v.typeDefinition,
+  },
+};
+
+function makeHex(code) {
+  return new Promise(resolve => {
+    const save = JSON.stringify({
+      x: code,
+      style: document.querySelector('input[name=style]:checked').value,
+      structs: structsElem.checked,
+      flatten: flattenElem.checked,
+      numElements: numElementsElem.value,
+      bindGroupLayouts: bindGroupLayoutsElem.checked,
+    });
+    compressor.compress(save, 1, function(bytes) {
+      const hex = convertBytesToHex(bytes);
+      resolve(hex);
+    },
+    () => { /* */ });
+  });
+}
+
+async function updateResults(code, style) {
+  try {
+    const defs = makeShaderDataDefinitions(code);
+
+    const includeStructs = structsElem.checked;
+    const flatten = flattenElem.checked;
+    setIntrinsicsToView([], !flatten);
+
+    const results = [];
+    for (const [key, {label, toTypeDef}] of Object.entries(dataTypes).filter(([k]) => includeStructs ? true : k !== 'structs')) {
+      for (const [name, dataType] of Object.entries(defs[key])) {
+        const text = `${label}: ${name}`;
+        diagramElem.appendChild(el('div', { textContent: text }));
+        diagramElem.appendChild(createByteDiagramForType(name, toTypeDef(dataType), {
+          numElementsForUnsizedArrays: parseInt(numElementsElem.value),
+        }));
+        diagramElem.appendChild(el('hr'));
+        if (style !== 'none') {
+          results.push(getCodeForUniform(name, dataType, {
+            mode: style,
+            numElementsForUnsizedArrays: parseInt(numElementsElem.value),
+          }));
+        }
+      }
+    }
+
+    if (bindGroupLayoutsElem.checked) {
+      const entryPointsByStage = new Map();
+      for (const [name, entryPoint] of Object.entries(defs.entryPoints)) {
+        const entryPoints = entryPointsByStage.get(entryPoint.stage) || [];
+        entryPointsByStage.set(entryPoint.stage, entryPoints);
+        entryPoints.push({
+          name,
+          entryPoint,
+        });
+      }
+
+
+      const epLines = [];
+      const vsEntryPoints = entryPointsByStage.get(GPUShaderStage.VERTEX) || [];
+      const fsEntryPoints = entryPointsByStage.get(GPUShaderStage.FRAGMENT) || [];
+      if (vsEntryPoints.length || fsEntryPoints.length) {
+        if (vsEntryPoints.length === 1 && fsEntryPoints.length === 1) {
+          const js = makeBindGroupLayoutDescriptorsJS(defs, {
+            vertex: { entryPoint: vsEntryPoints[0].name },
+            fragment: { entryPoint: fsEntryPoints[0].name },
+          });
+          epLines.push(`const bindGroupLayoutDescriptors = ${js};`);
+        } else {
+          epLines.push(`\
+// Making bindGroupLayouts requires knowing which entryPoints are
+// used in a pipeline but we can only guess for render pipelines
+// if there is only 1 vertex shader entry point and 1 fragment shader
+// entry point.
+`);
+        }
+      }
+
+      const csEntryPoints = entryPointsByStage.get(GPUShaderStage.COMPUTE) || [];
+      for (const {name} of csEntryPoints) {
+        const js = makeBindGroupLayoutDescriptorsJS(defs, {
+          compute: { entryPoint: name },
+        });
+        epLines.push(`const ${name}BindGroupLayoutDescriptors = ${js};`);
+      }
+
+      if (epLines.length) {
+        results.push('\n// --- bindGroupLayoutDescriptors for auto generated layouts ---');
+        results.push(epLines.join('\n\n// --------------------\n\n'));
+      }
+    }
+
+    if (style === 'none' || results.length === 0) {
+      resultsElem.style.display = 'none';
+    } else {
+      resultsElem.style.display = '';
+      resultsElem.textContent = results.join('\n\n');
+      window.prettyPrint(resultsElem);
+    }
+  } catch (e) {
+    console.error(e);
+    errorsElem.style.display = '';
+    errorsElem.appendChild(el(
+      'div',
+      {},
+      [
+        el('div', {textContent: `errors: ${e.message || ''}${e.stack || ''}`}),
+      ],
+    ));
+  }
+
+  const hex = await makeHex(code);
+  const params = new URLSearchParams({...(hex !== globals.baseHex && {x: hex})});
+  window.location.replace(`#${params.toString()}`);
+}
+
+/* global require */
+require.config({ paths: { 'vs': '/monaco-editor/min/vs' }});
+require(['vs/editor/editor.main'], () => {
+  const editor = monaco.editor.create(document.querySelector('#editor'), {
+    value: examples.basic,
+    language: 'wgsl',
+    automaticLayout: true,
+    lineNumbers: true,
+    theme: isDarkMode ? 'vs-dark' : 'vs-light',
+    disableTranslate3d: true,
+    //   model: null,
+    scrollBeyondLastLine: false,
+    minimap: { enabled: false },
+  });
+  main(editor);
+});
+
+async function main(editor) {
+  function readURL(hash) {
+    return new Promise(resolve => {
+      const data = Object.fromEntries(new URLSearchParams(hash[0] === '#' ? hash.substring(1) : hash).entries());
+      if (data.x) {
+        const bytes = convertHexToBytes(data.x);
+        compressor.decompress(
+          bytes,
+          (text) => {
+            const data = JSON.parse(text);
+            numElementsElem.value = data.numElements || 5;
+            structsElem.checked = !(data.structs === false);
+            flattenElem.checked = !(data.flatten === false);
+            const styleElem = document.querySelector(`input[name=style][value=${data.style}]`);
+            if (styleElem) {
+              styleElem.checked = true;
+            }
+            bindGroupLayoutsElem.checked = !(data.bindGroupLayouts === false);
+            editor.setValue(data.x);
+            resolve();
+          },
+          resolve);
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  {
+    const code = editor.getValue();
+    globals.baseHex = await makeHex(code);
+  }
+
+  await readURL(window.location.hash);
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice({
+    requiredLimits: adapter.limits,
+    requiredFeatures: adapter.features,
+  });
+
+  const processElem = document.querySelector('#process');
+  processElem.addEventListener('click', process);
+
+  let decorations;
+
+  async function process() {
+    clearResults();
+    if (decorations) {
+      decorations.clear();
+      decorations = undefined;
+    }
+
+    const code = editor.getValue();
+    if (device) {
+      const module = device.createShaderModule({code});
+      const info = await module.getCompilationInfo();
+      const hasErrors = info.messages?.reduce((err, msg) => err || msg.type === 'error', false);
+      if (hasErrors) {
+        const errors = info.messages
+          .filter(msg => msg.linePos && msg.lineNum && msg.length)
+          .map(msg => ({
+            range: new monaco.Range(msg.lineNum, msg.linePos, msg.lineNum, msg.linePos + msg.length),
+            options: { inlineClassName: 'wgslError' },
+          }));
+        if (errors.length) {
+          decorations = editor.createDecorationsCollection(errors);
+          const firstError = info.messages[0];
+          editor.setPosition({
+            lineNumber: firstError.lineNum,
+            column: firstError.linePos,
+          });
+          editor.revealLineInCenterIfOutsideViewport(firstError.lineNum);
+          editor.focus();
+        }
+        errorsElem.style.display = '';
+        errorsElem.appendChild(el(
+          'div',
+          {},
+          [
+            el('div', {textContent: 'wgsl errors:'}),
+            ...info.messages.map(msg => el('div', {textContent: `${msg.lineNum || 0}:${msg.linePos || 0}: ${msg.message}`})),
+          ],
+        ));
+      }
+    }
+
+    const style = document.querySelector('input[name=style]:checked').value;
+    updateResults(code, style);
+  }
+  process();
+}
+
+    </script>
+  </body>
+</html>

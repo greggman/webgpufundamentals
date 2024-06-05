@@ -1,0 +1,1397 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/webgpu-compute-shaders-histogram-part-2.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Using an image histogram to adjust video in real time.">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram-part-2_en.jpg">
+
+<meta property="og:title" content="WebGPU Compute Shaders - Image Histogram Part 2">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram-part-2_en.jpg">
+<meta property="og:description" content="Using an image histogram to adjust video in real time.">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU Compute Shaders - Image Histogram Part 2">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">
+<meta name="twitter:description" content="Using an image histogram to adjust video in real time.">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram-part-2_en.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram-part-2_en.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html",
+      "inLanguage":"en",
+      "name":"WebGPU Compute Shaders - Image Histogram Part 2",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU Compute Shaders - Image Histogram Part 2</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders-histogram-part-2.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-compute-shaders-histogram-part-2.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Table of Contents</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU Compute Shaders - Image Histogram Part 2</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>In <a href="webgpu-compute-shaders-histogram.html">the previous article</a> we covered
+how to make an image histogram in JavaScript and then converted it to use WebGPU
+and went through several steps of optimizing it.</p>
+<p>Let’s do a few more things with it</p>
+<h2 id="generate-4-histograms-at-once">Generate 4 histograms at once.</h2>
+<p>Given an image like this</p>
+<div class="webgpu_center">
+  <div>
+    <div><img src="../resources/images/pexels-chevanon-photography-1108099.jpg" style="max-width: 700px;"></div>
+    <div style="text-align: center;"><a href="https://www.pexels.com/photo/two-yellow-labrador-retriever-puppies-1108099/">Photo by Chevanon Photography</a></div>
+  </div>
+</div>
+<p>It’s common to generate multiple histograms</p>
+<div class="webgpu_center side-by-side">
+  <div>
+    <div><img src="resources/histogram-colors-photoshop-02.png" style="width: 237px;" class="nobg"></div>
+  </div>
+  <div>
+    <div><img src="resources/histogram-luminosity-photoshop-02.png" style="width: 237px;" class="nobg"> </div>
+  </div>
+</div>
+<p>On the left we have 3 histograms, one for red values, one for green, and one for blue. They’re drawn
+to overlap. On the right we have a luminance histogram like the one we generated in  <a href="webgpu-compute-shaders-histogram.html">the previous article</a>.</p>
+<p>It’s a tiny change to generate all 4 at once.</p>
+<p>In JavaScript, here’s the changes to generate 4 histograms at once</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function computeHistogram(numBins, imgData) {
+  const {width, height, data} = imgData;
+-  const bins = new Array(numBins).fill(0);
++  const bins = new Array(numBins * 4).fill(0);
+  for (let y = 0; y &lt; height; ++y) {
+    for (let x = 0; x &lt; width; ++x) {
+      const offset = (y * width + x) * 4;
+
+-      const r = data[offset + 0] / 255;
+-      const g = data[offset + 1] / 255;
+-      const b = data[offset + 2] / 255;
+-      const v = srgbLuminance(r, g, b);
+-
+-      const bin = Math.min(numBins - 1, v * numBins) | 0;
+-      ++bins[bin];
+
++       for (const ch = 0; ch &lt; 4; ++ch) {
++          const v = ch &lt; 3
++             ? data[offset + ch] / 255
++             : srgbLuminance(data[offset + 0] / 255,
++                             data[offset + 1] / 255,
++                             data[offset + 2] / 255);
++          const bin = Math.min(numBins - 1, v * numBins) | 0;
++          ++bins[bin * 4 + ch];
++       }
+    }
+  }
+  return bins;
+}
+</pre>
+<p>This will generate the histograms interleaved, r, g, b, l, r, g, b, l, r, g, b, l …</p>
+<p>We can update the code to render them like this</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function drawHistogram(histogram, numEntries, channels, height = 100) {
+-  const numBins = histogram.length;
+-  const max = Math.max(...histogram);
+-  const scale = Math.max(1 / max);//, 0.2 * numBins / numEntries);
++  // find the highest value for each channel
++  const numBins = histogram.length / 4;
++  const max = [0, 0, 0, 0];
++  histogram.forEach((v, ndx) =&gt; {
++    const ch = ndx % 4;
++    max[ch] = Math.max(max[ch], v);
++  });
++  const scale = max.map(max =&gt; Math.max(1 / max, 0.2 * numBins / numEntries));
+
+  const canvas = document.createElement('canvas');
+  canvas.width = numBins;
+  canvas.height = height;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
++  const colors = [
++    'rgb(255, 0, 0)',
++    'rgb(0, 255, 0)',
++    'rgb(0, 0, 255)',
++    'rgb(255, 255, 255)',
++  ];
+
+-  ctx.fillStyle = '#fff';
++  ctx.globalCompositeOperation = 'screen';
+
+  for (let x = 0; x &lt; numBins; ++x) {
+-    const v = histogram[x] * scale * height;
+-    ctx.fillRect(x, height - v, 1, v);
++    const offset = x * 4;
++    for (const ch of channels) {
++      const v = histogram[offset + ch] * scale[ch] * height;
++      ctx.fillStyle = colors[ch];
++      ctx.fillRect(x, height - v, 1, v);
++    }
+  }
+}
+</pre>
+<p>And then call that function twice, once to render the
+color histograms and once for the luminance histogram</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const histogram = computeHistogram(numBins, imgData);
+
+  showImageBitmap(imgBitmap);
+
++  // draw the red, green, and blue channels
+  const numEntries = imgData.width * imgData.height;
+-  drawHistogram(histogram, numEntries);
++ drawHistogram(histogram, numEntries, [0, 1, 2]);
++
++  // draw the luminosity channel
++  drawHistogram(histogram, numEntries, [3]);
+</pre>
+<p>And now we get these results.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-4ch-javascript.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-4ch-javascript.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Doing the same to our WGSL examples is even simpler</p>
+<p>For example the our first example that was too slow would
+change like this</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;u32&gt;;
++@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+// from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(1, 1, 1) fn cs() {
+  let size = textureDimensions(ourTexture, 0);
+  let numBins = f32(arrayLength(&amp;bins));
+  let lastBinIndex = u32(numBins - 1);
+  for (var y = 0u; y &lt; size.y; y++) {
+    for (var x = 0u; x &lt; size.x; x++) {
+      let position = vec2u(x, y);
+-      let color = textureLoad(ourTexture, position, 0);
+-      let v = srgbLuminance(color.rgb);
+-      let bin = min(u32(v * numBins), lastBinIndex);
+-      bins[bin] += 1;
++      var channels = textureLoad(ourTexture, position, 0);
++      channels.w = srgbLuminance(channels.rgb);
++      for (var ch = 0; ch &lt; 4; ch++) {
++        let v = channels[ch];
++        let bin = min(u32(v * numBins), lastBinIndex);
++        bins[bin][ch] += 1;
++      }
+    }
+  }
+}
+
+</pre>
+<p>We needed to make room for all 4 channels by changing bins
+from <code class="notranslate" translate="no">array&lt;u32&gt;</code> to <code class="notranslate" translate="no">array&lt;vec4u&gt;</code>.</p>
+<p>Then we pulled out the color from the texture, computed a
+luminance and put it in the <code class="notranslate" translate="no">w</code> element of <code class="notranslate" translate="no">channels</code></p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var channels = textureLoad(ourTexture, position, 0);
+  channels.w = srgbLuminance(channels.rgb);
+</pre>
+<p>This way we could just loop over the 4 channels and increment
+the correct bin.</p>
+<p>The only other change we need is allocating 4x the memory
+for our buffer</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const histogramBuffer = device.createBuffer({
+-    size: numBins * 4, // 256 entries * 4 bytes per (u32)
++    size: 256 * 4 * 4, // 256 entries * 4 (rgba) * 4 bytes per (u32)
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+  });
+</pre>
+<p>And here’s our slow WebGPU version generating 4 histograms</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-4ch-slow.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-4ch-slow.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Making similar changes to our fastest version:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const chunkWidth = 256;
+const chunkHeight = 1;
+const chunkSize = chunkWidth * chunkHeight;
+-var&lt;workgroup&gt; bins: array&lt;atomic&lt;u32&gt;, chunkSize&gt;;
+-@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
++var&lt;workgroup&gt; bins: array&lt;array&lt;atomic&lt;u32&gt;, 4&gt;, chunkSize&gt;;
++@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;vec4u, chunkSize&gt;&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(chunkWidth, chunkHeight, 1)
+fn cs(
+  @builtin(workgroup_id) workgroup_id: vec3u,
+  @builtin(local_invocation_id) local_invocation_id: vec3u,
+) {
+  let size = textureDimensions(ourTexture, 0);
+  let position = workgroup_id.xy * vec2u(chunkWidth, chunkHeight) + 
+                 local_invocation_id.xy;
+  if (all(position &lt; size)) {
+    let numBins = f32(chunkSize);
+    let lastBinIndex = u32(numBins - 1);
+-    let color = textureLoad(ourTexture, position, 0);
+-    let v = srgbLuminance(color.rgb);
+-    let bin = min(u32(v * numBins), lastBinIndex);
+-    atomicAdd(&amp;bins[bin], 1u);
++    var channels = textureLoad(ourTexture, position, 0);
++    channels.w = srgbLuminance(channels.rgb);
++    for (var ch = 0; ch &lt; 4; ch++) {
++      let v = channels[ch];
++      let bin = min(u32(v * numBins), lastBinIndex);
++      atomicAdd(&amp;bins[bin][ch], 1u);
++    }
+  }
+
+  workgroupBarrier();
+
+  let chunksAcross = (size.x + chunkWidth - 1) / chunkWidth;
+  let chunk = workgroup_id.y * chunksAcross + workgroup_id.x;
+  let bin = local_invocation_id.y * chunkWidth + local_invocation_id.x;
+
+-  chunks[chunk][bin] = atomicLoad(&amp;bins[bin]);
++  chunks[chunk][bin] = vec4u(
++    atomicLoad(&amp;bins[bin][0]),
++    atomicLoad(&amp;bins[bin][1]),
++    atomicLoad(&amp;bins[bin][2]),
++    atomicLoad(&amp;bins[bin][3]),
++  );
+}
+</pre>
+<p>And for our reduce shader</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const chunkWidth = 256;
+const chunkHeight = 1;
+const chunkSize = chunkWidth * chunkHeight;
+
+struct Uniforms {
+  stride: u32,
+};
+
+-@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
++@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;vec4u, chunkSize&gt;&gt;;
+@group(0) @binding(1) var&lt;uniform&gt; uni: Uniforms;
+
+@compute @workgroup_size(chunkSize, 1, 1) fn cs(
+  @builtin(local_invocation_id) local_invocation_id: vec3u,
+  @builtin(workgroup_id) workgroup_id: vec3u,
+) {
+  let chunk0 = workgroup_id.x * uni.stride * 2;
+  let chunk1 = chunk0 + uni.stride;
+
+  let sum = chunks[chunk0][local_invocation_id.x] +
+            chunks[chunk1][local_invocation_id.x];
+  chunks[chunk0][local_invocation_id.x] = sum;
+}
+</pre>
+<p>Like the previous example, we need to increase the buffer sizes</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const chunksBuffer = device.createBuffer({
+-    size: numChunks * chunkSize * 4,  // 4 bytes per (u32)
++    size: numChunks * chunkSize * 4 * 4,  // 16 bytes per (vec4u)
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+  });
+
+  const resultBuffer = device.createBuffer({
+-    size: chunkSize * 4,
++    size: chunkSize * 4 * 4,
+    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+  });
+</pre>
+<p>That’s it.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-4ch-optimized-more.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-4ch-optimized-more.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>There were 2 other steps we tried in the previous article.
+One used a single workgroup per pixel. Another summed the
+chunks with an invocation per bin instead of reducing the bins.</p>
+<p>Here’s some timing info I got testing these 4 channel versions.</p>
+<div class="webgpu_center data-table">
+  <div data-diagram="timings4ch"></div>
+</div>
+<p>You can compare to the 1 channel versions from the previous
+article.</p>
+<div class="webgpu_center data-table">
+  <div data-diagram="timings"></div>
+</div>
+<h2 id="drawing-the-histogram-on-the-gpu">Drawing the histogram on the GPU</h2>
+<p>Let’s draw the histogram on the GPU. In JavaScript we used the
+canvas 2d API to draw a 1 by height rectangle for each bin which
+was very easy. We could do that using WebGPU as well but I think
+there’s a better approach for the particular issue of drawing a
+histogram.</p>
+<p>Let’s instead just draw a rectangle.
+Drawing rectangles we’ve covered in many places. For example, most of
+the examples from <a href="webgpu-textures.html">the articles on textures</a> use
+a rectangle.</p>
+<p>For a histogram, in the fragment shader, we could
+pass in a texture coordinate and
+convert the horizontal part from 0 -&gt; 1 to 0 -&gt; numBins - 1.
+We could then look up the value in that bin and compute a height
+in the 0 to 1 range. We could then compare that to our vertical
+texture coordinate. If texture coordinate is above
+the height then we could draw 0, if it’s below the height we’ll
+could draw some color.</p>
+<p>This would work for 1 channel but we’d like to draw multiple channels.
+So instead, we’ll set a bit, one for each channel that is above the
+height and then use those 4 bits to look up one of 16 colors. This
+will also let us select the colors we want to represent each channel and their combinations.</p>
+<p>Here’s a fragment shader that does this</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,  // &lt;- used by the vertex shader
+  colors: array&lt;vec4f, 16&gt;,
+  channelMult: vec4u,
+};
+
+@group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var&lt;uniform&gt; uni: Uniforms;
+@group(0) @binding(2) var&lt;storage, read_write&gt; scale: vec4f;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+  let numBins = arrayLength(&amp;bins);
+  let lastBinIndex = u32(numBins - 1);
+  let bin = clamp(
+      u32(fsInput.texcoord.x * f32(numBins)),
+      0,
+      lastBinIndex);
+  let heights = vec4f(bins[bin]) * scale;
+  let bits = heights &gt; vec4f(fsInput.texcoord.y);
+  let ndx = dot(select(vec4u(0), uni.channelMult, bits), vec4u(1));
+  return uni.colors[ndx];
+}
+</pre>
+<p>The first part is computing which bin based off the horizontal texture coordinate</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let numBins = arrayLength(&amp;bins);
+  let lastBinIndex = u32(numBins - 1);
+  let bin = clamp(
+      u32(fsInput.texcoord.x * f32(numBins)),
+      0,
+      lastBinIndex);
+</pre>
+<p>The next part is getting the heights for all 4 channels.
+We’re multiplying by <code class="notranslate" translate="no">scale</code> just like we did in
+JavaScript. We’ll need to supply that later.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let heights = vec4f(bins[bin]) * scale;
+</pre>
+<p>Next we set 4 booleans in a <code class="notranslate" translate="no">vec4&lt;bool&gt;</code>,
+one for each channel. They’ll be true the height of the bin is
+higher than the texture coordinate.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    let bits = heights &gt; vec4f(fsInput.texcoord.y);
+</pre>
+<p>The next part will then select values from <code class="notranslate" translate="no">uni.channelMult</code> based on those 4 bools and then add
+the 4 values.
+Being able to pass in <code class="notranslate" translate="no">uni.channelMult</code> is the similar to what we did in
+the JavaScript, letting us choose which channels get drawn. For example
+if we set <code class="notranslate" translate="no">channelMult</code> to <code class="notranslate" translate="no">1, 2, 4, 0</code> then we’ll get the red, green,
+and blue histograms.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let ndx = dot(select(vec4u(0), uni.channelMult, bits), vec4u(1));
+</pre>
+<p>This last part looks up one of our 16 colors.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  return uni.colors[ndx];
+</pre>
+<p>We also need a shader to compute <code class="notranslate" translate="no">scale</code>. In JavaScript we
+did this</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numBins = histogram.length / 4;
+  const max = [0, 0, 0, 0];
+  histogram.forEach((v, ndx) =&gt; {
+    const ch = ndx % 4;
+    max[ch] = Math.max(max[ch], v);
+  });
+  const scale = max.map(max =&gt; Math.max(1 / max, 0.2 * numBins / numEntries));
+</pre>
+<p>To do the same thing in a compute shaders we could do something like this</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; scale: vec4f;
+@group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
+
+@compute @workgroup_size(1, 1, 1) fn cs() {
+  let size = textureDimensions(ourTexture, 0);
+  let numEntries = f32(size.x * size.y);
+  var m = vec4u(0);
+  let numBins = arrayLength(&amp;bins);
+  for (var i = 0u ; i &lt; numBins; i++) {
+    m = max(m, bins[i]);
+  }
+  scale = max(1.0 / vec4f(m), vec4f(0.2 * f32(numBins) / numEntries));
+}
+</pre>
+<p>Note that the only reason we pass in <code class="notranslate" translate="no">ourTexture</code> is to get its size so
+we can compute <code class="notranslate" translate="no">numEntries</code> where as in JavaScript we passed in <code class="notranslate" translate="no">numEntries</code>.
+We could also use a uniform to pass in <code class="notranslate" translate="no">numEntries</code> but then we’d have to
+create a uniform buffer, update it with the value for <code class="notranslate" translate="no">numEntries</code>, bind
+it, etc… It seemed easier to just reference the texture itself.</p>
+<p>Another thing to consider is this is another place where we’re using only
+a single core. We could reduce here too but there are only <code class="notranslate" translate="no">numBins</code> steps
+which is only 256. The overhead of dispatching a bunch of reduce steps
+would <em>probably</em> outweigh the parallelization. I did time it and was told
+it was around 0.1ms, at least on one machine.</p>
+<p>So, what’s left to do is put the parts together</p>
+<p>Since we’re going to
+draw to the canvas with the GPU we need to get the
+preferred canvas format</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+
+</pre>
+<p>We need to create the shader modules with the 2 shaders above
+and create pipelines for each one.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const scaleModule = device.createShaderModule({
+    label: 'histogram scale shader',
+    code: `
+      @group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+      @group(0) @binding(1) var&lt;storage, read_write&gt; scale: vec4f;
+      @group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
+
+      @compute @workgroup_size(1, 1, 1) fn cs() {
+        let size = textureDimensions(ourTexture, 0);
+        let numEntries = f32(size.x * size.y);
+        var m = vec4u(0);
+        let numBins = arrayLength(&amp;bins);
+        for (var i = 0u ; i &lt; numBins; i++) {
+          m = max(m, bins[i]);
+        }
+        scale = max(1.0 / vec4f(m), vec4f(0.2 * f32(numBins) / numEntries));
+      }
+    `,
+  });
+
+  const drawHistogramModule = device.createShaderModule({
+    label: 'draw histogram shader',
+    code: `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+        colors: array&lt;vec4f, 16&gt;,
+        channelMult: vec4u,
+      };
+
+      @group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+      @group(0) @binding(1) var&lt;uniform&gt; uni: Uniforms;
+      @group(0) @binding(2) var&lt;storage, read_write&gt; scale: vec4f;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; OurVertexShaderOutput {
+        let pos = array(
+
+          vec2f( 0.0,  0.0),  // center
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 0.0,  1.0),  // center, top
+
+          // 2st triangle
+          vec2f( 0.0,  1.0),  // center, top
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 1.0,  1.0),  // right, top
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy;
+        return vsOutput;
+      }
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+        let numBins = arrayLength(&amp;bins);
+        let lastBinIndex = u32(numBins - 1);
+        let bin = clamp(
+            u32(fsInput.texcoord.x * f32(numBins)),
+            0,
+            lastBinIndex);
+        let heights = vec4f(bins[bin]) * scale;
+        let bits = heights &gt; vec4f(fsInput.texcoord.y);
+        let ndx = dot(select(vec4u(0), uni.channelMult, bits), vec4u(1));
+        return uni.colors[ndx];
+      }
+    `,
+  });
+
+  const scalePipeline = device.createComputePipeline({
+    label: 'scale',
+    layout: 'auto',
+    compute: {
+      module: scaleModule,
+    },
+  });
+
+  const drawHistogramPipeline = device.createRenderPipeline({
+    label: 'draw histogram',
+    layout: 'auto',
+    vertex: {
+      module: drawHistogramModule,
+    },
+    fragment: {
+      module: drawHistogramModule,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>We no longer need the result buffer since we’re not going
+to read the values back but we need a scale buffer to
+store the scale we’re going to compute.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const resultBuffer = device.createBuffer({
+-    size: chunkSize * 4 * 4,
+-    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+-  });
++  const scaleBuffer = device.createBuffer({
++    size: 4 * 4,
++    usage: GPUBufferUsage.STORAGE,
++  });
+</pre>
+<p>We need a bind group for our scale pipeline that has the chunks,
+the scale buffer, and the texture</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const scaleBindGroup = device.createBindGroup({
+    layout: scalePipeline.getBindGroupLayout(0),
+    entries: [
+      {
+        binding: 0,
+        resource: {
+          buffer: chunksBuffer,
+          size: chunkSize * 4 * 4,
+        },
+      },
+      { binding: 1, resource: { buffer: scaleBuffer }},
+      { binding: 2, resource: texture.createView() },
+    ],
+  });
+</pre>
+<p>Above we set the size of the binding for the <code class="notranslate" translate="no">chunksBuffer</code>
+to just the size of the first chunk. This way, in the
+shader this code</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+
+      ...
+
+        let numBins = arrayLength(&amp;bins);
+</pre>
+<p>will get the correct value. If we didn’t specific the size
+then the entire <code class="notranslate" translate="no">chunksBuffer</code> size would be available and
+<code class="notranslate" translate="no">numBins</code> would be calculated from all of the chunks, not just
+the first one.</p>
+<p>Now, after we’ve reduced the chunks into one chunk we can
+run our scale compute shader to compute the scale and,
+since we longer have a result buffer we no longer need to copy
+the first chunk into it, nor do we need to map the result buffer,
+nor do we need to pass <code class="notranslate" translate="no">numEntries</code> since we were using that
+to compute a scale but we’ve already done that. We also
+are not going to pass <code class="notranslate" translate="no">histogram</code> which is the data we got
+from the result buffer. Our data is already in the <code class="notranslate" translate="no">chunksBuffer</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // Compute scales for the channels
++  pass.setPipeline(scalePipeline);
++  pass.setBindGroup(0, scaleBindGroup);
++  pass.dispatchWorkgroups(1);
+  pass.end();
+
+-  encoder.copyBufferToBuffer(chunksBuffer, 0, resultBuffer, 0, resultBuffer.size);
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+
+-  await resultBuffer.mapAsync(GPUMapMode.READ);
+-  const histogram = new Uint32Array(resultBuffer.getMappedRange());
+
+  showImageBitmap(imgBitmap);
+
+  // draw the red, green, and blue channels
+-  const numEntries = texture.width * texture.height;
+-  drawHistogram(histogram, numEntries, [0, 1, 2]);
++  drawHistogram([0, 1, 2]);
+
+  // draw the luminosity channel
+-  drawHistogram(histogram, numEntries, [3]);
++  drawHistogram([3]);
+
+-  resultBuffer.unmap();
+</pre>
+<p>Now we need to update our <code class="notranslate" translate="no">drawHistogram</code> function to render
+with the GPU.</p>
+<p>First we need to make a uniform buffer to pass our uniforms.
+For reference here’s the uniforms from the shaders we’ll draw
+the histogram with</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
+  colors: array&lt;vec4f, 16&gt;,
+  channelMult: vec4u,
+};
+</pre>
+<p>So, here’s the code to create a buffer for and fill out the
+channelMult and colors.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function drawHistogram(channels, height = 100) {
+    const numBins = chunkSize;
+
+    //  matrix: mat4x4f;
+    //  colors: array&lt;vec4f, 16&gt;;
+    //  channelMult; vec4u,
+    const uniformValuesAsF32 = new Float32Array(16 + 64 + 4 + 4);
+    const uniformValuesAsU32 = new Uint32Array(uniformValuesAsF32.buffer);
+    const uniformBuffer = device.createBuffer({
+      label: 'draw histogram uniform buffer',
+      size: uniformValuesAsF32.byteLength,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    const subpart = (view, offset, length) =&gt; view.subarray(offset, offset + length);
+    const matrix = subpart(uniformValuesAsF32, 0, 16);
+    const colors = subpart(uniformValuesAsF32, 16, 64);
+    const channelMult = subpart(uniformValuesAsU32, 16 + 64, 4);
+    channelMult.set(range(4, i =&gt; channels.indexOf(i) &gt;= 0 ? 2 ** i : 0));
+    colors.set([
+      [0, 0, 0, 1],
+      [1, 0, 0, 1],
+      [0, 1, 0, 1],
+      [1, 1, 0, 1],
+      [0, 0, 1, 1],
+      [1, 0, 1, 1],
+      [0, 1, 1, 1],
+      [0.5, 0.5, 0.5, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+    ].flat());
+    const range = (i, fn) =&gt; new Array(i).fill(0).map((_, i) =&gt; fn(i));
+    channelMult.set(range(4, i =&gt; channels.indexOf(i) &gt;= 0 ? 2 ** i : 0));
+</pre>
+<p>We also need to compute a matrix using matrix math like we covered
+in <a href="webgpu-translation.html">the series of articles about matrix math</a>.</p>
+<p>In particular, our shader has a hard coded unit quad that goes
+from 0 to 1 in X and Y. If we scale it by 2 in both X and Y and
+subtract 1 we’ll get a quad that goes from -1 to +1 in both direction that covers clip space. This way of using a single
+unit quad is common as then we can just use a little matrix
+math to draw rectangles in any position and orientation without
+having to make special vertex data.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    mat4.identity(matrix);
+    mat4.translate(matrix, [-1, -1, 0], matrix);
+    mat4.scale(matrix, [2, 2, 1], matrix);
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValuesAsF32);
+</pre>
+<p>We need a bindGroup for all of this</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const bindGroup = device.createBindGroup({
+      layout: drawHistogramPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
+        { binding: 1, resource: { buffer: uniformBuffer } },
+        { binding: 2, resource: { buffer: scaleBuffer }},
+      ],
+    });
+</pre>
+<p>We need a canvas configured for WebGPU</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('webgpu');
+    context.configure({
+      device,
+      format: presentationFormat,
+    });
+    canvas.width = numBins;
+    canvas.height = height;
+    document.body.appendChild(canvas);
+</pre>
+<p>and finally we can render</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    const renderPassDescriptor = {
+      label: 'our basic canvas renderPass',
+      colorAttachments: [
+        {
+          view: context.getCurrentTexture().createView(),
+          clearValue: [0.3, 0.3, 0.3, 1],
+          loadOp: 'clear',
+          storeOp: 'store',
+        },
+      ],
+    };
+
+    const encoder = device.createCommandEncoder({ label: 'render histogram' });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(drawHistogramPipeline);
+    pass.setBindGroup(0, bindGroup);
+    pass.draw(6);  // call our vertex shader 6 times
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>And with all of that we’re rendering on the GPU</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-4ch-optimized-more-gpu-draw.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-4ch-optimized-more-gpu-draw.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Let’s do one last thing, let’s get a histogram of video.
+We’re effectively going to merge the example from the
+<a href="webgpu-textures-external-video.html">the article on using external video</a> and our previous example.</p>
+<p>We need to update our HTML and CSS to match the video example</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">    &lt;style&gt;
+      @import url(resources/webgpu-lesson.css);
++html, body {
++  margin: 0;       /* remove the default margin          */
++  height: 100%;    /* make the html,body fill the page   */
++}
+canvas {
++  display: block;  /* make the canvas act like a block   */
++  width: 100%;     /* make the canvas fill its container */
++  height: 100%;
+-  max-width: 256px;
+-  border: 1px solid #888;
+}
++#start {
++  position: fixed;
++  left: 0;
++  top: 0;
++  width: 100%;
++  height: 100%;
++  display: flex;
++  justify-content: center;
++  align-items: center;
++}
++#start&gt;div {
++  font-size: 200px;
++  cursor: pointer;
++}
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
++    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;div id="start"&gt;
++      &lt;div&gt;▶️&lt;/div&gt;
++    &lt;/div&gt;
+  &lt;/body&gt;
+</pre>
+<p>We’ll setup one canvas right at the beginning</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+</pre>
+<p>Because we’re using an external texture we need to change
+our shaders for that kind of texture. For example the histogram
+chunk making shader needs these changes</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const chunkSize = chunkWidth * chunkHeight;
+var&lt;workgroup&gt; bins: array&lt;array&lt;atomic&lt;u32&gt;, 4&gt;, chunkSize&gt;;
+@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;vec4u, chunkSize&gt;&gt;;
+-@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
++@group(0) @binding(1) var ourTexture: texture_external;
+
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(chunkWidth, chunkHeight, 1)
+fn cs(
+  @builtin(workgroup_id) workgroup_id: vec3u,
+  @builtin(local_invocation_id) local_invocation_id: vec3u,
+) {
+-  let size = textureDimensions(ourTexture, 0);
++  let size = textureDimensions(ourTexture);
+  let position = workgroup_id.xy * vec2u(chunkWidth, chunkHeight) + 
+                 local_invocation_id.xy;
+  if (all(position &lt; size)) {
+    let numBins = f32(chunkSize);
+    let lastBinIndex = u32(numBins - 1);
+-    var channels = textureLoad(ourTexture, position, 0);
++    var channels = textureLoad(ourTexture, position);
+    channels.w = srgbLuminance(channels.rgb);
+    for (var ch = 0; ch &lt; 4; ch++) {
+      let v = channels[ch];
+      let bin = min(u32(v * numBins), lastBinIndex);
+      atomicAdd(&amp;bins[bin][ch], 1u);
+    }
+  }
+
+...
+</pre>
+<p>Our scale calculating shader has similar changes</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; scale: vec4f;
+-@group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
++@group(0) @binding(2) var ourTexture: texture_external;
+
+@compute @workgroup_size(1, 1, 1) fn cs() {
+-  let size = textureDimensions(ourTexture, 0);
++  let size = textureDimensions(ourTexture);
+  let numEntries = f32(size.x * size.y);
+
+  ...
+</pre>
+<p>The shader module to draw the video is copied directly from
+the video article as is the creation of a render pipeline
+to use it and a sampler for the video and a uniform buffer
+and render pass to draw with.
+We have the same code to wait for a click and start playing
+the video.</p>
+<p>After the video starts we can setup for computing
+a histogram. The only change is we don’t get our size from
+the texture but instead from the video.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg');
+-  const texture = createTextureFromSource(device, imgBitmap);
+
+-  const chunksAcross = Math.ceil(texture.width / k.chunkWidth);
+-  const chunksDown = Math.ceil(texture.height / k.chunkHeight);
++  const chunksAcross = Math.ceil(video.videoWidth / k.chunkWidth);
++  const chunksDown = Math.ceil(vide.videoHeight / k.chunkHeight);
+</pre>
+<p>We had our code to draw the histograms in <code class="notranslate" translate="no">drawHistogram</code>
+but that code created its own canvas and created other things
+that were only used once. We’ll get rid of <code class="notranslate" translate="no">drawHistogram</code>
+and make some code to setup a uniform buffer and bind group
+for each of the 2 histograms we want to draw</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const histogramDrawInfos = [
+    [0, 1, 2],
+    [3],
+  ].map(channels =&gt; {
+    //        matrix: mat4x4f;
+    //        colors: array&lt;vec4f, 16&gt;;
+    //        channelMult; vec4u,
+    const uniformValuesAsF32 = new Float32Array(16 + 64 + 4 + 4);
+    const uniformValuesAsU32 = new Uint32Array(uniformValuesAsF32.buffer);
+    const uniformBuffer = device.createBuffer({
+      label: 'draw histogram uniform buffer',
+      size: uniformValuesAsF32.byteLength,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    thingsToDestroy.push(uniformBuffer);
+    const subpart = (view, offset, length) =&gt; view.subarray(offset, offset + length);
+    const matrix = subpart(uniformValuesAsF32, 0, 16);
+    const colors = subpart(uniformValuesAsF32, 16, 64);
+    const channelMult = subpart(uniformValuesAsU32, 16 + 64, 4);
+    colors.set([
+      [0, 0, 0, 1],
+      [1, 0, 0, 1],
+      [0, 1, 0, 1],
+      [1, 1, 0, 1],
+      [0, 0, 1, 1],
+      [1, 0, 1, 1],
+      [0, 1, 1, 1],
+      [0.5, 0.5, 0.5, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+    ].flat());
+
+    const drawHistogramBindGroup = device.createBindGroup({
+      layout: drawHistogramPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
+        { binding: 1, resource: { buffer: uniformBuffer } },
+        { binding: 2, resource: { buffer: scaleBuffer }},
+      ],
+    });
+
+    return {
+      drawHistogramBindGroup,
+      matrix,
+      uniformBuffer,
+      uniformValuesAsF32,
+    };
+  });
+</pre>
+<p>At render time, first we import the video texture. Remember, it’s only valid for this one JavaScript event so we have to create
+the bind groups that reference the texture every frame</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    const texture = device.importExternalTexture({source: video});
+
+    // make a bind group for to make a histogram from this video texture
+    const histogramBindGroup = device.createBindGroup({
+      layout: histogramChunkPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: chunksBuffer }},
+        { binding: 1, resource: texture },
+      ],
+    });
+
+    const scaleBindGroup = device.createBindGroup({
+      layout: scalePipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
+        { binding: 1, resource: { buffer: scaleBuffer }},
+        { binding: 2, resource: texture },
+      ],
+    });
+
+    ... insert histogram computing code here ...
+</pre>
+<p>As for render, rendering the video is similar to the article
+about rendering external video. The one difference is the code
+that computes a matrix. We’re doing the scale by 2, subtract 1
+thing like we mentioned above for the histogram but we’re using -2
+for y and adding 1 so that we flip Y. We’re also scaling to
+get a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size#cover">cover effect</a> so the video always fills the canvas but keeps the correct aspect ratio.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // Draw to canvas
+    {
+      const canvasTexture = context.getCurrentTexture().createView();
+      renderPassDescriptor.colorAttachments[0].view = canvasTexture;
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+      // Draw video
+      const bindGroup = device.createBindGroup({
+        layout: videoPipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: videoSampler },
+          { binding: 1, resource: texture },
+          { binding: 2, resource: { buffer: videoUniformBuffer }},
+        ],
+      });
+
+      // 'cover' canvas
+      const canvasAspect = canvas.clientWidth / canvas.clientHeight;
+      const videoAspect = video.videoWidth / video.videoHeight;
+      const scale = canvasAspect &gt; videoAspect
+         ? [1, canvasAspect / videoAspect, 1]
+         : [videoAspect / canvasAspect, 1, 1];
+
+      const matrix = mat4.identity(videoMatrix);
+      mat4.scale(matrix, scale, matrix);
+      mat4.translate(matrix, [-1, 1, 0], matrix);
+      mat4.scale(matrix, [2, -2, 1], matrix);
+
+      device.queue.writeBuffer(videoUniformBuffer, 0, videoUniformValues);
+
+      pass.setPipeline(videoPipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // call our vertex shader 6 times
+</pre>
+<p>To draw the histograms is just moving up the code from
+<code class="notranslate" translate="no">drawHistogram</code></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">      // Draw Histograms
+      histogramDrawInfos.forEach(({
+        matrix,
+        uniformBuffer,
+        uniformValuesAsF32,
+        drawHistogramBindGroup,
+      }, i) =&gt; {
+        mat4.identity(matrix);
+        mat4.translate(matrix, [-0.95 + i, -1, 0], matrix);
+        mat4.scale(matrix, [0.9, 0.5, 1], matrix);
+
+        device.queue.writeBuffer(uniformBuffer, 0, uniformValuesAsF32);
+
+        pass.setPipeline(drawHistogramPipeline);
+        pass.setBindGroup(0, drawHistogramBindGroup);
+        pass.draw(6);  // call our vertex shader 6 times
+      });
+
+      pass.end();
+    }
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>The matrix math above draws a quad on the left or right that is 90%
+the width of half of the canvas, centered on that half,
+and ¼ of the canvas tall.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-video.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-video.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<div class="webgpu_center">
+   <div>Video by <a href="https://www.pexels.com/video/timelapse-video-of-the-city-5750980/">Ekaterina Martynova</a>
+   </div>
+</div>
+<p>Ok, so why compute a histogram?
+There are several things you can do with a histogram</p>
+<ul>
+<li>show it to the user so they can make informed decisions
+on image adjustments</li>
+<li>apply <a href="https://www.google.com/search?q=histogram+equalization">histogram equalization</a> to the image</li>
+<li>apply <a href="https://www.google.com/search?q=adaptive+histogram+equalization">adaptive histogram equalization</a> to the image</li>
+<li>Use it for <a href="https://www.google.com/search?q=histogram+based+image+segmentation">image segmentation</a></li>
+<li>Posterize using <a href="https://www.google.com/search?q=histogram+thresholding">histogram thresholding</a></li>
+</ul>
+<p>And a bunch of other techniques. Maybe we can cover some later.
+My hope is these have been useful examples. We went from some JavaScript
+that computed a histogram and JavaScript that drew a histogram
+to having all the work done on the GPU, including rendering
+that is hopefully fast enough to run in real time.</p>
+<!-- keep this at the bottom of the article -->
+<link rel="stylesheet" href="webgpu-compute-shaders-histogram.css">
+<script type="module" src="webgpu-compute-shaders-histogram.js"></script>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders-histogram-part-2.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-compute-shaders-histogram-part-2.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Basics</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
+<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+<li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
+<li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-textures.html">Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-importing-textures.html">Loading Images</a></li>
+<li><a href="/webgpu/lessons/webgpu-textures-external-video.html">Using Video</a></li>
+<li><a href="/webgpu/lessons/webgpu-cube-maps.html">Cube Maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
+<li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
+<li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+        </ul>
+  <li>3D Math</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>Compute Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>Misc</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Questions? <a href="http://stackoverflow.com/questions/tagged/webgpu">Ask on stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Suggestion</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU Compute Shaders - Image Histogram Part 2`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

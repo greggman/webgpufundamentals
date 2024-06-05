@@ -1,0 +1,43 @@
+{
+  language: 'Українська',
+  langCode: 'uk',   // if not specified will use folder
+  defaultExampleCaption: "натисніть сюди, щоб відкрити в окремому вікні",
+  title: 'webgpufundamentals',
+  description: 'Вивчаємо webgpu',
+  link: 'http://webgpufundamentals.org/webgpu/lessons/uk',
+  commentSectionHeader: `
+<div>Запитання? <a href="http://stackoverflow.com/questions/tagged/webgpu">Запитати на stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=suggested+topic&template=suggest-topic.md&title=%5BSUGGESTION%5D">Пропозиція</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=&template=request.md&title=">Запит</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">Проблема</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">Помилка</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  `,
+  missing: `
+Вибачте, ця стаття ще не була перекладена.
+
+[Будемо раді допомозі в перекладі](https://github.com/webgpu/webgpufundamentals)! 😄
+
+[Тут ви знайдете оригінальну англійську версію статті на цю тему]({{{origLink}}}).
+  `,
+  contribTemplate: 'Thank you <a href="${html_url}"><img src="${avatar_url}"> ${login}</a><br>for <a href="https://github.com/${owner}/${repo}/commits?author=${login}">${contributions} contributions</a>',
+  toc: 'Зміст',
+  categoryMapping: {
+    'basics': 'Основи',
+    'misc': 'Різне',
+    'textures': 'Текстури',
+    'techniques': 'Техніки',
+    '3d': '3D',
+    '2d': '2D',
+    'reference': 'Довідка',
+    '3d-math': '3D математика',
+    'lighting': 'Освітлення',
+    'compute-shaders': 'Обчислювальні шейдери',
+  },
+}
+
+

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Axis Rotation</title>
+<link type="text/css" href="webgl-lessons.css" rel="stylesheet" />
+<style>
+body, html {
+    background-color: #fff;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.container {
+  background-color: #fff;
+  width: 100%;
+  height: 140px;
+  perspective:         200px;
+  perspective-origin:         50%;
+}
+.stage {
+  width: 100%;
+  height: 100%;
+  transition: transform 2s;
+  transform-style:         preserve-3d;
+}
+img {
+  width: 128px;
+  height: 128px;
+}
+.axis {
+  position: relative;
+  top: 0px;
+  margin: 0 auto;
+  height: 60px;
+  width: 60px;
+  transform-style:         preserve-3d;
+}
+.xaxis-rotation {
+  transform:         translateY(-34px) translateZ(34px) translateX(-80px) rotateY(90deg);
+}
+.yaxis-rotation {
+  transform:         translateX(-34px) translateY(40px) rotateX(90deg);
+}
+.zaxis-rotation {
+  transform:         translateX(-18px) translateY(-36px) translateZ(90px) scale(0.5);
+}
+.shapeX, .shapeY, .shapeZ {
+  position: relative;
+  top: 50px;
+  margin: 0 auto;
+  height: 60px;
+  width: 60px;
+  transform-style:         preserve-3d;
+}
+.plane {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 25, 255, 0.0);
+
+  gborder: 10px solid gray;
+  font-size: 8px;
+  display: table-cell;
+  vertical-align: middle;
+
+  transform-style:         preserve-3d;
+}
+
+.tiltX, .tiltY, .tiltZ {
+  position: relative;
+  top: -60px;
+  transform-style:         preserve-3d;
+}
+
+.shapeX {
+  animation:         spinX 8s infinite linear;
+}
+
+@keyframes spinX {
+  from { transform: rotateX(  0deg); }
+  to   { transform: rotateX(-360deg); }
+}
+
+.shapeY {
+  animation:         spinY 8s infinite linear;
+}
+@keyframes spinY {
+  from { transform: rotateY(   0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+.shapeZ {
+  animation:        spinZ 8s infinite linear;
+}
+@keyframes spinZ {
+  from { transform: rotateZ(  0deg); }
+  to   { transform: rotateZ(-360deg); }
+}
+
+.elem1 {
+  background-color: rgb(0,255,0);
+  transform:         translateZ(30px);
+}
+
+.elem4 {
+  background-color: rgb(255,0,0);
+  transform:         translateZ(-30px) rotateY(180deg);
+}
+
+.elem2 {
+  background-color: rgb(0,0,255);
+  transform:         translateX(30px) rotateY(90deg);
+}
+
+.elem5 {
+  background-color: rgb(255,255,0);
+  transform:         translateX(-30px) rotateY(-90deg);
+}
+
+.elem3 {
+  background-color: rgb(255,0,255);
+  transform:         translateY(30px) rotateX(-90deg);
+}
+
+.elem6 {
+  background-color: rgb(0,255,255);
+  transform:         translateY(-30px) rotateX(90deg);
+}
+
+.elem1, .elem2, .elem3, .elem4, .elem5, .elem6 {
+  width: 100%;
+  height: 100%;
+  font-size: 40px;
+  font-family: Arial Black, Helvetica, sans-serif;
+  display: box;
+  box-orient: horizontal;
+  box-pack: center;
+  box-align: center;
+  backface-visibility:         hidden;
+}
+
+table {
+  width: 100%;
+}
+td {
+  text-align: center;
+}
+
+@media (max-width: 500px) {
+    img {
+      width: 64px;
+      height: 64px;
+    }
+    .axis {
+      height: 40px;
+      width: 40px;
+    }
+    .xaxis-rotation {
+      transform:         translateY(-18px) translateZ(18px) translateX(-40px) rotateY(90deg);
+    }
+    .yaxis-rotation {
+      transform:         translateX(-18px) translateY(40px) rotateX(90deg);
+    }
+    .zaxis-rotation {
+      transform:         translateX(-6px) translateY(-12px) translateZ(90px) scale(0.5);
+    }
+    .shapeX, .shapeY, .shapeZ {
+      top: 50px;
+      height: 40px;
+      width: 40px;
+    }
+    .plane {
+      width: 40px;
+      height: 40px;
+    }
+    .tiltX, .tiltY, .tiltZ {
+      top: -40px;
+    }
+
+    .elem1 {
+      transform:         translateZ(20px);
+    }
+    .elem4 {
+      transform:         translateZ(-20px) rotateY(180deg);
+    }
+    .elem2 {
+      transform:         translateX(20px) rotateY(90deg);
+    }
+    .elem5 {
+      transform:         translateX(-20px) rotateY(-90deg);
+    }
+    .elem3 {
+      transform:         translateY(20px) rotateX(-90deg);
+    }
+    .elem6 {
+      transform:         translateY(-20px) rotateX(90deg);
+    }
+    .elem1, .elem2, .elem3, .elem4, .elem5, .elem6 {
+      font-size: 26px;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    html, body, .container {
+      background: #333;
+      color: #EEE;
+    }
+    .stage {
+      color: black;
+    }
+    img {
+      filter: invert(1);
+    }
+}
+</style>
+</head>
+<body>
+  <table>
+    <tr>
+      <td>x axis rotation
+      <div class="container">
+        <div class="stage">
+          <div class="shapeX" class="cube backfaces">
+            <div class="axis">
+              <div class="xaxis-rotation"><img src="rotation-arrow-counterclockwise.png"/></div>
+            </div>
+            <div class="tiltX">
+              <div class="plane">
+                <div class="elem1">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem2">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem3">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem4">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem5">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem6">F</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </td>
+      <td>y axis rotation
+      <div class="container">
+        <div class="stage">
+          <div class="shapeY" class="cube backfaces">
+            <div class="axis">
+              <div class="yaxis-rotation"><img src="rotation-arrow-counterclockwise.png"/></div>
+            </div>
+            <div class="tiltY">
+              <div class="plane">
+                <div class="elem1">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem2">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem3">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem4">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem5">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem6">F</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </td>
+      <td>z axis rotation
+      <div class="container">
+        <div class="stage">
+          <div class="shapeZ" class="cube backfaces">
+            <div class="axis">
+              <div class="zaxis-rotation"><img src="rotation-arrow-counterclockwise.png"/></div>
+            </div>
+            <div class="tiltZ">
+              <div class="plane">
+                <div class="elem1">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem2">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem3">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem4">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem5">F</div>
+              </div>
+              <div class="plane">
+                <div class="elem6">F</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+

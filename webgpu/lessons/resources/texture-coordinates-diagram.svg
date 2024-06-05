@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 405 360" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:square;stroke-miterlimit:10;">
+    <g transform="matrix(1,0,0,1,-275.924,-178.773)">
+        <rect id="svg_2" x="352" y="232" width="256" height="256" style="fill:url(#_Linear1);stroke:black;stroke-width:1px;"/>
+        <g id="svg_7" transform="matrix(7.89655,0,0,5.9063,476.448,433.8)">
+            <text x="-10.336px" y="0px" style="font-family:'LucidaGrande-Bold', 'Lucida Grande', sans-serif;font-weight:600;font-size:36px;">F</text>
+            <path d="M-7.527,0C-7.527,0.327 -7.329,0.593 -7.084,0.593L-1.67,0.593C-1.425,0.593 -1.227,0.327 -1.227,0L-1.227,-10.359C-1.227,-10.359 7.33,-10.359 7.33,-10.359C7.575,-10.359 7.773,-10.624 7.773,-10.951L7.773,-14.537C7.773,-14.864 7.575,-15.13 7.33,-15.13L-1.227,-15.13C-1.227,-15.13 -1.227,-21.855 -1.227,-21.855C-1.227,-21.855 9.281,-21.855 9.281,-21.855C9.526,-21.855 9.724,-22.12 9.724,-22.447L9.724,-26.016C9.724,-26.343 9.526,-26.608 9.281,-26.608L-7.084,-26.608C-7.329,-26.608 -7.527,-26.343 -7.527,-26.016L-7.527,0ZM-7.084,0L-7.084,-26.016L9.281,-26.016L9.281,-22.447L-1.67,-22.447L-1.67,-14.537L7.33,-14.537L7.33,-10.951L-1.67,-10.951L-1.67,0L-7.084,0Z" style="fill:white;"/>
+        </g>
+    </g>
+    <g>
+        <path d="M314.076,34L332.076,40L314.076,46L314.076,34Z"/>
+        <path d="M76.076,40L317.676,40" style="fill:none;stroke:black;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
+        <path d="M66,291.227L60,309.227L54,291.227L66,291.227Z"/>
+        <path d="M60,53.227L60,294.827" style="fill:none;stroke:black;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
+        <path d="M50,53.227L70,53.227" style="fill:none;stroke:black;stroke-opacity:0.5;stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
+        <g transform="matrix(1,0,0,1,0,256)">
+            <path d="M50,53.227L70,53.227" style="fill:none;stroke:black;stroke-opacity:0.5;stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
+        </g>
+        <g transform="matrix(6.12323e-17,-1,1,6.12323e-17,22.8498,100)">
+            <path d="M50,53.227L70,53.227" style="fill:none;stroke:black;stroke-opacity:0.5;stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
+        </g>
+        <g transform="matrix(6.12323e-17,-1,1,6.12323e-17,278.85,100)">
+            <path d="M50,53.227L70,53.227" style="fill:none;stroke:black;stroke-opacity:0.5;stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
+        </g>
+    </g>
+    <g transform="matrix(1.33697,0,0,1,-35.8367,4.08354)">
+        <text x="75.41px" y="19.271px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">0,0</text>
+    </g>
+    <g transform="matrix(1.33697,0,0,1,-76.0351,37.3101)">
+        <text x="75.41px" y="19.271px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">0,0</text>
+    </g>
+    <g transform="matrix(1.33697,0,0,1,220.163,4.08354)">
+        <text x="75.41px" y="19.271px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">1,0</text>
+    </g>
+    <g transform="matrix(1.33697,0,0,1,-76.0351,294.084)">
+        <text x="75.41px" y="19.271px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:12px;">1,0</text>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(256,256,-256,256,352,232)"><stop offset="0" style="stop-color:rgb(255,0,0);stop-opacity:1"/><stop offset="0" style="stop-color:rgb(225,0,255);stop-opacity:1"/><stop offset="0.3" style="stop-color:rgb(0,0,255);stop-opacity:1"/><stop offset="0.46" style="stop-color:rgb(0,255,255);stop-opacity:1"/><stop offset="0.63" style="stop-color:rgb(0,255,0);stop-opacity:1"/><stop offset="0.8" style="stop-color:rgb(255,255,0);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(255,0,0);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>

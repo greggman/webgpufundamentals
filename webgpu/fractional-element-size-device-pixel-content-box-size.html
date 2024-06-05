@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+#parent {
+  display: flex;
+  width: 299px;
+  height: 40px;
+  align-items: stretch;
+  background-color: red;
+}
+#parent>* {
+  flex: 1 1 33%;
+}
+#left { background-color: #A44; }
+#middle { background-color: #4A4; }
+#right { background-color: #66C; }
+    </style>
+  </head>
+  <body>
+    <div id="parent">
+      <div id="left">left</div>
+      <div id="middle">middle</div>
+      <div id="right">right</div>
+    </div>
+    <pre id="info">
+
+    </pre>
+  </body>
+  <script>
+const infoElem = document.querySelector('#info');
+const inlineSizes = {};
+const observer = new ResizeObserver(entries => {
+  for (const entry of entries) {
+    inlineSizes[entry.target.id] = {
+      inlineSize: entry.contentBoxSize[0].inlineSize,
+      dpcbInlineSize: entry.devicePixelContentBoxSize?.[0].inlineSize,
+    };
+  }
+
+  const info = Object.entries(inlineSizes).map(([id, data]) => {
+    const elem = document.getElementById(id);
+    return `\
+--------------- #${elem.id} ---------------
+                          inlineSize: ${data.inlineSize}
+devicePixelContentBoxSize.inlineSize: ${data.dpcbInlineSize}    <=====
+                         clientWidth: ${elem.clientWidth}
+         getBoundingClientRect.width: ${elem.getBoundingClientRect().width}`;
+  });
+  infoElem.textContent = `devicePixelRatio: ${devicePixelRatio}\n${info.join('\n')}`;
+});
+
+observer.observe(document.querySelector('#left'));
+observer.observe(document.querySelector('#middle'));
+observer.observe(document.querySelector('#right'));
+observer.observe(document.querySelector('#parent'));
+  </script>
+</html>

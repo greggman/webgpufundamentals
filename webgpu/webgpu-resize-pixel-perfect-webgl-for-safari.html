@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Resize Canvas - Pixel Perfect</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+  </body>
+  <script type="module">
+import * as twgl from '/3rdparty/twgl-full.module.js';
+async function main() {
+  const canvas = document.querySelector('canvas');
+  const gl = canvas.getContext('webgl2');
+
+  const vs = `#version 300 es
+    void main() {
+      vec2 pos[3];
+      pos[0] = vec2(-1.0,  3.0);
+      pos[1] = vec2( 3.0, -1.0);
+      pos[2] = vec2(-1.0, -1.0);
+      gl_Position = vec4(pos[gl_VertexID], 0, 1);
+    }
+  `;
+
+  const fs = `#version 300 es
+    precision highp float;
+    out vec4 fragColor;
+    void main() {
+      vec2 hv = vec2(uvec2(gl_FragCoord.xy) % 2u);
+      fragColor = vec4(1, 0, 1, 1) * hv.x +
+                  vec4(0, 1, 0, 1) * hv.y;
+    }
+  `;
+
+  const prg = twgl.createProgram(gl, [vs, fs]);
+  gl.useProgram(prg);
+
+  function render() {
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const width = entry.devicePixelContentBoxSize?.[0].inlineSize ||
+                    entry.contentBoxSize[0].inlineSize * devicePixelRatio;
+      const height = entry.devicePixelContentBoxSize?.[0].blockSize ||
+                     entry.contentBoxSize[0].blockSize * devicePixelRatio;
+      const canvas = entry.target;
+      canvas.width = width;
+      canvas.height = height;
+      // re-render
+      render();
+    }
+  });
+  try {
+    observer.observe(canvas, { box: 'device-pixel-content-box' });
+  } catch {
+    observer.observe(canvas, { box: 'content-box' });
+  }
+}
+
+main();
+  </script>
+</html>

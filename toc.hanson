@@ -1,0 +1,66 @@
+{
+  'basics': [
+    'webgpu-fundamentals.md',
+    'webgpu-inter-stage-variables.md',
+    'webgpu-uniforms.md',
+    'webgpu-storage-buffers.md',
+    'webgpu-vertex-buffers.md',
+    {
+      'textures': [
+        'webgpu-textures.md',
+        'webgpu-importing-textures.md',
+        'webgpu-textures-external-video.md',
+        'webgpu-cube-maps.md',
+        'webgpu-storage-textures.md',
+        'webgpu-multisampling.md',
+      ],
+    },
+    'webgpu-constants.md',
+    'webgpu-memory-layout.md',
+    'webgpu-transparency.md',
+    'webgpu-copying-data.md',
+    'webgpu-limits-and-features.md',
+    'webgpu-timing.md',
+    'webgpu-wgsl.md',
+    'webgpu-how-it-works.md',
+  ],
+  '3d-math': [
+    'webgpu-translation.md',
+    'webgpu-rotation.md',
+    'webgpu-scale.md',
+    'webgpu-matrix-math.md',
+    'webgpu-orthographic-projection.md',
+    'webgpu-perspective-projection.md',
+    'webgpu-cameras.md',
+    'webgpu-matrix-stacks.md',
+    'webgpu-scene-graphs.md',
+  ],
+  'lighting': [
+    'webgpu-lighting-directional.md',
+    'webgpu-lighting-point.md',
+    'webgpu-lighting-spot.md',
+  ],
+  techniques: {
+    '2d': [
+      'webgpu-large-triangle-to-cover-clip-space.md'
+    ],
+    '3d': [
+      'webgpu-environment-maps.md',
+      'webgpu-skybox.md',
+    ],
+  },
+  'compute-shaders': [
+    'webgpu-compute-shaders.md',
+    'webgpu-compute-shaders-histogram.md',
+    'webgpu-compute-shaders-histogram-part-2.md',
+  ],
+  'misc': [
+    'webgpu-resizing-the-canvas.md',
+    'webgpu-multiple-canvases.md',
+    'webgpu-points.md',
+    'webgpu-from-webgl.md',
+    'webgpu-resources.md',
+    'webgpu-wgsl-function-reference.md',
+    'webgpu-wgsl-offset-computer.md',
+  ],
+}

@@ -1,0 +1,785 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ko/webgpu-how-it-works.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="ko"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="WebGPU는 어떻게 동작하는가">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_ko.jpg">
+
+<meta property="og:title" content="WebGPU 동작 방식">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_ko.jpg">
+<meta property="og:description" content="WebGPU는 어떻게 동작하는가">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-how-it-works.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU 동작 방식">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-how-it-works.html">
+<meta name="twitter:description" content="WebGPU는 어떻게 동작하는가">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_ko.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-how-it-works.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_ko.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-how-it-works.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-how-it-works.html",
+      "inLanguage":"ko",
+      "name":"WebGPU 동작 방식",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-how-it-works.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU 동작 방식</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/ko/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-how-it-works.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-how-it-works.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-how-it-works.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-how-it-works.html" selected="">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-how-it-works.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-how-it-works.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">简体中文
+</option></select>
+
+
+    <a href="#toc">목차</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/webgpu/lessons/ko/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU 동작 방식</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>WebGPU를 설명하기 위해 GPU가 정점 셰이더와 프래그먼트 셰이더로 하는 작업들을 자바스크립트로 구현하여 설명해 보겠습니다.
+이를 통해 어떤 일이 일어나는지 보다 직관적으로 이해하시기를 바랍니다.</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a>에 익숙하시고 많이 사용해 보셨다면 이 두 개의 셰이더 함수가 어떻게 동작하는지 이해하실 수 있습니다.
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a>에서 여러분은 값을 변환하기 위한 함수를 전달합니다.</p>
+<p>예시:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const shader = v =&gt; v * 2;  // double the input
+const input = [1, 2, 3, 4];
+const output = input.map(shader);   // result [2, 4, 6, 8]
+</pre>
+<p>위에서 array.map에 사용하는 "shader"는 주어진 값의 두 배를 반환하는 함수입니다.
+이것이 아마도 "shader"가 무엇인지를 자바스크립트로 비유하는 가장 좋은 방법인 것 같습니다.
+값을 반환하거나 생성하는 함수인 것이죠. 그리고 직접 호출하지 않습니다.
+대신, 명시해 놓으면 시스템이 대신해서 호출해 줍니다.</p>
+<p>GPU에서의 정점 셰이더에서는 여러분이 입력 배열에 대해 map을 하지는 않습니다.
+대신 해당 함수가 몇 번이나 호출되어야 하는지를 명시합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function draw(count, vertexShaderFn) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+    internalBuffer[i] = vertexShaderFn(i);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+</pre>
+<p>이로 인해서 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a>와는 다르게 소스 배열이 불필요해집니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const shader = v =&gt; v * 2;
+const count = 4;
+draw(count, shader);
+// outputs [0, 2, 4, 6]
+</pre>
+<p>GPU로 작업하는 것이 복잡해지는 이유는 이러한 함수가 여러분 컴퓨터 내의 GPU라는 별도의 시스템에서 동작하기 때문입니다.
+즉 여러분이 만들고 참조한 모든 데이터는 어떻게든 GPU로 보내져야 하고 셰이더와 소통해서 그 데이터가 어디에 있고 어떻게 접근해야 하는지 알려줘야 합니다.</p>
+<p>정점과 프래그먼트 셰이더는 여섯 가지 방법으로 데이터를 받을 수 있습니다.
+uniform, 어트리뷰트, 버퍼, 텍스처, 스테이지간 변수, 상수 입니다.</p>
+<ol>
+<li>
+<p>Uniforms</p>
+<p>uniform은 셰이더의 각 반복에서 모두 값이 동일합니다.
+상수 전역 변수로 생각하시면 됩니다.
+셰이더가 실행되기 전에는 값을 설정할 수 있지만, 셰이더가 사용되는 도중에는 값이 변할 수 없습니다.
+다시 말해 <em>일정한(uniform)</em> 상태를 유지합니다.</p>
+<p><code class="notranslate" translate="no">draw</code>를 수정해 uniform을 셰이더에 전달해 보겠습니다.
+이를 위해서 <code class="notranslate" translate="no">binding</code>이라는 배열을 만들고 이를 uniform을 전달하기 위해 사용합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">*function draw(count, vertexShaderFn, bindings) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+*    internalBuffer[i] = vertexShaderFn(i, bindings);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+</pre>
+<p>그리고 셰이더를 uniform을 사용하는 방식으로 수정해 보겠습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vertexShader = (v, bindings) =&gt; {
+  const uniforms = bindings[0];
+  return v * uniforms.multiplier;
+};
+const count = 4;
+const uniforms1 = {multiplier: 3};
+const uniforms2 = {multiplier: 5};
+const bindings1 = [uniforms1];
+const bindings2 = [uniforms2];
+draw(count, vertexShader, bindings1);
+// outputs [0, 3, 6, 9]
+draw(count, vertexShader, bindings2);
+// outputs [0, 5, 10, 15]
+</pre>
+<p>따라서 uniform의 개념은 상당히 직관적입니다.
+<code class="notranslate" translate="no">bindings</code>을 중간에 두어 간접적으로 값을 전달한 것은 WebGPU의 동작 방식이 이와 "유사"하기 떄문입니다.
+이전에 이야기한 것처럼 무언가(이 경우엔 uniform)에 접근하기 위해서는 location/인덱스를 바탕으로 접근합니다.
+위 예제에서는 <code class="notranslate" translate="no">bindings[0]</code>가 되겠죠.</p>
+</li>
+<li>
+<p>어트리뷰트 (정점 셰이더만 해당)</p>
+<p>어트리뷰트는 셰이더 반복별로 다른 데이터를 전달합니다.
+위 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a>에서 <code class="notranslate" translate="no">v</code>값은 <code class="notranslate" translate="no">input</code>으로부터 얻어와서 자동으로 함수에 전달됩니다.
+이는 셰이더의 어트리뷰트와 매우 유사합니다.</p>
+<p>차이점은, 우리는 입력값을 직접 맵핑하는 것이 아니라 반복 횟수만을 사용하기 때문에,
+WebGPU에게 입력이 무엇이고 데이터를 어떻게 가져와야 하는지 알려줘야 한다는 것입니다.</p>
+<p><code class="notranslate" translate="no">draw</code>가 아래와 같이 수정되었다고 해 봅시다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">*function draw(count, vertexShaderFn, bindings, attribsSpec) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+*    const attribs = getAttribs(attribsSpec, i);
+*    internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+
++function getAttribs(attribs, ndx) {
++  return attribs.map(({source, offset, stride}) =&gt; source[ndx * stride + offset]);
++}
+</pre>
+<p>그러면 아래와 같이 호출할 수 있습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [0, 1, 2, 3, 4, 5, 6, 7];
+const buffer2 = [11, 22, 33, 44];
+const attribsSpec = [
+  { source: buffer1, offset: 0, stride: 2, },
+  { source: buffer1, offset: 1, stride: 2, },
+  { source: buffer2, offset: 0, stride: 1, },
+];
+const vertexShader = (v, bindings, attribs) =&gt; (attribs[0] + attribs[1]) * attribs[2];
+const bindings = [];
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// outputs [11, 110, 297, 572]
+</pre>
+<p>위에서 볼 수 있는 것처럼, <code class="notranslate" translate="no">getAttribs</code>는 <code class="notranslate" translate="no">offset</code>과 <code class="notranslate" translate="no">stride</code>를 사용해서 인덱스를 계산하고, 대응되는 <code class="notranslate" translate="no">source</code> 버퍼로부터 값을 가져옵니다.
+가져온 값은 셰이더로 전달되는데, 각 반복마다 <code class="notranslate" translate="no">attribs</code>는 달라집니다.</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no"> iteration |  attribs
+ ----------+-------------
+     0     | [0, 1, 11]
+     1     | [2, 3, 22]
+     2     | [4, 5, 33]
+     3     | [6, 7, 44]
+</pre>
+</li>
+<li>
+<p>Raw 버퍼</p>
+<p>버퍼는 근본적으로 배열인데, 이번에는 버퍼를 사용하는 <code class="notranslate" translate="no">draw</code>를 만들어 봅시다.
+버퍼는 이전에 uniform에서처럼 <code class="notranslate" translate="no">bindings</code>를 통해 전달할 것입니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [0, 1, 2, 3, 4, 5, 6, 7];
+const buffer2 = [11, 22, 33, 44];
+const attribsSpec = [];
+const bindings = [
+  buffer1,
+  buffer2,
+];
+const vertexShader = (ndx, bindings, attribs) =&gt; 
+    (bindings[0][ndx * 2] + bindings[0][ndx * 2 + 1]) * bindings[1][ndx];
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// outputs [11, 110, 297, 572]
+</pre>
+<p>이전 어트리뷰트와 동일한 결과를 얻었지만 이번에는 시스템이 버퍼에서 값을 가져오는 대신, 우리가 바인딩된 버퍼의 인덱스를 직접 계산했습니다.
+이러한 방식이 배열의 요소들에 직접 접근 가능하기 때문에 어트리뷰트보다 유연합니다.
+하지만 그 이유 때문에 더 느릴 가능성도 생깁니다.
+어트리뷰트의 동작 방식 때문에 GPU는 접근해야 할 값의 순서를 알고 최적화 할 수 있습니다.
+예를 들어 순차적 접근은 일반적으로 캐시(cache) 친화적입니다.
+우리가 직접 인덱스를 계산할 때에는, 버퍼의 어떤 부분에 접근할지를, 실제로 접근을 시도하기 전까지는 GPU가 알 수 없습니다.</p>
+</li>
+<li>
+<p>텍스처</p>
+<p>텍스처는 데이터의 1차원, 2차원, 3차원 배열입니다.
+물론 버퍼를 사용해 우리가 스스로 2차원, 3차원 배열을 구현해도 됩니다.
+텍스처의 특별한 점은 샘플링기 가능하다는 것입니다.
+샘플링은 GPU에게 우리가 입력한 값 사이의 값을 계산하도록 하는 것입니다.
+이것의 의미는 <a href="webgpu-textures.html">텍스처에 관한 글</a>에 설명해 두었습니다.
+지금은, 자바스크립트 비유를 계속 가져가 봅시다.</p>
+<p>먼저 배열의 사이값을 <em>샘플링</em>하는 <code class="notranslate" translate="no">textureSample</code>함수를 만듭니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function textureSample(texture, ndx) {
+  const startNdx = ndx | 0;  // round down to an int
+  const fraction = ndx % 1;  // get the fractional part between indices
+  const start = texture[startNdx];
+  const end = texture[startNdx + 1];
+  return start + (end - start) * fraction;  // compute value between start and end
+}
+</pre>
+<p>이와 같은 함수가 이미 GPU에는 구현되어 있습니다.</p>
+<p>이 함수를 셰이더에서 사용해 봅시다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const texture = [10, 20, 30, 40, 50, 60, 70, 80];
+const attribsSpec = [];
+const bindings = [
+  texture,
+];
+const vertexShader = (ndx, bindings, attribs) =&gt;
+    textureSample(bindings[0], ndx * 1.75);
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// outputs [10, 27.5, 45, 62.5]
+</pre>
+<p><code class="notranslate" translate="no">ndx</code>가 <code class="notranslate" translate="no">3</code>일때 <code class="notranslate" translate="no">textureSample</code>에 <code class="notranslate" translate="no">3 * 1.75</code>, 즉 <code class="notranslate" translate="no">5.25</code>가 전달됩니다.
+이를 통해 <code class="notranslate" translate="no">startNdx</code>는 <code class="notranslate" translate="no">5</code>가 되고 <code class="notranslate" translate="no">5</code>와 <code class="notranslate" translate="no">6</code> 인덱스의 값인 <code class="notranslate" translate="no">60</code>과 <code class="notranslate" translate="no">70</code>이 얻어집니다.
+<code class="notranslate" translate="no">fraction</code>은 <code class="notranslate" translate="no">0.25</code>가 되므로 <code class="notranslate" translate="no">60 + (70 - 60) * 0.25</code>를 통해 <code class="notranslate" translate="no">62.5</code>가 계산됩니다.</p>
+<p>위 코드를 보면 셰이더의 함수로 우리가 <code class="notranslate" translate="no">textureSample</code>을 직접 작성할 수 있어 보입니다.
+두 개의 값을 가져와 사이값을 보간하면 됩니다.
+GPU가 이러한 특수한 함수를 가지고 있는 이유는 동일한 계산을 매우 빠르게 계산할 수도 있고, 설정에 따라서는 16개의 4개 float 값(<em>역주: 텍스처 색상 vec4f</em>)을 가져와 4개 float을 계산해야 할 수도 있기 때문입니다.
+후자의 경우 직접 구현하려고 하면 많은 작업이 필요할 것입니다.</p>
+</li>
+<li>
+<p>스테이지간 변수 (프래그먼트 셰이더만 해당)</p>
+<p>스테이지간 변수는 정점 셰이더에서 프래그먼트 셰이더로 보내지는 출력값입니다.
+위에서 언급한 것처럼 정점 셰이더의 출력 위치값은 점, 선, 삼각형을 그리기/래스터화 하기 위해 사용됩니다.</p>
+<p>선을 그리려고 한다고 가정해 봅시다.
+정점 셰이더가 두 번 실행되는데, 첫 번째에서는 <code class="notranslate" translate="no">5,0</code>을, 두 번째에서는 <code class="notranslate" translate="no">25,4</code>를 출력한다고 해 봅시다.
+이 두 점의 위치로부터 GPU는 <code class="notranslate" translate="no">5,0</code>에서 <code class="notranslate" translate="no">25,4</code>를 잇는 선을 그릴 것입니다.
+이를 위해서 프래그먼트 셰이더를 20번 호출할 것인데, 각 호출은 그 선 위의 픽셀 하나당 한 번씩을 의미합니다.
+프래그먼트 셰이더를 호출할 때마다 어떤 색상을 반환할 것인지는 우리에게 달려 있습니다.</p>
+<p>두 개의 점을 잇는 선을 그리는 두 개의 함수가 있다고 해 봅시다.
+첫 번째 함수는 몇 개의 픽셀을 그려야 하는지와 그리기 위해 필요한 정보들을 계산해주는 함수입니다.
+두 번째 함수는 그 정보들과 픽셀 숫자를 받아서 픽셀 위치를 알려줍니다. 예시는 아래와 같습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const line = calcLine([10, 10], [13, 13]);
+for (let i = 0; i &lt; line.numPixels; ++i) {
+  const p = calcLinePoint(line, i);
+  console.log(p);
+}
+// prints
+// 10,10
+// 11,11
+// 12,12
+</pre>
+<p>참고: <code class="notranslate" translate="no">calcLine</code>과 <code class="notranslate" translate="no">calcLinePoint</code>가 실제로 어떻게 동작하는지는 중요하지 않습니다.
+중요한 것은 이들이 잘 동작하고 위 반복문이 선을 그리기 위한 픽셀 위치들을 알려준다는 사실입니다.
+<strong>그래도 궁금하시다면, 이 글의 마지막에 있는 코드 예제를 살펴 보세요</strong>.</p>
+<p>이제 정점 셰이더를 수정해서 반복마다 두 개의 값을 출력하도록 하겠습니다.
+다양한 방법으로 할 수 있는데, 아래는 한 가지 예시를 보여줍니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
+];
+const bindings = [];
+const dest = new Array(2);
+const vertexShader = (ndx, bindings, attribs) =&gt; [attribs[0], attribs[1]];
+const count = 2;
+draw(count, vertexShader, bindings, attribsSpec);
+// outputs [[5, 0], [25, 4]]
+</pre>
+<p>이제 한번에 점 두 개씩을 순회하면서 선을 래스터화하는 <code class="notranslate" translate="no">rasterizeLines</code>를 작성합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function rasterizeLines(dest, destWidth, inputs, fragShaderFn, bindings) {
+  for (let ndx = 0; ndx &lt; inputs.length - 1; ndx += 2) {
+    const p0 = inputs[ndx    ];
+    const p1 = inputs[ndx + 1];
+    const line = calcLine(p0, p1);
+    for (let i = 0; i &lt; line.numPixels; ++i) {
+      const p = calcLinePoint(line, i);
+      const offset = p[1] * destWidth + p[0];  // y * width + x
+      dest[offset] = fragShaderFn(bindings);
+    }
+  }
+}
+</pre>
+<p>위와 같은 코드를 사용하도록 <code class="notranslate" translate="no">draw</code>를 수정합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function draw(count, vertexShaderFn, bindings, attribsSpec) {
++function draw(dest, destWidth,
++              count, vertexShaderFn, fragmentShaderFn,
++              bindings, attribsSpec,
++) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+    const attribs = getAttribs(attribsSpec, i);
+    internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+  }
+-  console.log(JSON.stringify(internalBuffer));
++  rasterizeLines(dest, destWidth, internalBuffer,
++                 fragmentShaderFn, bindings);
+}
+</pre>
+<p>이제 <code class="notranslate" translate="no">internalBuffer</code>가 실제로 사용되는군요 😃!</p>
+<p><code class="notranslate" translate="no">draw</code>를 호출하는 코드도 수정합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
+];
+const bindings = [];
+const vertexShader = (ndx, bindings, attribs) =&gt; [attribs[0], attribs[1]];
+const count = 2;
+-draw(count, vertexShader, bindings, attribsSpec);
+
++const width = 30;
++const height = 5;
++const pixels = new Array(width * height).fill(0);
++const fragShader = (bindings) =&gt; 6;
+
+*draw(
+*   pixels, width,
+*   count, vertexShader, fragShader,
+*   bindings, attribsSpec);
+</pre>
+<p><code class="notranslate" translate="no">0</code>을 <code class="notranslate" translate="no">.</code>으로 표현하여 <code class="notranslate" translate="no">pixels</code> 사각형을 출력해 보면 아래와 같습니다.</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">.....666......................
+........66666.................
+.............66666............
+..................66666.......
+.......................66.....
+</pre>
+<p>안타깝게도 프래그먼트 셰이더는 각 반복마다 변하는 입력이 없기 때문에 각 픽셀별로 다른 값을 출력할 방법이 없습니다.
+이를 위해 스테이지간 변수를 사용할 수 있습니다.
+첫 번째 셰이더를 수정해서 추가적인 값을 출력하도록 수정해 봅시다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
++const buffer2 = [9, 3];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
++  {source: buffer2, offset: 0, stride: 1},
+];
+const bindings = [];
+const dest = new Array(2);
+const vertexShader = (ndx, bindings, attribs) =&gt; 
+-    [attribs[0], attribs[1]];
++    [[attribs[0], attribs[1]], [attribs[2]]];
+
+...
+</pre>
+<p>다른 부분을 수정하지 않는다면 <code class="notranslate" translate="no">draw</code> 내의 반복이 끝나면 <code class="notranslate" translate="no">internalBuffer</code>는 아래와 같은 값을 갖게 됩니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> [ 
+   [[ 5, 0], [9]],
+   [[25, 4], [3]],
+ ]
+</pre>
+<p>선을 따라 얼마나 떨어져 있는지를 0.0과 1.0 사이의 값으로 계산하는 코드는 쉽게 작성이 가능합니다.
+이 값을 사용해 방금 추가한 값을 보간할 수 있습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function rasterizeLines(dest, destWidth, inputs, fragShaderFn, bindings) {
+  for(let ndx = 0; ndx &lt; inputs.length - 1; ndx += 2) {
+-    const p0 = inputs[ndx    ];
+-    const p1 = inputs[ndx + 1];
++    const p0 = inputs[ndx    ][0];
++    const p1 = inputs[ndx + 1][0];
++    const v0 = inputs[ndx    ].slice(1);  // everything but the first value
++    const v1 = inputs[ndx + 1].slice(1);
+    const line = calcLine(p0, p1);
+    for (let i = 0; i &lt; line.numPixels; ++i) {
+      const p = calcLinePoint(line, i);
++      const t = i / line.numPixels;
++      const interStageVariables = interpolateArrays(v0, v1, t);
+      const offset = p[1] * destWidth + p[0];  // y * width + x
+-      dest[offset] = fragShaderFn(bindings);
++      dest[offset] = fragShaderFn(bindings, interStageVariables);
+    }
+  }
+}
+
++// interpolateArrays([[1,2]], [[3,4]], 0.25) =&gt; [[1.5, 2.5]]
++function interpolateArrays(v0, v1, t) {
++  return v0.map((array0, ndx) =&gt; {
++    const array1 = v1[ndx];
++    return interpolateValues(array0, array1, t);
++  });
++}
+
++// interpolateValues([1,2], [3,4], 0.25) =&gt; [1.5, 2.5]
++function interpolateValues(array0, array1, t) {
++  return array0.map((a, ndx) =&gt; {
++    const b = array1[ndx];
++    return a + (b - a) * t;
++  });
++}
+</pre>
+<p>이제 스테이지간 변수를 프래그먼트 셰이더에서 사용 가능합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const fragShader = (bindings) =&gt; 6;
++const fragShader = (bindings, interStageVariables) =&gt; 
++    interStageVariables[0] | 0; // convert to int
+</pre>
+<p>실행하면 결과는 아래와 같습니다.</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">.....988......................
+........87776.................
+.............66655............
+..................54443.......
+.......................33.....
+</pre>
+<p>정점 셰이더의 첫 번째 반복에서는 <code class="notranslate" translate="no">[[5,0], [9]]</code>가, 두 번째 반복에서는 <code class="notranslate" translate="no">[[25,4], [3]]</code>가 출력되며 프래그먼트 셰이더가 호출되면서 위 출력의 두 번째 값들 사이에 보간이 이루어졌습니다.</p>
+<p>세 개의 점을 통해 삼각형을 래스터화하는 <code class="notranslate" translate="no">mapTriangle</code> 함수를 만들고 프래그먼트 셰이더 함수를 각 삼각형 내 점들에 대해 호출하도록 할 수도 있을 겁니다.
+이러한 경우 스테이지간 변수는 두 개 점이 아닌 세 개 점 사이의 값을 보간하게 됩니다.</p>
+</li>
+</ol>
+<p>이해를 돕기 위해 수정이 가능하도록 위의 모든 예제에 대한 실행 코드를 아래 제공해 드립니다.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-javascript-analogies.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-javascript-analogies.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<p>위에서 설명한 자바스크립트는 비유입니다.
+실제 WebGPU에서 스테이지간 변수가 어떻게 보간되는지, 선이 어떻게 그려지는지, 버퍼에 어떻게 접근하는지, 텍스처 샘플링이 어떻게 이루어지는지, uniform과 어트리뷰트는 어떻게 명시되는지 등등에 대한 세부 동작은 다릅니다.
+하지만 개념 자체는 매우 유사하기 때문에 이러한 자바스크립트 비유가 무슨 일이 일어나는지에 대한 개념 이해에 도움이 될 것으로 기대합니다.</p>
+<p>왜 이런 방식으로 동작하냐고요?
+음, <code class="notranslate" translate="no">draw</code>와 <code class="notranslate" translate="no">rasterizeLines</code>를 보시면 각 반복이 완전히 독립적으로 이루어지는 것을 알 수 있을겁니다.
+다른 방식으로 설명해보자면 각 반복은 어떤 순서로 진행되어도 상관이 없습니다.
+0,1,2,3,4 순서 대신 3,1,4,0,2 순서로 반복해도 결과는 같습니다.
+반복이 독립적이라는 뜻은 이들이 별도의 처리장치에서 병렬적으로 실행될 수 있다는 뜻입니다.
+2021년 기준 최상급 GPU는 10,000개 이상의 처리장치가 내장되어 있습니다.
+즉 10,000개의 연산이 병렬적으로 이루어 질 수 있다는 뜻입니다.
+이것이 GPU의 능력의 원천입니다. 이러한 패턴을 따름으로써 시스템은 병렬적으로 작업을 수행할 수 있습니다.</p>
+<p>한계점은 아래와 같습니다:</p>
+<ol>
+<li>
+<p>한 셰이더 함수는 그 입력값 (어트리뷰트, 버퍼, 텍스처, uniform, 스테이지간 변수)만 참조할 수 있음</p>
+</li>
+<li>
+<p>셰이더는 메모리를 할당할 수 없음</p>
+</li>
+<li>
+<p>셰이더가 값을 쓰는/값을 생성하는 그 값을 참조하는 경우에 주의해야 함</p>
+<p>생각해 보면 당연합니다. 위에서 <code class="notranslate" translate="no">fragShader</code>가 <code class="notranslate" translate="no">dest</code>를 직접 참조하려 한다고 해 봅시다.
+그러면 병렬화가 불가능해지게 됩니다.
+어떤 반복이 먼저 실행될까요?
+만일 세 번째 반복에서 <code class="notranslate" translate="no">dest[0]</code>를 참조하려 하면 먼저 0번째 반복이 실행되었어야만 하는데 만일 0번째 반복에서 <code class="notranslate" translate="no">dest[3]</code>를 참조하는 경우에는 다시 세 번째 반복이 먼저 실행되었어야만 합니다.</p>
+<p>이러한 한계점을 해결하는 방안은 CPU에서의 멀티쓰레드나 멀티프로세스에서도 필요하긴 하지만 GPU의 세계에서는 10,000개나 되는 프로세서가 한 번에 연산을 하기 때문에 보다 특별한 주의가 필요합니다.
+관련된 기술 중의 일부를 다른 글에서 설명하도록 할 예정입니다.</p>
+</li>
+</ol>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-how-it-works.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-how-it-works.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-how-it-works.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-how-it-works.html" selected="">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-how-it-works.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-how-it-works.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>기초</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-fundamentals.html">기초</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-vertex-buffers.html">정점 버퍼</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-textures.html">텍스처</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-importing-textures.html">이미지 로딩</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-textures-external-video.html">비디오 사용하기</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
+        </ul>
+  <li>3D 수학</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>컴퓨트 셰이더</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-compute-shaders.html">컴퓨트 셰이더 기초</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>기타</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>질문이 있나요? <a href="http://stackoverflow.com/questions/tagged/webgpu">Stack Overflow</a>에 물어보세요.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">제안</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">요청 사항</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">이슈</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">버그</a>
+</div>
+<div class="lesson-comment-notes">
+   코드 블럭의 경우 <b>&lt;pre&gt;&lt;code&gt;</b>코드<b>&lt;/code&gt;&lt;/pre&gt;</b>을 사용하세요.
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 동작 방식`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "<a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a>님<br> 당신의 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 기여에 감사드립니다.</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

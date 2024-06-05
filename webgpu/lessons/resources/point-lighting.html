@@ -1,0 +1,191 @@
+<!-- Licensed under a BSD license. See license.html for license -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Directional Lighting Diagram</title>
+<style>
+:root {
+  color-scheme: light dark;
+}
+html, body {
+  margin: 0;
+  height: 100%;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>
+<script type="module">
+import GUI from '/3rdparty/muigui-0.x.module.js';
+import * as twgl from '/3rdparty/twgl-full.module.js';
+import * as diagram from './diagram.js';
+import { hsl, rgb } from './utils.js';
+
+const { v3 } = twgl;
+
+function main() {
+  const opt = getQueryParams();
+  const lang = {
+    dot: opt.dot || 'dot(surfaceToLight,surfaceNormal)',
+    surfaceNormal: opt.surfaceNormal || 'surface normal',
+  };
+  const ctx = document.querySelector('#canvas').getContext('2d');
+  const settings = {
+    direction: 0,
+  };
+
+  const radToDegOptions = { min: -70, max: 70, step: 1, converters: GUI.converters.radToDeg };
+  const gui = new GUI();
+  GUI.setTheme('float');
+  gui.onChange(render);
+  gui.add(settings, 'direction', radToDegOptions);
+
+  const darkColors = {
+    arrow: '#DDD',
+    surfaceNormal: '#0C0',
+    surfaceNormalOutline: '#444',
+  };
+  const lightColors = {
+    arrow: '#000',
+    surfaceNormal: '#080',
+    surfaceNormalOutline: '#FFF',
+  };
+
+  const darkMatcher = window.matchMedia('(prefers-color-scheme: dark)');
+  darkMatcher.addEventListener('change', render);
+
+  function render() {
+    const { direction } = settings;
+    const isDarkMode = darkMatcher.matches;
+    const colors = isDarkMode ? darkColors : lightColors;
+    twgl.resizeCanvasToDisplaySize(ctx.canvas, window.devicePixelRatio);
+    const width  = 250;
+    const height = 200;
+
+    const baseScale = Math.min(ctx.canvas.width / width,  ctx.canvas.height / height);
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.save();
+    ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+    ctx.scale(baseScale, baseScale);
+
+    ctx.font = '8px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const lx = 0;
+    const ly = -height / 4;
+
+    const sx = 0;
+    const sy = height / 6 + 10;
+
+    const dots = [];
+    ctx.fillStyle = colors.arrow;
+    ctx.strokeStyle = colors.arrow;
+    const numArrows = 5;
+    for (let ii = 0; ii <= numArrows; ++ii) {
+      const u = ii / numArrows;
+      const r = (u * 2 - 1) * 70;
+      const c = Math.cos(direction);
+      const s = Math.sin(direction);
+      const x = c * r;
+      const y = s * r + sy;
+      const a = -Math.atan2(lx - x, ly - y);
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(a);
+      diagram.arrow(ctx, 0, 0, 0, 40, false, true, 0.5);
+      ctx.restore();
+
+      dots.push({
+        dot: -v3.dot([Math.sin(a), Math.cos(a), 0], [Math.sin(direction), Math.cos(direction), 0]),
+        r: r,
+      });
+    }
+
+    ctx.fillStyle = 'orange';
+    diagram.drawSun(ctx, lx, ly, width / 10);
+
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.rotate(direction);
+
+    // draw surface
+    diagram.roundedRect(ctx, -100, 0, 200, 20);
+
+    const gradient =  ctx.createLinearGradient(-100, 0, 100, 10);
+
+    dots.forEach(function(dot) {
+        const r = dot.r;
+        const pos = r / 100 * 0.5 + 0.5;
+        gradient.addColorStop(pos, hsl(0, 1, dot.dot));
+    });
+    gradient.addColorStop(0, hsl(0, 1, 0.5));
+    gradient.addColorStop(1, hsl(0, 1, 0.5));
+
+    ctx.fillStyle = gradient; //rgb(1,0,0);
+
+    ctx.fill();
+    ctx.strokeStyle = rgb(0, 0, 0);
+    ctx.stroke();
+
+    ctx.fillStyle = '#000';
+    ctx.fillText(lang.dot, 0, 14);
+
+    dots.forEach(function(dot) {
+        const r = dot.r;
+        ctx.save();
+        ctx.translate(r, 0);
+        ctx.font = '5px sans-serif';
+        ctx.fillText(dot.dot.toFixed(2), 0, 5);
+        ctx.restore();
+    });
+
+    const nx = 0;
+    const ny = -20;
+    ctx.fillStyle = colors.surfaceNormal;
+    ctx.strokeStyle = colors.surfaceNormal;
+    for (let ii = 0; ii <= numArrows; ++ii) {
+      const u = ii / numArrows;
+      const x = (u * 2 - 1) * 70;
+      diagram.arrow(ctx, x, 0, x, ny, false, true, 0.5);
+    }
+
+    ctx.lineWidth = 2;
+    ctx.fillStyle = colors.surfaceNormal;
+    ctx.strokeStyle = colors.surfaceNormalOutline;
+    diagram.outlineText(ctx, lang.surfaceNormal, nx, -8);
+
+    ctx.restore();
+
+    ctx.restore();
+  }
+  render();
+  window.addEventListener('resize', render);
+}
+
+function getQueryParams() {
+  const params = {};
+  if (window.location.search) {
+    window.location.search.substring(1).split('&').forEach(function(pair) {
+      const keyValue = pair.split('=').map(function(kv) {
+        return decodeURIComponent(kv);
+      });
+      params[keyValue[0]] = keyValue[1];
+    });
+  }
+  return params;
+}
+
+main();
+</script>
+

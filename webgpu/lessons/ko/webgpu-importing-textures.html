@@ -1,0 +1,1419 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ko/webgpu-importing-textures.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="ko"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="이미지/캔버스/비디오를 텍스처로 로딩하는 방법">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-importing-textures_ko.jpg">
+
+<meta property="og:title" content="WebGPU 이미지를 텍스처로 로딩하기">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-importing-textures_ko.jpg">
+<meta property="og:description" content="이미지/캔버스/비디오를 텍스처로 로딩하는 방법">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-importing-textures.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU 이미지를 텍스처로 로딩하기">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-importing-textures.html">
+<meta name="twitter:description" content="이미지/캔버스/비디오를 텍스처로 로딩하는 방법">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-importing-textures_ko.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-importing-textures.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-importing-textures_ko.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-importing-textures.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-importing-textures.html",
+      "inLanguage":"ko",
+      "name":"WebGPU 이미지를 텍스처로 로딩하기",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-importing-textures.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU 이미지를 텍스처로 로딩하기</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/ko/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-importing-textures.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-importing-textures.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-importing-textures.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-importing-textures.html" selected="">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-importing-textures.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-importing-textures.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">简体中文
+</option></select>
+
+
+    <a href="#toc">목차</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/webgpu/lessons/ko/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU 이미지를 텍스처로 로딩하기</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p><a href="webgpu-textures.html">이전 글</a>에서 텍스처 사용법에 대한 기본적인 내용을 알아봤습니다.
+이 글에서는 이미지를 텍스처로 로딩하고 GPU에 밉맵을 만드는 법을 알아보겠습니다.</p>
+<p>이전 글에서 우리는 <code class="notranslate" translate="no">device.createTexture</code>를 사용해 텍스처를 생성하고,
+<code class="notranslate" translate="no">device.queue.writeTexture</code>를 호출하여 데이터를 텍스처에 넣었습니다.
+<code class="notranslate" translate="no">device.queue</code>에는 또다른 함수인 <code class="notranslate" translate="no">device.queue.copyExternalImageToTexture</code>가 있는데,
+이 함수는 이미지를 텍스처로 복사할 수 있게 해줍니다.</p>
+<p>이 함수는 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>를 입력으로 받으니 <a href="../webgpu-textures.html#a-mag-filter">이전 글의 magFilter 예제</a>를 수정하여 몇 개 이미지를 로딩하도록
+수정해보겠습니다.</p>
+<p>먼저 이미지로부터 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>를 반환하는 코드가 필요합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  async function loadImageBitmap(url) {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    return await createImageBitmap(blob, { colorSpaceConversion: 'none' });
+  }
+</pre>
+<p>위 코드는 이미지의 url로 <a href="https://developer.mozilla.org/en-US/docs/Web/API/fetch"><code class="notranslate" translate="no">fetch</code></a>를 호출하고 그 결과 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response"><code class="notranslate" translate="no">Response</code></a>를 반환합니다.
+그리고 이를 이용하여 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob"><code class="notranslate" translate="no">Blob</code></a>을 로드하는데 이는 이미지 파일의 데이터입니다.
+그리고 이를 <a href="https://developer.mozilla.org/en-US/docs/Web/API/createImageBitmap"><code class="notranslate" translate="no">createImageBitmap</code></a>에 전달하는데 이는 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a> 생성을 위한 표준 브라우저 함수입니다.
+<code class="notranslate" translate="no">{ colorSpaceConversion: 'none' }</code>를 전달하여 브라우저가 컬러 공간 변환을 적용하지 않도록 합니다.
+이러한 변환을 적용할지 말지는 여러분들의 선택입니다.
+WebGPU에서 우리는 노멀 맵이나 높이(height) 맵등 색상이 아닌 데이터를 로드하기도 합니다.
+그러한 경우 브라우저가 이미지 데이터를 손상시키지 않도록 하는 것이 좋을겁니다.</p>
+<p>이제 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a> 생성을 위한 함수가 준비되었으니, 로드하고 같은 크기의 텍스처를 만들어봅시다.</p>
+<p>아래 이미지를 로드할 것입니다.</p>
+<div class="webgpu_center"><img src="../../resources/images/f-texture.png"></div>
+<p>제가 배울 때에는 <code class="notranslate" translate="no">F</code> 모양의 텍스처가 방향을 바로 판별할 수 있어서 좋은 예제 텍스처라고 배웠습니다.</p>
+<div class="webgpu_center"><img src="../resources/f-orientation.svg"></div>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const texture = device.createTexture({
+-    label: 'yellow F on red',
+-    size: [kTextureWidth, kTextureHeight],
+-    format: 'rgba8unorm',
+-    usage:
+-      GPUTextureUsage.TEXTURE_BINDING |
+-      GPUTextureUsage.COPY_DST,
+-  });
++  const url = 'resources/images/f-texture.png';
++  const source = await loadImageBitmap(url);
++  const texture = device.createTexture({
++    label: url,
++    format: 'rgba8unorm',
++    size: [source.width, source.height],
++    usage: GPUTextureUsage.TEXTURE_BINDING |
++           GPUTextureUsage.COPY_DST |
++           GPUTextureUsage.RENDER_ATTACHMENT,
++  });
+</pre>
+<p><code class="notranslate" translate="no">copyExternalImageToTexture</code>를 사용하려면 <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code> 와 <code class="notranslate" translate="no">GPUTextureUsage.RENDER_ATTACHMENT</code> 플래그를 사용해야 한다는 점을 유의하십시오.</p>
+<p>그러면 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>를 텍스처에 복사할 수 있습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  device.queue.writeTexture(
+-      { texture },
+-      textureData,
+-      { bytesPerRow: kTextureWidth * 4 },
+-      { width: kTextureWidth, height: kTextureHeight },
+-  );
++  device.queue.copyExternalImageToTexture(
++    { source, flipY: true },
++    { texture },
++    { width: source.width, height: source.height },
++  );
+</pre>
+<p><code class="notranslate" translate="no">copyExternalImageToTexture</code>의 매개변수는 소스(source), 목적지(destination)와 크기입니다.
+소스에 대해 <code class="notranslate" translate="no">flipY: true</code>를 명시하여 로드할 때 텍스처를 뒤집을 것인지를 명시할 수 있습니다.</p>
+<p>그러면 바로 동작합니다!</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-import-no-mips.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-import-no-mips.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<h2 id="gpu에서-밉-생성하기"><a id="a-generating-mips-on-the-gpu"></a>GPU에서 밉 생성하기</h2>
+<p><a href="../webgpu-textures.html#a-mipmap-filter">이전 글에서 우리는 밉맵도 생성했었습니다</a>.
+하지만 이전의 경우에는 우리가 이미지 데이터에 접근하기 쉬운 경우였습니다.
+이미지를 로딩할 때는 이미지를 2D 캔버스에 그리고, <code class="notranslate" translate="no">getImageData</code>를 호출해서 데이터를 얻은 뒤에 밉을 생성하여 업로드해야 합니다.
+이러한 과정은 꽤나 오래 걸릴 수 있습니다.
+또한 2D 캔버스 렌더링은 내부 구현에 의존적이기 때문에 데이터의 손실이 있을 수도 있습니다.</p>
+<p>우리가 밉맵을 생성한 방법은 이중선형 보간이었고, 이는 GPU가 <code class="notranslate" translate="no">minFilter: linear</code>를 수행하는 것과 동일한 알고리즘입니다.
+이러한 기능을 활용하여 GPU상에서 밉 레벨을 생성할 수 있습니다.</p>
+<p><a href="../webgpu-textures.html#a-mipmap-filter">이전 글의 밉맵 필터 예제</a>를 수정하여 이미지를 로딩하고 GPU를 사용해 밉을 만들어봅시다.</p>
+<p>먼저, 텍스처를 생성하는 코드를 수정하여 밉 레벨을 만들도록 합시다.
+몇 개나 생성해야 할지는 아래와 같이 계산하면 됩니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numMipLevels = (...sizes) =&gt; {
+    const maxSize = Math.max(...sizes);
+    return 1 + Math.log2(maxSize) | 0;
+  };
+</pre>
+<p>하나 이상의 숫자를 넣고 함수를 호출하면 필요한 밉의 수를 얻을 수 있습니다.
+예를들어 <code class="notranslate" translate="no">numMipLevels(123, 456)</code>를 호출하면 <code class="notranslate" translate="no">9</code>가 반환됩니다.</p>
+<blockquote>
+<ul>
+<li>level 0: 123, 456</li>
+<li>level 1: 61, 228</li>
+<li>level 2: 30, 114</li>
+<li>level 3: 15, 57</li>
+<li>level 4: 7, 28</li>
+<li>level 5: 3, 14</li>
+<li>level 6: 1, 7</li>
+<li>level 7: 1, 3</li>
+<li>level 8: 1, 1</li>
+</ul>
+<p>9 mip levels</p>
+</blockquote>
+<p><code class="notranslate" translate="no">Math.log2</code>는 주어진 숫자가 2의 몇승을 해야 얻어지는지 알려줍니다.
+다시 말해 <code class="notranslate" translate="no">Math.log2(8) = 3</code>인데 2<sup>3</sup> = 8 이기 때문입니다.
+같은 내용을 다른 말로 하면 <code class="notranslate" translate="no">Math.log2</code>는 어떤 숫자를 2로 몇 번이나 나눌 수 있는지를 알려줍니다.</p>
+<blockquote>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">Math.log2(8)
+          8 / 2 = 4
+                  4 / 2 = 2
+                          2 / 2 = 1
+</pre>
+</blockquote>
+<p>따라서 8은 2로 세 번 나눌 수 있습니다.
+이것이 우리가 몇 개의 밉 레벨을 만들어야 하는지를 알게 해줍니다.
+<code class="notranslate" translate="no">Math.log2(largestSize) + 1</code>이고, 1은 밉 레벨 0인 원본 이미지 크기입니다.</p>
+<p>이제 올바른 숫자의 밉 레벨 을 만들 수 있습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = device.createTexture({
+    label: url,
+    format: 'rgba8unorm',
+    mipLevelCount: numMipLevels(source.width, source.height),
+    size: [source.width, source.height],
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.COPY_DST |
+           GPUTextureUsage.RENDER_ATTACHMENT,
+  });
+  device.queue.copyExternalImageToTexture(
+    { source, flipY: true, },
+    { texture },
+    { width: source.width, height: source.height },
+  );
+</pre>
+<p>다음 밉 레벨을 생성하기 위해, 텍스처가 입혀진 사각형을 그릴 것입니다.
+이전에 한것과 동일하게 하나의 밉 레벨로부터 다음 레벨의 밉을 <code class="notranslate" translate="no">minFilter: linear</code>를 사용해 얻습니다.</p>
+<p>코드는 아래와 같습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
+    let sampler;
+    let module;
+    const pipelineByFormat = {};
+
+    return function generateMips(device, texture) {
+      if (!module) {
+        module = device.createShaderModule({
+          label: 'textured quad shaders for mip level generation',
+          code: `
+            struct VSOutput {
+              @builtin(position) position: vec4f,
+              @location(0) texcoord: vec2f,
+            };
+
+            @vertex fn vs(
+              @builtin(vertex_index) vertexIndex : u32
+            ) -&gt; VSOutput {
+              let pos = array(
+
+                vec2f( 0.0,  0.0),  // center
+                vec2f( 1.0,  0.0),  // right, center
+                vec2f( 0.0,  1.0),  // center, top
+
+                // 2st triangle
+                vec2f( 0.0,  1.0),  // center, top
+                vec2f( 1.0,  0.0),  // right, center
+                vec2f( 1.0,  1.0),  // right, top
+              );
+
+              var vsOutput: VSOutput;
+              let xy = pos[vertexIndex];
+              vsOutput.position = vec4f(xy * 2.0 - 1.0, 0.0, 1.0);
+              vsOutput.texcoord = vec2f(xy.x, 1.0 - xy.y);
+              return vsOutput;
+            }
+
+            @group(0) @binding(0) var ourSampler: sampler;
+            @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+            @fragment fn fs(fsInput: VSOutput) -&gt; @location(0) vec4f {
+              return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+            }
+          `,
+        });
+
+        sampler = device.createSampler({
+          minFilter: 'linear',
+        });
+      }
+
+      if (!pipelineByFormat[texture.format]) {
+        pipelineByFormat[texture.format] = device.createRenderPipeline({
+          label: 'mip level generator pipeline',
+          layout: 'auto',
+          vertex: {
+            module,
+          },
+          fragment: {
+            module,
+            targets: [{ format: texture.format }],
+          },
+        });
+      }
+      const pipeline = pipelineByFormat[texture.format];
+
+      const encoder = device.createCommandEncoder({
+        label: 'mip gen encoder',
+      });
+
+      let width = texture.width;
+      let height = texture.height;
+      let baseMipLevel = 0;
+      while (width &gt; 1 || height &gt; 1) {
+        width = Math.max(1, width / 2 | 0);
+        height = Math.max(1, height / 2 | 0);
+
+        const bindGroup = device.createBindGroup({
+          layout: pipeline.getBindGroupLayout(0),
+          entries: [
+            { binding: 0, resource: sampler },
+            { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
+          ],
+        });
+
+        ++baseMipLevel;
+
+        const renderPassDescriptor = {
+          label: 'our basic canvas renderPass',
+          colorAttachments: [
+            {
+              view: texture.createView({baseMipLevel, mipLevelCount: 1}),
+              loadOp: 'clear',
+              storeOp: 'store',
+            },
+          ],
+        };
+
+        const pass = encoder.beginRenderPass(renderPassDescriptor);
+        pass.setPipeline(pipeline);
+        pass.setBindGroup(0, bindGroup);
+        pass.draw(6);  // call our vertex shader 6 times
+        pass.end();
+      }
+
+      const commandBuffer = encoder.finish();
+      device.queue.submit([commandBuffer]);
+    };
+  })();
+</pre>
+<p>위 코드는 길어 보이지만 지금까지 텍스처 예제에서 사용한 코드와 동일합니다.
+바뀐 부분은 아래와 같습니다.</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">module</code>, <code class="notranslate" translate="no">sampler</code>, <code class="notranslate" translate="no">pipelineByFormat</code> 세 개 변수를 저장할 수 있도록 구현하였습니다.
+<code class="notranslate" translate="no">modul</code>과 <code class="notranslate" translate="no">sampler</code>는 이미 설정되었는지를 체크하고, 그렇지 않은 경우 <code class="notranslate" translate="no">GPUSShaderModule</code> 와 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUSampler"><code class="notranslate" translate="no">GPUSampler</code></a>를 만들어 저장하여 나중에 사용할 수 있도록 합니다.</p>
+</li>
+<li>
+<p>이전 예제와 거의 동일한 셰이더 두 개가 있습니다.
+차이점은 아래 부분 뿐입니다.</p>
+</li>
+</ul>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no"> -  vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+ -  vsOutput.texcoord = xy * vec2f(1, 50);
+ +  vsOutput.position = vec4f(xy * 2.0 - 1.0, 0.0, 1.0);
+ +  vsOutput.texcoord = vec2f(xy.x, 1.0 - xy.y);
+</pre>
+<p>하드코딩된 사각형의 위치 데이터는 0.0에서 1.0 사이라서 이전 예제와 같이 오른쪽 위 사분면만 차지하는 사각형 텍스처가 그려지게 됩니다.
+전체 영역에 그려져야 하므로 2를 곱하고 1을 빼서 사각형이 -1,-1에서 +1,+1 영역에 그려지도록 합니다.</p>
+<p>또한 텍스처 좌표의 Y값을 뒤집었습니다.
+텍스처에 그릴 때 +1, +1이 오른쪽 위지만 우리는 샘플링할 텍스처가 그 위치에 있어야 합니다.
+샘플링할 텍스처의 오른쪽 위는 +1, 0입니다.</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">pipelineByFormat</code>객체는 텍스처 포맷에 대한 파이프라인의 맵(map)입니다.
+파이프라인이 사용할 포맷을 알아야 하기 때문에 필요합니다.</p>
+</li>
+<li>
+<p>특정 포맷에 대해 파리프라인이 있는지 체크하고, 없으면 만듭니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    if (!pipelineByFormat[texture.format]) {
+      pipelineByFormat[texture.format] = device.createRenderPipeline({
+        label: 'mip level generator pipeline',
+        layout: 'auto',
+        vertex: {
+          module,
+        },
+        fragment: {
+          module,
++          targets: [{ format: texture.format }],
+        },
+      });
+    }
+    const pipeline = pipelineByFormat[texture.format];
+</pre>
+<p>여기서의 유일한 주요 차이점은 <code class="notranslate" translate="no">target</code>이 텍스처 포맷으로부터 설정된다는 것입니다.
+이전에 캔버스에 그릴 때에는 <code class="notranslate" translate="no">presentationFormat</code>를 사용했었습니다.</p>
+</li>
+<li>
+<p>마지막으로 <code class="notranslate" translate="no">texture.createView</code>에 몇몇 매개변수를 사용했습니다.</p>
+<p>각 밉 레벨에 대해 루프를 돕니다.
+그 과정에서 데이터가 그려진 이전 밉에 대한 데이터를 만들고 renderPassDescriptor를 사용해 다음 밉 레벨을 그릴 수 있도록 설정합니다.
+그리고 그 특정 밉 레벨에 대한 renderPass를 인코딩합니다.
+끝나면 모든 밉이 채워지게 됩니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    let width = texture.width;
+    let height = texture.height;
+    let baseMipLevel = 0;
+    while (width &gt; 1 || height &gt; 1) {
+      width = Math.max(1, width / 2 | 0);
+      height = Math.max(1, height / 2 | 0);
+
+      const bindGroup = device.createBindGroup({
+        layout: pipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: sampler },
++          { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
+        ],
+      });
+
++      ++baseMipLevel;
+
+      const renderPassDescriptor = {
+        label: 'our basic canvas renderPass',
+        colorAttachments: [
+          {
++            view: texture.createView({baseMipLevel, mipLevelCount: 1}),
+            loadOp: 'clear',
+            storeOp: 'store',
+          },
+        ],
+      };
+
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // call our vertex shader 6 times
+      pass.end();
+    }
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+</pre>
+</li>
+</ul>
+<p>이미지를 텍스처로 로딩하고 밉맵을 생성하는 지원 함수를 만들어 사용하기 쉽게 해 봅시다.</p>
+<p>아래는 첫번째 밉 레벨을 갱신하고 이미지를 뒤집어주는 함수입니다.
+이미지가 밉 레벨이 있다면 생성합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function copySourceToTexture(device, texture, source, {flipY} = {}) {
+    device.queue.copyExternalImageToTexture(
+      { source, flipY, },
+      { texture },
+      { width: source.width, height: source.height },
+    );
+
+    if (texture.mipLevelCount &gt; 1) {
+      generateMips(device, texture);
+    }
+  }
+</pre>
+<p><a id="a-create-texture-from-source"></a>아래는 주어진 소스 (<a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>의 경우)로 텍스처를 만들고 위 함수를 호출하여 데이터를 채우는 함수입니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function createTextureFromSource(device, source, options = {}) {
+    const texture = device.createTexture({
+      format: 'rgba8unorm',
+*      mipLevelCount: options.mips ? numMipLevels(source.width, source.height) : 1,
+      size: [source.width, source.height],
+      usage: GPUTextureUsage.TEXTURE_BINDING |
+             GPUTextureUsage.COPY_DST |
+             GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+    copySourceToTexture(device, texture, source, options);
+    return texture;
+  }
+</pre>
+<p>그리고 아래는 주어진 url에 대해 url을 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>로 로드하고 이전 함수를 호출하여 텍스처로 만들고 이미지로 그 내용을 채웁니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  async function createTextureFromImage(device, url, options) {
+    const imgBitmap = await loadImageBitmap(url);
+    return createTextureFromSource(device, imgBitmap, options);
+  }
+</pre>
+<p>이러한 준비 과정으로 인해서 <a href="../webgpu-textures.html#a-mipmap-filter">mipmapFilter 예제</a>로부터 수정되는 부분은 아래밖에 없습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const textures = [
+-    createTextureWithMips(createBlendedMipmap(), 'blended'),
+-    createTextureWithMips(createCheckedMipmap(), 'checker'),
+-  ];
++  const textures = await Promise.all([
++    await createTextureFromImage(device,
++        'resources/images/f-texture.png', {mips: true, flipY: false}),
++    await createTextureFromImage(device,
++        'resources/images/coins.jpg', {mips: true}),
++    await createTextureFromImage(device,
++        'resources/images/Granite_paving_tileable_512x512.jpeg', {mips: true}),
++  ]);
+</pre>
+<p>위 코드는 F 텍스처와 아래의 두 타일(tile) 텍스처를 로드합니다.</p>
+<div class="webgpu_center side-by-side">
+  <div class="separate">
+    <img src="../../resources/images/coins.jpg">
+    <div class="copyright">
+      <a href="https://renderman.pixar.com/pixar-one-thirty">CC-BY: Pixar</a>
+    </div>
+  </div>
+  <div class="separate">
+    <img src="../../resources/images/Granite_paving_tileable_512x512.jpeg">
+    <div class="copyright">
+       <a href="https://commons.wikimedia.org/wiki/File:Granite_paving_tileable_2048x2048.jpg">CC-BY-SA: Coyau</a>
+    </div>
+  </div>
+</div>
+<p>결과는 아래와 같습니다.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-import.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-import.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<h2 id="캔버스-로딩">캔버스 로딩</h2>
+<p><code class="notranslate" translate="no">copyExternalImageToTexture</code>는 다른 <em>소스</em>도 받을 수 있습니다.
+다른 소스로는 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement"><code class="notranslate" translate="no">HTMLCanvasElement</code></a>가 있습니다.
+이를 사용하여 2D 캔버스에 무언가를 그리고 그 결과를 WebGPU 텍스처로 받을 수 있습니다.
+WebGPU를 사용해서 텍스처에 무언가를 그리고 그 텍스처를 무언가를 렌더링하기 위해 사용할 수도 있습니다.
+사실 방금 전까지 한 것이 이런 내용인데, 밉 레벨에 렌더링을 수행하고 그 밉 레벨을 텍스처 어태치먼트로 해서 다음 밉 레벨을 렌더링하였습니다.</p>
+<p>하지만 2D 캔버스를 사용하면 좀 더 편하게 할 수 있는 작업도 있습니다.
+2D 캔버스는 상대적으로 고수준 API를 제공합니다.</p>
+<p>우선 캔버스 애니메이션을 만들어 봅시다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const size = 256;
+const half = size / 2;
+
+const ctx = document.createElement('canvas').getContext('2d');
+ctx.canvas.width = size;
+ctx.canvas.height = size;
+
+const hsl = (h, s, l) =&gt; `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
+
+function update2DCanvas(time) {
+  time *= 0.0001;
+  ctx.clearRect(0, 0, size, size);
+  ctx.save();
+  ctx.translate(half, half);
+  const num = 20;
+  for (let i = 0; i &lt; num; ++i) {
+    ctx.fillStyle = hsl(i / num * 0.2 + time * 0.1, 1, i % 2 * 0.5);
+    ctx.fillRect(-half, -half, size, size);
+    ctx.rotate(time * 0.5);
+    ctx.scale(0.85, 0.85);
+    ctx.translate(size / 16, 0);
+  }
+  ctx.restore();
+}
+
+function render(time) {
+  update2DCanvas(time);
+  requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fcanvas-2d-animation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../canvas-2d-animation.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<p>이 캔버스를 WebGPU로 로드하기 위해서는 이전 예제에서 몇 가지만 수정하면 됩니다.</p>
+<p>우선 적절한 크기의 텍스처를 만들어야 합니다.
+가장 쉬운 방법은 이전에 사용한 코드와 동일한 코드를 사용하는 것입니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const texture = createTextureFromSource(device, ctx.canvas, {mips: true});
+
+  const textures = await Promise.all([
+-    await createTextureFromImage(device,
+-        'resources/images/f-texture.png', {mips: true, flipY: false}),
+-    await createTextureFromImage(device,
+-        'resources/images/coins.jpg', {mips: true}),
+-    await createTextureFromImage(device,
+-        'resources/images/Granite_paving_tileable_512x512.jpeg', {mips: true}),
++    texture,
+  ]);
+</pre>
+<p>그리고 <code class="notranslate" translate="no">requestAnimationFrame</code> 루프로 수정해서 2D 캔버스를 갱신하고 WebGPU로 업로드하도록 합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function render() {
++  function render(time) {
++    update2DCanvas(time);
++    copySourceToTexture(device, texture, ctx.canvas);
+
+     ...
+
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+-      render();
+    }
+  });
+  observer.observe(canvas);
+
+  canvas.addEventListener('click', () =&gt; {
+    texNdx = (texNdx + 1) % textures.length;
+-    render();
+  });
+</pre>
+<p>이렇게 하면 캔버스를 업로드하면서도 이에 대한 밉 레벨들이 만들어집니다.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-import-canvas.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-import-canvas.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<h2 id="비디오-로딩"><a id="a-loading-video"></a> 비디오 로딩</h2>
+<p>비디오를 이러한 방식으로 로딩하는 것도 다를 바 없습니다.
+<code class="notranslate" translate="no">&lt;video&gt;</code> 엘리먼트(element)를 만들고 이전 예제에서 캔버스를 전달한것과 동일한 함수에 전달합니다.
+그러면 조금만 수정하면 제대로 동작합니다.</p>
+<p>비디오는 아래와 같습니다.</p>
+<div class="webgpu_center">
+  <div>
+     <video muted="" controls="" src="../../resources/videos/Golden_retriever_swimming_the_doggy_paddle-360-no-audio.webm" style="width: 720px" ;=""></video>
+     <div class="copyright"><a href="https://commons.wikimedia.org/wiki/File:Golden_retriever_swimming_the_doggy_paddle.webm">CC-BY: Golden Woofs</a></div>
+  </div>
+</div>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>과 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement"><code class="notranslate" translate="no">HTMLCanvasElement</code></a>는 너비와 높이를 <code class="notranslate" translate="no">width</code>와 <code class="notranslate" translate="no">height</code> 속성으로 가지고 있었지만 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement"><code class="notranslate" translate="no">HTMLVideoElement</code></a>의 경우 <code class="notranslate" translate="no">videoWidth</code>와 <code class="notranslate" translate="no">videoHeight</code> 속성입니다.
+따라서 이 차이를 반영할 수 있게 코드를 수정합시다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function getSourceSize(source) {
++    return [
++      source.videoWidth || source.width,
++      source.videoHeight || source.height,
++    ];
++  }
+
+  function copySourceToTexture(device, texture, source, {flipY} = {}) {
+    device.queue.copyExternalImageToTexture(
+      { source, flipY, },
+      { texture },
+-      { width: source.width, height: source.height },
++      getSourceSize(source),
+    );
+
+    if (texture.mipLevelCount &gt; 1) {
+      generateMips(device, texture);
+    }
+  }
+
+  function createTextureFromSource(device, source, options = {}) {
++    const size = getSourceSize(source);
+    const texture = device.createTexture({
+      format: 'rgba8unorm',
+-      mipLevelCount: options.mips ? numMipLevels(source.width, source.height) : 1,
+-      size: [source.width, source.height],
++      mipLevelCount: options.mips ? numMipLevels(...size) : 1,
++      size,
+      usage: GPUTextureUsage.TEXTURE_BINDING |
+             GPUTextureUsage.COPY_DST |
+             GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+    copySourceToTexture(device, texture, source, options);
+    return texture;
+  }
+</pre>
+<p>그리고 비디오 엘리먼트를 만듭니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const video = document.createElement('video');
+  video.muted = true;
+  video.loop = true;
+  video.preload = 'auto';
+  video.src = 'resources/videos/Golden_retriever_swimming_the_doggy_paddle-360-no-audio.webm';
+
+  const texture = createTextureFromSource(device, video, {mips: true});
+</pre>
+<p>그리고 렌더링 시점에 갱신합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function render(time) {
+-    update2DCanvas(time);
+-    copySourceToTexture(device, texture, ctx.canvas);
++  function render() {
++    copySourceToTexture(device, texture, video);
+</pre>
+<p>비디오를 사용할 때 까다로운 점 중 하나는 WebGPU로 전달하기 전에 재생이 시작될 때까지 기다려야 한다는 점입니다.
+최근 브라우저에서는 <code class="notranslate" translate="no">video.requestVideoFrameCallback</code>를 호출하여 할 수 있습니다.
+새로운 프레임이 사용 가능해지면 호출되므로 이를 사용해 최소한 하나의 프레임이 사용 가능한지 확인할 수 있습니다.</p>
+<p>단점으로, 계속 재생이 될지는 기도하기에🙏 달려 있다는 점입니다.
+안타깝게도 오래된 브라우저에서는 언제 비디오가 안전하게 재생될 수 있을지 알기 어렵습니다.😅</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function startPlayingAndWaitForVideo(video) {
++    return new Promise((resolve, reject) =&gt; {
++      video.addEventListener('error', reject);
++      if ('requestVideoFrameCallback' in video) {
++        video.requestVideoFrameCallback(resolve);
++      } else {
++        const timeWatcher = () =&gt; {
++          if (video.currentTime &gt; 0) {
++            resolve();
++          } else {
++            requestAnimationFrame(timeWatcher);
++          }
++        };
++        timeWatcher();
++      }
++      video.play().catch(reject);
++    });
++  }
+
+  const video = document.createElement('video');
+  video.muted = true;
+  video.loop = true;
+  video.preload = 'auto';
+  video.src = 'resources/videos/Golden_retriever_swimming_the_doggy_paddle-360-no-audio.webm';
++  await startPlayingAndWaitForVideo(video);
+
+  const texture = createTextureFromSource(device, video, {mips: true});
+</pre>
+<p>또다른 까다로운점은 사용자 인터랙션을 통해 비디오 재생이 가능해질때까지 기다려야 한다는 점입니다 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.
+재생 버튼을 HTML에 추가합시다.</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">  &lt;body&gt;
+    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;div id="start"&gt;
++      &lt;div&gt;▶️&lt;/div&gt;
++    &lt;/div&gt;
+  &lt;/body&gt;
+</pre>
+<p>가운에 정렬을 위해 CSS도 수정합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">#start {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#start&gt;div {
+  font-size: 200px;
+  cursor: pointer;
+}
+</pre>
+<p>클릭될 때까지 기다린 이후 숨기는 기능을 추가합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function waitForClick() {
++    return new Promise(resolve =&gt; {
++      window.addEventListener(
++        'click',
++        () =&gt; {
++          document.querySelector('#start').style.display = 'none';
++          resolve();
++        },
++        { once: true });
++    });
++  }
+
+  const video = document.createElement('video');
+  video.muted = true;
+  video.loop = true;
+  video.preload = 'auto';
+  video.src = 'resources/videos/Golden_retriever_swimming_the_doggy_paddle-360-no-audio.webm';
++  await waitForClick();
+  await startPlayingAndWaitForVideo(video);
+
+  const texture = createTextureFromSource(device, video, {mips: true});
+</pre>
+<p>비디오를 정지하는 기능도 추가합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const video = document.createElement('video');
+  video.muted = true;
+  video.loop = true;
+  video.preload = 'auto';
+  video.src = 'resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4'; /* webgpufundamentals: url */
+  await waitForClick();
+  await startPlayingAndWaitForVideo(video);
+
++  canvas.addEventListener('click', () =&gt; {
++    if (video.paused) {
++      video.play();
++    } else {
++      video.pause();
++    }
++  });
+</pre>
+<p>이렇게 하면 텍스처에 비디오가 보일겁니다.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-import-video.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-import-video.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<p>최적화 방안 중 하나는 비디오가 변했을 때만 텍스처를 업데이트하는 것입니다.</p>
+<p>예시는 아래와 같습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const video = document.createElement('video');
+  video.muted = true;
+  video.loop = true;
+  video.preload = 'auto';
+  video.src = 'resources/videos/Golden_retriever_swimming_the_doggy_paddle-360-no-audio.webm';
+  await waitForClick();
+  await startPlayingAndWaitForVideo(video);
+
++  let alwaysUpdateVideo = !('requestVideoFrameCallback' in video);
++  let haveNewVideoFrame = false;
++  if (!alwaysUpdateVideo) {
++    function recordHaveNewFrame() {
++      haveNewVideoFrame = true;
++      video.requestVideoFrameCallback(recordHaveNewFrame);
++    }
++    video.requestVideoFrameCallback(recordHaveNewFrame);
++  }
+
+  ...
+
+  function render() {
++    if (alwaysUpdateVideo || haveNewVideoFrame) {
++      haveNewVideoFrame = false;
+      copySourceToTexture(device, texture, video);
++    }
+
+    ...
+</pre>
+<p>이렇게 하면 새로운 프레임에 대해서만 비디오를 업데이트합니다.
+예를 들어 디스플레이 주사율이 120프레임인 장치에서는 1초에 120번씩 프레임이 그려지므로 애니메이션, 카메라 움직임 등이 더 부드러울 것입니다.
+하지만 텍스처는 그 자신의 프레임 레이트(예를들어 30fps)로만 업데이트 될것입니다.</p>
+<p><strong>하지만! WebGPU는 효율적인 비디오 사용을 위한 특수 기능을 지원합니다</strong></p>
+<p>이러한 내용은 <a href="webgpu-textures-external-video.html">다른 글</a>에서 다룰 것입니다.
+위에서 <code class="notranslate" translate="no">device.query.copyExternalImageToTexture</code>를 사용하면 실제로는 <strong>사본</strong>을 만드는 것입니다.
+그리고 복사에는 시간이 걸립니다.
+예를 들어 4K 비디오의 일반적인 해상도는 3840 x 2160인데, <code class="notranslate" translate="no">rgba8unorm</code> 포맷의 경우 31MB의 데이터가 <strong>프레임마다</strong> 복사되어야 한다는 뜻입니다.
+<a href="webgpu-textures-external-video.html">외부(External) 텍스처</a>를 사용하면 (복사 없이) 비디오 데이터를 직접 사용 가능하지만 다른 방법을 사용해야 하고 제약 사항이 좀 있습니다.</p>
+<h2 id="텍스처-아틀라스atlas"><a id="a-texture-atlases"></a>텍스처 아틀라스(Atlas)</h2>
+<p>위 예제에서, 우리는 텍스처를 사용해서 무언가를 그리기 위해서는 우선 텍스처를 만들고, 데이터를 넣은 후에 샘플러와 함께 바인드그룹에 바인드하고, 셰이더에서 참조해야 한다는 것을 배웠습니다.
+어떤 물체에 여러 개의 서로 다른 텍스처를 사용하려면 어떻게 해야 할까요?
+예를 들어 의자가 있어서 다리와 등받이는 나무로 만들어지고 쿠션은 천으로 만들어 졌다면 말이죠.</p>
+<div class="webgpu_center">
+  <div class="center">
+    <model-viewer src="../resources/models/gltf/cc0_chair.glb" camera-controls="" touch-action="pan-y" camera-orbit="45deg 70deg 2.5m" interaction-prompt="none" disable-zoom="" disable-pan="" style="width: 400px; height: 400px;"></model-viewer>
+  </div>
+  <div>
+    <a href="https://skfb.ly/opnwY"></a>"[CC0] Chair" by adadadad5252341 <a href="http://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>
+  </div>
+</div>
+<p>또는 자동차 모델이 있어서 타이어는 고무이고 차체에는 페인트가 칠해져 있고, 범퍼와 휠캡은 크롬 도금되어 있는 경우도 있겠죠.</p>
+<div class="webgpu_center">
+  <div class="center">
+    <model-viewer src="../resources/models/gltf/classic_muscle_car.glb" camera-controls="" touch-action="pan-y" camera-orbit="45deg 70deg 20m" interaction-prompt="none" disable-zoom="" disable-pan="" style="width: 700px; height: 400px;"></model-viewer>
+  </div>
+  <div>
+    <a href="https://skfb.ly/6Usqo"></a>"Classic Muscle car" by Lexyc16 <a href="http://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>
+  </div>
+</div>
+<p>별다른 해법이 없다면 의자의 경우 나무 텍스처로 나무 부분을 한번, 천 텍스처로 쿠션 부분 한번 해서 두 번을 그려야 한다고 생각하실 수 있습니다.
+자동차의 경우 두 번 이상일겁니다. 타이어 한번, 차체 한번 범퍼 한번 등등 말이죠.</p>
+<p>이렇게 되면 모든 물체가 여러 번의 드로우콜을 필요로 하기 때문에 느려지게 됩니다.
+이는 셰이더에 여러 입력(2,3,4 텍스처)을 사용하고 각각에 대해 텍스처 좌표를 사용하여 해결할 수도 있지만 이는 유연성이 떨어지는데다, 네 개 텍스처를 모두 읽고 그 값들 중 하나를 선택하도록 코드를 작성해야 한다는 단점이 있습니다.</p>
+<p>이러한 문제를 해결하는 가장 일반적인 방법은 <a href="https://www.google.com/search?q=texture+atlas">텍스처 아틀라스(Texture Atlas)</a>라는 것을 사용하는 것입니다.
+텍스처 아틀라스는 여러 이미지가 들어있는 텍스처를 부르는 멋있는 이름입니다.
+그리고 텍스처 좌표를 사용해서 어느 부분이 어디에 사용될지 결정합니다.</p>
+<p>육면체(cube)에 아래 여섯 개의 이미지를 입혀봅시다.</p>
+<div class="webgpu_table_div_center">
+  <style>
+    table.webgpu_table_center {
+      border-spacing: 0.5em;
+      border-collapse: separate;
+    }
+    table.webgpu_table_center img {
+      display:block;
+    }
+  </style>
+  <table class="webgpu_table_center">
+    <tbody><tr><td><img src="../resources/noodles-01.jpg"></td><td><img src="../resources/noodles-02.jpg"></td></tr>
+    <tr><td><img src="../resources/noodles-03.jpg"></td><td><img src="../resources/noodles-04.jpg"></td></tr>
+    <tr><td><img src="../resources/noodles-05.jpg"></td><td><img src="../resources/noodles-06.jpg"></td></tr>
+  </tbody></table>
+</div>
+<p>포토샵이나 <a href="https://photopea.com">Photopea</a>와 같은 이미지 편집 소프트웨어를 사용해 여섯 개의 이미지를 하나의 이미지에 넣을 수 있습니다.</p>
+<img class="webgpu_center" src="../../resources/images/noodles.jpg">
+<p>그리고 큐브의 각 면에 해당하는 이미지를 선택할 수 있도록 텍스처 좌표를 제공하는 큐브들 만듭니다.
+간단하게 하기 위해 여섯 개의 이미지를 4x2의 형태로 배치하였습니다.
+이렇게 하면 각 사각형에 대한 텍스처 좌표의 계산이 간단해집니다.</p>
+<div class="webgpu_center center diagram">
+  <div>
+    <div data-diagram="texture-atlas" style="display: inline-block; width: 600px;"></div>
+  </div>
+</div>
+<blockquote>
+<p>일반적으로 텍스처 좌표의 0,0이 왼쪽 아래인 경우가 많이 때문에 위 다이어그램이 헷갈릴 수 있습니다.
+사실 “아래” 라는 것은 없습니다.
+단지 텍스처 좌표 0,0은 텍스처의 첫 번째 데이터를 참조하는 값일 뿐입니다.
+위의 경우 텍스처의 첫 번째 데이터가 이미지의 오른쪽 위가 되었을 뿐입니다.
+0,0이 왼쪽 아래라는 것을 고수하고 싶다면 아래와 같이 보시면 됩니다.
+<strong>이렇게 해도 좌표는 같습니다</strong>.</p>
+</blockquote>
+<div class="webgpu_center center diagram">
+  <div>
+    <div data-diagram="texture-atlas-bottom-left" style="display: inline-block; width: 600px;"></div>
+    <div class="center">0,0 at bottom left</div>
+  </div>
+</div>
+<p>아래는 큐브에 대한 정점 위치와 텍스처 좌표 입니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCubeVertices() {
+  const vertexData = new Float32Array([
+     //  position   |  texture coordinate
+     //-------------+----------------------
+     // front face     select the top left image
+    -1,  1,  1,        0   , 0  ,
+    -1, -1,  1,        0   , 0.5,
+     1,  1,  1,        0.25, 0  ,
+     1, -1,  1,        0.25, 0.5,
+     // right face     select the top middle image
+     1,  1, -1,        0.25, 0  ,
+     1,  1,  1,        0.5 , 0  ,
+     1, -1, -1,        0.25, 0.5,
+     1, -1,  1,        0.5 , 0.5,
+     // back face      select to top right image
+     1,  1, -1,        0.5 , 0  ,
+     1, -1, -1,        0.5 , 0.5,
+    -1,  1, -1,        0.75, 0  ,
+    -1, -1, -1,        0.75, 0.5,
+    // left face       select the bottom left image
+    -1,  1,  1,        0   , 0.5,
+    -1,  1, -1,        0.25, 0.5,
+    -1, -1,  1,        0   , 1  ,
+    -1, -1, -1,        0.25, 1  ,
+    // bottom face     select the bottom middle image
+     1, -1,  1,        0.25, 0.5,
+    -1, -1,  1,        0.5 , 0.5,
+     1, -1, -1,        0.25, 1  ,
+    -1, -1, -1,        0.5 , 1  ,
+    // top face        select the bottom right image
+    -1,  1,  1,        0.5 , 0.5,
+     1,  1,  1,        0.75, 0.5,
+    -1,  1, -1,        0.5 , 1  ,
+     1,  1, -1,        0.75, 1  ,
+
+  ]);
+
+  const indexData = new Uint16Array([
+     0,  1,  2,  2,  1,  3,  // front
+     4,  5,  6,  6,  5,  7,  // right
+     8,  9, 10, 10,  9, 11,  // back
+    12, 13, 14, 14, 13, 15,  // left
+    16, 17, 18, 18, 17, 19,  // bottom
+    20, 21, 22, 22, 21, 23,  // top
+  ]);
+
+  return {
+    vertexData,
+    indexData,
+    numVertices: indexData.length,
+  };
+}
+</pre>
+<p>이 예제는 <a href="webgpu-cameras.html">카메라에 관한 글</a>의 예제에서부터 시작합니다.
+해당 글을 아직 읽지 않으셨으면 3D에 관한 글의 일부이므로, 읽어 보시길 바랍니다.
+지금 중요한 것은 이전에 했던 것처럼 정점 셰이더에서 위치와 텍스처 좌표를 출력할 것이고 이를 사용하여 프래그맨트 셰이더에서 텍스처로부터 값을 얻어올 때 사용할 것이라는 사실입니다.
+아래는 카메라 예제에서부터 수정된 셰이더입니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+-  @location(1) color: vec4f,
++  @location(1) texcoord: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+-  @location(0) color: vec4f,
++  @location(0) texcoord: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
++@group(0) @binding(1) var ourSampler: sampler;
++@group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = uni.matrix * vert.position;
+-  vsOut.color = vert.color;
++  vsOut.texcoord = vert.texcoord;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+-  return vsOut.color;
++  return textureSample(ourTexture, ourSampler, vsOut.texcoord);
+}
+</pre>
+<p>바뀐것은 정점별 색상에서 정점별 텍스처 좌표로 수정한 것이고, 그 텍스처 좌표를 프래그먼트 셰이더로 넘긴 것입니다.
+그리고 프래그먼트 셰이더에서 이를 사용하였습니다.</p>
+<p>자바스크립트 부분에서는 색상값을 얻어오는 것에서 텍스처 좌표를 얻어오는 것으로 파이프라인을 수정합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '2 attributes',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: (4) * 4, // (3) floats 4 bytes each + one 4 byte color
++          arrayStride: (3 + 2) * 4, // (3+2) floats 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
+-            {shaderLocation: 1, offset: 12, format: 'unorm8x4'},  // color
++            {shaderLocation: 1, offset: 12, format: 'float32x2'},  // texcoord
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+    primitive: {
+      cullMode: 'back',
+    },
+    depthStencil: {
+      depthWriteEnabled: true,
+      depthCompare: 'less',
+      format: 'depth24plus',
+    },
+  });
+</pre>
+<p><a href="webgpu-vertex-buffers.html">정점 버퍼에 관한 글</a>에서처럼 데이터를 가볍게 하기위해 인덱스를 사용합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const { vertexData, numVertices } = createFVertices();
++  const { vertexData, indexData, numVertices } = createCubeVertices();
+  const vertexBuffer = device.createBuffer({
+    label: 'vertex buffer vertices',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+
++  const indexBuffer = device.createBuffer({
++    label: 'index buffer',
++    size: vertexData.byteLength,
++    usage: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
++  });
++  device.queue.writeBuffer(indexBuffer, 0, indexData);
+</pre>
+<p>텍스처 로딩과 밉 생성에 관한 코드를 복사해서 여기에 가져옵니다.
+그리고 해당 코드를 사용해 텍스처 아틀라스 이미지를 로드합니다.
+또한 샘플러를 만들고 이를 바인드 그룹에 추가합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const texture = await createTextureFromImage(device,
++      'resources/images/noodles.jpg', {mips: true, flipY: false});
++
++  const sampler = device.createSampler({
++    magFilter: 'linear',
++    minFilter: 'linear',
++    mipmapFilter: 'linear',
++  });
+
+  const bindGroup = device.createBindGroup({
+    label: 'bind group for object',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: uniformBuffer }},
++      { binding: 1, resource: sampler },
++      { binding: 2, resource: texture.createView() },
+    ],
+  });
+</pre>
+<p>3차원 그리지를 위한 행렬들을 설정합니다. (다시 말씀드리지만 이러한 내용들은 <a href="webgpu-cameras.html">카메라에 관한 글</a>의 3차원 수학 부분을 참고하세요.)</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const degToRad = d =&gt; d * Math.PI / 180;
+
+  const settings = {
+    rotation: [degToRad(20), degToRad(25), degToRad(0)],
+  };
+
+  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings.rotation, '0', radToDegOptions).name('rotation.x');
+  gui.add(settings.rotation, '1', radToDegOptions).name('rotation.y');
+  gui.add(settings.rotation, '2', radToDegOptions).name('rotation.z');
+
+  ...
+
+  function render() {
+
+    ...
+
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    mat4.perspective(
+        60 * Math.PI / 180,
+        aspect,
+        0.1,      // zNear
+        10,      // zFar
+        matrixValue,
+    );
+    const view = mat4.lookAt(
+      [0, 1, 5],  // camera position
+      [0, 0, 0],  // target
+      [0, 1, 0],  // up
+    );
+    mat4.multiply(matrixValue, view, matrixValue);
+    mat4.rotateX(matrixValue, settings.rotation[0], matrixValue);
+    mat4.rotateY(matrixValue, settings.rotation[1], matrixValue);
+    mat4.rotateZ(matrixValue, settings.rotation[2], matrixValue);
+
+    // upload the uniform values to the uniform buffer
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>그리고 렌더링 시점에, 인덱스를 사용해 그립니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
++    pass.setIndexBuffer(indexBuffer, 'uint16');
+
+    ...
+
+    pass.setBindGroup(0, bindGroup);
+-    pass.draw(numVertices);
++    pass.drawIndexed(numVertices);
+
+    pass.end();
+</pre>
+<p>이렇게 하면 각 면에 다른 이미지가 있는 큐브를, 단일 텍스처를 사용하여 그릴 수 있습니다.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-texture-atlas.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-texture-atlas.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<p>하나의 텍스처만 로드하면 되기 때문에 텍스처 아틀라스를 사용하면 좋습니다.
+셰이더는 하나의 텍스처만 참조하면 되기 때문에 간단하고, 이미지가 여러 장으로 나뉜 상황에서처럼 텍스처별로 드로우 콜을 호출하는 대신 한 번의 드로우 콜로 물체를 그릴 수 있게 됩니다.</p>
+<!-- keep this at the bottom of the article -->
+<script type="module" src="/3rdparty/model-viewer.3.3.0.min.js"></script>
+<script type="module" src="../webgpu-importing-textures.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>비디오를 얻는 방법도 여러 방법이 있는데 대개는 오디오를 끄고, 사용자가 플레이 버튼을 누르기까지 기다리지 않고 자동재생하는 방법입니다.
+이러한 방법은 시간에 따라 바뀌는 관계로 여기서는 사용하지 않을 것입니다. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-importing-textures.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-importing-textures.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-importing-textures.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-importing-textures.html" selected="">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-importing-textures.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-importing-textures.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>기초</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-fundamentals.html">기초</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-vertex-buffers.html">정점 버퍼</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-textures.html">텍스처</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-importing-textures.html">이미지 로딩</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-textures-external-video.html">비디오 사용하기</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
+        </ul>
+  <li>3D 수학</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>컴퓨트 셰이더</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-compute-shaders.html">컴퓨트 셰이더 기초</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>기타</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>질문이 있나요? <a href="http://stackoverflow.com/questions/tagged/webgpu">Stack Overflow</a>에 물어보세요.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">제안</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">요청 사항</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">이슈</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">버그</a>
+</div>
+<div class="lesson-comment-notes">
+   코드 블럭의 경우 <b>&lt;pre&gt;&lt;code&gt;</b>코드<b>&lt;/code&gt;&lt;/pre&gt;</b>을 사용하세요.
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 이미지를 텍스처로 로딩하기`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "<a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a>님<br> 당신의 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 기여에 감사드립니다.</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

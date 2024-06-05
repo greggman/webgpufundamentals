@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+:root {
+  --tabs-bg-color: #CCC;
+  --frame-bg-color: #AAA;
+  --frame-fg-color: #444;
+  --file-selected-fg-color: black;
+  --file-selected-bg-color: #CCC;
+  --button-bg-color: #EEE;
+  --button-border-bottom-color: #888;
+  --button-hover-bg-color: orange;
+  --pane-logo-fg-color: #444;
+  --dialog-mask-bg-color: rgba(255, 255, 255, 0.8);
+  --dialog-bg-color: #CCC;
+  --dialog-fg-color: #000;
+  --dialog-a-fg-color: rgb(30, 92, 57);
+  --dialog-a-hover-fg-color: rgb(164, 90, 0);
+  --show-bg-color: #FFF;
+  --show-border-color: #AAA;  
+  --copy-area-bg-color: #DDD;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tabs-bg-color: #666;
+    --frame-bg-color: #444;
+    --frame-fg-color: #AAA;
+    --file-selected-fg-color: white;
+    --file-selected-bg-color: #666;
+    --button-bg-color: #AAA;
+    --button-border-bottom-color: black;
+    --pane-logo-fg-color: #CCC;
+    --dialog-mask-bg-color: rgba(0, 0, 0, 0.8);
+    --dialog-bg-color: #444;
+    --dialog-fg-color: #FFF;
+    --dialog-a-fg-color: lightseagreen;
+    --dialog-a-hover-fg-color: orange;
+    --show-bg-color: #FFF;
+    --show-border-color: #666;
+    --copy-area-bg-color: #222;
+  }  
+}
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+    margin: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+    height: 100vh;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+iframe {
+    display: block;
+    border: none;
+    border-left: 1px solid black;
+}
+.frame {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--frame-bg-color);
+    color: var(--frame-fg-color)
+}
+.tabs {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--tabs-bg-color);
+}
+.panes {
+    display: flex;
+    flex: 1 1 auto;
+    height: 50%;  /* this is needed for firefox. It won't actually be 50% because the flex: 1 1 auto means stretch */
+}
+.panes>div {
+    display: none;
+    flex: 1 1 50%;
+    flex-direction: column;
+    min-width: 0;
+}
+.panes .code {
+    flex: 1 1 auto;
+    position: relative;
+    height: 100%;
+}
+.panes .code > div {
+    height: 100%;
+}
+.panes .files {
+    position: relative;
+}
+.panes .fileSelected {
+    color: var(--file-selected-fg-color);
+    background-color: var(--file-selected-bg-color);
+}
+.panes .files > div {
+    border: 1px solid black;
+    font-family: monospace;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.panes>div.other {
+    display: block
+}
+.editor {
+    g-overflow: auto;
+}
+.result {
+    overflow: auto;
+}
+.result>iframe {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+.result .console .log {
+    white-space: pre-line;
+}
+.other>div,
+.other>div>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: xx-large;
+}
+.other>div {
+    height: 100%;
+    flex-direction: column;
+}
+
+.other .loading {
+    height: 2em;
+    width: 2em;
+    animation: rotate 0.8s infinite linear;
+    border: 0.4em solid #fff;
+    border-right-color: transparent;
+    border-radius: 50%;
+}
+.dialog {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--dialog-mask-bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dialog>div {
+  background-color: var(--dialog-bg-color);
+  color: var(--dialog-fg-color);
+  padding: 1em;
+  outline: none;
+}
+.dialog p {
+  margin-left: 0.25em;
+}
+.dialog a {
+  color: var(--dialog-a-fg-color);
+}
+.dialog a:hover {
+  color: var(--dialog-a-hover-fg-color);
+}
+/* ---- */
+.export .export-buttons {
+  display: flex;
+}
+/* ---- */
+.copy-dialog .copy-area {
+  height: 8em;
+  overflow: auto;
+  user-select: all;
+  background-color: var(--copy-area-bg-color);
+  padding: 0.5em;
+}
+/* ---- */
+@keyframes rotate {
+    0%    { transform: rotate(0deg); }
+    100%  { transform: rotate(360deg); }
+}
+
+.tabs>div {
+    padding: 0.125em;
+}
+button {
+    padding: 0.5em;
+    border: none;
+    background-color: var(--button-bg-color);
+    border-bottom: 5px solid var(--button-border-bottom-color);
+    margin: 0.25em;
+    width: 5em;
+    cursor: pointer;
+}
+button:hover {
+  background-color: var(--button-hover-bg-color);
+}
+button:focus {
+    outline: none;
+}
+.panelogo {
+    font-size: medium;
+}
+.panelogo>*>* {
+    vertical-align: middle;
+    display: inline-block;
+    color: var(--pane-logo-fg-color);
+}
+.show {
+    background-color: var(--show-bg-color) !important;
+    border-bottom: none !important;
+    border-top: 5px solid var(--show-border-color) !important;
+}
+.button-result {
+    margin-left: 2em !important;
+}
+.panebuttons>.button-fullscreen {
+    background-image: url(editor-fullscreen-icon.svg);
+    background-size: 80% 80%;
+    background-position: center center;
+    background-repeat: no-repeat no-repeat;
+}
+.fullscreen .panebuttons>.button-fullscreen {
+    background-image: url(editor-unfullscreen-icon.svg) !important;
+}
+
+@media ( max-width: 950px ) {
+    .panebuttons>button, body {
+      font-size: x-small;
+    }
+}
+
+@media ( max-width: 740px ) {
+    .panelogo>div>a:nth-child(1) {
+        display: none;
+    }
+}
+
+@media ( max-width: 590px ) {
+    .tabs {
+        display: none;
+    }
+    .panes>div {
+        display: none !important;
+        height: auto;
+    }
+    .panes>.result {
+        display: block !important;
+    }
+}
+</style>
+</head>
+<body>
+<div class="frame notranslate">
+    <div class="tabs">
+        <div class="panebuttons">
+            <button class="button-js">JS</button>
+            <button class="button-html">HTML</button>
+            <button class="button-css">CSS</button>
+            <button class="button-export">Export</button>
+            <button class="button-result">Result</button>
+            <button class="button-run">Run</button>
+            <button class="button-fullscreen">&nbsp;</button>
+        </div>
+        <div class="panelogo">
+          <div><a href="/"><span data-subst="textContent|name"></span>&nbsp;</a><a href="/"><img data-subst="src|icon" width="32" height="32"/></a></div>
+        </div>
+    </div>
+    <div class="panes">
+        <div class="js"><div class="files"></div><div class="code"></div></div>
+        <div class="html"><div class="files"></div><div class="code"></div></div>
+        <div class="css"><div class="files"></div><div class="code"></div></div>
+        <div class="result"><iframe></iframe></div>
+        <div class="other">
+          <div>
+            <div><a href="/"><span data-subst="textContent|name"></span>&nbsp;</a><a href="/"><img data-subst="src|icon" width="64" height="64"/></a></div>
+            <div class="loading"></div>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="dialog export" style="display: none;">
+  <div tabindex="-1">
+    <p>Export To: </p>
+    <div class="export-buttons">
+      <button class="button-jsgist">jsGist</button>
+      <button class="button-codepen">Codepen</button>
+      <button class="button-jsfiddle">JSFiddle</button>
+      <button class="button-stackoverflow">Stack Overflow</button>
+    </div>
+  </div>
+</div>
+<div class="dialog copy-dialog" style="display: none;">
+  <div tabindex="-1">
+    <p>Copy and paste the text below into a <a href="" target="_blank">stack overflow question</a>.</p>
+    <pre class="copy-area"></pre>
+  </div>
+</div>
+</body>
+<script src="/monaco-editor/min/vs/loader.js"></script>
+<script src="editor-settings.js"></script>
+<script src="editor.js"></script>
+
+</html>

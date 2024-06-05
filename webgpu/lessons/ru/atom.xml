@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id/>
+    <title>Основы WebGPU</title>
+    <updated>2024-06-05T20:47:58.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <author>
+        <name>webgpufundamentals Contributors</name>
+        <uri>https://webgpufundamentals.org/contributors.html</uri>
+    </author>
+    <link rel="alternate" href="https://webgpufundamentals.org/"/>
+    <subtitle>Изучение WebGPU с нуля. Не прибегая к магии.</subtitle>
+    <logo>https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg</logo>
+    <entry>
+        <title type="html"><![CDATA[WebGPU Основы]]></title>
+        <id>https://webgpufundamentals.org/webgpu/lessons/ru/webgpu-fundamentals.html</id>
+        <link href="https://webgpufundamentals.org/webgpu/lessons/ru/webgpu-fundamentals.html"/>
+        <updated>2024-06-05T20:47:58.000Z</updated>
+        <author>
+            <name>webgpufundamentals Contributors</name>
+            <uri>https://webgpufundamentals.org/contributors.html</uri>
+        </author>
+        <published>2024-06-05T20:47:58.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[WebGPU Inter-stage Переменные]]></title>
+        <id>https://webgpufundamentals.org/webgpu/lessons/ru/webgpu-inter-stage-variables.html</id>
+        <link href="https://webgpufundamentals.org/webgpu/lessons/ru/webgpu-inter-stage-variables.html"/>
+        <updated>2024-06-05T20:47:58.000Z</updated>
+        <author>
+            <name>webgpufundamentals Contributors</name>
+            <uri>https://webgpufundamentals.org/contributors.html</uri>
+        </author>
+        <published>2024-06-05T20:47:58.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[WebGPU storage буферы]]></title>
+        <id>https://webgpufundamentals.org/webgpu/lessons/ru/webgpu-storage-buffers.html</id>
+        <link href="https://webgpufundamentals.org/webgpu/lessons/ru/webgpu-storage-buffers.html"/>
+        <updated>2024-06-05T20:47:58.000Z</updated>
+        <author>
+            <name>webgpufundamentals Contributors</name>
+            <uri>https://webgpufundamentals.org/contributors.html</uri>
+        </author>
+        <published>2024-06-05T20:47:58.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[WebGPU Uniforms]]></title>
+        <id>https://webgpufundamentals.org/webgpu/lessons/ru/webgpu-uniforms.html</id>
+        <link href="https://webgpufundamentals.org/webgpu/lessons/ru/webgpu-uniforms.html"/>
+        <updated>2024-06-05T20:47:58.000Z</updated>
+        <author>
+            <name>webgpufundamentals Contributors</name>
+            <uri>https://webgpufundamentals.org/contributors.html</uri>
+        </author>
+        <published>2024-06-05T20:47:58.000Z</published>
+    </entry>
+</feed>

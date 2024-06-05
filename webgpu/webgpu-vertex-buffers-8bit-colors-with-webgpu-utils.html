@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Vertex Buffer vertices - 2 attributes 8bit colors</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+  </body>
+  <script type="module">
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
+import {
+  createBuffersAndAttributesFromArrays,
+} from '/3rdparty/webgpu-utils-1.x.module.js';
+
+// A random number between [min and max)
+// With 1 argument it will be [0 to min)
+// With no arguments it will be [0 to 1)
+const rand = (min, max) => {
+  if (min === undefined) {
+    min = 0;
+    max = 1;
+  } else if (max === undefined) {
+    max = min;
+    min = 0;
+  }
+  return min + Math.random() * (max - min);
+};
+
+function createCircleVertices({
+  radius = 1,
+  numSubdivisions = 24,
+  innerRadius = 0,
+  startAngle = 0,
+  endAngle = Math.PI * 2,
+} = {}) {
+  const positions = [];
+  const colors = [];
+
+  const addVertex = (x, y, r, g, b) => {
+    positions.push(x, y);
+    colors.push(r, g, b, 1);
+  };
+
+  const innerColor = [1, 1, 1];
+  const outerColor = [0.1, 0.1, 0.1];
+
+  // 2 vertices per subdivision
+  //
+  // 0--1 4
+  // | / /|
+  // |/ / |
+  // 2 3--5
+  for (let i = 0; i < numSubdivisions; ++i) {
+    const angle1 = startAngle + (i + 0) * (endAngle - startAngle) / numSubdivisions;
+    const angle2 = startAngle + (i + 1) * (endAngle - startAngle) / numSubdivisions;
+
+    const c1 = Math.cos(angle1);
+    const s1 = Math.sin(angle1);
+    const c2 = Math.cos(angle2);
+    const s2 = Math.sin(angle2);
+
+    // first triangle
+    addVertex(c1 * radius, s1 * radius, ...outerColor);
+    addVertex(c2 * radius, s2 * radius, ...outerColor);
+    addVertex(c1 * innerRadius, s1 * innerRadius, ...innerColor);
+    // second triangle
+    addVertex(c1 * innerRadius, s1 * innerRadius, ...innerColor);
+    addVertex(c2 * radius, s2 * radius, ...outerColor);
+    addVertex(c2 * innerRadius, s2 * innerRadius, ...innerColor);
+  }
+
+  return {
+    positions: { data: positions, numComponents: 2 },
+    colors,
+  };
+}
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+
+  const module = device.createShaderModule({
+    code: `
+      struct Vertex {
+        @location(0) position: vec2f,
+        @location(1) color: vec4f,
+        @location(2) offset: vec2f,
+        @location(3) perVertexColor: vec3f,
+        @location(4) scale: vec2f,
+      };
+
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) color: vec4f,
+      };
+
+      @vertex fn vs(
+        vert: Vertex,
+      ) -> VSOutput {
+        var vsOut: VSOutput;
+        vsOut.position = vec4f(
+            vert.position * vert.scale + vert.offset, 0.0, 1.0);
+        vsOut.color = vert.color * vec4f(vert.perVertexColor, 1);
+        return vsOut;
+      }
+
+      @fragment fn fs(vsOut: VSOutput) -> @location(0) vec4f {
+        return vsOut.color;
+      }
+    `,
+  });
+
+  const kNumObjects = 100;
+  const objectInfos = [];
+
+  // offsets to the various uniform values in float32 indices
+  const staticColors = [];
+  const staticOffsets = [];
+  for (let i = 0; i < kNumObjects; ++i) {
+
+    // These are only set once so set them now
+    staticColors.push(rand() * 255, rand() * 255, rand() * 255, 255);
+    staticOffsets.push(rand(-0.9, 0.9), rand(-0.9, 0.9));
+
+    objectInfos.push({
+      scale: rand(0.2, 0.5),
+    });
+  }
+
+  const {
+    buffers: [staticVertexBuffer],
+    bufferLayouts: [staticVertexBufferLayout],
+  } = createBuffersAndAttributesFromArrays(device, {
+    staticOffsets: { data: staticOffsets, numComponents: 2 },
+    staticColors: new Uint8Array(staticColors),
+  }, {stepMode: 'instance', shaderLocation: 2});
+
+  const {
+    buffers: [changingVertexBuffer],
+    bufferLayouts: [changingVertexBufferLayout],
+  } = createBuffersAndAttributesFromArrays(device, {
+    scale: { data: kNumObjects * 2, numComponents: 2 },
+  }, { stepMode: 'instance', shaderLocation: 4, usage: GPUBufferUsage.COPY_DST });
+
+  const vertexValues = new Float32Array(changingVertexBuffer.size / 4);
+  const changingUnitSize = 8;
+  const kScaleOffset = 0;
+
+  const vertexArrays = createCircleVertices({
+    radius: 0.5,
+    innerRadius: 0.25,
+  });
+  const {
+    buffers: [vertexBuffer],
+    numElements,
+    bufferLayouts: [vertexBufferLayout],
+  } = createBuffersAndAttributesFromArrays(device, vertexArrays);
+
+  const pipeline = device.createRenderPipeline({
+    label: 'per vertex color',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        vertexBufferLayout,
+        staticVertexBufferLayout,
+        changingVertexBufferLayout,
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  function render() {
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setVertexBuffer(1, staticVertexBuffer);
+    pass.setVertexBuffer(2, changingVertexBuffer);
+
+    // Set the uniform values in our JavaScript side Float32Array
+    const aspect = canvas.width / canvas.height;
+
+    // set the scales for each object
+    objectInfos.forEach(({scale}, ndx) => {
+      const offset = ndx * (changingUnitSize / 4);
+      vertexValues.set([scale / aspect, scale], offset + kScaleOffset); // set the scale
+    });
+    // upload all scales at once
+    device.queue.writeBuffer(changingVertexBuffer, 0, vertexValues);
+
+    pass.draw(numElements, kNumObjects);
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // re-render
+      render();
+    }
+  });
+  observer.observe(canvas);
+}
+
+function fail(msg) {
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Multiple Canvases - 200 un-optimized</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+      .product {
+        display: inline-block;
+        padding: 1em;
+        background: #888;
+        margin: 1em;
+      }
+      .size0>canvas {
+        width: 200px;
+        height: 200px;
+      }
+      .size1>canvas {
+        width: 250px;
+        height: 200px;
+      }
+      .size2>canvas {
+        width: 300px;
+        height: 200px;
+      }
+      .size3>canvas {
+        width: 100px;
+        height: 200px;
+      }
+      #stop {
+        position: fixed;
+        right: 0;
+        top: 0;
+        margin: 0.5em;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <button type="button" id="stop">Stop/Start</button>
+  </body>
+  <script type="module">
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
+import {mat4} from '/3rdparty/wgpu-matrix.module.js';
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  function randomColor() {
+    return [Math.random(), Math.random(), Math.random(), 1];
+  }
+
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+
+  const module = device.createShaderModule({
+    label: 'our triangle shaders',
+    code: `
+      struct Uniforms {
+        matrix: mat4x4f,
+        color: vec4f,
+      };
+
+      @group(0) @binding(0) var<uniform> uni: Uniforms;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -> @builtin(position) vec4f {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // top center
+          vec2f(-0.5, -0.5),  // bottom left
+          vec2f( 0.5, -0.5)   // bottom right
+        );
+
+        return uni.matrix * vec4f(pos[vertexIndex], 0.0, 1.0);
+      }
+
+      @fragment fn fs() -> @location(0) vec4f {
+        return uni.color;
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded red triangle pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  const resizeObserver = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+    }
+  });
+
+  const infos = [];
+  const numProducts = 200;
+  for (let i = 0; i < numProducts; ++i) {
+    // making this
+    // <div class="product size?">
+    //   <canvas></canvas>
+    //   <div>Product#: ?</div>
+    // </div>
+    const canvas = document.createElement('canvas');
+    resizeObserver.observe(canvas);
+
+    const container = document.createElement('div');
+    container.className = `product size${i % 4}`;
+
+    const description = document.createElement('div');
+    description.textContent = `product#: ${i + 1}`;
+
+    container.appendChild(canvas);
+    container.appendChild(description);
+    document.body.appendChild(container);
+
+    // Get a WebGPU context and configure it.
+    const context = canvas.getContext('webgpu');
+    context.configure({
+      device,
+      format: presentationFormat,
+    });
+
+    // Make a uniform buffer and type array views
+    // for our uniforms.
+    const uniformValues = new Float32Array(16 + 4);
+    const uniformBuffer = device.createBuffer({
+      size: uniformValues.byteLength,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    const kMatrixOffset = 0;
+    const kColorOffset = 16;
+    const matrixValue = uniformValues.subarray(
+        kMatrixOffset, kMatrixOffset + 16);
+    const colorValue = uniformValues.subarray(
+        kColorOffset, kColorOffset + 4);
+    colorValue.set(randomColor());
+
+    // Make a bind group for this uniform
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: uniformBuffer }},
+      ],
+    });
+
+    infos.push({
+      context,
+      clearValue: randomColor(),
+      matrixValue,
+      uniformValues,
+      uniformBuffer,
+      bindGroup,
+      rotation: Math.random() * Math.PI * 2,
+    });
+  }
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  let time = 0;
+  let then = 0;
+  let requestId;
+  function render(now) {
+    now *= 0.001; // convert to seconds;
+    const deltaTime = now - then;
+    time += deltaTime;
+    then = now;
+
+    // make a command encoder to start encoding commands
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+
+    for (const {
+      context,
+      uniformBuffer,
+      uniformValues,
+      matrixValue,
+      bindGroup,
+      clearValue,
+      rotation,
+    } of infos) {
+      // Get the current texture from the canvas context and
+      // set it as the texture to render to.
+      renderPassDescriptor.colorAttachments[0].view =
+          context.getCurrentTexture().createView();
+      renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
+
+      const { canvas } = context;
+      const aspect = canvas.clientWidth / canvas.clientHeight;
+      mat4.ortho(-aspect, aspect, -1, 1, -1, 1, matrixValue);
+      mat4.rotateZ(matrixValue, time * 0.1 + rotation, matrixValue);
+
+      // Upload our uniform values.
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      // make a render pass encoder to encode render specific commands
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(3);  // call our vertex shader 3 times.
+      pass.end();
+    }
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestId = requestAnimationFrame(render);
+  }
+
+  function toggleAnimation() {
+    if (requestId) {
+      cancelAnimationFrame(requestId);
+      requestId = undefined;
+    } else {
+      requestId = requestAnimationFrame(render);
+      then = performance.now();
+    }
+  }
+
+  toggleAnimation();
+  document.querySelector('#stop')
+      .addEventListener('click', toggleAnimation);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/webgpu-lighting-spot.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="How to implement spot lights in WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-spot_en.jpg">
+
+<meta property="og:title" content="WebGPU - Spot Lighting">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-spot_en.jpg">
+<meta property="og:description" content="How to implement spot lights in WebGPU">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-spot.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="WebGPU - Spot Lighting">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-spot.html">
+<meta name="twitter:description" content="How to implement spot lights in WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-spot_en.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-spot.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-spot_en.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-spot.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-spot.html",
+      "inLanguage":"en",
+      "name":"WebGPU - Spot Lighting",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-spot.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>WebGPU - Spot Lighting</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-lighting-spot.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-lighting-spot.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-lighting-spot.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-lighting-spot.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-lighting-spot.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-lighting-spot.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-lighting-spot.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Table of Contents</a>
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>WebGPU - Spot Lighting</h1>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>This article is a continuation of <a href="webgpu-lighting-point.html">the article on Point
+Lighting</a>.  If you haven’t read that I
+suggest <a href="webgpu-lighting-point.html">you start there</a>.</p>
+<p>In the last article we covered point lighting where for every point
+on the surface of our object we compute the direction from the light
+to that point on the surface. We then do the same thing we did for
+<a href="webgpu-lighting-directional.html">directional lighting</a> which is
+we took the dot product of the surface normal (the direction the surface
+is facing) and the light direction. This gave us a value of
+1 if the two directions matched and should therefore be fully lit. 0 if
+the two directions were perpendicular and -1 if they were opposite.
+We used that value directly to multiply the color of the surface
+which gave us lighting.</p>
+<p>Spot lighting is only a very small change. In fact if you think
+creatively about the stuff we’ve done so far you might be able
+to derive your own solution.</p>
+<p>You can imagine a point light as a point with light going in all
+directions from that point.
+To make a spot light all we need to do is choose a direction from
+that point, this is the direction of our spotlight. Then, for every
+direction the light is going we could take the dot product of
+that direction with our chosen spotlight direction. We’d pick some arbitrary
+limit and decide if we’re within that limit we light. If we’re not within
+that limit we don’t light.</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram noborder" style="width: 700px; height: 400px;" src="/webgpu/lessons/resources/spot-lighting.html"></iframe>
+</div>
+
+<p></p>
+<p>In the diagram above we can see a light with rays going in all directions and
+printed on them is their dot product relative to the direction.
+We then have a specific <strong>direction</strong> that is the direction of the spotlight.
+We choose a limit (above it’s in degrees). From the limit we compute a <em>dot limit</em>, we just take the cosine of the limit. If the dot product of our chosen direction of the spotlight to
+the direction of each ray of light is above the dot limit then we do the lighting. Otherwise no lighting.</p>
+<p>To say this another way, let’s say the limit is 20 degrees. We can convert
+that to radians and from that to a value for -1 to 1 by taking the cosine. Let’s call that dot space.
+In other words here’s a small table for limit values</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">          limits in
+ degrees | radians | dot space
+ --------+---------+----------
+    0    |   0.0   |    1.0
+    22   |    .38  |     .93
+    45   |    .79  |     .71
+    67   |   1.17  |     .39
+    90   |   1.57  |    0.0
+   180   |   3.14  |   -1.0
+</pre>
+<p>Then we can the just check</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">dotFromDirection = dot(surfaceToLight, -lightDirection)
+if (dotFromDirection &gt;= limitInDotSpace) {
+   // do the lighting
+}
+</pre>
+<p>Let’s do that</p>
+<p>First let’s modify our fragment shader from
+<a href="webgpu-lighting-point.html">the last article</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
+  world: mat4x4f,
+  color: vec4f,
+  lightWorldPosition: vec3f,
+  viewWorldPosition: vec3f,
+  shininess: f32,
++  lightDirection: vec3f,
++  limit: f32,
+};
+
+...
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  // Because vsOut.normal is an inter-stage variable 
+  // it's interpolated so it will not be a unit vector.
+  // Normalizing it will make it a unit vector again
+  let normal = normalize(vsOut.normal);
+
+  let surfaceToLightDirection = normalize(vsOut.surfaceToLight);
+  let surfaceToViewDirection = normalize(vsOut.surfaceToView);
+  let halfVector = normalize(
+    surfaceToLightDirection + surfaceToViewDirection);
+
+
++  var light = 0.0;
++  var specular = 0.0;
++
++  let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
++  if (dotFromDirection &gt; uni.limit) {
+    // Compute the light by taking the dot product
+    // of the normal with the direction to the light
+-    let light = dot(normal, surfaceToLightDirection);
++    light = dot(normal, surfaceToLightDirection);
+
+    specular = dot(normal, halfVector);
+    specular = select(
+        0.0,                           // value if condition is false
+        pow(specular, uni.shininess),  // value if condition is true
+        specular &gt; 0.0);               // condition
++  }
+
+  // Lets multiply just the color portion (not the alpha)
+  // by the light
+  let color = uni.color.rgb * light + specular;
+  return vec4f(color, uni.color.a);
+}
+</pre>
+<p>Of course we need to add space for the new values in our uniform buffer.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4) * 4;
++  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4 + 4) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // offsets to the various uniform values in float32 indices
+  const kNormalMatrixOffset = 0;
+  const kWorldViewProjectionOffset = 12;
+  const kWorldOffset = 28;
+  const kColorOffset = 44;
+  const kLightWorldPositionOffset = 48;
+  const kViewWorldPositionOffset = 52;
+  const kShininessOffset = 55;
++  const kLightDirectionOffset = 56;
++  const kLimitOffset = 59;
+
+  const normalMatrixValue = uniformValues.subarray(
+      kNormalMatrixOffset, kNormalMatrixOffset + 12);
+  const worldViewProjectionValue = uniformValues.subarray(
+      kWorldViewProjectionOffset, kWorldViewProjectionOffset + 16);
+  const worldValue = uniformValues.subarray(
+      kWorldOffset, kWorldOffset + 16);
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+  const lightWorldPositionValue = uniformValues.subarray(
+      kLightWorldPositionOffset, kLightWorldPositionOffset + 3);
+  const viewWorldPositionValue = uniformValues.subarray(
+      kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
+  const shininessValue = uniformValues.subarray(
+      kShininessOffset, kShininessOffset + 1);
++  const lightDirectionValue = uniformValues.subarray(
++      kLightDirectionOffset, kLightDirectionOffset + 3);
++  const limitValue = uniformValues.subarray(
++      kLimitOffset, kLimitOffset + 1);
+</pre>
+<p>and we need to set them</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    colorValue.set([0.2, 1, 0.2, 1]);  // green
+    lightWorldPositionValue.set([-10, 30, 100]);
+    viewWorldPositionValue.set(eye);
+    shininessValue[0] = settings.shininess;
++    limitValue[0] = Math.cos(settings.limit);
+
+    // Since we don't have a plane like most spotlight examples
+    // let's point the spot light at the F
+    {
+        const mat = mat4.aim(
+            lightWorldPositionValue,
+            [
+              target[0] + settings.aimOffsetX,
+              target[1] + settings.aimOffsetY,
+              0,
+            ],
+            up);
+        // get the zAxis from the matrix
+        // negate it because lookAt looks down the -Z axis
+        lightDirectionValue.set(mat.slice(8, 11));
+    }
+</pre>
+<p>Above we’re using <code class="notranslate" translate="no">mat4.aim</code> which we covered in
+<a href="webgpu-cameras.html">the article on cameras</a>. Specifically
+our F is <code class="notranslate" translate="no">target</code>. The spot light is at <code class="notranslate" translate="no">-10, 30, 100</code>. We add some
+offsets to the target so we can easily aim the spotlight. We then
+just pull out the <em>z axis</em> since that’s the direction aim points
+something.</p>
+<p>We just need to add some UI code</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">  const settings = {
+    rotation: degToRad(0),
+    shininess: 30,
++    limit: degToRad(15),
++    aimOffsetX: -10,
++    aimOffsetY: 10,
+  };
+
+  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
++  const limitOptions = { min: 0, max: 90, minRange: 1, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'rotation', radToDegOptions);
+  gui.add(settings, 'shininess', { min: 1, max: 250 });
++  gui.add(settings, 'limit', limitOptions);
++  gui.add(settings, 'aimOffsetX', -50, 50);
++  gui.add(settings, 'aimOffsetY', -50, 50);
+</pre>
+<p>And here it is</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-spot.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-spot.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>One note is we’re negating <code class="notranslate" translate="no">uni.lightDirection</code> in the shader.
+That’s a <a href="https://en.wiktionary.org/wiki/six_of_one,_half_a_dozen_of_the_other"><em>six of one, half dozen of another</em></a>
+type of thing. We want the 2 directions we’re comparing to point in
+the same direction when they match. That means we need to compare
+the surfaceToLightDirection to the opposite of the spotlight direction.</p>
+<p>Right now the spotlight is super harsh. We’re
+either inside the spotlight or not and things just turn black.</p>
+<p>To fix this we could use 2 limits instead of one,
+an inner limit and an outer limit.
+If we’re inside the inner limit then use 1.0. If we’re outside the outer
+limit then use 0.0. If we’re between the inner limit and the outer limit
+then lerp between 1.0 and 0.0.</p>
+<p>Here’s one way we could do this</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
+  world: mat4x4f,
+  color: vec4f,
+  lightWorldPosition: vec3f,
+  viewWorldPosition: vec3f,
+  shininess: f32,
+  lightDirection: vec3f,
+-  limit: f32,
++  innerLimit: f32,
++  outerLimit: f32,
+};
+
+...
+
+-  var light = 0.0;
+-  var specular = 0.0;
+-
+-  let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
+-  if (dotFromDirection &gt; uni.limit) {
+-    // Compute the light by taking the dot product
+-    // of the normal with the direction to the light
+-    light = dot(normal, surfaceToLightDirection);
+-    specular = dot(normal, halfVector);
+-    specular = select(
+-        0.0,                           // value if condition false
+-        pow(specular, uni.shininess),  // value if condition is true
+-        specular &gt; 0.0);               // condition
+-  }
+
+    let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
+    let limitRange = uni.innerLimit - uni.outerLimit;
+    let inLight = saturate((dotFromDirection - uni.outerLimit) / limitRange);
+
+    // Compute the light by taking the dot product
+    // of the normal with the direction to the light
+    let light = inLight * dot(normal, surfaceToLightDirection);
+
+    var specular = dot(normal, halfVector);
+    specular = inLight * select(
+        0.0,                           // value if condition false
+        pow(specular, uni.shininess),  // value if condition is true
+        specular &gt; 0.0);               // condition
+
+</pre>
+<p>We’re using <code class="notranslate" translate="no">saturate</code>. Saturate clamps a value between 0 and 1.
+This means <code class="notranslate" translate="no">inLight</code> will be 0 if we’re outside of the <code class="notranslate" translate="no">outerLimit</code>.
+It will be 1 if we’re inside the <code class="notranslate" translate="no">innerLimit</code>. And, it will be between
+0 and 1 between those 2 limits. We then multiply the light and specular
+calculations by <code class="notranslate" translate="no">inLight</code>.</p>
+<p>And again we need to update our uniform buffer setup</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4 + 4) * 4;
++  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4 + 4 + 4) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // offsets to the various uniform values in float32 indices
+  const kNormalMatrixOffset = 0;
+  const kWorldViewProjectionOffset = 12;
+  const kWorldOffset = 28;
+  const kColorOffset = 44;
+  const kLightWorldPositionOffset = 48;
+  const kViewWorldPositionOffset = 52;
+  const kShininessOffset = 55;
+  const kLightDirectionOffset = 56;
+-  const kLimitOffset = 59;
++  const kInnerLimitOffset = 59;
++  const kOuterLimitOffset = 60;
+
+  const normalMatrixValue = uniformValues.subarray(
+      kNormalMatrixOffset, kNormalMatrixOffset + 12);
+  const worldViewProjectionValue = uniformValues.subarray(
+      kWorldViewProjectionOffset, kWorldViewProjectionOffset + 16);
+  const worldValue = uniformValues.subarray(
+      kWorldOffset, kWorldOffset + 16);
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+  const lightWorldPositionValue = uniformValues.subarray(
+      kLightWorldPositionOffset, kLightWorldPositionOffset + 3);
+  const viewWorldPositionValue = uniformValues.subarray(
+      kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
+  const shininessValue = uniformValues.subarray(
+      kShininessOffset, kShininessOffset + 1);
+  const lightDirectionValue = uniformValues.subarray(
+      kLightDirectionOffset, kLightDirectionOffset + 3);
+-  const limitValue = uniformValues.subarray(
+-      kLimitOffset, kLimitOffset + 1);
++  const innerLimitValue = uniformValues.subarray(
++      kInnerLimitOffset, kInnerLimitOffset + 1);
++  const outerLimitValue = uniformValues.subarray(
++      kOuterLimitOffset, kOuterLimitOffset + 1);
+</pre>
+<p>and where we set them</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
++  const limitOptions = { min: 0, max: 90, minRange: 1, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'rotation', radToDegOptions);
+  gui.add(settings, 'shininess', { min: 1, max: 250 });
+-  gui.add(settings, 'limit', limitOptions);
++  GUI.makeMinMaxPair(gui, settings, 'innerLimit', 'outerLimit', limitOptions);
+  gui.add(settings, 'aimOffsetX', -50, 50);
+  gui.add(settings, 'aimOffsetY', -50, 50);
+
+  ...
+
+  function render() {
+
+    ...
+
+    colorValue.set([0.2, 1, 0.2, 1]);  // green
+    lightWorldPositionValue.set([-10, 30, 100]);
+    viewWorldPositionValue.set(eye);
+    shininessValue[0] = settings.shininess;
+-    limitValue[0] = Math.cos(settings.limit);
++    innerLimitValue[0] = Math.cos(settings.innerLimit);
++   outerLimitValue[0] = Math.cos(settings.outerLimit);
+
+    ...
+</pre>
+<p>And that works</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-spot-w-linear-falloff.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-spot-w-linear-falloff.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Now we’re getting something that looks more like a spotlight!</p>
+<p>One thing to be aware of is if <code class="notranslate" translate="no">innerLimit</code> is equal to <code class="notranslate" translate="no">outerLimit</code>
+then <code class="notranslate" translate="no">limitRange</code> will be 0.0. We divide by <code class="notranslate" translate="no">limitRange</code> and dividing by
+zero is bad/undefined. There’s nothing to do in the shader here. We just
+need to make sure in our JavaScript that <code class="notranslate" translate="no">innerLimit</code> is never equal to
+<code class="notranslate" translate="no">outerLimit</code> which, in this case, our gui does for us.</p>
+<p>WGSL also has a function we could use to slightly simplify this. It’s
+called <code class="notranslate" translate="no">smoothstep</code> it returns a value from 0 to 1 but
+it takes both an lower and upper bound and lerps between 0 and 1 between
+those bounds.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">     smoothstep(lowerBound, upperBound, value)
+</pre>
+<p>Let’s do that</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
+-    let limitRange = uni.innerLimit - uni.outerLimit;
+-    let inLight = saturate((dotFromDirection - uni.outerLimit) / limitRange);
++    let inLight = smoothStep(uni.outerLimit, uni.innerLimit, dotFromDirection);
+</pre>
+<p>That works too</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-spot-w-smoothstep-falloff.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-spot-w-smoothstep-falloff.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>The difference is <code class="notranslate" translate="no">smoothstep</code> uses a <em>hermite interpolation</em> instead of a
+linear interpolation. That means between <code class="notranslate" translate="no">lowerBound</code> and <code class="notranslate" translate="no">upperBound</code>
+it interpolates like the image below on the right whereas a linear interpolation is like the image on the left.</p>
+<img class="webgpu_center invertdark" src="resources/linear-vs-hermite.png">
+<p>It’s up to you if you think the difference matters.</p>
+<p>One other thing to be aware is the <code class="notranslate" translate="no">smoothstep</code> function has undefined
+results if the <code class="notranslate" translate="no">lowerBound</code> is greater than or equal to <code class="notranslate" translate="no">upperBound</code>. Having
+them be equal is the same issue we had above. The added issue of not being
+defined if <code class="notranslate" translate="no">lowerBound</code> is greater than <code class="notranslate" translate="no">upperBound</code> is new but for the
+purpose of a spotlight that should never be true.</p>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-lighting-spot.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webgpu-lighting-spot.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webgpu-lighting-spot.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-lighting-spot.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-lighting-spot.html">Русский
+    </option><option value="/webgpu/lessons/uk/webgpu-lighting-spot.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-lighting-spot.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Basics</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
+<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+<li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
+<li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Textures</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-textures.html">Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-importing-textures.html">Loading Images</a></li>
+<li><a href="/webgpu/lessons/webgpu-textures-external-video.html">Using Video</a></li>
+<li><a href="/webgpu/lessons/webgpu-cube-maps.html">Cube Maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
+<li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
+<li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+        </ul>
+  <li>3D Math</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/webgpu-scene-graphs.html">Scene Graphs</a></li>
+        </ul>
+  <li>Lighting</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-lighting-spot.html">Spot Lighting</a></li>
+        </ul>
+  <li>Techniques</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+        </ul>
+  <li>Compute Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+        </ul>
+  <li>Misc</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Questions? <a href="http://stackoverflow.com/questions/tagged/webgpu">Ask on stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Suggestion</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+</div>
+<div class="lesson-comment-notes">
+   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU - Spot Lighting`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/prettify.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,214 @@
+<!-- Licensed under a BSD license. See license.html for license -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Surface Reflection Diagram</title>
+<style>
+:root {
+  color-scheme: light dark;
+}
+html, body {
+  margin: 0;
+  height: 100%;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  canvas {
+    background: #444;
+  }
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+</body>
+</html>
+<script type="module">
+import GUI from '/3rdparty/muigui-0.x.module.js';
+import * as twgl from '/3rdparty/twgl-full.module.js';
+import * as diagram from './diagram.js';
+import { rgb, hsl } from './utils.js';
+
+const { v3 } = twgl;
+
+// i = incident
+// n = normal
+function reflect(ix, iy, nx, ny) {
+  // I - 2.0 * dot(N, I) * N.
+  const d = v3.dot([nx, ny, 0], [ix, iy, 0]);
+  return [
+    ix - 2 * d * nx,
+    iy - 2 * d * ny,
+  ];
+}
+
+function main() {
+  const opt = getQueryParams();
+  const lang = {
+    reflection: opt.reflection || 'reflection',
+  };
+  const ctx = document.querySelector('#canvas').getContext('2d');
+  const settings = { surfaceAngle: 0 };
+
+  const radToDegOptions = { min: -40, max: 40, step: 1, converters: GUI.converters.radToDeg };
+  const gui = new GUI();
+  GUI.setTheme('float');
+  gui.onChange(render);
+  gui.add(settings, 'surfaceAngle', radToDegOptions);
+
+  const darkColors = {
+    arrow: '#DDD',
+    surfaceNormal: '#0C0',
+    surfaceNormalOutline: '#444',
+  };
+  const lightColors = {
+    arrow: '#000',
+    surfaceNormal: '#080',
+    surfaceNormalOutline: '#FFF',
+  };
+
+  const darkMatcher = window.matchMedia('(prefers-color-scheme: dark)');
+  darkMatcher.addEventListener('change', render);
+
+  function render() {
+    const { surfaceAngle } = settings;
+    const isDarkMode = darkMatcher.matches;
+    const colors = isDarkMode ? darkColors : lightColors;
+    twgl.resizeCanvasToDisplaySize(ctx.canvas, window.devicePixelRatio);
+    const width  = 250;
+    const height = 200;
+
+    const baseScale = Math.min(ctx.canvas.width / width,  ctx.canvas.height / height);
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.save();
+    ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+    ctx.scale(baseScale, baseScale);
+
+    ctx.font = '8px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const ex = -width / 3;
+    const ey = -height / 4;
+
+    const sx = 0;
+    const sy = height / 6 + 10;
+
+    // draw ray and reflection
+    const lx = width / 3;
+    const ly = -height / 4;
+    ctx.fillStyle = colors.arrow;
+    ctx.strokeStyle = colors.arrow;
+    ctx.save();
+    ctx.translate(lx, ly);
+    ctx.rotate(-Math.atan2(lx - sx, ly - sy) + Math.PI);
+
+    diagram.arrow(ctx, 0, 0, 0, v3.distance([lx, ly, 0], [sx, sy, 0]) * 0.95, false, true, 0.5);
+//    arrow(ctx, lx, ly, sx, sy, false, true, 0.5);
+    ctx.restore();
+    ctx.save();
+    ctx.translate(sx, sy);
+
+    const i = v3.normalize([sx - lx, sy - ly, 0]);
+    const ix = i[0];
+    const iy = i[1];
+
+    const nx = Math.sin(surfaceAngle);
+    const ny = Math.cos(surfaceAngle);
+
+    const r = reflect(ix, iy, nx, ny);
+    const ra = -Math.atan2(r[1], r[0]);
+    ctx.rotate(ra);
+    const rl = v3.distance([sx, sy, 0], [ex, ey, 0]) * 0.8;
+    diagram.arrow(ctx, 0, 0, 0, rl, false, true, 0.5);
+    ctx.translate(0, rl / 2);
+    ctx.rotate(Math.PI * -0.5);
+    ctx.translate(0, 7);
+    ctx.fillText(lang.reflection, 0, 0);
+    ctx.restore();
+
+//    var h = normalize(-ix + r[0], -iy + r[1]);
+//    ctx.save();
+//    ctx.translate(sx, sy);
+//    ctx.rotate(-Math.atan2(h[1], h[0]));
+//    arrow(ctx, 0, 0, 0, rl, false, true, 0.7);
+//    ctx.restore();
+
+
+    ctx.fillStyle = 'orange';
+    diagram.drawSun(ctx, lx, ly, width / 10);
+
+    // draw normal
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.rotate(surfaceAngle);
+//    var nx = 0;
+//    var ny = -60;
+//    ctx.fillStyle = "#080";
+//    ctx.strokeStyle = "#080";
+//    arrow(ctx, 0, 0, nx, ny, false, true);
+//    ctx.fillText("surface", nx, ny - 22);
+//    ctx.fillText("normal", nx, ny - 14);
+
+
+    // draw surface
+    //ctx.fillRect(-width / 4, height / 6, width / 2, 20);
+    //return;
+    diagram.roundedRect(ctx, -width / 4, 0, width / 2, 20);
+
+    const sn = v3.normalize([ex - sx, ey - sy, 0]);
+    const d  = v3.dot([sn[0], sn[1], 0], [r[0], r[1], 0]);
+    const gradient =  ctx.createRadialGradient(0, 0, 0, 0, 0, width / 2);
+    gradient.addColorStop(0, hsl(0, 1, d * 0.5 + 0.5));
+    gradient.addColorStop(1, hsl(0, 1, 0.5));
+    ctx.fillStyle = gradient; //rgb(1,0,0);
+//    ctx.fillStyle = hsl(0, 1, 0.5);
+    ctx.fill();
+    ctx.strokeStyle = rgb(0, 0, 0);
+    ctx.stroke();
+
+    ctx.restore();
+
+    // draw eye
+    ctx.fillStyle = 'brown';
+    diagram.drawEye(ctx, ex, ey, width / 8, height / 5);
+
+
+  //  // draw normals
+  //  ctx.fillStyle = "#000";
+  //  for (var ii = 0; ii <= 12; ++ii) {
+  //    var a = ii / 12 * Math.PI;
+  //    var x = Math.cos(a) * 50;
+  //    var y = Math.sin(a) * 50;
+  //    arrow(ctx, -x, -y, x, y, true, true, 0.5);
+  //  }
+
+    ctx.restore();
+  }
+  render();
+  window.addEventListener('resize', render);
+}
+
+function getQueryParams() {
+  const params = {};
+  if (window.location.search) {
+    window.location.search.substring(1).split('&').forEach(function(pair) {
+      const keyValue = pair.split('=').map(function(kv) {
+        return decodeURIComponent(kv);
+      });
+      params[keyValue[0]] = keyValue[1];
+    });
+  }
+  return params;
+}
+
+main();
+</script>
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <circle cx="85" cy="115" r="15" style="fill:none;stroke:rgb(5,0,0);stroke-width:10px;"/>
+    <g transform="matrix(1,0,0,1,50,0)">
+        <path d="M85,100C93.279,100 100,106.721 100,115C100,123.279 93.279,130 85,130C76.721,130 70,123.279 70,115C70,106.721 76.721,100 85,100ZM85,110C87.76,110 90,112.24 90,115C90,117.76 87.76,120 85,120C82.24,120 80,117.76 80,115C80,112.24 82.24,110 85,110Z"/>
+    </g>
+    <g transform="matrix(1,0,0,1,100,0)">
+        <path d="M85,90C71.202,90 60,101.202 60,115C60,128.798 71.202,140 85,140C98.798,140 110,128.798 110,115C110,101.202 98.798,90 85,90ZM85,100C93.279,100 100,106.721 100,115C100,123.279 93.279,130 85,130C76.721,130 70,123.279 70,115C70,106.721 76.721,100 85,100Z"/>
+    </g>
+</svg>
