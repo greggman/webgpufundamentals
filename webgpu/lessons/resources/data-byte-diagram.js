@@ -4,7 +4,7 @@ import {
   getSizeAndAlignmentOfUnsizedArrayElement,
   makeBindGroupLayoutDescriptors,
   makeStructuredView,
-} from '/3rdparty/webgpu-utils-1.x.module.js';
+} from '../../../3rdparty/webgpu-utils-1.x.module.js';
 import typeInfo from './wgsl-data-types.js';
 import {
   createElem as el,

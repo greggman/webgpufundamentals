@@ -1,6 +1,6 @@
 import {
   makeShaderDataDefinitions,
-} from '/3rdparty/webgpu-utils-1.x.module.js';
+} from '../../3rdparty/webgpu-utils-1.x.module.js';
 import {
   renderDiagrams
 } from './resources/diagrams.js';
@@ -16,7 +16,7 @@ import {
 import {
   mat3,
   vec2,
-} from '/3rdparty/wgpu-matrix.module.js';
+} from '../../3rdparty/wgpu-matrix.module.js';
 import {
   hsla,
 } from './resources/utils.js';
@@ -537,7 +537,7 @@ function transformPoint(matrix, p) {
         @group(0) @binding(0) var<uniform> foo: mat3x3f;
       `;
       const defs = makeShaderDataDefinitions(wgsl);
-      elem.appendChild(createByteDiagramForType('mat3x3f', defs.uniforms.foo));
+      elem.appendChild(createByteDiagramForType('mat3x3f', defs.uniforms.foo.typeDefinition));
     },
     trs(elem) {
       setupF(elem, (settings) => {

@@ -247,6 +247,7 @@ struct VSOutput {
 @vertex fn vs(vert: Vertex,) -&gt; VSOutput {
   var vsOut: VSOutput;
   vsOut.position = vert.position;
+  return vsOut;
 }
 
 @fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
@@ -1074,6 +1075,7 @@ we can easily add more features making things even more flexible.</p>
 <li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
 <li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-optimization.html">Speed and Optimization</a></li>
 <li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

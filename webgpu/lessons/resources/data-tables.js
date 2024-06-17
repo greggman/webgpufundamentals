@@ -1,6 +1,6 @@
 
-import { makeTable } from '/webgpu/lessons/resources/elem.js';
-import { zip } from '/webgpu/lessons/resources/utils.js';
+import { makeTable } from './elem.js';
+import { zip } from './utils.js';
 
 document.querySelectorAll('[data-table]').forEach(elem => {
   const data = JSON.parse(elem.dataset.table);

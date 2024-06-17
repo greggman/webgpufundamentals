@@ -1442,9 +1442,8 @@ change those per object if we needed to.</p>
 </div>
 
 <p></p>
-<p>The important part to take away is that unlike WebGL, you’ll need unique uniform buffers for
-any uniforms that are object specific (like a world matrix), and, because of that you also
-need a unique  bind group per object.</p>
+<p>The important part to take away is that unlike WebGL, you’ll need uniform buffers for
+any uniforms that are object specific (like a world matrix), and, because of that you also may need a unique bind group per object.</p>
 <h2 id="other-random-differences">Other random differences</h2>
 <h3 id="z-clip-space-is-0-to-1">Z clip space is 0 to 1</h3>
 <p>In WebGL Z clip space was -1 to +1. In WebGPU it’s 0 to 1 (which btw makes way more sense!)</p>
@@ -1455,7 +1454,7 @@ corner in both WebGL and WebGPU. On the other hand, setting the viewport or scis
 <code class="notranslate" translate="no">0, 0, 1, 1</code> references the lower left corner in WebGL but the upper left corner in WebGPU.</p>
 <h3 id="wgsl-uses-builtin-for-glsls-gl_xxx-variables">WGSL uses <code class="notranslate" translate="no">@builtin(???)</code> for GLSL’s <code class="notranslate" translate="no">gl_XXX</code> variables.</h3>
 <p><code class="notranslate" translate="no">gl_FragCoord</code> is <code class="notranslate" translate="no">@builtin(position) myVarOrField: vec4f</code> and unlike
-WebGL goes down the screen instead of up so 0,0 is the top left vs WebGL where 0,0 is the bottom left.</p>
+WebGL, goes down the screen instead of up so 0,0 is the top left vs WebGL where 0,0 is the bottom left.</p>
 <p><code class="notranslate" translate="no">gl_VertexID</code> is <code class="notranslate" translate="no">@builtin(vertex_index) myVarOrField: u32</code></p>
 <p><code class="notranslate" translate="no">gl_InstanceID</code> is <code class="notranslate" translate="no">@builtin(instance_index) myVarOrField: u32</code></p>
 <p><code class="notranslate" translate="no">gl_Position</code> is <code class="notranslate" translate="no">@builtin(position) vec4f</code> which may be the return value
@@ -1470,10 +1469,22 @@ than 1 pixel but, (a) lots of GPUs only supported a max size of 64 pixels and (b
 different GPU would clip or not clip based on the center of the point. So, it’s arguably
 a good thing WebGPU doesn’t support points of sizes other than 1.
 This forces you to implement a portable point solution.</p>
+<h3 id="webgpu-optimizations-are-different-than-webgl">WebGPU optimizations are different than WebGL</h3>
+<p>If you take a WebGL app and directly convert it to WebGPU you might find
+it runs slower. To get the benefits of WebGPU you’ll need to change the
+way you organize data and optimize how you draw.
+See <a href="webgpu-optimization.html">this article on WebGPU optimization</a> for
+ideas.</p>
+<p>Note: If you are comparing WebGL to WebGPU in <a href="webgpu-optimization.html">the article on optimization</a>
+here are 2 WebGL samples you can use to compare</p>
+<ul>
+<li><a href="../webgl-optimization-none.html">Drawing up to 20000 objects in WebGL using standard WebGL uniforms</a></li>
+<li><a href="../webgl-optimization-none-uniform-buffers.html">Drawing up to 20000 objects in WebGL using uniform blocks</a></li>
+</ul>
+<p>Another article, if you’re comparing performance of WebGL vs WebGPU see
+<a href="https://toji.dev/webgpu-best-practices/webgl-performance-comparison">this article</a>.</p>
 <hr>
 <p>If you were already familiar with WebGL then I hope this article was useful.</p>
-<p>If you’re comparing performance of WebGL vs WebGPU see
-<a href="https://toji.dev/webgpu-best-practices/webgl-performance-comparison">this article</a> to make sure you are comparing similar things.</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -1556,6 +1567,7 @@ This forces you to implement a portable point solution.</p>
 <li><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
 <li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/webgpu-optimization.html">Speed and Optimization</a></li>
 <li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

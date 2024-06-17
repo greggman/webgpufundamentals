@@ -6,7 +6,7 @@ import {
 } from './resources/elem.js';
 import {
   createTextureFromSources,
-} from '/3rdparty/webgpu-utils.module.js';
+} from '../../3rdparty/webgpu-utils.module.js';
 
 import {mat4} from 'http://localhost:8080/3rdparty/wgpu-matrix.module.js';
 import GUI from 'http://localhost:8080/3rdparty/muigui-0.x.module.js';

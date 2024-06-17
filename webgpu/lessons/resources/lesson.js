@@ -1,4 +1,4 @@
-import '/webgpu/lessons/resources/data-tables.js';
+import './data-tables.js';
 // Licensed under a BSD license. See license.html for license
 /* eslint-disable strict */
 /* global settings, contributors, jQuery */

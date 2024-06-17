@@ -847,6 +847,26 @@ pre.prettyprint.lighttheme .fun { color: #900; }  /* function name */
   }
 }
 
+/* fixed size text */
+.fixed-size-text {
+  padding: 1em;
+  line-height: 1.2;
+  overflow: auto;
+  container-type: layout size;
+  container-name: fixed-size-text;
+}
+/*@container fixed-size-text (width < 570px) {*/
+@media (max-width: 570px) {
+  .fixed-size-text {
+    font-size: small;
+  }
+}
+@media (max-width: 425px) {
+  .fixed-size-text {
+    font-size: x-small;
+  }
+}
+
 /* ---- data table ---- */
 
 .data-table {

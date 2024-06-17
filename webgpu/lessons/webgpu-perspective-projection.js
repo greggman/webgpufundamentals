@@ -9,9 +9,9 @@ import {
 } from './resources/elem.js';
 import {
   mat4,
-} from '/3rdparty/wgpu-matrix.module.js';
-import * as twgl from '/3rdparty/twgl-full.module.js';
-import GUI from '/3rdparty/muigui-0.x.module.js';
+} from '../../3rdparty/wgpu-matrix.module.js';
+import * as twgl from '../../3rdparty/twgl-full.module.js';
+import GUI from '../../3rdparty/muigui-0.x.module.js';
 
 const darkColors = {
   lines: [1, 1, 1, 1],

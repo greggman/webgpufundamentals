@@ -28,6 +28,7 @@ const kLimitInfo = makeObjectFromTable(
   'maxTextureArrayLayers':                     [           ,       256,                          ],
 
   'maxBindGroups':                             [           ,         4,                          ],
+  'maxBindGroupsPlusVertexBuffers':            [           ,        24,                          ],
   'maxBindingsPerBindGroup':                   [           ,      1000,                          ],
   'maxDynamicUniformBuffersPerPipelineLayout': [           ,         8,                          ],
   'maxDynamicStorageBuffersPerPipelineLayout': [           ,         4,                          ],
@@ -95,7 +96,7 @@ renderDiagrams({
   limits(elem) {
     const addRow = makeTable(elem, ['limit name', 'your device', 'min']);
     for (const key of getObjLikeKeys(adapter.limits).sort(sortAlphabetically)) {
-      addRow([key, [adapter.limits[key] > kLimitInfo[key].default ? 'exceeds-limit' : '', withShortSize(adapter.limits[key])], withShortSize(kLimitInfo[key].default)]);
+      addRow([key, [adapter.limits[key] > kLimitInfo[key]?.default ? 'exceeds-limit' : '', withShortSize(adapter.limits[key])], withShortSize(kLimitInfo[key]?.default)]);
     }
   },
 

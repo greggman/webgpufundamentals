@@ -1,7 +1,7 @@
 /*
 import {
   makeShaderDataDefinitions,
-} from '/3rdparty/webgpu-utils-1.x.module.js';
+} from '../../3rdparty/webgpu-utils-1.x.module.js';
 import {
   renderDiagrams
 } from './resources/diagrams.js';
@@ -14,7 +14,7 @@ import {
 import {
   mat4,
   vec3,
-} from '/3rdparty/wgpu-matrix.module.js';
+} from '../../3rdparty/wgpu-matrix.module.js';
 import {
   hsla,
 } from './resources/utils.js';

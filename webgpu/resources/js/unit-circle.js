@@ -28,7 +28,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import { SVG as svg } from '/3rdparty/svg.esm.js';
+import { SVG as svg } from '../../../3rdparty/svg.esm.js';
 
 
 const setTranslation = (e, x, y) => e.attr({transform: `translate(${x}, ${y})`});

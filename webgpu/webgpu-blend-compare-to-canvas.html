@@ -28,9 +28,9 @@ canvas {
   </body>
   <script type="module">
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
-import {mat4} from '/3rdparty/wgpu-matrix.module.js';
+import {mat4} from '../3rdparty/wgpu-matrix.module.js';
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
-import {createTextureFromSource} from '/3rdparty/webgpu-utils-1.x.module.js';
+import {createTextureFromSource} from '../3rdparty/webgpu-utils-1.x.module.js';
 
 const hsl = (h, s, l) => `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
 const hsla = (h, s, l, a) => `hsla(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%, ${a})`;

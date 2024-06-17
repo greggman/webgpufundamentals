@@ -7,8 +7,8 @@ import {
 import {
   createRequestAnimationFrameLoop,
 } from './resources/good-raf.js';
-import { SVG as svg } from '/3rdparty/svg.esm.js';
-import * as twgl from '/3rdparty/twgl-full.module.js';
+import { SVG as svg } from '../../3rdparty/svg.esm.js';
+import * as twgl from '../../3rdparty/twgl-full.module.js';
 
 const darkColors = {
   lines: [1, 1, 1, 1],

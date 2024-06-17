@@ -4,7 +4,7 @@ import {
 import {
   createRequestAnimationFrameLoop,
 } from './resources/good-raf.js';
-import { SVG as svg } from '/3rdparty/svg.esm.js';
+import { SVG as svg } from '../../3rdparty/svg.esm.js';
 import {
   createElem as el, select, makeTable,
 } from './resources/elem.js';

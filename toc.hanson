@@ -59,6 +59,7 @@
     'webgpu-multiple-canvases.md',
     'webgpu-points.md',
     'webgpu-from-webgl.md',
+    'webgpu-optimization.md',
     'webgpu-resources.md',
     'webgpu-wgsl-function-reference.md',
     'webgpu-wgsl-offset-computer.md',

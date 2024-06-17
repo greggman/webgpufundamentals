@@ -4,7 +4,7 @@ import {
 import {
   createElem as el,
 } from './resources/elem.js';
-import { SVG as svg } from '/3rdparty/svg.esm.js';
+import { SVG as svg } from '../../3rdparty/svg.esm.js';
 import { clamp } from './resources/utils.js';
 
 const darkColors = {

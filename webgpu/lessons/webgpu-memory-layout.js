@@ -1,6 +1,6 @@
 import {
   makeShaderDataDefinitions,
-} from '/3rdparty/webgpu-utils-1.x.module.js';
+} from '../../3rdparty/webgpu-utils-1.x.module.js';
 import {
   renderDiagrams
 } from './resources/diagrams.js';
