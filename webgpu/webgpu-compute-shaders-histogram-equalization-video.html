@@ -852,6 +852,8 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
     },
   ];
 
+  const canvasToSizeMap = new WeakMap();
+
   function render() {
     const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
 
@@ -868,6 +870,13 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
     }
 
     histogramHelper.computeHistogram(encoder, videoTexture);
+
+    const size = canvasToSizeMap.get(canvas);
+    if (size) {
+      canvasToSizeMap.delete(canvas);
+      canvas.width = size.width;
+      canvas.height = size.height;
+    }
 
     const canvasTexture = context.getCurrentTexture().createView();
 
@@ -930,11 +939,10 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
 
   const observer = new ResizeObserver(entries => {
     for (const entry of entries) {
-      const canvas = entry.target;
-      const width = entry.contentBoxSize[0].inlineSize;
-      const height = entry.contentBoxSize[0].blockSize;
-      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
-      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      canvasToSizeMap.set(entry.target, {
+        width: Math.max(1, Math.min(entry.contentBoxSize[0].inlineSize, device.limits.maxTextureDimension2D)),
+        height: Math.max(1, Math.min(entry.contentBoxSize[0].blockSize, device.limits.maxTextureDimension2D)),
+      });
     }
   });
   observer.observe(canvas);

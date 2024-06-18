@@ -399,9 +399,14 @@ async function main() {
 
     let mathElapsedTimeMs = 0;
 
+    // We can only do this here because all cubes share the same texture
+    // In the WebGPU version, the texture is part of the bindGroup so every
+    // cube would be allowed a different texture.
+    twgl.setUniforms(prgInfo, objectInfos[0].uniforms);
+
     for (let i = 0; i < settings.numObjects; ++i) {
       const {
-        uniforms,
+        // uniforms,
         uboInfo,
 
         axis,
@@ -440,7 +445,10 @@ async function main() {
 
       // upload the uniform values to the uniform buffer
       twgl.setUniformBlock(gl, prgInfo, uboInfo);
-      twgl.setUniforms(prgInfo, uniforms);
+
+      // Note: we can skip this only because each cube is using the same texture
+      // The WebGPU version doesn't have this limit since it includes the texture in the bindGroup
+      // twgl.setUniforms(prgInfo, uniforms);
 
       twgl.drawBufferInfo(gl, bufferInfo);
     }
