@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGL Optimization - Uniform Blocks one large buffer</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+:root {
+  --bg-color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #000;
+  }
+}
+canvas {
+  background-color: var(--bg-color);
+}
+#info {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0.5em;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  min-width: 8em;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <pre id="info"></pre>
+  </body>
+  <script type="module">
+import GUI from '../3rdparty/muigui-0.x.module.js';
+import * as twgl from '../3rdparty/twgl-full.module.js';
+import RollingAverage from './resources/js/rolling-average.js';
+
+class TimingHelper {
+  #ext;
+  #query;
+  #gl;
+  #state = 'free';
+  #duration = 0;
+
+  constructor(gl) {
+    this.#gl = gl;
+    this.#ext = gl.getExtension('EXT_disjoint_timer_query_webgl2');
+    if (!this.#ext) {
+      return;
+    }
+    this.#query = gl.createQuery();
+  }
+
+  begin() {
+    if (!this.#ext || this.#state !== 'free') {
+      return;
+    }
+    this.#state = 'started';
+    const gl = this.#gl;
+    const ext = this.#ext;
+    const query = this.#query;
+    gl.beginQuery(ext.TIME_ELAPSED_EXT, query);
+  }
+  end() {
+    if (!this.#ext || this.#state === 'free') {
+      return;
+    }
+
+    const gl = this.#gl;
+    const ext = this.#ext;
+    const query = this.#query;
+
+    if (this.#state === 'started') {
+      gl.endQuery(ext.TIME_ELAPSED_EXT);
+      this.#state = 'waiting';
+    } else {
+      const available = gl.getQueryParameter(query, gl.QUERY_RESULT_AVAILABLE);
+      const disjoint = gl.getParameter(ext.GPU_DISJOINT_EXT);
+      if (available && !disjoint) {
+        this.#duration = gl.getQueryParameter(query, gl.QUERY_RESULT);
+      }
+      if (available || disjoint) {
+        this.#state = 'free';
+      }
+    }
+  }
+  getResult() {
+    return this.#duration;
+  }
+}
+
+const { m4: mat4, v3: vec3 } = twgl;
+const mat3 = {
+  identity() {
+    return new Float32Array(9);
+  },
+  fromMat4(m, dst) {
+    dst = dst || new Float32Array(9);
+
+    dst[0] =  m[ 0]; dst[1] = m[ 1]; dst[2] = m[ 2];
+    dst[3] =  m[ 4]; dst[4] = m[ 5]; dst[5] = m[ 6];
+    dst[6] =  m[ 8]; dst[7] = m[ 9]; dst[8] = m[10];
+
+    return dst;
+  },
+};
+
+const fpsAverage = new RollingAverage();
+const jsAverage = new RollingAverage();
+const gpuAverage = new RollingAverage();
+const mathAverage = new RollingAverage();
+
+/** Given a css color string, return an array of 4 values from 0 to 255 */
+const cssColorToRGBA8 = (() => {
+  const canvas = new OffscreenCanvas(1, 1);
+  const ctx = canvas.getContext('2d', {willReadFrequently: true});
+  return cssColor => {
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = cssColor;
+    ctx.fillRect(0, 0, 1, 1);
+    return Array.from(ctx.getImageData(0, 0, 1, 1).data);
+  };
+})();
+
+/** Given a css color string, return an array of 4 values from 0 to 1 */
+const cssColorToRGBA = cssColor => cssColorToRGBA8(cssColor).map(v => v / 255);
+
+/**
+ * Given hue, saturation, and luminance values in the range of 0 to 1
+ * return the corresponding CSS hsl string
+ */
+const hsl = (h, s, l) => `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
+
+/**
+ * Given hue, saturation, and luminance values in the range of 0 to 1
+ * returns an array of values from 0 to 1
+ */
+const hslToRGBA = (h, s, l) => cssColorToRGBA(hsl(h, s, l));
+/**
+ * Given hue, saturation, and luminance values in the range of 0 to 1
+ * returns an array of values from 0 to 255
+ */
+const hslToRGBA8 = (h, s, l) => cssColorToRGBA8(hsl(h, s, l));
+
+/**
+ * Returns a random number between min and max.
+ * If min and max are not specified, returns 0 to 1
+ * If max is not specified, return 0 to min.
+ */
+function rand(min, max) {
+  if (min === undefined) {
+    max = 1;
+    min = 0;
+  } else if (max === undefined) {
+    max = min;
+    min = 0;
+  }
+  return Math.random() * (max - min) + min;
+}
+
+/** Selects a random array element */
+const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
+
+/** Rounds up v to a multiple of alignment */
+const roundUp = (v, alignment) => Math.ceil(v / alignment) * alignment;
+
+async function main() {
+  const infoElem = document.querySelector('#info');
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const gl = canvas.getContext('webgl2');
+  const timingHelper = new TimingHelper(gl);
+
+  const uniformBlock = `
+      uniform Uniforms {
+        mat3 normalMatrix;
+        mat4 viewProjection;
+        mat4 world;
+        vec3 lightWorldPosition;
+        vec3 viewWorldPosition;
+        vec4 color;
+        float shininess;
+      };
+  `;
+  const vs = `#version 300 es
+      ${uniformBlock}
+      layout(location = 0) in vec4 position;
+      layout(location = 1) in vec3 normal;
+      layout(location = 2) in vec2 texcoord;
+
+      out vec3 v_normal;
+      out vec3 v_surfaceToLight;
+      out vec3 v_surfaceToView;
+      out vec2 v_texcoord;
+
+      void main() {
+        gl_Position = viewProjection * world * position;
+
+        // Orient the normals and pass to the fragment shader
+        v_normal = normalMatrix * normal;
+
+        // Compute the world position of the surface
+        vec3 surfaceWorldPosition = (world * position).xyz;
+
+        // Compute the vector of the surface to the light
+        // and pass it to the fragment shader
+        v_surfaceToLight = lightWorldPosition - surfaceWorldPosition;
+
+        // Compute the vector of the surface to the light
+        // and pass it to the fragment shader
+        v_surfaceToView = viewWorldPosition - surfaceWorldPosition;
+
+        // Pass the texture coord on to the fragment shader
+        v_texcoord = texcoord;
+      }
+  `;
+
+  const fs = `#version 300 es
+      precision highp float;
+      ${uniformBlock}
+
+      in vec3 v_normal;
+      in vec3 v_surfaceToLight;
+      in vec3 v_surfaceToView;
+      in vec2 v_texcoord;
+
+      uniform sampler2D diffuseTexture;
+
+      out vec4 fragColor;
+
+      void main() {
+        // Because vsOut.normal is an inter-stage variable 
+        // it's interpolated so it will not be a unit vector.
+        // Normalizing it will make it a unit vector again
+        vec3 normal = normalize(v_normal);
+
+        vec3 surfaceToLightDirection = normalize(v_surfaceToLight);
+        vec3 surfaceToViewDirection = normalize(v_surfaceToView);
+        vec3 halfVector = normalize(
+          surfaceToLightDirection + surfaceToViewDirection);
+
+        // Compute the light by taking the dot product
+        // of the normal with the direction to the light
+        float light = dot(normal, surfaceToLightDirection);
+
+        float specular = dot(normal, halfVector);
+        specular = specular > 0.0 ?
+            pow(specular, shininess) :
+            0.0;
+
+        vec4 diffuse = color * texture(diffuseTexture, v_texcoord);
+        // Lets multiply just the color portion (not the alpha)
+        // by the light
+        vec3 c = diffuse.rgb * light + specular;
+        fragColor = vec4(c, diffuse.a);
+      }
+    `;
+
+  const prgInfo = twgl.createProgramInfo(gl, [vs, fs]);
+
+  const bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+    position:  new Float32Array([1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1]),
+    normal:    new Float32Array([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1]),
+    texcoord: new Float32Array([1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1]),
+    indices:   new Uint16Array([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23]),
+  });
+
+  gl.enable(gl.CULL_FACE);
+  gl.enable(gl.DEPTH_TEST);
+
+  const texture = twgl.createTexture(gl, {
+    format: gl.RGBA,
+    width: 2,
+    src: new Uint8Array([
+      ...hslToRGBA8(0, 0, 1),
+      ...hslToRGBA8(0, 0, 0.5),
+      ...hslToRGBA8(0, 0, 0.75),
+      ...hslToRGBA8(0, 0, 0.25),
+    ]),
+    minMag: gl.NEAREST,
+    wrap: gl.CLAMP_TO_EDGE,
+  });
+
+  const numMaterials = 20;
+  const materials = [];
+  for (let i = 0; i < numMaterials; ++i) {
+    const color = hslToRGBA(rand(), rand(0.5, 0.8), rand(0.5, 0.7));
+    const shininess = rand(10, 120);
+    materials.push({
+      color,
+      shininess,
+      texture,
+    });
+  }
+
+  const maxObjects = 20000;
+  const objectInfos = [];
+
+  const blockSize = roundUp(prgInfo.uniformBlockSpec.blockSpecs.Uniforms.size, 256);
+  const totalSize = blockSize * maxObjects;
+  const uniformBuffers = [0, 1].map(_ => {
+    const uniformBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.UNIFORM_BUFFER, uniformBuffer);
+    gl.bufferData(gl.UNIFORM_BUFFER, totalSize, gl.DYNAMIC_DRAW);
+    return uniformBuffer;
+  });
+
+  const uniformArrayBuffer = new ArrayBuffer(totalSize);
+  const uniformView = new Uint8Array(uniformArrayBuffer);
+
+  for (let i = 0; i < maxObjects; ++i) {
+    const material = randomArrayElement(materials);
+    const axis = vec3.normalize([rand(-1, 1), rand(-1, 1), rand(-1, 1)]);
+    const radius = rand(10, 100);
+    const speed = rand(0.1, 0.4);
+    const rotationSpeed = rand(-1, 1);
+    const scale = rand(2, 10);
+
+    const uniforms = {
+      diffuseTexture: texture,
+    };
+
+    const uboInfos = uniformBuffers.map(uniformBuffer => twgl.createUniformBlockInfo(gl, prgInfo, 'Uniforms', {
+      buffer: uniformBuffer,
+      offset: blockSize * i,
+      array: uniformArrayBuffer,
+    }));
+
+    objectInfos.push({
+      uniforms,
+      uboInfos,
+
+      axis,
+      material,
+      radius,
+      speed,
+      rotationSpeed,
+      scale,
+    });
+  }
+
+  gl.clearColor(0.3, 0.3, 0.3, 1);
+
+  const canvasToSizeMap = new WeakMap();
+  const degToRad = d => d * Math.PI / 180;
+  const worldValue = mat4.create();
+  const normalMatrix = mat3.identity();
+
+  const settings = {
+    numObjects: 1000,
+    render: true,
+  };
+
+  const gui = new GUI();
+  gui.add(settings, 'numObjects', { min: 0, max: maxObjects, step: 1});
+  gui.add(settings, 'render');
+
+  let then = 0;
+  let frameCount = 0;
+
+  function render(time) {
+    ++frameCount;
+    time *= 0.001;  // convert to seconds
+    const deltaTime = time - then;
+    then = time;
+
+    const startTimeMs = performance.now();
+
+    const {width, height} = settings.render
+       ? canvasToSizeMap.get(canvas) ?? canvas
+       : { width: 1, height: 1 };
+
+    // Don't set the canvas size if it's already that size as it may be slow.
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    gl.viewport(0, 0, canvas.width, canvas.height);
+
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    timingHelper.begin();
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    gl.useProgram(prgInfo.program);
+    twgl.setBuffersAndAttributes(gl, prgInfo, bufferInfo);
+
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(
+        degToRad(60),
+        aspect,
+        1,      // zNear
+        2000,   // zFar
+    );
+
+    const eye = [100, 150, 200];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
+
+    // Compute a view matrix
+    const viewMatrix = mat4.inverse(mat4.lookAt(eye, target, up));
+
+    // Combine the view and projection matrixes
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    let mathElapsedTimeMs = 0;
+
+    for (let i = 0; i < settings.numObjects; ++i) {
+      const {
+        uboInfos,
+
+        axis,
+        material,
+        radius,
+        speed,
+        rotationSpeed,
+        scale,
+      } = objectInfos[i];
+      const mathTimeStartMs = performance.now();
+
+      // Compute a world matrix
+      mat4.identity(worldValue);
+      mat4.axisRotate(worldValue, axis, i + time * speed, worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 3.721 + time * speed) * radius], worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 9.721 + time * 0.1) * radius], worldValue);
+      mat4.rotateX(worldValue, time * rotationSpeed + i, worldValue);
+      mat4.scale(worldValue, [scale, scale, scale], worldValue);
+
+      // Inverse and transpose it into the normalMatrix value
+      mat3.fromMat4(mat4.transpose(mat4.inverse(worldValue)), normalMatrix);
+
+      const {color, shininess} = material;
+
+      twgl.setBlockUniforms(uboInfos[frameCount % 2], {
+        world: worldValue,
+        normalMatrix,
+        viewProjection: viewProjectionMatrix,
+        color,
+        lightWorldPosition: [-10, 30, 300],
+        viewWorldPosition: eye,
+        shininess,
+      });
+
+      mathElapsedTimeMs += performance.now() - mathTimeStartMs;
+    }
+
+    gl.bindBuffer(gl.UNIFORM_BUFFER, uniformBuffers[frameCount % 2]);
+    gl.bufferSubData(gl.UNIFORM_BUFFER, 0, uniformView, 0, settings.numObjects * blockSize);
+
+    for (let i = 0; i < settings.numObjects; ++i) {
+      const {
+        uniforms,
+        uboInfos,
+      } = objectInfos[i];
+
+      twgl.bindUniformBlock(gl, prgInfo, uboInfos[frameCount % 2]);
+      twgl.setUniforms(prgInfo, uniforms);
+      twgl.drawBufferInfo(gl, bufferInfo);
+    }
+    timingHelper.end();
+
+    const elapsedTimeMs = performance.now() - startTimeMs;
+    fpsAverage.addSample(1 / deltaTime);
+    jsAverage.addSample(elapsedTimeMs);
+    mathAverage.addSample(mathElapsedTimeMs);
+    gpuAverage.addSample(timingHelper.getResult());
+
+    infoElem.textContent = `\
+js  : ${jsAverage.get().toFixed(1)}ms
+math: ${mathAverage.get().toFixed(1)}ms
+fps : ${fpsAverage.get().toFixed(0)}
+gpu : ${(gpuAverage.get() / 1000 / 1000).toFixed(1)}ms
+`;
+
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries => {
+    entries.forEach(entry => {
+      canvasToSizeMap.set(entry.target, {
+        width: Math.max(1, entry.contentBoxSize[0].inlineSize),
+        height: Math.max(1, entry.contentBoxSize[0].blockSize),
+      });
+    });
+  });
+  observer.observe(canvas);
+}
+
+main();
+  </script>
+</html>

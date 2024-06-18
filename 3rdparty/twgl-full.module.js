@@ -1,4 +1,4 @@
-/* @license twgl.js 5.3.1 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
+/* @license twgl.js 5.5.4 Copyright (c) 2015, Gregg Tavares All Rights Reserved.
 Available via the MIT license.
 see: http://github.com/greggman/twgl.js for details */
 /*
@@ -5104,7 +5104,8 @@ const TEXTURE_MIN_LOD                = 0x813a;
 const TEXTURE_MAX_LOD                = 0x813b;
 const TEXTURE_BASE_LEVEL             = 0x813c;
 const TEXTURE_MAX_LEVEL              = 0x813d;
-
+const TEXTURE_COMPARE_MODE           = 0x884C;
+const TEXTURE_COMPARE_FUNC           = 0x884D;
 
 /* Pixel store */
 const UNPACK_ALIGNMENT                   = 0x0cf5;
@@ -5526,6 +5527,8 @@ function setDefaults$1(newDefaults) {
  * @property {number} [maxLod] TEXTURE_MAX_LOD setting
  * @property {number} [baseLevel] TEXTURE_BASE_LEVEL setting
  * @property {number} [maxLevel] TEXTURE_MAX_LEVEL setting
+ * @property {number} [compareFunc] TEXTURE_COMPARE_FUNC setting
+ * @property {number} [compareMode] TEXTURE_COMPARE_MODE setting
  * @property {number} [unpackAlignment] The `gl.UNPACK_ALIGNMENT` used when uploading an array. Defaults to 1.
  * @property {number[]|ArrayBufferView} [color] Color to initialize this texture with if loading an image asynchronously.
  *     The default use a blue 1x1 pixel texture. You can set another default by calling `twgl.setDefaults`
@@ -5661,17 +5664,23 @@ function setTextureSamplerParameters(gl, target, parameteriFn, options) {
   if (options.wrapT) {
     parameteriFn.call(gl, target, TEXTURE_WRAP_T, options.wrapT);
   }
-  if (options.minLod) {
+  if (options.minLod !== undefined) {
     parameteriFn.call(gl, target, TEXTURE_MIN_LOD, options.minLod);
   }
-  if (options.maxLod) {
+  if (options.maxLod !== undefined) {
     parameteriFn.call(gl, target, TEXTURE_MAX_LOD, options.maxLod);
   }
-  if (options.baseLevel) {
+  if (options.baseLevel !== undefined) {
     parameteriFn.call(gl, target, TEXTURE_BASE_LEVEL, options.baseLevel);
   }
-  if (options.maxLevel) {
+  if (options.maxLevel !== undefined) {
     parameteriFn.call(gl, target, TEXTURE_MAX_LEVEL, options.maxLevel);
+  }
+  if (options.compareFunc !== undefined) {
+    parameteriFn.call(gl, target, TEXTURE_COMPARE_FUNC, options.compareFunc);
+  }
+  if (options.compareMode !== undefined) {
+    parameteriFn.call(gl, target, TEXTURE_COMPARE_MODE, options.compareMode);
   }
 }
 
@@ -7554,7 +7563,7 @@ function createProgramNoCheck(gl, shaders, programOptions) {
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
  * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|module:twgl.ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error of a callback was provided.
@@ -7622,7 +7631,7 @@ function wrapCallbackFnToAsyncFn(fn) {
  * @param {WebGLRenderingContext} gl The WebGLRenderingContext to use.
  * @param {WebGLShader[]|string[]} shaders The shaders to attach, or element ids for their source, or strings that contain their source
  * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|module:twgl.ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {Promise<WebGLProgram>} The created program
@@ -7639,7 +7648,7 @@ const createProgramAsync = wrapCallbackFnToAsyncFn(createProgram);
  *        shaders or ids. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
  * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|module:twgl.ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {Promise<module:twgl.ProgramInfo>} The created ProgramInfo
@@ -7706,7 +7715,7 @@ function getProgramErrors(gl, program, errFn) {
  *        tags for the shaders. The first is assumed to be the
  *        vertex shader, the second the fragment shader.
  * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|module:twgl.ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error or a callback was provided.
@@ -7742,7 +7751,7 @@ function createProgramFromScripts(
  *        shaders. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
  * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|module:twgl.ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {WebGLProgram?} the created program or null if error or a callback was provided.
@@ -8111,6 +8120,15 @@ function createUniformBlockUniformSetter(view, isArray, rows, cols) {
  */
 
 /**
+ * Options to allow createUniformBlockInfo to use an existing buffer and arrayBuffer at an offset
+ * @typedef {Object} UniformBlockInfoOptions
+ * @property {ArrayBuffer} [array] an existing array buffer to use for values
+ * @property {number} [offset] the offset in bytes to use in the array buffer (default = 0)
+ * @property {WebGLBuffer} [buffer] the buffer to use for this uniform block info
+ * @property {number} [bufferOffset] the offset in bytes in the buffer to use (default = use offset above)
+ */
+
+/**
  * Creates a `UniformBlockInfo` for the specified block
  *
  * Note: **If the blockName matches no existing blocks a warning is printed to the console and a dummy
@@ -8124,10 +8142,11 @@ function createUniformBlockUniformSetter(view, isArray, rows, cols) {
  * @param {module:twgl.UniformBlockSpec} uniformBlockSpec. A UniformBlockSpec as returned
  *     from {@link module:twgl.createUniformBlockSpecFromProgram}.
  * @param {string} blockName The name of the block.
+ * @param {module:twgl.UniformBlockInfoOptions} [options] Optional options for using existing an existing buffer and arrayBuffer
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
-function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName) {
+function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockName, options = {}) {
   const blockSpecs = uniformBlockSpec.blockSpecs;
   const uniformData = uniformBlockSpec.uniformData;
   const blockSpec = blockSpecs[blockName];
@@ -8138,8 +8157,9 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
       uniforms: {},
     };
   }
-  const array = new ArrayBuffer(blockSpec.size);
-  const buffer = gl.createBuffer();
+  const offset = options.offset ?? 0;
+  const array = options.array ?? new ArrayBuffer(blockSpec.size);
+  const buffer = options.buffer ?? gl.createBuffer();
   const uniformBufferIndex = blockSpec.index;
   gl.bindBuffer(UNIFORM_BUFFER, buffer);
   gl.uniformBlockBinding(program, blockSpec.index, uniformBufferIndex);
@@ -8166,7 +8186,7 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     const byteLength = isArray
         ? pad(typeInfo.size, 16) * data.size
         : typeInfo.size * data.size;
-    const uniformView = new Type(array, data.offset, byteLength / Type.BYTES_PER_ELEMENT);
+    const uniformView = new Type(array, offset + data.offset, byteLength / Type.BYTES_PER_ELEMENT);
     uniforms[name] = uniformView;
     // Note: I'm not sure what to do here. The original
     // idea was to create TypedArray views into each part
@@ -8204,6 +8224,8 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
     buffer,
     uniforms,
     setters,
+    offset: options.bufferOffset ?? offset,
+    size: blockSpec.size,
   };
 }
 
@@ -8220,11 +8242,12 @@ function createUniformBlockInfoFromProgram(gl, program, uniformBlockSpec, blockN
  * @param {module:twgl.ProgramInfo} programInfo a `ProgramInfo`
  *     as returned from {@link module:twgl.createProgramInfo}
  * @param {string} blockName The name of the block.
+ * @param {module:twgl.UniformBlockInfoOptions} [options] Optional options for using existing an existing buffer and arrayBuffer
  * @return {module:twgl.UniformBlockInfo} The created UniformBlockInfo
  * @memberOf module:twgl/programs
  */
-function createUniformBlockInfo(gl, programInfo, blockName) {
-  return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName);
+function createUniformBlockInfo(gl, programInfo, blockName, options = {}) {
+  return createUniformBlockInfoFromProgram(gl, programInfo.program, programInfo.uniformBlockSpec, blockName, options);
 }
 
 /**
@@ -8250,7 +8273,7 @@ function bindUniformBlock(gl, programInfo, uniformBlockInfo) {
   const blockSpec = uniformBlockSpec.blockSpecs[uniformBlockInfo.name];
   if (blockSpec) {
     const bufferBindIndex = blockSpec.index;
-    gl.bindBufferRange(UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.array.byteLength);
+    gl.bindBufferRange(UNIFORM_BUFFER, bufferBindIndex, uniformBlockInfo.buffer, uniformBlockInfo.offset || 0, uniformBlockInfo.size ?? uniformBlockInfo.array.byteLength);
     return true;
   }
   return false;
@@ -8785,7 +8808,7 @@ const notIdRE = /\s|{|}|;/;
  *        shaders or ids. The first is assumed to be the vertex shader,
  *        the second the fragment shader.
  * @param {module:twgl.ProgramOptions|string[]|module:twgl.ErrorCallback} [opt_attribs] Options for the program or an array of attribs names or an error callback. Locations will be assigned by index if not passed in
- * @param {number[]} [opt_locations|module:twgl.ErrorCallback] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
+ * @param {number[]|module:twgl.ErrorCallback} [opt_locations] The locations for the. A parallel array to opt_attribs letting you assign locations or an error callback.
  * @param {module:twgl.ErrorCallback} [opt_errorCallback] callback for errors. By default it just prints an error to the console
  *        on error. If you want something else pass an callback. It's passed an error message.
  * @return {module:twgl.ProgramInfo?} The created ProgramInfo or null if it failed to link or compile
