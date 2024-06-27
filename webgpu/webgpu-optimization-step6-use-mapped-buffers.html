@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>WebGPU Optimization - None</title>
+    <title>WebGPU Optimization - Use Mapped Buffers</title>
     <style>
       @import url(resources/webgpu-lesson.css);
 html, body {
@@ -44,6 +44,9 @@ canvas {
   </body>
   <script type="module">
 import GUI from '../3rdparty/muigui-0.x.module.js';
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#webgpu-utils
+import {createTextureFromSource} from '../3rdparty/webgpu-utils-1.x.module.js';
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-matrix-math.html
 import {mat4, mat3, vec3} from '../3rdparty/wgpu-matrix.module.js';
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
 import TimingHelper from './resources/js/timing-helper.js';
@@ -78,14 +81,9 @@ const hsl = (h, s, l) => `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
 
 /**
  * Given hue, saturation, and luminance values in the range of 0 to 1
- * returns an array of values from 0 to 1
+ * returns an array of 4 values from 0 to 1
  */
 const hslToRGBA = (h, s, l) => cssColorToRGBA(hsl(h, s, l));
-/**
- * Given hue, saturation, and luminance values in the range of 0 to 1
- * returns an array of values from 0 to 255
- */
-const hslToRGBA8 = (h, s, l) => cssColorToRGBA8(hsl(h, s, l));
 
 /**
  * Returns a random number between min and max.
@@ -301,28 +299,24 @@ async function main() {
     },
   });
 
-  const texture = device.createTexture({
-    size: [2, 2],
-    format: 'rgba8unorm',
-    usage:
-      GPUTextureUsage.TEXTURE_BINDING |
-      GPUTextureUsage.COPY_DST,
+  const textures = [
+    '😂', '👾', '👍', '👀', '🌞', '🛟',
+  ].map(s => {
+    const size = 128;
+    const ctx = new OffscreenCanvas(size, size).getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, size, size);
+    ctx.font = `${size * 0.9}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(s, size / 2, size / 2);
+    return createTextureFromSource(device, ctx.canvas, {mips: true});
   });
-  device.queue.writeTexture(
-      { texture },
-      new Uint8Array([
-        ...hslToRGBA8(0, 0, 1),
-        ...hslToRGBA8(0, 0, 0.5),
-        ...hslToRGBA8(0, 0, 0.75),
-        ...hslToRGBA8(0, 0, 0.25),
-      ]),
-      { bytesPerRow: 8, rowsPerImage: 2 },
-      { width: 2, height: 2 },
-  );
 
   const sampler = device.createSampler({
-    magFilter: 'nearest',
-    minFilter: 'nearest',
+    magFilter: 'linear',
+    minFilter: 'linear',
+    mipmapFilter: 'nearest',
   });
 
   const numMaterials = 20;
@@ -344,7 +338,7 @@ async function main() {
 
     materials.push({
       materialUniformBuffer,
-      texture,
+      texture: randomArrayElement(textures),
       sampler,
     });
   }
@@ -369,7 +363,7 @@ async function main() {
   const viewWorldPositionValue = globalUniformValues.subarray(
       kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
 
-  const maxObjects = 20000;
+  const maxObjects = 30000;
   const objectInfos = [];
 
   const uniformBufferSize = (12 + 16) * 4;

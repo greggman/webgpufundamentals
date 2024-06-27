@@ -491,14 +491,9 @@ const hsl = (h, s, l) =&gt; `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
 
 /**
  * Given hue, saturation, and luminance values in the range of 0 to 1
- * returns an array of values from 0 to 1
+ * returns an array of 4 values from 0 to 1
  */
 const hslToRGBA = (h, s, l) =&gt; cssColorToRGBA(hsl(h, s, l));
-/**
- * Given hue, saturation, and luminance values in the range of 0 to 1
- * returns an array of values from 0 to 255
- */
-const hslToRGBA8 = (h, s, l) =&gt; cssColorToRGBA8(hsl(h, s, l));
 
 /**
  * Returns a random number between min and max.
@@ -520,30 +515,29 @@ function rand(min, max) {
 const randomArrayElement = arr =&gt; arr[Math.random() * arr.length | 0];
 </pre>
 <p>Hopefully they are all pretty straight forward.</p>
-<p>Now let’s make a texture and a sampler. The texture will
-just be a 2x2 texel texture with 4 shades of gray.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = device.createTexture({
-    size: [2, 2],
-    format: 'rgba8unorm',
-    usage:
-      GPUTextureUsage.TEXTURE_BINDING |
-      GPUTextureUsage.COPY_DST,
+<p>Now let’s make some textures and a sampler. We’ll use
+a canvas, draw an emoji on it, and then use our function
+<code class="notranslate" translate="no">createTextureFromSource</code> that we wrote in
+<a href="webgpu-importing-textures.html">the article on importing textures</a>
+to create a texture from it.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const textures = [
+    '😂', '👾', '👍', '👀', '🌞', '🛟',
+  ].map(s =&gt; {
+    const size = 128;
+    const ctx = new OffscreenCanvas(size, size).getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, size, size);
+    ctx.font = `${size * 0.9}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(s, size / 2, size / 2);
+    return createTextureFromSource(device, ctx.canvas, {mips: true});
   });
-  device.queue.writeTexture(
-      { texture },
-      new Uint8Array([
-        ...hslToRGBA8(0, 0, 1),
-        ...hslToRGBA8(0, 0, 0.5),
-        ...hslToRGBA8(0, 0, 0.75),
-        ...hslToRGBA8(0, 0, 0.25),
-      ]),
-      { bytesPerRow: 8, rowsPerImage: 2 },
-      { width: 2, height: 2 },
-  );
 
   const sampler = device.createSampler({
-    magFilter: 'nearest',
-    minFilter: 'nearest',
+    magFilter: 'linear',
+    minFilter: 'linear',
+    mipmapFilter: 'nearest',
   });
 </pre>
 <p>Let’s create a set of material info. We haven’t done this anywhere else but it’s
@@ -559,17 +553,17 @@ material, how shiny it is, as well as which texture to use, etc…</p>
     materials.push({
       color,
       shininess,
-      texture,
+      texture: randomArrayElement(textures),
       sampler,
     });
   }
 </pre>
 <p>Now let’s make data for each thing (cube) we want to draw. We’ll support a
-maximum of 20000. Like we have in the past, we’ll make a uniform buffer for each
+maximum of 30000. Like we have in the past, we’ll make a uniform buffer for each
 object as well as a typed array we can update with uniform values. We’ll also
 make a bind group for each object. And we’ll pick some random values we can use
 to position and animate each object.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 20000;
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 30000;
   const objectInfos = [];
 
   for (let i = 0; i &lt; maxObjects; ++i) {
@@ -1399,7 +1393,7 @@ with <code class="notranslate" translate="no">device.queue.writeBuffer</code></p
 </pre>
 <p>Then we can removed these uniforms from our perObject uniform buffer and add the
 global uniform buffer to each object’s bind group.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 20000;
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 30000;
   const objectInfos = [];
 
   for (let i = 0; i &lt; maxObjects; ++i) {
@@ -1698,7 +1692,7 @@ them at init time and then just add them to our bind group.</p>
 -      color,
 -      shininess,
 +      materialUniformBuffer,
-      texture,
+      texture: randomArrayElement(textures),
       sampler,
     });
   }
@@ -1706,7 +1700,7 @@ them at init time and then just add them to our bind group.</p>
 <p>When we setup the per object info we no longer need to pass on the material
 settings. Instead we just need to add the material’s uniform buffer to the
 object’s bind group.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 20000;
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 30000;
   const objectInfos = [];
 
   for (let i = 0; i &lt; maxObjects; ++i) {
@@ -2165,7 +2159,7 @@ It can modify a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> at some offset.</p>
 <p>This is why, in our loop where we update our per object uniform values, for
 each object we have to create 2 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> views into our mapped buffer.
-For 10000 objects that’s creating 20000 of these temporary views.</p>
+For 20000 objects that’s creating 40000 of these temporary views.</p>
 <p>Adding offsets to every input would make them burdensome to use in my opinion
 but, just as a test, I wrote a modified version of the math functions that
 take an offset. In other words.</p>
@@ -2175,7 +2169,7 @@ take an offset. In other words.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">   mat4.multiply(a, aOffset, b, bOffset, dst, dstOffset);
 </pre>
 <p><a href="../webgpu-optimization-step6-use-mapped-buffers-math-w-offsets.html">It appears to be about 7% faster to use the offsets</a>.</p>
-<p>It’s up to you if you feel that’s worthß it. For me personally, like I
+<p>It’s up to you if you feel that’s worth it. For me personally, like I
 mentioned at the top of the article, I’d prefer to keep it simple to use. I’m
 rarely trying to draw 10000 things. But, it’s good to know, if I wanted to
 squeeze out more performance, this is one place I might find some. More likely

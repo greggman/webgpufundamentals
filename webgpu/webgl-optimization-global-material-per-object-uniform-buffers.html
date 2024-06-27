@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>WebGL Optimization - Uniform Blocks</title>
+    <title>WebGL Optimization - Uniform Blocks (global/material/perObject)</title>
     <style>
       @import url(resources/webgpu-lesson.css);
 html, body {
@@ -43,6 +43,7 @@ canvas {
     <pre id="info"></pre>
   </body>
   <script type="module">
+//import 'https://greggman.github.io/webgl-lint/webgl-lint.js';
 import GUI from '../3rdparty/muigui-0.x.module.js';
 import * as twgl from '../3rdparty/twgl-full.module.js';
 import RollingAverage from './resources/js/rolling-average.js';
@@ -177,14 +178,20 @@ async function main() {
   const timingHelper = new TimingHelper(gl);
 
   const uniformBlock = `
-      uniform Uniforms {
-        mat3 normalMatrix;
+      uniform GlobalUniforms {
         mat4 viewProjection;
-        mat4 world;
         vec3 lightWorldPosition;
         vec3 viewWorldPosition;
+      };
+
+      uniform MaterialUniforms {
         vec4 color;
         float shininess;
+      };
+
+      uniform PerObjectUniforms {
+        mat3 normalMatrix;
+        mat4 world;
       };
   `;
   const vs = `#version 300 es
@@ -263,6 +270,8 @@ async function main() {
 
   const prgInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
+  const globalUboInfo = twgl.createUniformBlockInfo(gl, prgInfo, 'GlobalUniforms');
+
   const bufferInfo = twgl.createBufferInfoFromArrays(gl, {
     position:  new Float32Array([1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1]),
     normal:    new Float32Array([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1]),
@@ -297,10 +306,21 @@ async function main() {
   for (let i = 0; i < numMaterials; ++i) {
     const color = hslToRGBA(rand(), rand(0.5, 0.8), rand(0.5, 0.7));
     const shininess = rand(10, 120);
+    const materialUboInfo = twgl.createUniformBlockInfo(gl, prgInfo, 'MaterialUniforms');
+
+    // Set the data in the typed array views
+    twgl.setBlockUniforms(materialUboInfo, {
+      color,
+      shininess,
+    });
+    // copy the typed array view data to the uniform buffer
+    twgl.setUniformBlock(gl, prgInfo, materialUboInfo);
+
     materials.push({
       color,
       shininess,
       texture: randomArrayElement(textures),
+      materialUboInfo,
     });
   }
 
@@ -319,7 +339,7 @@ async function main() {
       diffuseTexture: randomArrayElement(textures),
     };
 
-    const uboInfo = twgl.createUniformBlockInfo(gl, prgInfo, 'Uniforms');
+    const uboInfo = twgl.createUniformBlockInfo(gl, prgInfo, 'PerObjectUniforms');
 
     objectInfos.push({
       uniforms,
@@ -393,10 +413,16 @@ async function main() {
     const viewMatrix = mat4.inverse(mat4.lookAt(eye, target, up));
 
     // Combine the view and projection matrixes
-    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+    mat4.multiply(projection, viewMatrix, globalUboInfo.uniforms.viewProjection);
+    twgl.setBlockUniforms(globalUboInfo, {
+      lightWorldPosition: [-10, 30, 300],
+      viewWorldPosition: eye,
+    });
+    twgl.setUniformBlock(gl, prgInfo, globalUboInfo);
 
     let mathElapsedTimeMs = 0;
     let currentActiveTexture = -1;
+    let currentMaterialUbo;
     const currentTextures = [];
 
     for (let i = 0; i < settings.numObjects; ++i) {
@@ -414,11 +440,6 @@ async function main() {
       const {
         world,
         normalMatrix,
-        viewProjection,
-        color,
-        lightWorldPosition,
-        viewWorldPosition,
-        shininess,
       } = uboInfo.uniforms;
       const mathTimeStartMs = performance.now();
 
@@ -433,9 +454,13 @@ async function main() {
       // Inverse and transpose it into the normalMatrix value
       mat3.fromMat4(mat4.transpose(mat4.inverse(world)), normalMatrix);
 
-      // const {color, shininess} = material;
-      color.set(material.color);
-      shininess[0] = material.shininess;
+      //twgl.bindUniformBlock(gl, prgInfo, materialUboInfo);
+      const { materialUboInfo } = material;
+      if (currentMaterialUbo !== materialUboInfo) {
+        currentMaterialUbo = materialUboInfo;
+        const blockSpec = prgInfo.uniformBlockSpec.blockSpecs[materialUboInfo.name];
+        gl.bindBufferRange(gl.UNIFORM_BUFFER, blockSpec.index, materialUboInfo.buffer, materialUboInfo.offset, materialUboInfo.size);
+      }
 
       // do this manually since we're doing it manually in WebGPU
       //twgl.setBlockUniforms(uboInfo, {
@@ -447,9 +472,6 @@ async function main() {
       //  viewWorldPosition: eye,
       //  shininess,
       //});
-      viewProjection.set(viewProjectionMatrix);
-      lightWorldPosition.set([-10, 30, 300]);
-      viewWorldPosition.set(eye);
 
       mathElapsedTimeMs += performance.now() - mathTimeStartMs;
 
@@ -457,8 +479,10 @@ async function main() {
       //twgl.setUniformBlock(gl, prgInfo, uboInfo);
       gl.bindBuffer(gl.UNIFORM_BUFFER, uboInfo.buffer);
       gl.bufferSubData(gl.UNIFORM_BUFFER, 0, uboInfo.asUint8, 0, uboInfo.size);
-      const blockSpec = prgInfo.uniformBlockSpec.blockSpecs[uboInfo.name];
-      gl.bindBufferRange(gl.UNIFORM_BUFFER, blockSpec.index, uboInfo.buffer, uboInfo.offset, uboInfo.size);
+      {
+        const blockSpec = prgInfo.uniformBlockSpec.blockSpecs[uboInfo.name];
+        gl.bindBufferRange(gl.UNIFORM_BUFFER, blockSpec.index, uboInfo.buffer, uboInfo.offset, uboInfo.size);
+      }
 
       //twgl.setUniforms(prgInfo, uniforms);
 

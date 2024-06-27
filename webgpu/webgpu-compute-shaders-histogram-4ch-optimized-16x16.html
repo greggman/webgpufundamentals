@@ -116,7 +116,6 @@ async function main() {
     `,
   });
 
-
   const histogramChunkPipeline = device.createComputePipeline({
     label: 'histogram',
     layout: 'auto',
@@ -221,7 +220,6 @@ async function main() {
   }
   console.log('sum:', sum);
 }
-
 
 function showImageBitmap(imageBitmap) {
   const canvas = document.createElement('canvas');
