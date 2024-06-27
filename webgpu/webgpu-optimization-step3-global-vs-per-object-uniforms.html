@@ -105,7 +105,7 @@ function rand(min, max) {
 const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
 
 async function main() {
-  const adapter = await navigator.gpu?.requestAdapter();
+  const adapter = await navigator.gpu?.requestAdapter({powerPreference: 'high-performance'});
   const canTimestamp = adapter.features.has('timestamp-query');
   const device = await adapter?.requestDevice({
     requiredFeatures: [

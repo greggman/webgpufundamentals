@@ -174,7 +174,11 @@ async function main() {
 
   // Get a WebGPU context from the canvas and configure it
   const canvas = document.querySelector('canvas');
-  const gl = canvas.getContext('webgl2');
+  const gl = canvas.getContext('webgl2', {
+    alpha: false,
+    antialias: false,
+    powerPreference: 'high-performance',
+  });
   const timingHelper = new TimingHelper(gl);
 
   const uniformBlock = `
