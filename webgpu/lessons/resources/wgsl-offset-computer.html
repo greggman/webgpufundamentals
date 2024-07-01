@@ -247,6 +247,7 @@
                     </div>
                     <div>
                       <label><input id="bindGroupLayouts" type="checkbox" value="bindGroupLayouts" checked>show bindGroupLayouts</label>
+                      <label><input id="bindGroupLayoutDefaults" type="checkbox" value="bindGroupLayoutDefaults" checked>show defaults</label>
                     </div>
                     <div>
                       <button type="button" id="process">Process</button>
@@ -411,6 +412,7 @@ const structsElem = document.querySelector('#structs');
 const flattenElem = document.querySelector('#flatten');
 const numElementsElem = document.querySelector('#numElements');
 const bindGroupLayoutsElem = document.querySelector('#bindGroupLayouts');
+const bindGroupLayoutDefaultsElem = document.querySelector('#bindGroupLayoutDefaults');
 const helpElem = document.querySelector('#help');
 const docsElem = document.querySelector('#docs');
 const globals = {};
@@ -460,6 +462,7 @@ function makeHex(code) {
       flatten: flattenElem.checked,
       numElements: numElementsElem.value,
       bindGroupLayouts: bindGroupLayoutsElem.checked,
+      bindGroupLayoutsElem: bindGroupLayoutDefaultsElem.checked,
     });
     compressor.compress(save, 1, function(bytes) {
       const hex = convertBytesToHex(bytes);
@@ -515,6 +518,8 @@ async function updateResults(code, style) {
           const js = makeBindGroupLayoutDescriptorsJS(defs, {
             vertex: { entryPoint: vsEntryPoints[0].name },
             fragment: { entryPoint: fsEntryPoints[0].name },
+          }, {
+            keepDefaults: bindGroupLayoutDefaultsElem.checked,
           });
           epLines.push(`const bindGroupLayoutDescriptors = ${js};`);
         } else {
@@ -531,6 +536,8 @@ async function updateResults(code, style) {
       for (const {name} of csEntryPoints) {
         const js = makeBindGroupLayoutDescriptorsJS(defs, {
           compute: { entryPoint: name },
+        }, {
+          keepDefaults: bindGroupLayoutDefaultsElem.checked,
         });
         epLines.push(`const ${name}BindGroupLayoutDescriptors = ${js};`);
       }
@@ -600,6 +607,7 @@ async function main(editor) {
               styleElem.checked = true;
             }
             bindGroupLayoutsElem.checked = !(data.bindGroupLayouts === false);
+            bindGroupLayoutDefaultsElem.checked = !(data.bindGroupLayoutDefaults === false);
             editor.setValue(data.x);
             resolve();
           },

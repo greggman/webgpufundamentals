@@ -369,8 +369,64 @@ return (key === 'visibility')
     : value;
 }
 
-function bindGroupLayoutDescriptorsToString(bindGroupLayoutDescriptors) {
-return JSON.stringify(bindGroupLayoutDescriptors, stringifyBindGroupLayoutDescriptor, 2)
+const bindingEntryDefaults = {
+  buffer: {
+    type: 'uniform',
+    hasDynamicOffset: false,
+    minBindingSize: 0,
+  },
+  sampler: {
+    type: 'filtering',
+  },
+  texture: {
+    sampleType: 'float',
+    viewDimension: '2d',
+    multisampled: false,
+  },
+  storageTexture: {
+    access: 'write-only',
+    viewDimension: '2d',
+  },
+  externalTexture: {},
+};
+
+function removeDefaultsFromBindGroupLayoutEntry(entry) {
+  return Object.fromEntries(Object.entries(entry).map(([k, v]) => {
+    const defaults = bindingEntryDefaults[k];
+    if (defaults) {
+      v = Object.fromEntries(Object.entries(v).filter(([k, v]) => v !== defaults[k]));
+    }
+    return [k, v];
+  }));
+}
+
+function removeDefaults(bindGroupLayoutDescriptor) {
+  return {
+    ...bindGroupLayoutDescriptor,
+    entries: bindGroupLayoutDescriptor.entries.map(removeDefaultsFromBindGroupLayoutEntry),
+  };
+}
+
+function addDefaultsFromBindGroupLayoutEntry(entry) {
+  return Object.fromEntries(Object.entries(entry).map(([k, v]) => {
+    const defaults = bindingEntryDefaults[k];
+    if (defaults) {
+      v = { ...defaults, ...v };
+    }
+    return [k, v];
+  }));
+}
+
+function addDefaults(bindGroupLayoutDescriptor) {
+  return {
+    ...bindGroupLayoutDescriptor,
+    entries: bindGroupLayoutDescriptor.entries.map(addDefaultsFromBindGroupLayoutEntry),
+  };
+}
+
+function bindGroupLayoutDescriptorsToString(bindGroupLayoutDescriptors, options) {
+  const noDefaultsBindGroupLayoutDescriptors = bindGroupLayoutDescriptors.map(options.keepDefaults ? addDefaults : removeDefaults);
+  return JSON.stringify(noDefaultsBindGroupLayoutDescriptors, stringifyBindGroupLayoutDescriptor, 2)
     .replace(/"(\w+)":/g, '$1:')                  // "key": value -> key: value
     .replace(/(}|\]|"|\d|\w)\n/g, '$1,\n')        // add trailing commas
     .replace(/"(GPUS.*?)"/g, '$1')                // remove quotes from GPUShaderStage
@@ -380,6 +436,7 @@ return JSON.stringify(bindGroupLayoutDescriptors, stringifyBindGroupLayoutDescri
 export function makeBindGroupLayoutDescriptorsJS(
     defs/*: ShaderDataDefinitions | ShaderDataDefinitions[]*/,
     desc/*: PipelineDescriptor*/,
+    options = {},
 ) {
-  return bindGroupLayoutDescriptorsToString(makeBindGroupLayoutDescriptors(defs, desc));
+  return bindGroupLayoutDescriptorsToString(makeBindGroupLayoutDescriptors(defs, desc), options);
 }
