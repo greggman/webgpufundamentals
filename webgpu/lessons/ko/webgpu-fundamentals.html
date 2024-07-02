@@ -270,7 +270,7 @@ C++과 같은 프로그래밍 언어를 배우는 것과 비슷합니다. 기본
 정점 셰이더(Vertex Shader), 프래그먼트 셰이더(Fragment Shader), 컴퓨트 셰이더(Compute Shader) 말입니다.</p>
 <p>정점 셰이더는 정점을 계산합니다. 결과로 정점의 위치를 반환해 줍니다.
 3개 정점으로 이루어진 그룹마다 그 3개의 위치를 기반으로 한 삼각형이 그려집니다. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>정점 셰이더는 색상값을 계산합니다<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.
+<p>프래그먼트 셰이더는 색상값을 계산합니다<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.
 삼각형이 그려지면, 그려질 각 픽셀마다 GPU는 프래그먼트 셰이더를 호출(call)합니다.
 그리고 프래그먼트 셰이더는 색상을 반환합니다.</p>
 <p>컴퓨트 셰이더는 보다 일반적입니다. 이는 말하자면 "이 함수를 N번 실행해"라고 하는 것과 비슷합니다.
@@ -760,7 +760,7 @@ WebGPU를 위해서는 GPU에 상주하는 버퍼를 만들고 데이터를 그 
 </pre>
 <p><code class="notranslate" translate="no">MAP_READ</code>는 이 버퍼의 값을 읽기 위해 맵핑이 가능하도록 하겠다는 의미입니다.</p>
 <p>셰이더에 버퍼의 존재를 알려주기 위해서는 바인드그룹을 만들어야 합니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 셰산을 위해 어떤 버퍼를 사용해야 할지 알려주기 위해 바인드그룹을 설정함
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 계산을 위해 어떤 버퍼를 사용해야 할지 알려주기 위해 바인드그룹을 설정함
   const bindGroup = device.createBindGroup({
     label: 'bindGroup for work buffer',
     layout: pipeline.getBindGroupLayout(0),

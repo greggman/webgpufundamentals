@@ -1816,6 +1816,12 @@ object’s bind group.</p>
       pass.drawIndexed(numVertices);
     }
 </pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-optimization-step4-material-uniforms.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-optimization-step4-material-uniforms.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
 <h1 id="optimization-use-one-large-uniform-buffer-with-buffer-offsets">Optimization: Use One large Uniform Buffer with buffer offsets</h1>
 <p>Right now, each object has it’s own uniform buffer. At render time, for each
 object, we update a typed array with the uniform values for that object and then
