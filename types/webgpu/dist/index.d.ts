@@ -79,6 +79,8 @@ type GPUFlagsConstant =
 type GPUImageCopyExternalImageSource =
 
     | ImageBitmap
+    | ImageData
+    | HTMLImageElement
     | HTMLVideoElement
     | VideoFrame
     | HTMLCanvasElement
@@ -140,7 +142,11 @@ type GPUBlendFactor =
     | "one-minus-dst-alpha"
     | "src-alpha-saturated"
     | "constant"
-    | "one-minus-constant";
+    | "one-minus-constant"
+    | "src1"
+    | "one-minus-src1"
+    | "src1-alpha"
+    | "one-minus-src1-alpha";
 type GPUBlendOperation =
 
     | "add"
@@ -203,7 +209,9 @@ type GPUFeatureName =
     | "shader-f16"
     | "rg11b10ufloat-renderable"
     | "bgra8unorm-storage"
-    | "float32-filterable";
+    | "float32-filterable"
+    | "clip-distances"
+    | "dual-source-blending";
 type GPUFilterMode =
 
     | "nearest"
@@ -259,7 +267,10 @@ type GPUStencilOperation =
     | "increment-wrap"
     | "decrement-wrap";
 type GPUStorageTextureAccess =
-  "write-only";
+
+    | "write-only"
+    | "read-only"
+    | "read-write";
 type GPUStoreOp =
 
     | "store"
@@ -301,6 +312,7 @@ type GPUTextureFormat =
     | "bgra8unorm"
     | "bgra8unorm-srgb"
     | "rgb9e5ufloat"
+    | "rgb10a2uint"
     | "rgb10a2unorm"
     | "rg11b10ufloat"
     | "rg32uint"
@@ -416,7 +428,8 @@ type GPUVertexFormat =
     | "sint32"
     | "sint32x2"
     | "sint32x3"
-    | "sint32x4";
+    | "sint32x4"
+    | "unorm10-10-10-2";
 type GPUVertexStepMode =
 
     | "vertex"
@@ -451,6 +464,9 @@ interface GPUBindGroupEntry {
 
 interface GPUBindGroupLayoutDescriptor
   extends GPUObjectDescriptorBase {
+  /**
+   * A list of entries describing the shader resource bindings for a bind group.
+   */
   entries: Iterable<GPUBindGroupLayoutEntry>;
 }
 
@@ -712,12 +728,12 @@ interface GPUDepthStencilState {
    * Indicates if this {@link GPURenderPipeline} can modify
    * {@link GPURenderPassDescriptor#depthStencilAttachment} depth values.
    */
-  depthWriteEnabled: boolean;
+  depthWriteEnabled?: boolean;
   /**
    * The comparison operation used to test fragment depths against
    * {@link GPURenderPassDescriptor#depthStencilAttachment} depth values.
    */
-  depthCompare: GPUCompareFunction;
+  depthCompare?: GPUCompareFunction;
   /**
    * Defines how stencil comparisons and operations are performed for front-facing primitives.
    */
@@ -802,9 +818,16 @@ interface GPUExternalTextureBindingLayout {}
 
 interface GPUExternalTextureDescriptor
   extends GPUObjectDescriptorBase {
+  /**
+   * The video source to import the external texture from.
+   */
   source:
     | HTMLVideoElement
     | VideoFrame;
+  /**
+   * The color space the image contents of {@link GPUExternalTextureDescriptor#source} will be
+   * converted into when reading.
+   */
   colorSpace?: PredefinedColorSpace;
 }
 
@@ -831,35 +854,46 @@ interface GPUImageCopyExternalImage {
    * The source of the image copy. The copy source data is captured at the moment that
    * {@link GPUQueue#copyExternalImageToTexture} is issued. Source size is defined by source
    * type, given by this table:
-   *
    * <table class=data>
    * <thead>
    * <tr>
    * <th>Source type
-   * <th>Width
-   * <th>Height
+   * <th>Dimensions
    * </thead>
    * <tbody>
    * <tr>
    * <td>{@link ImageBitmap}
-   * <td>{@link ImageBitmap#width|ImageBitmap.width}
-   * <td>{@link ImageBitmap#height|ImageBitmap.height}
+   * <td>{@link ImageBitmap#width|ImageBitmap.width},
+   * {@link ImageBitmap#height|ImageBitmap.height}
+   * <tr>
+   * <td>{@link HTMLImageElement}
+   * <td>{@link HTMLImageElement#naturalWidth|HTMLImageElement.naturalWidth},
+   * {@link HTMLImageElement#naturalHeight|HTMLImageElement.naturalHeight}
    * <tr>
    * <td>{@link HTMLVideoElement}
-   * <td>video/intrinsic width|intrinsic width of the frame
-   * <td>video/intrinsic height|intrinsic height of the frame
+   * <td>video/intrinsic width|intrinsic width of the frame,
+   * video/intrinsic height|intrinsic height of the frame
    * <tr>
    * <td>{@link VideoFrame}
-   * <td>{@link VideoFrame#codedWidth|VideoFrame.codedWidth}
-   * <td>{@link VideoFrame#codedHeight|VideoFrame.codedHeight}
+   * <td>{@link VideoFrame#codedWidth|VideoFrame.codedWidth},
+   * {@link VideoFrame#codedHeight|VideoFrame.codedHeight}
    * <tr>
-   * <td>{@link HTMLCanvasElement}
-   * <td>{@link HTMLCanvasElement#width|HTMLCanvasElement.width}
-   * <td>{@link HTMLCanvasElement#height|HTMLCanvasElement.height}
+   * <td>{@link ImageData}
+   * <td>{@link ImageData#width|ImageData.width},
+   * {@link ImageData#height|ImageData.height}
    * <tr>
-   * <td>{@link OffscreenCanvas}
-   * <td>{@link OffscreenCanvas#width|OffscreenCanvas.width}
-   * <td>{@link OffscreenCanvas#height|OffscreenCanvas.height}
+   * <td>{@link HTMLCanvasElement} or {@link OffscreenCanvas} with {@link CanvasRenderingContext2D} or {@link GPUCanvasContext}
+   * <td>{@link HTMLCanvasElement#width|HTMLCanvasElement.width},
+   * {@link HTMLCanvasElement#height|HTMLCanvasElement.height}
+   * <tr>
+   * <td>{@link HTMLCanvasElement} or {@link OffscreenCanvas} with {@link WebGLRenderingContextBase}
+   * <td>{@link WebGLRenderingContextBase#drawingBufferWidth|WebGLRenderingContextBase.drawingBufferWidth},
+   * {@link WebGLRenderingContextBase#drawingBufferHeight|WebGLRenderingContextBase.drawingBufferHeight}
+   * <tr>
+   * <td>{@link HTMLCanvasElement} or {@link OffscreenCanvas} with {@link ImageBitmapRenderingContext}
+   * <td>{@link ImageBitmapRenderingContext}'s internal output bitmap
+   * {@link ImageBitmap#width|ImageBitmap.width},
+   * {@link ImageBitmap#height|ImageBitmap.height}
    * </tbody>
    * </table>
    */
@@ -932,15 +966,18 @@ interface GPUImageDataLayout {
    */
   offset?: GPUSize64;
   /**
-   * The stride, in bytes, between the beginning of each block row and the subsequent block row.
-   * Required if there are multiple block rows (i.e. the copy height or depth is more than one block).
+   * The stride, in bytes, between the beginning of each texel block row and the subsequent
+   * texel block row.
+   * Required if there are multiple texel block rows (i.e. the copy height or depth is more
+   * than one block).
    */
   bytesPerRow?: GPUSize32;
   /**
-   * Number of block rows per single image of the texture.
+   * Number of texel block rows per single texel image of the texture.
    * {@link GPUImageDataLayout#rowsPerImage} &times;
-   * {@link GPUImageDataLayout#bytesPerRow} is the stride, in bytes, between the beginning of each image of data and the subsequent image.
-   * Required if there are multiple images (i.e. the copy depth is more than one).
+   * {@link GPUImageDataLayout#bytesPerRow} is the stride, in bytes, between the beginning of each
+   * texel image of data and the subsequent texel image.
+   * Required if there are multiple texel images (i.e. the copy depth is more than one).
    */
   rowsPerImage?: GPUSize32;
 }
@@ -1052,16 +1089,23 @@ interface GPUProgrammableStage {
   /**
    * The name of the function in {@link GPUProgrammableStage#module} that this stage will use to
    * perform its work.
+   * NOTE: Since the {@link GPUProgrammableStage#entryPoint} dictionary member is
+   * not required, methods which consume a {@link GPUProgrammableStage} must use the
+   * "[$get the entry point$]" algorithm to determine which entry point
+   * it refers to.
    */
-  entryPoint: string;
+  entryPoint?: string;
   /**
    * Specifies the values of pipeline-overridable constants in the shader module
    * {@link GPUProgrammableStage#module}.
    * Each such pipeline-overridable constant is uniquely identified by a single
-   * pipeline-overridable constant identifier string (representing the numeric ID of the
-   * constant, if one is specified, and otherwise the constant's identifier name).
-   * WGSL names (identifiers) in source maps follow the rules defined in WGSL identifier comparison.
-   * The key of each key-value pair must equal the identifier string of one such constant.
+   * pipeline-overridable constant identifier string, representing the pipeline
+   * constant ID of the constant if its declaration specifies one, and otherwise the
+   * constant's identifier name.
+   * The key of each key-value pair must equal the
+   * pipeline-overridable constant identifier string|identifier string
+   * of one such constant, with the comparison performed
+   * according to the rules for WGSL identifier comparison.
    * When the pipeline is executed, that constant will have the specified value.
    * Values are specified as <dfn typedef for="">GPUPipelineConstantValue</dfn>, which is a {@link double}.
    * They are converted [$to WGSL type$] of the pipeline-overridable constant (`bool`/`i32`/`u32`/`f32`/`f16`).
@@ -1112,6 +1156,11 @@ interface GPURenderPassColorAttachment {
    * color attachment.
    */
   view: GPUTextureView;
+  /**
+   * Indicates the depth slice index of {@link GPUTextureViewDimension#"3d"} {@link GPURenderPassColorAttachment#view}
+   * that will be output to for this color attachment.
+   */
+  depthSlice?: GPUIntegerCoordinate;
   /**
    * A {@link GPUTextureView} describing the texture subresource that will receive the resolved
    * output for this color attachment if {@link GPURenderPassColorAttachment#view} is
@@ -1174,7 +1223,7 @@ interface GPURenderPassDepthStencilAttachment {
    * to prior to executing the render pass. Ignored if {@link GPURenderPassDepthStencilAttachment#stencilLoadOp}
    * is not {@link GPULoadOp#"clear"}.
    * The value will be converted to the type of the stencil aspect of `view` by taking the same
-   * number of LSBs as the number of bits in the stencil aspect of one texel block of `view`.
+   * number of LSBs as the number of bits in the stencil aspect of one texel block|texel of `view`.
    */
   stencilClearValue?: GPUStencilValue;
   /**
@@ -1369,15 +1418,23 @@ interface GPUSamplerDescriptor
    */
   compare?: GPUCompareFunction;
   /**
-   * Specifies the maximum anisotropy value clamp used by the sampler.
-   * Note: Most implementations support {@link GPUSamplerDescriptor#maxAnisotropy} values in range
-   * between 1 and 16, inclusive. The used value of {@link GPUSamplerDescriptor#maxAnisotropy} will
-   * be clamped to the maximum value that the platform supports.
+   * Specifies the maximum anisotropy value clamp used by the sampler. Anisotropic filtering is
+   * enabled when {@link GPUSamplerDescriptor#maxAnisotropy} is &gt; 1 and the implementation supports it.
+   * Anisotropic filtering improves the image quality of textures sampled at oblique viewing
+   * angles. Higher {@link GPUSamplerDescriptor#maxAnisotropy} values indicate the maximum ratio of
+   * anisotropy supported when filtering.
+   * <div class=note heading>
+   * Most implementations support {@link GPUSamplerDescriptor#maxAnisotropy} values in range
+   * between 1 and 16, inclusive. The used value of {@link GPUSamplerDescriptor#maxAnisotropy}
+   * will be clamped to the maximum value that the platform supports.
+   * The precise filtering behavior is implementation-dependent.
+   * </div>
    */
   maxAnisotropy?: number;
 }
 
 interface GPUShaderModuleCompilationHint {
+  entryPoint: string;
   /**
    * A {@link GPUPipelineLayout} that the {@link GPUShaderModule} may be used with in a future
    * {@link GPUDevice#createComputePipeline()} or {@link GPUDevice#createRenderPipeline} call.
@@ -1397,31 +1454,43 @@ interface GPUShaderModuleDescriptor
    */
   code: string;
   /**
-   * If defined MAY be interpreted as a source-map-v3 format.
-   * Source maps are optional, but serve as a standardized way to support dev-tool
-   * integration such as source-language debugging [[SourceMap]].
+   * If defined, **may** be interpreted in the [[!SourceMap]] v3 format.
+   * If an implementation supports this option but is unable to process the provided value,
+   * it should show a developer-visible warning but must not produce any application-observable
+   * error.
+   * Note:
+   * Source map support is optional, but serves as a semi-standardized way to support dev-tool
+   * integration such as source-language debugging.
    * WGSL names (identifiers) in source maps follow the rules defined in WGSL identifier
    * comparison.
    */
-  sourceMap?: object;
+  sourceMap?: any;
   /**
-   * If defined maps an entry point name from the shader to a {@link GPUShaderModuleCompilationHint}.
-   * No validation is performed with any of these {@link GPUShaderModuleCompilationHint}.
-   * Implementations should use any information present in the {@link GPUShaderModuleCompilationHint}
+   * A list of {@link GPUShaderModuleCompilationHint}s.
+   * Any hint provided by an application **should** contain information about one entry point of
+   * a pipeline that will eventually be created from the entry point.
+   * Implementations **should** use any information present in the {@link GPUShaderModuleCompilationHint}
    * to perform as much compilation as is possible within {@link GPUDevice#createShaderModule}.
-   * Entry point names follow the rules defined in WGSL identifier comparison.
-   * Note: Supplying information in {@link GPUShaderModuleDescriptor#hints} does not have any
-   * observable effect, other than performance. Because a single shader module can hold
-   * multiple entry points, and multiple pipelines can be created from a single shader
-   * module, it can be more performant for an implementation to do as much compilation as
-   * possible once in {@link GPUDevice#createShaderModule} rather than multiple times in
-   * the multiple calls to {@link GPUDevice#createComputePipeline} /
-   * {@link GPUDevice#createRenderPipeline}.
+   * Aside from type-checking, these hints are not validated in any way.
+   * <div class=note heading>
+   * Supplying information in {@link GPUShaderModuleDescriptor#compilationHints} does not have any
+   * observable effect, other than performance. It may be detrimental to performance to
+   * provide hints for pipelines that never end up being created.
+   * Because a single shader module can hold multiple entry points, and multiple pipelines
+   * can be created from a single shader module, it can be more performant for an
+   * implementation to do as much compilation as possible once in
+   * {@link GPUDevice#createShaderModule} rather than multiple times in the multiple calls to
+   * {@link GPUDevice#createComputePipeline()} or {@link GPUDevice#createRenderPipeline}.
+   * Hints are only applied to the entry points they explicitly name.
+   * Unlike {@link GPUProgrammableStage#entryPoint|GPUProgrammableStage.entryPoint},
+   * there is no default, even if only one entry point is present in the module.
+   * </div>
+   * Note:
+   * Hints are not validated in an observable way, but user agents **may** surface identifiable
+   * errors (like unknown entry point names or incompatible pipeline layouts) to developers,
+   * for example in the browser developer console.
    */
-  hints?: Record<
-    string,
-    GPUShaderModuleCompilationHint
-  >;
+  compilationHints?: Array<GPUShaderModuleCompilationHint>;
 }
 
 interface GPUStencilFaceState {
@@ -1450,9 +1519,6 @@ interface GPUStencilFaceState {
 interface GPUStorageTextureBindingLayout {
   /**
    * The access mode for this binding, indicating readability and writability.
-   * Note:
-   * There is currently only one access mode, {@link GPUStorageTextureAccess#"write-only"},
-   * but this will expand in the future.
    */
   access?: GPUStorageTextureAccess;
   /**
@@ -1513,8 +1579,7 @@ interface GPUTextureDescriptor
    * Specifies what view {@link GPUTextureViewDescriptor#format} values will be allowed when calling
    * {@link GPUTexture#createView} on this texture (in addition to the texture's actual
    * {@link GPUTextureDescriptor#format}).
-   * <div class=note>
-   * Note:
+   * <div class=note heading>
    * Adding a format to this list may have a significant performance impact, so it is best
    * to avoid adding formats unnecessarily.
    * The actual performance impact is highly dependent on the target system; developers must
@@ -1526,7 +1591,7 @@ interface GPUTextureDescriptor
    * Similar caveats exist for other formats and pairs of formats on other systems.
    * </div>
    * Formats in this list must be texture view format compatible with the texture format.
-   * <div algorithm>
+   * <div algorithm data-timeline=const>
    * Two {@link GPUTextureFormat}s `format` and `viewFormat` are <dfn dfn for="">texture view format compatible</dfn> if:
    * - `format` equals `viewFormat`, or
    * - `format` and `viewFormat` differ only in whether they are `srgb` formats (have the `-srgb` suffix).
@@ -1843,30 +1908,34 @@ interface GPUAdapter {
    */
   readonly limits: GPUSupportedLimits;
   /**
+   * Information about the physical adapter underlying this {@link GPUAdapter}.
+   * For a given {@link GPUAdapter}, the {@link GPUAdapterInfo} values exposed are constant over time.
+   * The same object is returned each time. To create that object for the first time:
+   * <div algorithm=GPUAdapter.info>
+   * <div data-timeline=content>
+   * **Called on:** {@link GPUAdapter} `this`.
+   * **Returns:** {@link GPUAdapterInfo}
+   * Content timeline steps:
+   * 1. Return a [$new adapter info$] for `this.adapter`.
+   * </div>
+   * </div>
+   */
+  readonly info: GPUAdapterInfo;
+  /**
    * Returns the value of {@link GPUAdapter#[[adapter]]}.{@link adapter#[[fallback]]}.
    */
   readonly isFallbackAdapter: boolean;
   /**
    * Requests a device from the adapter.
    * This is a one-time action: if a device is returned successfully,
-   * the adapter becomes invalid.
+   * the adapter [$expires$].
    * @param descriptor - Description of the {@link GPUDevice} to request.
    */
   requestDevice(
     descriptor?: GPUDeviceDescriptor
   ): Promise<GPUDevice>;
-  /**
-   * Requests the {@link GPUAdapterInfo} for this {@link GPUAdapter}.
-   * Note: Adapter info values are returned with a Promise to give user agents an
-   * opportunity to perform potentially long-running checks when requesting unmasked values,
-   * such as asking for user consent before returning. If no `unmaskHints` are specified,
-   * however, no dialogs should be displayed to the user.
-   * @param unmaskHints - A list of {@link GPUAdapterInfo} attribute names for which unmasked
-   * 	values are desired if available.
-   */
-  requestAdapterInfo(
-    unmaskHints?: Array<string>
-  ): Promise<GPUAdapterInfo>;
+  /** @deprecated Use `adapter.info` instead (once available in browsers). */
+  requestAdapterInfo(): Promise<GPUAdapterInfo>;
 }
 
 declare var GPUAdapter: {
@@ -1910,6 +1979,7 @@ interface GPUAdapterInfo {
 
 declare var GPUAdapterInfo: {
   prototype: GPUAdapterInfo;
+  new (): never;
 };
 
 interface GPUBindGroup
@@ -2074,10 +2144,6 @@ interface GPUCommandEncoder
   beginRenderPass(
     descriptor: GPURenderPassDescriptor
   ): GPURenderPassEncoder;
-  /**
-   * Begins encoding a compute pass described by `descriptor`.
-   * 	descriptor:
-   */
   beginComputePass(
     descriptor?: GPUComputePassDescriptor
   ): GPUComputePassEncoder;
@@ -2147,17 +2213,6 @@ interface GPUCommandEncoder
     size?: GPUSize64
   ): undefined;
   /**
-   * Writes a timestamp value into a querySet when all previous commands have completed executing.
-   * Note: Timestamp query values are written in nanoseconds, but how the value is determined is
-   * implementation-defined and may not increase monotonically. See [[#timestamp]] for details.
-   * @param querySet - The query set that will store the timestamp values.
-   * @param queryIndex - The index of the query in the query set.
-   */
-  writeTimestamp(
-    querySet: GPUQuerySet,
-    queryIndex: GPUSize32
-  ): undefined;
-  /**
    * Resolves query results from a {@link GPUQuerySet} out into a range of a {@link GPUBuffer}.
    * 	querySet:
    * 	firstQuery:
@@ -2213,7 +2268,7 @@ interface GPUCompilationMessage {
    * Note: The {@link GPUCompilationMessage#message} should follow the best practices for language
    * and direction information. This includes making use of any future standards which may
    * emerge regarding the reporting of string language and direction metadata.
-   * <p class="note editorial">Editorial:
+   * <p class="note editorial"><span class=marker>Editorial note:</span>
    * At the time of this writing, no language/direction recommendation is available that provides
    * compatibility and consistency with legacy APIs, but when there is, adopt it formally.
    */
@@ -2543,7 +2598,7 @@ interface GPUError {
    * Note: The {@link GPUError#message} should follow the best practices for language and
    * direction information. This includes making use of any future standards which may emerge
    * regarding the reporting of string language and direction metadata.
-   * <p class="note editorial">Editorial:
+   * <p class="note editorial"><span class=marker>Editorial note:</span>
    * At the time of this writing, no language/direction recommendation is available that provides
    * compatibility and consistency with legacy APIs, but when there is, adopt it formally.
    */
@@ -3117,27 +3172,7 @@ interface Navigator
 interface WorkerNavigator
   extends NavigatorGPU {}
 
-interface GPUBufferUsage {
-  /**
-   * Nominal type branding.
-   * https://github.com/microsoft/TypeScript/pull/33038
-   * @internal
-   */
-  readonly __brand: "GPUBufferUsage";
-  readonly MAP_READ: GPUFlagsConstant;
-  readonly MAP_WRITE: GPUFlagsConstant;
-  readonly COPY_SRC: GPUFlagsConstant;
-  readonly COPY_DST: GPUFlagsConstant;
-  readonly INDEX: GPUFlagsConstant;
-  readonly VERTEX: GPUFlagsConstant;
-  readonly UNIFORM: GPUFlagsConstant;
-  readonly STORAGE: GPUFlagsConstant;
-  readonly INDIRECT: GPUFlagsConstant;
-  readonly QUERY_RESOLVE: GPUFlagsConstant;
-}
-
 declare var GPUBufferUsage: {
-  prototype: GPUBufferUsage;
   readonly MAP_READ: GPUFlagsConstant;
   readonly MAP_WRITE: GPUFlagsConstant;
   readonly COPY_SRC: GPUFlagsConstant;
@@ -3149,23 +3184,8 @@ declare var GPUBufferUsage: {
   readonly INDIRECT: GPUFlagsConstant;
   readonly QUERY_RESOLVE: GPUFlagsConstant;
 };
-
-interface GPUColorWrite {
-  /**
-   * Nominal type branding.
-   * https://github.com/microsoft/TypeScript/pull/33038
-   * @internal
-   */
-  readonly __brand: "GPUColorWrite";
-  readonly RED: GPUFlagsConstant;
-  readonly GREEN: GPUFlagsConstant;
-  readonly BLUE: GPUFlagsConstant;
-  readonly ALPHA: GPUFlagsConstant;
-  readonly ALL: GPUFlagsConstant;
-}
 
 declare var GPUColorWrite: {
-  prototype: GPUColorWrite;
   readonly RED: GPUFlagsConstant;
   readonly GREEN: GPUFlagsConstant;
   readonly BLUE: GPUFlagsConstant;
@@ -3173,59 +3193,18 @@ declare var GPUColorWrite: {
   readonly ALL: GPUFlagsConstant;
 };
 
-interface GPUMapMode {
-  /**
-   * Nominal type branding.
-   * https://github.com/microsoft/TypeScript/pull/33038
-   * @internal
-   */
-  readonly __brand: "GPUMapMode";
-  readonly READ: GPUFlagsConstant;
-  readonly WRITE: GPUFlagsConstant;
-}
-
 declare var GPUMapMode: {
-  prototype: GPUMapMode;
-  new (): never;
   readonly READ: GPUFlagsConstant;
   readonly WRITE: GPUFlagsConstant;
 };
-
-interface GPUShaderStage {
-  /**
-   * Nominal type branding.
-   * https://github.com/microsoft/TypeScript/pull/33038
-   * @internal
-   */
-  readonly __brand: "GPUShaderStage";
-  readonly VERTEX: GPUFlagsConstant;
-  readonly FRAGMENT: GPUFlagsConstant;
-  readonly COMPUTE: GPUFlagsConstant;
-}
 
 declare var GPUShaderStage: {
-  prototype: GPUShaderStage;
   readonly VERTEX: GPUFlagsConstant;
   readonly FRAGMENT: GPUFlagsConstant;
   readonly COMPUTE: GPUFlagsConstant;
 };
 
-interface GPUTextureUsage {
-  /**
-   * Nominal type branding.
-   * https://github.com/microsoft/TypeScript/pull/33038
-   * @internal
-   */
-  readonly __brand: "GPUTextureUsage";
-  readonly COPY_SRC: GPUFlagsConstant;
-  readonly COPY_DST: GPUFlagsConstant;
-  readonly TEXTURE_BINDING: GPUFlagsConstant;
-  readonly STORAGE_BINDING: GPUFlagsConstant;
-  readonly RENDER_ATTACHMENT: GPUFlagsConstant;
-}
-
 declare var GPUTextureUsage: {
-  prototype: GPUTextureUsage;
   readonly COPY_SRC: GPUFlagsConstant;
   readonly COPY_DST: GPUFlagsConstant;
   readonly TEXTURE_BINDING: GPUFlagsConstant;

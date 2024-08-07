@@ -124,7 +124,7 @@ async function main() {
 
       @fragment fn fs(vsOut: VSOutput) -> @location(0) vec4f {
         let t = uni.viewDirectionProjectionInverse * vsOut.pos;
-        return textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(-1, 1, 1));
+        return textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(1, 1, -1));
       }
     `,
   });
@@ -183,7 +183,7 @@ async function main() {
         let eyeToSurfaceDir = normalize(vsOut.worldPosition - uni.cameraPosition);
         let direction = reflect(eyeToSurfaceDir, worldNormal);
 
-        return textureSample(ourTexture, ourSampler, direction * vec3f(-1, 1, 1));
+        return textureSample(ourTexture, ourSampler, direction * vec3f(1, 1, -1));
       }
     `,
   });

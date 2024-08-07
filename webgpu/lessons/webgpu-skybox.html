@@ -297,10 +297,10 @@ happens to <code class="notranslate" translate="no">@builtin(position)</code> in
 ourselves.</p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
   let t = uni.viewDirectionProjectionInverse * vsOut.pos;
-  return textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(-1, 1, 1));
+  return textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(1, 1, -1));
 }
 </pre>
-<p>Note: We multiply the x direction by -1 for
+<p>Note: We multiply the z direction by -1 for
 <a href="webgpu-environment-maps.html#a-flipped">the reasons we covered in the previous article</a>.</p>
 <p>The pipeline has no buffers in the vertex stage</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
