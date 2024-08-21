@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id/>
     <title>WebGPU 理论基础</title>
-    <updated>2024-08-21T02:41:07.000Z</updated>
+    <updated>2024-08-21T03:22:46.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <author>
         <name>webgpufundamentals Contributors</name>
@@ -15,77 +15,77 @@
         <title type="html"><![CDATA[WebGPU 基础]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-fundamentals.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-fundamentals.html"/>
-        <updated>2024-08-21T02:41:07.000Z</updated>
+        <updated>2024-08-21T03:22:46.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T02:41:07.000Z</published>
+        <published>2024-08-21T03:22:46.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Inter-stage 变量]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html"/>
-        <updated>2024-08-21T02:41:07.000Z</updated>
+        <updated>2024-08-21T03:22:46.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T02:41:07.000Z</published>
+        <published>2024-08-21T03:22:46.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 数据内存布局]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-memory-layout.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-memory-layout.html"/>
-        <updated>2024-08-21T02:41:07.000Z</updated>
+        <updated>2024-08-21T03:22:46.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T02:41:07.000Z</published>
+        <published>2024-08-21T03:22:46.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 存储缓冲区(Storage Buffer)]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-storage-buffers.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-storage-buffers.html"/>
-        <updated>2024-08-21T02:41:07.000Z</updated>
+        <updated>2024-08-21T03:22:46.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T02:41:07.000Z</published>
+        <published>2024-08-21T03:22:46.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Textures]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-textures.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-textures.html"/>
-        <updated>2024-08-21T02:41:07.000Z</updated>
+        <updated>2024-08-21T03:22:46.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T02:41:07.000Z</published>
+        <published>2024-08-21T03:22:46.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Uniforms]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-uniforms.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-uniforms.html"/>
-        <updated>2024-08-21T02:41:07.000Z</updated>
+        <updated>2024-08-21T03:22:46.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T02:41:07.000Z</published>
+        <published>2024-08-21T03:22:46.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 顶点缓冲区（Vertex Buffers）]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html"/>
-        <updated>2024-08-21T02:41:07.000Z</updated>
+        <updated>2024-08-21T03:22:46.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T02:41:07.000Z</published>
+        <published>2024-08-21T03:22:46.000Z</published>
     </entry>
 </feed>
