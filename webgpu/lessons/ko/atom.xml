@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id/>
     <title>WebGPU 기초</title>
-    <updated>2024-08-21T03:23:50.000Z</updated>
+    <updated>2024-08-21T03:24:24.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <author>
         <name>webgpufundamentals Contributors</name>
@@ -15,187 +15,187 @@
         <title type="html"><![CDATA[WebGPU 컴퓨트 셰이더 기초]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-compute-shaders.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-compute-shaders.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 셰이더 상수(Constants)]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-constants.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-constants.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 데이터 복사하기]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-copying-data.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-copying-data.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 큐브맵]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-cube-maps.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-cube-maps.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 기초]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-fundamentals.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-fundamentals.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 동작 방식]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-how-it-works.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-how-it-works.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 이미지를 텍스처로 로딩하기]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-importing-textures.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-importing-textures.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 스테이지간 변수(Inter-stage Variables)]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-inter-stage-variables.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-inter-stage-variables.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 선택적 기능(optional feature)과 제한(limit)]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-limits-and-features.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-limits-and-features.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 데이터 메모리 레이아웃]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-memory-layout.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-memory-layout.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 데이터 메모리 레이아웃]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-memory-layout_obsolete_kr.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-memory-layout_obsolete_kr.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 스토리지 버퍼]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-storage-buffers.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-storage-buffers.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 비디오의 효율적인 사용]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-textures-external-video.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-textures-external-video.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 텍스처]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-textures.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-textures.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Uniforms]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-uniforms.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-uniforms.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU 정점 버퍼]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-vertex-buffers.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-vertex-buffers.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU WGSL]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-wgsl.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-wgsl.html"/>
-        <updated>2024-08-21T03:23:50.000Z</updated>
+        <updated>2024-08-21T03:24:24.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-08-21T03:23:50.000Z</published>
+        <published>2024-08-21T03:24:24.000Z</published>
     </entry>
 </feed>
