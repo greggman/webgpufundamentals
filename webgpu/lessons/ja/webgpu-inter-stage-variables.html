@@ -537,6 +537,8 @@ WebGPUでは、この「補間」をどうやるかについて、設定項目�
 <li><code class="notranslate" translate="no">center</code>: 補間に際して「ピクセルの中心」をサンプリングする(<strong>default</strong>)</li>
 <li><code class="notranslate" translate="no">centroid</code>: 補間に際して「プリミティブ(三角形などの基本図形)」単位でサンプリングする。プリミティブ内の全ピクセルで同じ値となる</li>
 <li><code class="notranslate" translate="no">sample</code>:  補間を「サンプル」単位で行なう。フラグメントシェーダは各サンプルについて実行される</li>
+<li><code class="notranslate" translate="no">first</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. (default) The value comes from the first vertex of the primitive being drawn</li>
+<li><code class="notranslate" translate="no">either</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. The value comes from either the first or the last vertex of the primitive being drawn.</li>
 </ul>
 <p>補間の設定は、inter-stage変数の属性として記述します。たとえばこんな風に書きます。</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  @location(2) @interpolate(linear, center) myVariableFoo: vec4f;
@@ -630,6 +632,7 @@ WebGPUでは、この「補間」をどうやるかについて、設定項目�
 <li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

@@ -271,10 +271,10 @@ an existing library or maybe you’re just curious how it all works. In those
 cases, read on!</p>
 <h1 id="getting-started">Getting Started</h1>
 <p>It’s hard to decide where to start. At a certain level, WebGPU is a very simple
-system. All it does is run 3 types of functions on the GPU. Vertex Shaders,
-Fragment Shaders, Compute Shaders.</p>
-<p>A Vertex Shader computes vertices. The shader returns vertex positions. For every group of 3 vertices the vertex shader function returns, a triangle is drawn between those 3 positions <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<p>A Fragment Shader computes colors <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>. When a triangle is drawn, for each pixel
+system. All it does is run 3 types of functions on the GPU: Vertex Shaders,
+Fragment Shaders, and Compute Shaders.</p>
+<p>A Vertex Shader computes vertices. The shader returns vertex positions. For every group of 3 vertices the vertex shader function returns, a triangle is drawn between those 3 positions.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>A Fragment Shader computes colors.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> When a triangle is drawn, for each pixel
 to be drawn the GPU calls your fragment shader. The fragment shader then returns a
 color.</p>
 <p>A Compute Shader is more generic. It’s effectively just a function you call and
@@ -295,9 +295,9 @@ will look for the data. And, back in JavaScript, you need to bind the buffers an
 textures holding your data to the bindings or locations. Once you’ve done that you tell the GPU to execute the
 function.</p>
 <p><a id="a-draw-diagram"></a>Maybe a picture will help. Here is a <em>simplified</em> diagram of WebGPU setup to draw triangles
-by using a vertex shader and a fragment shader</p>
+by using a vertex shader and a fragment shader:</p>
 <div class="webgpu_center"><img src="resources/webgpu-draw-diagram.svg" style="width: 960px;"></div>
-<p>What to notice about this diagram</p>
+<p>What to notice about this diagram:</p>
 <ul>
 <li>
 <p>There is a <strong>Pipeline</strong>. It contains the vertex shader and fragment shader the
@@ -312,7 +312,7 @@ through <strong>Bind Groups</strong></p>
 internal state</p>
 </li>
 <li>
-<p>Attributes pull data out of buffers and feed the data into the vertex shader.</p>
+<p>Attributes pull data out of buffers and feed the data into the vertex shader</p>
 </li>
 <li>
 <p>The vertex shader may feed data into the fragment shader</p>
@@ -370,16 +370,16 @@ commandBuffer = encoder.finish();
 </pre></div>
 <div><img src="resources/webgpu-command-buffer.svg" style="width: 300px;"></div>
 </div>
-<p>Once you create a command buffer, you can <em>submit</em> it to be executed</p>
+<p>Once you create a command buffer, you can <em>submit</em> it to be executed:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.submit([commandBuffer]);
 </pre>
-<p>The diagram above represents the state at some <code class="notranslate" translate="no">draw</code> command in the command
+<p>The ‘simplified diagram of WebGPU setup’ shown previously represents the state at a <em>single</em> <code class="notranslate" translate="no">draw</code> command in the command
 buffer. Executing the commands will set up the <em>internal state</em> and then the
-<em>draw</em> command will tell the GPU to execute a vertex shader (and indirectly a
+<code class="notranslate" translate="no">draw</code> command will tell the GPU to execute a vertex shader (and indirectly a
 fragment shader). The <code class="notranslate" translate="no">dispatchWorkgroup</code> command will tell the GPU to execute a
 compute shader.</p>
 <p>I hope that gave you some mental image of the state you need to set up. Like
-mentioned above, WebGPU has 2 basic things it can do</p>
+mentioned above, WebGPU has 2 basic things it can do:</p>
 <ol>
 <li>
 <p><a href="#a-drawing-triangles-to-textures">Draw triangles/points/lines to textures</a></p>
@@ -399,7 +399,7 @@ of this article, a texture is a 2D rectangle of pixels.<sup class="footnote-ref"
 represents a texture on a webpage. In WebGPU we can ask the canvas for a texture
 and then render to that texture.</p>
 <p>To draw triangles with WebGPU we have to supply 2 “shaders”. Again, Shaders
-are functions that run on the GPU. These 2 shaders are</p>
+are functions that run on the GPU. These 2 shaders are:</p>
 <ol>
 <li>
 <p>Vertex Shaders</p>
@@ -413,10 +413,10 @@ for each pixel to be drawn/rasterized when drawing triangles/lines/points</p>
 </li>
 </ol>
 <p>Let’s start with a very small WebGPU program to draw a triangle.</p>
-<p>We need a canvas to display our triangle</p>
+<p>We need a canvas to display our triangle:</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas&gt;&lt;/canvas&gt;
 </pre>
-<p>Then we need a <code class="notranslate" translate="no">&lt;script&gt;</code> tag to hold our JavaScript.</p>
+<p>then we need a <code class="notranslate" translate="no">&lt;script&gt;</code> tag to hold our JavaScript:</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas&gt;&lt;/canvas&gt;
 +&lt;script type="module"&gt;
 
@@ -424,7 +424,7 @@ for each pixel to be drawn/rasterized when drawing triangles/lines/points</p>
 
 +&lt;/script&gt;
 </pre>
-<p>All of the JavaScript below will go inside this script tag</p>
+<p>All of the JavaScript below will go inside this script tag.</p>
 <p>WebGPU is an asynchronous API so it’s easiest to use in an async function. We
 start off by requesting an adapter, and then requesting a device from the adapter.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
@@ -556,7 +556,7 @@ pipelines, etc… If you get an error like <code class="notranslate" translate="
 label the module then you’ll get an error more like <code class="notranslate" translate="no">"WGSL syntax error in shaderModule('our hardcoded red triangle shaders') at line 10</code> which is a way
 more useful error message and will save you a ton of time tracking down the
 issue.</p>
-<p>Now that we’ve created a shader module, we next need to make a render pipeline</p>
+<p>Now that we’ve created a shader module, we next need to make a render pipeline:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
     label: 'our hardcoded red triangle pipeline',
     layout: 'auto',
@@ -586,7 +586,7 @@ for the canvas.</p>
 <p>One shortcut, for each shader stage, <code class="notranslate" translate="no">vertex</code> and <code class="notranslate" translate="no">fragment</code>, if there is only one
 function of the corresponding type then we don’t need to specify the <code class="notranslate" translate="no">entryPoint</code>.
 WebGPU will use the sole function that matches the shader stage. So we can shorten
-the code above to</p>
+the code above to:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
     label: 'our hardcoded red triangle pipeline',
     layout: 'auto',
@@ -782,7 +782,7 @@ function dispatchWorkgroup(workgroup_id) {
   }
 }
 </pre>
-<p>Since we set <code class="notranslate" translate="no">@workgroup_size(1)</code>, effectively the pseudo-code above becomes</p>
+<p>Since we set <code class="notranslate" translate="no">@workgroup_size(1)</code>, effectively the pseudo-code above becomes:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// pseudo code
 function dispatchWorkgroups(width, height, depth) {
   for (z = 0; z &lt; depth; ++z) {
@@ -1116,7 +1116,7 @@ This is covered in <a href="webgpu-vertex-buffers.html#a-index-buffers">the arti
 </li>
 <li id="fn5" class="footnote-item"><p><code class="notranslate" translate="no">layout: 'auto'</code> is convenient but it’s impossible to share bind groups
 across pipelines using <code class="notranslate" translate="no">layout: 'auto'</code>. Most of the examples on this site
-never use a bind group with multiple pipelines. We’ll cover explicit layouts in <a href="webgpu-drawing-multiple-things.html">another article</a>. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+never use a bind group with multiple pipelines. We’ll cover explicit layouts in <a href="webgpu-bind-group-layouts.html">another article</a>. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -1203,6 +1203,7 @@ never use a bind group with multiple pipelines. We’ll cover explicit layouts i
 <li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

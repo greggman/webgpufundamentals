@@ -525,12 +525,12 @@ to be 1 but we can take advantage of the fact that for attributes
         <tr>
           <td class="m21">0</td>
           <td class="m22">c</td>
-          <td class="m23">s</td>
+          <td class="m23">-s</td>
           <td class="m24">0</td>
         </tr>
         <tr>
           <td class="m31">0</td>
-          <td class="m32">-s</td>
+          <td class="m32">s</td>
           <td class="m33">c</td>
           <td class="m34">0</td>
         </tr>
@@ -550,7 +550,7 @@ to be 1 but we can take advantage of the fact that for attributes
         <tbody><tr>
           <td class="m11">c</td>
           <td class="m12">0</td>
-          <td class="m13">-s</td>
+          <td class="m13">s</td>
           <td class="m14">0</td>
         </tr>
         <tr>
@@ -560,7 +560,7 @@ to be 1 but we can take advantage of the fact that for attributes
           <td class="m24">0</td>
         </tr>
         <tr>
-          <td class="m31">s</td>
+          <td class="m31">-s</td>
           <td class="m32">0</td>
           <td class="m33">c</td>
           <td class="m34">0</td>
@@ -582,16 +582,16 @@ also want to be able to rotate around the X axis and Y axis as well.  You
 can see from looking at them they are all very similar.  If we were to
 work them out you’d see them simplify just like before</p>
 <p>Z rotation</p>
-<div class="webgpu_center"><pre class="webgpu_math">newX = x *  c + y * s;
-newY = x * -s + y * c;
+<div class="webgpu_center"><pre class="webgpu_math">newX = x * c + y * -s;
+newY = x * s + y *  c;
 </pre></div>
 <p>Y rotation</p>
 <div class="webgpu_center"><pre class="webgpu_math">newX = x *  c + z * s;
 newZ = x * -s + z * c;
 </pre></div>
 <p>X rotation</p>
-<div class="webgpu_center"><pre class="webgpu_math">newY = y *  c + z * s;
-newZ = y * -s + z * c;
+<div class="webgpu_center"><pre class="webgpu_math">newY = y * c + z * -s;
+newZ = y * s + z *  c;
 </pre></div>
 <p>which gives you these rotations.</p>
 <iframe class="external_diagram" src="resources/axis-diagram.html" style="width: 540px; height: 280px;"></iframe>
@@ -1578,6 +1578,7 @@ and still use indices. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 <li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

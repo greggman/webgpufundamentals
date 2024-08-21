@@ -60,6 +60,7 @@
     'webgpu-points.md',
     'webgpu-from-webgl.md',
     'webgpu-optimization.md',
+    'webgpu-debugging.md',
     'webgpu-resources.md',
     'webgpu-wgsl-function-reference.md',
     'webgpu-wgsl-offset-computer.md',

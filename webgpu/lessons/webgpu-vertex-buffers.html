@@ -504,12 +504,12 @@ per instance, the other will hold the <code class="notranslate" translate="no">s
     },
   });
 </pre>
-<p>Above we added 2 entries to the <code class="notranslate" translate="no">buffers</code> array on our pipleine description so now there are 3 buffer entries, meaning
+<p>Above we added 2 entries to the <code class="notranslate" translate="no">buffers</code> array on our pipeline description so now there are 3 buffer entries, meaning
 we’re telling WebGPU we’ll supply the data in 3 buffers.</p>
-<p>For our 2 new entires we set the <code class="notranslate" translate="no">stepMode</code> to <code class="notranslate" translate="no">instance</code>. This means this attribute
+<p>For our 2 new entries we set the <code class="notranslate" translate="no">stepMode</code> to <code class="notranslate" translate="no">instance</code>. This means this attribute
 will only advance to next value once per instance. The default is <code class="notranslate" translate="no">stepMode: 'vertex'</code>
 which advances once per vertex (and starts over for each instance).</p>
-<p>We have 2 buffers. The one that hold just <code class="notranslate" translate="no">scale</code> is simple. Just like our
+<p>We have 2 buffers. The one that holds just <code class="notranslate" translate="no">scale</code> is simple. Just like our
 first buffer that holds <code class="notranslate" translate="no">position</code> it’s 2 32 floats per vertex.</p>
 <p>Our other buffer holds <code class="notranslate" translate="no">color</code> and <code class="notranslate" translate="no">offset</code> and they’re going to be interleaved in the data like this</p>
 <div class="webgpu_center"><img src="resources/vertex-buffer-f32x4-f32x2.svg" style="width: 1024px;"></div>
@@ -1219,6 +1219,7 @@ from the index buffer.</p>
 <li><a href="/webgpu/lessons/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

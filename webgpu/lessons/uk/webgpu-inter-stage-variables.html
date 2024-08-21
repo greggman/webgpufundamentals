@@ -531,6 +531,8 @@ select = (a, b, condition) =&gt; condition ? b : a;
 <li><code class="notranslate" translate="no">center</code>: Інтерполяція виконується в центрі пікселя (<strong>стандартне значення</strong>)</li>
 <li><code class="notranslate" translate="no">centroid</code>: Інтерполяція виконується в точці, яка лежить у межах усіх вибірок, охоплених фрагментом у поточному примітиві. Це значення однакове для всіх зразків у примітиві.</li>
 <li><code class="notranslate" translate="no">sample</code>:  Інтерполяція виконується для вибірки. Фрагментний шейдер викликається один раз на вибірку, коли застосовано цей атрибут.</li>
+<li><code class="notranslate" translate="no">first</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. (default) The value comes from the first vertex of the primitive being drawn</li>
+<li><code class="notranslate" translate="no">either</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. The value comes from either the first or the last vertex of the primitive being drawn.</li>
 </ul>
 <p>Ви зазначаєте їх, як атрибути. Наприклад</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  @location(2) @interpolate(linear, center) myVariableFoo: vec4f;
@@ -625,6 +627,7 @@ select = (a, b, condition) =&gt; condition ? b : a;
 <li><a href="/webgpu/lessons/uk/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

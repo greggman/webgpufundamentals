@@ -475,6 +475,8 @@ select = (a, b, condition) =&gt; (condition ? b : a);
 <li><code class="notranslate" translate="no">center</code>: 插值在像素中心进行 (<strong>默认</strong>)</li>
 <li><code class="notranslate" translate="no">centroid</code>: 插值是在当前基元中片段所覆盖的所有样本内的某一点上进行的。该值对基元中的所有样本都是相同的。</li>
 <li><code class="notranslate" translate="no">sample</code>: 每次采样时执行插值。应用此属性时，每次采样都会调用一次片段着色器.</li>
+<li><code class="notranslate" translate="no">first</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. (default) The value comes from the first vertex of the primitive being drawn</li>
+<li><code class="notranslate" translate="no">either</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. The value comes from either the first or the last vertex of the primitive being drawn.</li>
 </ul>
 <p>您可以将其指定为属性。例如：</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  @location(2) @interpolate(linear, center) myVariableFoo: vec4f;
@@ -566,6 +568,7 @@ select = (a, b, condition) =&gt; (condition ? b : a);
 <li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

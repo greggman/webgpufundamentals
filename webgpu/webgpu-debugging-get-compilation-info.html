@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Debugging - getCompilationInfo</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  device.pushErrorScope('validation');
+  const code = `
+      // This function
+      // calls a function
+      // that does not
+      // exist.
+
+      fn foo() -> vec3f {
+        return someFunction(1, 2);
+      }
+    `;
+  const module = device.createShaderModule({ code });
+  device.popErrorScope().then(async error => {
+    if (error) {
+      const info = await module.getCompilationInfo();
+
+      // Split the code into lines
+      const lines = code.split('\n');
+
+      // Sort the messages by line numbers in reverse order
+      // so that as we insert the messages they won't affect
+      // the line numbers.
+      const msgs = [...info.messages].sort((a, b) => b.lineNum - a.lineNum);
+
+      // Insert the error messages between lines
+      for (const msg of msgs) {
+        lines.splice(msg.lineNum, 0,
+          `${''.padEnd(msg.linePos - 1)}${''.padEnd(msg.length, '^')}`,
+          msg.message,
+        );
+      }
+
+      log(lines.join('\n'));
+    }
+  });
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+function log(...args) {
+  const elem = document.createElement('pre');
+  elem.textContent = args.join(' ');
+  document.body.appendChild(elem);
+}
+
+main();
+  </script>
+</html>

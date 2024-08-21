@@ -512,6 +512,8 @@ select = (a, b, condition) =&gt; condition ? b : a;
 <li><code class="notranslate" translate="no">center</code>: 보간이 픽셀의 중앙에서 수행됨 (<strong>기본값</strong>)</li>
 <li><code class="notranslate" translate="no">centroid</code>: 현재 프리미티브(primitive)가 차지하는 모든 프래그먼트의 모든 샘플 내에 존재하는 점에 대해 보간이 수행됨. 값은 프래그먼트 내의 모든 샘플에 대해 같은 값임</li>
 <li><code class="notranslate" translate="no">sample</code>:  샘플 별로 보간이 수행됨. 이 값이 적용되는 경우 프래그먼트 셰이더는 모든 샘플별로 한 번씩 실행됨</li>
+<li><code class="notranslate" translate="no">first</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. (default) The value comes from the first vertex of the primitive being drawn</li>
+<li><code class="notranslate" translate="no">either</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. The value comes from either the first or the last vertex of the primitive being drawn.</li>
 </ul>
 <p>이러한 속성은 다음과 같이 명시됩니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  @location(2) @interpolate(linear, center) myVariableFoo: vec4f;
@@ -603,6 +605,7 @@ select = (a, b, condition) =&gt; condition ? b : a;
 <li><a href="/webgpu/lessons/ko/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

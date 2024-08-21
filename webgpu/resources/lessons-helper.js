@@ -30,6 +30,7 @@
  */
 /* global globalThis */
 /* global GPUAdapter */
+/* global GPUDevice */
 const lessonSettings = window.lessonSettings || {};
 const topWindow = globalThis;
 
@@ -534,13 +535,25 @@ function installWebGPUDebugHelper() {
 
   // capture WebGPU errors
   if (typeof GPUAdapter !== 'undefined') {
+    const handler = e => {
+      console.error(`WebGPU ${e.error.constructor.name}: ${e.error.message}`);
+    };
+    GPUDevice.prototype.addEventListener = (function(origFn) {
+      return function(event, listener, ...args) {
+        if (event === 'uncapturederror') {
+          if (listener !== handler) {
+            this.removeEventListener('uncapturederror', handler);
+          }
+        }
+        origFn.call(this, event, listener, ...args);
+      };
+    })(GPUDevice.prototype.addEventListener);
+
     GPUAdapter.prototype.requestDevice = (function(origFn) {
       return async function(...args) {
         const device = await origFn.call(this, ...args);
         if (device) {
-          device.addEventListener('uncapturederror', e => {
-            console.error(`WebGPU ${e.error.constructor.name}: ${e.error.message}`);
-          });
+          device.addEventListener('uncapturederror', handler);
         }
         return device;
       };

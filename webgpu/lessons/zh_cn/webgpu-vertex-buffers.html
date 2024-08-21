@@ -475,9 +475,9 @@ struct VSOutput {
     },
   });
 </pre>
-<p>上面我们在 pipleine 描述的缓冲区数组中新添加了 2 项，因此现在有 3 个缓冲区，这意味着我们告诉 WebGPU 我们将在 3 个缓冲区中提供数据。</p>
+<p>上面我们在 pipeline 描述的缓冲区数组中新添加了 2 项，因此现在有 3 个缓冲区，这意味着我们告诉 WebGPU 我们将在 3 个缓冲区中提供数据。</p>
 <p>对于 2 个新条目，我们将 <code class="notranslate" translate="no">stepMode</code> 设置为 <code class="notranslate" translate="no">instance</code>。这意味着该属性在每个实例中只会前进一次到下一个值。默认值为 <code class="notranslate" translate="no">stepMode: 'vertex'</code> 即每个顶点递进一次（每个实例重新开始）。</p>
-<p>Above we added 2 entries to the <code class="notranslate" translate="no">buffers</code> array on our pipleine description so now there are 3 buffer entries, meaning
+<p>Above we added 2 entries to the <code class="notranslate" translate="no">buffers</code> array on our pipeline description so now there are 3 buffer entries, meaning
 we’re telling WebGPU we’ll supply the data in 3 buffers.</p>
 <p>For our 2 new entires we set the <code class="notranslate" translate="no">stepMode</code> to <code class="notranslate" translate="no">instance</code>. This means this attribute
 will only advance to next value once per instance. The default is <code class="notranslate" translate="no">stepMode: 'vertex'</code>
@@ -1154,6 +1154,7 @@ pass.setVertexBuffer(2, changingVertexBuffer);
 <li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

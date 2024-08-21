@@ -486,6 +486,8 @@ select = (a, b, condition) =&gt; condition ? b : a;
 <li><code class="notranslate" translate="no">center</code>: Интерполяция выполняется от центра пикселя (<strong>по умолчанию</strong>)</li>
 <li><code class="notranslate" translate="no">centroid</code>: Интерполяция выполняется в точке, лежащей внутри всех выборок, охватываемых фрагментом внутри текущего примитива. Это значение одинаково для всех выборок в примитиве.</li>
 <li><code class="notranslate" translate="no">sample</code>:  Интерполяция выполняется для каждой выборки. Fragment shader вызывается один раз для каждой выборки при применении этого атрибута.</li>
+<li><code class="notranslate" translate="no">first</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. (default) The value comes from the first vertex of the primitive being drawn</li>
+<li><code class="notranslate" translate="no">either</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. The value comes from either the first or the last vertex of the primitive being drawn.</li>
 </ul>
 <p>Вы указываете эти аттрибуты. Для примера</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  @location(2) @interpolate(linear, center) myVariableFoo: vec4f;
@@ -577,6 +579,7 @@ select = (a, b, condition) =&gt; condition ? b : a;
 <li><a href="/webgpu/lessons/ru/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/ru/webgpu-debugging.html">Debugging and Errors</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-resources.html">Resources / References</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>

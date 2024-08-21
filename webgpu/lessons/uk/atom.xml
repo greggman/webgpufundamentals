@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id/>
     <title>webgpufundamentals</title>
-    <updated>2024-07-04T18:32:40.000Z</updated>
+    <updated>2024-08-21T02:41:07.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <author>
         <name>webgpufundamentals Contributors</name>
@@ -15,55 +15,55 @@
         <title type="html"><![CDATA[Основи WebGPU]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-fundamentals.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-fundamentals.html"/>
-        <updated>2024-07-04T18:32:40.000Z</updated>
+        <updated>2024-08-21T02:41:07.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-07-04T18:32:40.000Z</published>
+        <published>2024-08-21T02:41:07.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[Міжетапні змінні у WebGPU]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-inter-stage-variables.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-inter-stage-variables.html"/>
-        <updated>2024-07-04T18:32:40.000Z</updated>
+        <updated>2024-08-21T02:41:07.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-07-04T18:32:40.000Z</published>
+        <published>2024-08-21T02:41:07.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[Схема розміщення даних в пам’яті]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-memory-layout.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-memory-layout.html"/>
-        <updated>2024-07-04T18:32:40.000Z</updated>
+        <updated>2024-08-21T02:41:07.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-07-04T18:32:40.000Z</published>
+        <published>2024-08-21T02:41:07.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[Буфери зберігання в WebGPU]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-storage-buffers.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-storage-buffers.html"/>
-        <updated>2024-07-04T18:32:40.000Z</updated>
+        <updated>2024-08-21T02:41:07.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-07-04T18:32:40.000Z</published>
+        <published>2024-08-21T02:41:07.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[Юніформи в WebGPU]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-uniforms.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-uniforms.html"/>
-        <updated>2024-07-04T18:32:40.000Z</updated>
+        <updated>2024-08-21T02:41:07.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2024-07-04T18:32:40.000Z</published>
+        <published>2024-08-21T02:41:07.000Z</published>
     </entry>
 </feed>
