@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Simple Textured Quad - External Video (Camera)</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+#start {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#start>div {
+  font-size: 200px;
+  cursor: pointer;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <div id="start">
+      <div>▶️</div>
+    </div>
+  </body>
+  <script type="module">
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
+import {mat4} from '../3rdparty/wgpu-matrix.module.js';
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+
+  const module = device.createShaderModule({
+    label: 'our hardcoded textured quad shaders',
+    code: `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+      };
+
+      @group(0) @binding(2) var<uniform> uni: Uniforms;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -> OurVertexShaderOutput {
+        let pos = array(
+
+          vec2f( 0.0,  0.0),  // center
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 0.0,  1.0),  // center, top
+
+          // 2st triangle
+          vec2f( 0.0,  1.0),  // center, top
+          vec2f( 1.0,  0.0),  // right, center
+          vec2f( 1.0,  1.0),  // right, top
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy;
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var ourSampler: sampler;
+      @group(0) @binding(1) var ourTexture: texture_external;
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -> @location(0) vec4f {
+        return textureSampleBaseClampToEdge(
+            ourTexture,
+            ourSampler,
+            fsInput.texcoord,
+        );
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: 'hardcoded textured quad pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  function startPlayingAndWaitForVideo(video) {
+    return new Promise((resolve, reject) => {
+      video.addEventListener('error', reject);
+      if ('requestVideoFrameCallback' in video) {
+        video.requestVideoFrameCallback(resolve);
+      } else {
+        const timeWatcher = () => {
+          if (video.currentTime > 0) {
+            resolve();
+          } else {
+            requestAnimationFrame(timeWatcher);
+          }
+        };
+        timeWatcher();
+      }
+      video.play().catch(reject);
+    });
+  }
+
+  function waitForClick() {
+    return new Promise(resolve => {
+      window.addEventListener(
+        'click',
+        async() => {
+          document.querySelector('#start').style.display = 'none';
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              video: true,
+            });
+            video.srcObject = stream;
+            resolve();
+          } catch (e) {
+            fail(`could not access camera: ${e.message ?? ''}`);
+          }
+        },
+        { once: true });
+    });
+  }
+
+  const video = document.createElement('video');
+  await waitForClick();
+  await startPlayingAndWaitForVideo(video);
+
+  canvas.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  });
+
+  // offsets to the various uniform values in float32 indices
+  const kMatrixOffset = 0;
+
+  const objectInfos = [];
+  for (let i = 0; i < 4; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: 'repeat',
+      addressModeV: 'repeat',
+      magFilter: (i & 1) ? 'linear' : 'nearest',
+      minFilter: (i & 2) ? 'linear' : 'nearest',
+    });
+
+    // create a buffer for the uniform values
+    const uniformBufferSize =
+      16 * 4; // matrix is 16 32bit floats (4bytes each)
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms for quad',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    // create a typedarray to hold the values for the uniforms in JavaScript
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+    const matrix = uniformValues.subarray(kMatrixOffset, 16);
+
+    // Save the data we need to render this object.
+    objectInfos.push({
+      sampler,
+      matrix,
+      uniformValues,
+      uniformBuffer,
+    });
+  }
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  function render() {
+    const fov = 60 * Math.PI / 180;  // 60 degrees in radians
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const zNear  = 1;
+    const zFar   = 2000;
+    const projectionMatrix = mat4.perspective(fov, aspect, zNear, zFar);
+
+    const cameraPosition = [0, 0, 2];
+    const up = [0, 1, 0];
+    const target = [0, 0, 0];
+    const viewMatrix = mat4.lookAt(cameraPosition, target, up);
+    const viewProjectionMatrix = mat4.multiply(projectionMatrix, viewMatrix);
+
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const encoder = device.createCommandEncoder({
+      label: 'render quad encoder',
+    });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
+    const texture = device.importExternalTexture({source: video});
+
+    objectInfos.forEach(({sampler, matrix, uniformBuffer, uniformValues}, i) => {
+      const bindGroup = device.createBindGroup({
+        layout: pipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: sampler },
+          { binding: 1, resource: texture },
+          { binding: 2, resource: { buffer: uniformBuffer }},
+        ],
+      });
+
+      const xSpacing = 1.2;
+      const ySpacing = 0.5;
+      const zDepth = 1;
+
+      const x = i % 2 - .5;
+      const y = i < 2 ? 1 : -1;
+
+      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+      mat4.rotateX(matrix, 0.25 * Math.PI * Math.sign(y), matrix);
+      mat4.scale(matrix, [1, -1, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+
+      // copy the values from JavaScript to the GPU
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // call our vertex shader 6 times
+    });
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+    }
+  });
+  observer.observe(canvas);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

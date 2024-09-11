@@ -548,6 +548,52 @@ change and that is not a guarantee the web can make.</p>
 in this article would be video related features like say meet, zoom, FB messenger
 related features, like when doing face recognition for adding visualizations or
 background separation. Another might be for VR video once WebGPU is supported in WebXR.</p>
+<h2 id="using-the-camera"><a id="a-web-camera"></a> Using the Camera</h2>
+<p>In fact, let’s use the camera. It’s a very small change.</p>
+<p>First, we don’t specify a video to play.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const video = document.createElement('video');
+-  video.muted = true;
+-  video.loop = true;
+-  video.preload = 'auto';
+-  video.src = 'resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4'; /* webgpufundamentals: url */
+  await waitForClick();
+  await startPlayingAndWaitForVideo(video);
+</pre>
+<p>Then, when the user clicks play, we call <code class="notranslate" translate="no">getUserMedia</code> and ask for the camera. The resulting stream
+is then applied to the video. There are no changes to the WebGPU parts of the code.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function waitForClick() {
+    return new Promise(resolve =&gt; {
+      window.addEventListener(
+        'click',
+-        () =&gt; {
++        async() =&gt; {
+          document.querySelector('#start').style.display = 'none';
+-          resolve();
++          try {
++            const stream = await navigator.mediaDevices.getUserMedia({
++              video: true,
++            });
++            video.srcObject = stream;
++            resolve();
++          } catch (e) {
++            fail(`could not access camera: ${e.message ?? ''}`);
++          }
+        },
+        { once: true });
+    });
+  }
+</pre>
+<p>Done!</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-external-video-camera.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-external-video-camera.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>We could make similar changes to
+<a href="webgpu-importing-textures.html#a-loading-video">the video example in the previous article</a>
+if wanted the camera image as the more flexible <code class="notranslate" translate="no">texture&lt;f32&gt;</code> type texture instead of
+the more efficient <code class="notranslate" translate="no">texture_external</code> type of texture.</p>
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">

@@ -285,9 +285,9 @@ struct VSOutput {
 ...
 </pre>
 <p>As you can see, it’s a small change. The important part is declaring the
-position field with <code class="notranslate" translate="no">@location(0)</code></p>
-<p>Then, when we create the render pipeline, we have to tell WebGPU how to get data
-for <code class="notranslate" translate="no">@location(0)</code></p>
+position field with <code class="notranslate" translate="no">@location(0)</code>.</p>
+<p>Next, we have to tell WebGPU how to get data for <code class="notranslate" translate="no">@location(0)</code> -
+for that, we use the render pipeline:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
     label: 'vertex buffer pipeline',
     layout: 'auto',
@@ -310,15 +310,17 @@ for <code class="notranslate" translate="no">@location(0)</code></p>
 </pre>
 <p>To the <a href="https://www.w3.org/TR/webgpu/#dictdef-gpuvertexstate"><code class="notranslate" translate="no">vertex</code></a> entry of the <a href="https://www.w3.org/TR/webgpu/#dictdef-gpurenderpipelinedescriptor"><code class="notranslate" translate="no">pipeline</code> descriptor</a>
 we added a <code class="notranslate" translate="no">buffers</code> array which is used to describe how to pull data out of 1 or more vertex buffers.
-For our first and only buffer, we set an <code class="notranslate" translate="no">arrayStride</code> in number of bytes. a <em>stride</em> in this case is
+For our first and only buffer, we set an <code class="notranslate" translate="no">arrayStride</code> in number of bytes. A <em>stride</em> in this case is
 how many bytes to get from the data for one vertex in the buffer, to the next vertex in the buffer.</p>
 <div class="webgpu_center"><img src="resources/vertex-buffer-one.svg" style="width: 1024px;"></div>
 <p>Since our data is <code class="notranslate" translate="no">vec2f</code>, which is two float32 numbers, we set the
 <code class="notranslate" translate="no">arrayStride</code> to 8.</p>
-<p>Next we define an array of attributes. We only have one. <code class="notranslate" translate="no">shaderLocation: 0</code>
+<p>Next we define an array of attributes. We only have one: <code class="notranslate" translate="no">shaderLocation: 0</code>
 corresponds to <code class="notranslate" translate="no">location(0)</code> in our <code class="notranslate" translate="no">Vertex</code> struct. <code class="notranslate" translate="no">offset: 0</code> says the data
 for this attribute starts at byte 0 in the vertex buffer. Finally <code class="notranslate" translate="no">format: 'float32x2'</code> says we want WebGPU to pull the data out of the buffer as two 32bit
-floating point numbers.</p>
+floating point numbers. Note the <code class="notranslate" translate="no">attributes</code> property is the same entity pictured in the
+<a href="webgpu-fundamentals.html#a-draw-diagram">simplified draw diagram</a>
+from the first article.</p>
 <p>We need to change the usages of the buffer holding vertex data from <code class="notranslate" translate="no">STORAGE</code>
 to <code class="notranslate" translate="no">VERTEX</code> and remove it from the bind group.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const vertexStorageBuffer = device.createBuffer({
@@ -343,14 +345,13 @@ to <code class="notranslate" translate="no">VERTEX</code> and remove it from the
     ],
   });
 </pre>
-<p>And then at draw time we need to tell WebGPU which vertex buffer to
-use</p>
+<p>Then, at draw time we need to tell WebGPU which vertex buffer to use:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    pass.setPipeline(pipeline);
 +    pass.setVertexBuffer(0, vertexBuffer);
 </pre>
 <p>The <code class="notranslate" translate="no">0</code> here corresponds to first element of the render pipeline <code class="notranslate" translate="no">buffers</code>
 array we specified above.</p>
-<p>And with that we’ve switched from using a storage buffer for vertices to a
+<p>With that, we’ve switched from using a storage buffer for vertices to a
 vertex buffer.</p>
 <p></p><div class="webgpu_example_container">
   <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers.html"></iframe></div>
@@ -358,9 +359,9 @@ vertex buffer.</p>
 </div>
 
 <p></p>
-<p>The state when the draw command is executed would look something like this</p>
+<p>The state when the draw command is executed would look something like this:</p>
 <div class="webgpu_center"><img src="resources/webgpu-draw-diagram-vertex-buffer.svg" style="width: 960px;"></div>
-<p>The attribute <code class="notranslate" translate="no">format</code> field can be one of these types</p>
+<p>The attribute <code class="notranslate" translate="no">format</code> field can be one of these types:</p>
 <div class="webgpu_center data-table">
   <style>
     .vertex-type {
@@ -548,7 +549,7 @@ in storage buffers so we no longer need the padding. Otherwise all we
 did was change the usage from <code class="notranslate" translate="no">STORAGE</code> to <code class="notranslate" translate="no">VERTEX</code> (and we renamed all the
 variables from “storage” to “vertex”).</p>
 <p>Since we’re no longer using the storage buffers we no longer need
-the bindGroup</p>
+the bind group:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const bindGroup = device.createBindGroup({
 -    label: 'bind group for objects',
 -    layout: pipeline.getBindGroupLayout(0),
@@ -558,8 +559,8 @@ the bindGroup</p>
 -    ],
 -  });
 </pre>
-<p>And finally we don’t need to set the bindGroup but we do need
-to set the vertex buffers</p>
+<p>Finally, we don’t need to set the <code class="notranslate" translate="no">bindGroup</code> but we do need
+to set the vertex buffers:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
     const pass = encoder.beginRenderPass(renderPassDescriptor);
     pass.setPipeline(pipeline);
@@ -573,9 +574,9 @@ to set the vertex buffers</p>
 
     pass.end();
 </pre>
-<p>Here, the first parameter to <code class="notranslate" translate="no">setVertexBuffer</code> corresponds to the elements of
+<p>Here the first parameter to <code class="notranslate" translate="no">setVertexBuffer</code> corresponds to the elements of
 the <code class="notranslate" translate="no">buffers</code> array in the pipeline we created above.</p>
-<p>And with that we have the same thing we had before but we’re using all vertex buffers
+<p>With that we have the same thing we had before, but we’re using all vertex buffers
 and no storage buffers.</p>
 <p></p><div class="webgpu_example_container">
   <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers-instanced-colors"></iframe></div>
@@ -583,7 +584,7 @@ and no storage buffers.</p>
 </div>
 
 <p></p>
-<p>Just for fun, let’s add another attribute for a per vertex color. First let’s change the shader</p>
+<p>Just for fun, let’s add another attribute for a per vertex color. First let’s change the shader:</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
   @location(0) position: vec2f,
   @location(1) color: vec4f,
@@ -613,7 +614,7 @@ struct VSOutput {
 }
 </pre>
 <p>Then we need to update the pipeline to describe how we’ll supply the data.
-We’re going to interleave the perVertexColor data with the position like this</p>
+We’re going to interleave the <code class="notranslate" translate="no">perVertexColor</code> data with the <code class="notranslate" translate="no">position</code> like this:</p>
 <div class="webgpu_center"><img src="resources/vertex-buffer-mixed.svg" style="width: 1024px;"></div>
 <p>So, the <code class="notranslate" translate="no">arrayStride</code> needs to be changed to cover our new data and we need
 to add the new attribute. It starts after two 32bit floating point numbers
@@ -721,7 +722,7 @@ the inner vertices.</p>
   };
 }
 </pre>
-<p>And with that we get shaded circles</p>
+<p>And with that we get shaded circles:</p>
 <p></p><div class="webgpu_example_container">
   <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers-per-vertex-colors.html"></iframe></div>
   <a class="webgpu_center" href="/webgpu/lessons/../webgpu-vertex-buffers-per-vertex-colors.html" target="_blank">click here to open in a separate window</a>
@@ -729,7 +730,7 @@ the inner vertices.</p>
 
 <p></p>
 <h2 id="attributes-in-wgsl-do-not-have-to-match-attributes-in-javascript"><a id="a-default-values"></a>Attributes in WGSL do not have to match attributes in JavaScript</h2>
-<p>Above in WGSL we declared the <code class="notranslate" translate="no">perVertexColor</code> attribute as a <code class="notranslate" translate="no">vec3f</code> like this</p>
+<p>Above in WGSL we declared the <code class="notranslate" translate="no">perVertexColor</code> attribute as a <code class="notranslate" translate="no">vec3f</code> like this:</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
   @location(0) position: vec2f,
   @location(1) color: vec4f,
@@ -738,7 +739,7 @@ the inner vertices.</p>
 *  @location(4) perVertexColor: vec3f,
 };
 </pre>
-<p>And used it like this</p>
+<p>And used it like this:</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs(
   vert: Vertex,
 ) -&gt; VSOutput {
@@ -749,7 +750,7 @@ the inner vertices.</p>
   return vsOut;
 }
 </pre>
-<p>We could also declare it as a <code class="notranslate" translate="no">vec4f</code> and use it like this</p>
+<p>We could also declare it as a <code class="notranslate" translate="no">vec4f</code> and use it like this:</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
   @location(0) position: vec2f,
   @location(1) color: vec4f,
@@ -791,13 +792,13 @@ to <code class="notranslate" translate="no">0, 0, 0, 1</code> so any values we d
 
 <p></p>
 <h2 id="using-normalized-values-to-save-space"><a id="a-normalized-attributes"></a>Using normalized values to save space</h2>
-<p>We’re using 32bit floating point values for colors. Each <code class="notranslate" translate="no">perVertexColor</code> has 3 values for a total of 12 bytes per color per vertex. Each <code class="notranslate" translate="no">color</code> has 4 values
-for a total of 16 bytes per color per instance.</p>
-<p>We could optimize that by using 8bit values and telling WebGPU they should be normalized from 0 ↔ 255 to 0.0 ↔ 1.0</p>
+<p>We’re using 32bit floating point values for colors. Each <code class="notranslate" translate="no">perVertexColor</code> has 3 values for a total of
+12 bytes per color per vertex. Each <code class="notranslate" translate="no">color</code> has 4 values for a total of 16 bytes per color per instance.</p>
+<p>We could optimize that by using 8bit values and telling WebGPU they should be normalized from 0 ↔ 255 to 0.0 ↔ 1.0.</p>
 <p>Looking at the list of valid attribute formats there is no 3 value 8bit format but there is <code class="notranslate" translate="no">'unorm8x4'</code> so let’s
 use that.</p>
 <p>First let’s change the code that generates the vertices to store colors as 8bit values that
-will be normalized</p>
+will be normalized:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCircleVertices({
   radius = 1,
   numSubdivisions = 24,
@@ -829,11 +830,11 @@ will be normalized</p>
 +    colorOffset += 9;  // skip extra byte and the position
   };
 </pre>
-<p>Above we make <code class="notranslate" translate="no">colorData</code> which is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"><code class="notranslate" translate="no">Uint8Array</code></a> view of the same
-data as <code class="notranslate" translate="no">vertexData</code></p>
+<p>Above we make <code class="notranslate" translate="no">colorData</code>, which is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"><code class="notranslate" translate="no">Uint8Array</code></a> view of the same
+data as <code class="notranslate" translate="no">vertexData</code>. Review the <a href="webgpu-memory-layout.html#multiple-views-of-the-same-arraybuffer">data memory layout article</a> if this is unclear.</p>
 <p>We then use <code class="notranslate" translate="no">colorData</code> to insert the colors, expanding them from 0 ↔ 1
-to 0 ↔ 255</p>
-<p>The memory layout of this data is like this</p>
+to 0 ↔ 255.</p>
+<p>The memory layout of this (per vertex) data is like this:</p>
 <div class="webgpu_center"><img src="resources/vertex-buffer-f32x2-u8x4.svg" style="width: 1024px;"></div>
 <p>We also need to update the per instance data.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumObjects = 100;
@@ -894,7 +895,7 @@ to 0 ↔ 255</p>
     device.queue.writeBuffer(staticVertexBuffer, 0, staticVertexValuesF32);
   }
 </pre>
-<p>The layout for the per instance data is like this</p>
+<p>The layout for the per instance data is like this:</p>
 <div class="webgpu_center"><img src="resources/vertex-buffer-u8x4-f32x2.svg" style="width: 1024px;"></div>
 <p>We then need to change the pipeline to pull out the data as 8bit unsigned
 values and to normalize them back to 0 ↔ 1, update the offsets, and update the stride to its
@@ -949,7 +950,7 @@ per instance, now we’re using 12, a 50% savings.</p>
 </div>
 
 <p></p>
-<p>Note that we don’t have to use a struct. This would work just as well</p>
+<p>Note that we don’t have to use a struct. This would work just as well:</p>
 <pre class="prettyprint showlinemods notranslate lang-WGSL" translate="no">@vertex fn vs(
 -  vert: Vertex,
 +  @location(0) position: vec2f,
@@ -973,7 +974,7 @@ and supply data to those locations via the API.</p>
 <h2 id="index-buffers"><a id="a-index-buffers"></a>Index Buffers</h2>
 <p>One last thing to cover here are index buffers. Index buffers describe
 the order to process and use the vertices.</p>
-<p>You can think of <code class="notranslate" translate="no">draw</code> as going through the vertices in order</p>
+<p>You can think of <code class="notranslate" translate="no">draw</code> as going through the vertices in order:</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">0, 1, 2, 3, 4, 5, .....
 </pre>
 <p>With an index buffer we can change that order.</p>
@@ -981,7 +982,7 @@ the order to process and use the vertices.</p>
 of them were identical.</p>
 <div class="webgpu_center"><img src="resources/vertices-non-indexed.svg" style="width: 400px"></div>  
 <p>Now instead, we’ll only create 4 but then use indices to
-use those 4 vertices 6 times by telling WebGPU to draw indices in this order</p>
+use those 4 vertices 6 times by telling WebGPU to draw indices in this order:</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">0, 1, 2, 2, 1, 3, ...
 </pre>
 <div class="webgpu_center"><img src="resources/vertices-indexed.svg" style="width: 400px"></div>
@@ -1087,7 +1088,7 @@ use those 4 vertices 6 times by telling WebGPU to draw indices in this order</p>
   };
 }
 </pre>
-<p>Then we need to create an index buffer</p>
+<p>Then we need to create an index buffer:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const { vertexData, numVertices } = createCircleVertices({
 +  const { vertexData, indexData, numVertices } = createCircleVertices({
     radius: 0.5,
@@ -1107,7 +1108,7 @@ use those 4 vertices 6 times by telling WebGPU to draw indices in this order</p>
 +  device.queue.writeBuffer(indexBuffer, 0, indexData);
 </pre>
 <p>Notice we set the usage to <code class="notranslate" translate="no">INDEX</code>.</p>
-<p>Then finally at draw time we need to specify the index buffer</p>
+<p>Then finally at draw time we need to specify the index buffer:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    pass.setPipeline(pipeline);
     pass.setVertexBuffer(0, vertexBuffer);
     pass.setVertexBuffer(1, staticVertexBuffer);
@@ -1117,7 +1118,7 @@ use those 4 vertices 6 times by telling WebGPU to draw indices in this order</p>
 <p>Because our buffer contains 32bit unsigned integer indices
 we need to pass <code class="notranslate" translate="no">'uint32'</code> here. We could also use 16 bit
 unsigned indices in which case we’d pass in <code class="notranslate" translate="no">'uint16'</code>.</p>
-<p>And we need to call <code class="notranslate" translate="no">drawIndexed</code> instead of <code class="notranslate" translate="no">draw</code></p>
+<p>And we need to call <code class="notranslate" translate="no">drawIndexed</code> instead of <code class="notranslate" translate="no">draw</code>:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    pass.draw(numVertices, kNumObjects);
 +    pass.drawIndexed(numVertices, kNumObjects);
 </pre>
