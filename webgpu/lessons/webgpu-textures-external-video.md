@@ -380,3 +380,55 @@ The most obvious places to use the `texture_external` method described
 in this article would be video related features like say meet, zoom, FB messenger
 related features, like when doing face recognition for adding visualizations or
 background separation. Another might be for VR video once WebGPU is supported in WebXR.
+
+## <a id="a-web-camera"></a> Using the Camera
+
+In fact, let's use the camera. It's a very small change.
+
+First, we don't specify a video to play.
+
+```js
+  const video = document.createElement('video');
+-  video.muted = true;
+-  video.loop = true;
+-  video.preload = 'auto';
+-  video.src = 'resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4'; /* webgpufundamentals: url */
+  await waitForClick();
+  await startPlayingAndWaitForVideo(video);
+```
+
+Then, when the user clicks play, we call `getUserMedia` and ask for the camera. The resulting stream
+is then applied to the video. There are no changes to the WebGPU parts of the code.
+
+```js
+  function waitForClick() {
+    return new Promise(resolve => {
+      window.addEventListener(
+        'click',
+-        () => {
++        async() => {
+          document.querySelector('#start').style.display = 'none';
+-          resolve();
++          try {
++            const stream = await navigator.mediaDevices.getUserMedia({
++              video: true,
++            });
++            video.srcObject = stream;
++            resolve();
++          } catch (e) {
++            fail(`could not access camera: ${e.message ?? ''}`);
++          }
+        },
+        { once: true });
+    });
+  }
+```
+
+Done!
+
+{{{example url="../webgpu-simple-textured-quad-external-video-camera.html"}}}
+
+We could make similar changes to
+[the video example in the previous article](webgpu-importing-textures.html#a-loading-video)
+if wanted the camera image as the more flexible `texture<f32>` type texture instead of
+the more efficient `texture_external` type of texture.
