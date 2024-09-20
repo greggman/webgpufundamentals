@@ -232,17 +232,22 @@ using the same memory will change.
 Be aware, the `map` function of a `TypedArray` makes a new typed array of the same type!
 
 ```js
-const f32a = new Float32Array(1, 2, 3);
-const f32b = f32a.map(v => v * 2);                    // Ok
-const f32c = f32a.map(v => `${v} doubled = ${v *2}`); // BAD!
+const f32a = new Float32Array([1, 2, 3]);
+const f32b = f32a.map(v => v * 2);                // Ok
+const f32c = f32a.map(v => `${v} x2 = ${v * 2}`); // BAD!
                     //  you can't put a string in a Float32Array
+
+console.log(f32b);  // Float32Array(3) [2, 4, 6, ...
+console.log(f32c);  // Float32Array(3) [NaN, NaN, NaN, ...
 ```
 
 If you need to map a typedarray into some other type you'll either need to loop over the array yourself
-or else convert it to a JavaScript array which you can do with `Array.from`. Taking the example above
+or else convert it to a JavaScript array which you can do with `Array.from` or the `...` spread operator.
+Taking the example above
 
 ```js
-const f32d = Array.from(f32a).map(v => `${v} doubled = ${v *2}`); // Ok
+const f32d1 = Array.from(f32a).map(v => `${v} x2 = ${v * 2}`); // Ok
+const f32d2 = [...f32a].map(v => `${v} x2 = ${v * 2}`);        // Ok
 ```
 
 ## vec and mat types
