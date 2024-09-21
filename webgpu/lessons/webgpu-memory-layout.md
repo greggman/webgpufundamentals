@@ -233,8 +233,8 @@ Be aware, the `map` function of a `TypedArray` makes a new typed array of the sa
 
 ```js
 const f32a = new Float32Array([1, 2, 3]);
-const f32b = f32a.map(v => v * 2);                // Ok
-const f32c = f32a.map(v => `${v} x2 = ${v * 2}`); // BAD!
+const f32b = f32a.map(v => v * 2);               // Ok
+const f32c = f32a.map(v => `${v}×2 = ${v * 2}`); // BAD!
                     //  you can't put a string in a Float32Array
 
 console.log(f32b);  // Float32Array(3) [2, 4, 6, ...
@@ -246,8 +246,11 @@ or else convert it to a JavaScript array which you can do with `Array.from` or t
 Taking the example above
 
 ```js
-const f32d1 = Array.from(f32a).map(v => `${v} x2 = ${v * 2}`); // Ok
-const f32d2 = [...f32a].map(v => `${v} x2 = ${v * 2}`);        // Ok
+const f32e = Array.from(f32a).map(v => `${v}×2 = ${v * 2}`); // Ok
+const f32f = [...f32a].map(v => `${v}×2 = ${v * 2}`);        // Ok
+
+console.log(f32e); //  ['1×2 = 2', '2×2 = 4', '3×2 = 6']
+console.log(f32e); //  ['1×2 = 2', '2×2 = 4', '3×2 = 6']
 ```
 
 ## vec and mat types
