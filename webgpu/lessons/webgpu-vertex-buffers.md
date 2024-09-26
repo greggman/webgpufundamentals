@@ -749,9 +749,9 @@ The layout for the per instance data is like this:
 
 <div class="webgpu_center"><img src="resources/vertex-buffer-u8x4-f32x2.svg" style="width: 1024px;"></div>
 
-We then need to change the pipeline to pull out the data as 8bit unsigned
-values and to normalize them back to 0 ↔ 1, update the offsets, and update the stride to its
-new size.
+We then need to change the pipeline to tell then GPU to pull out the data as 8bit unsigned
+values and to normalize them back to 0 ↔ 1. We do this by marking the attribute as `'unorm8x4`.
+We also need to update the offsets and the stride to the new size.
 
 ```js
   const pipeline = device.createRenderPipeline({
