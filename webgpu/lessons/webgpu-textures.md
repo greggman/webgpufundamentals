@@ -1378,6 +1378,9 @@ as [the article about shadow maps](webgpu-shadow-maps.html).
 
 There's also a bunch compressed texture formats which we'll save for another article.
 
+Above we used the WGSL texture builtin function `textureSample`.
+There are [several other texture builtin functions](webgpu-texture-builtins.html).
+
 Let's cover [importing external textures](webgpu-importing-textures.html) next.
 
 <!-- keep this at the bottom of the article -->
