@@ -23,6 +23,7 @@ import {
   kRegularTextureFormats,
   kTextureFormatInfo,
 } from './resources/capabilities-info.js';
+import mipmapDiagram from './resources/mipmap-diagram.js';
 
 const rgba8unorm = (r, g, b, a) => `rgba(${r}, ${g}, ${b}, ${a / 255})`;
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -682,5 +683,16 @@ renderDiagrams({
     };
 
     addTextureTable(elem, spec, kDepthStencilFormats);
+  },
+  'mipmap': (elem) => {
+    const canvas = el('canvas', {
+      class: 'fill-container',
+      style: {
+        display: 'block', // this shouldn't be needed :(
+        maxWidth: '100%', // this shouldn't be needed :(
+      },
+    });
+    elem.appendChild(canvas);
+    mipmapDiagram(canvas);
   },
 });

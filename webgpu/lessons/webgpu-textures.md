@@ -1199,6 +1199,9 @@ of course you might not want filtering. Another is speed. Reading 1 pixel
 from a texture when all filtering is set to nearest is faster then reading
 8 pixels from a texture when all filtering is set to linear.
 
+<a id="a-mipmap"></a>
+<div class="webgpu_center center diagram"><div data-diagram="mipmap" style="display: inline-block; width: 600px; height: 500px;"></div></div>
+
 TBD: Repeat
 
 TBD: Anisotropic filtering
