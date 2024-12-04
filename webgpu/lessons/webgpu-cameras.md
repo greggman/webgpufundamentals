@@ -832,7 +832,7 @@ const mat4 = {
   },
 ...
 
-Let's make a bunch of Fs point at another F (yea, too many Fs but I don't want to clutter
+<a id="a-aim-fs"></a> Let's make a bunch of Fs point at another F (yea, too many Fs but I don't want to clutter
 the example with more data). We'll make a grid of 5x5 Fs + 1 more
 for them to "aim" at
 
