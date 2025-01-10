@@ -435,7 +435,7 @@ a multiple of 256!!</strong></p>
 </pre>
 <p>This has similar parameters to <code class="notranslate" translate="no">copyBufferToTexture</code>
 just the texture (now the source) and the buffer (now the destination)
-are swapped. Like <code class="notranslate" translate="no">copyTextureToBuffer</code>, <code class="notranslate" translate="no">bytesPerRow</code> <strong>must be
+are swapped. Like <code class="notranslate" translate="no">copyBufferToTexture</code>, <code class="notranslate" translate="no">bytesPerRow</code> <strong>must be
 a multiple of 256!!</strong></p>
 <ul>
 <li><code class="notranslate" translate="no">texture</code> must have a usage of <code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code></li>
@@ -446,7 +446,7 @@ a multiple of 256!!</strong></p>
 <p>The two textures must be must either be the same format, or they
 must only differ by the suffix <code class="notranslate" translate="no">'-srgb'</code>.</p>
 <p>signature:</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyTextureToBuffer(
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyTextureToTexture(
   // details of the source texture
   src: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
 

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id/>
     <title>webgpufundamentals</title>
-    <updated>2025-01-10T02:53:37.000Z</updated>
+    <updated>2025-01-10T06:30:14.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <author>
         <name>webgpufundamentals Contributors</name>
@@ -15,572 +15,572 @@
         <title type="html"><![CDATA[WebGPU Bind Group Layouts]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-bind-group-layouts.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-bind-group-layouts.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Camera Visualization]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-camera-visualization.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-camera-visualization.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Cameras]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-cameras.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-cameras.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Compute Shaders - Image Histogram Part 2]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Compute Shaders - Image Histogram]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders-histogram.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Compute Shader Basics]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-compute-shaders.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Shader Constants]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-constants.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-constants.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Copying Data]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-copying-data.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-copying-data.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Cubemaps]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-cube-maps.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-cube-maps.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Debugging and Errors]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-debugging.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-debugging.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Environment Maps (reflections)]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-environment-maps.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-environment-maps.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Error Handling]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-error-handlng.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-error-handlng.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU from WebGL]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-from-webgl.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-from-webgl.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Fundamentals]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-fundamentals.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-fundamentals.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU How It Works]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-how-it-works.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-how-it-works.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Loading Images into Textures]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-importing-textures.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-importing-textures.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Inter-stage Variables]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-inter-stage-variables.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-inter-stage-variables.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Large Triangle to Cover Clip Space]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-large-triangle-to-cover-clip-space.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU - Directional Lighting]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-directional.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-directional.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU - Point Lighting]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-point.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-point.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU - Spot Lighting]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-spot.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-lighting-spot.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Optional Features and Limits]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-limits-and-features.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-limits-and-features.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Matrix Math]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-matrix-math.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-matrix-math.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Matrix Stacks]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-matrix-stacks.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-matrix-stacks.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Data Memory Layout]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-memory-layout.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Multiple Canvases]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-multiple-canvases.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-multiple-canvases.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Multisampling]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-multisampling.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-multisampling.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Speed and Optimization]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-optimization.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-optimization.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Orthographic Projection]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-orthographic-projection.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-orthographic-projection.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Perspective Projection]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-perspective-projection.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-perspective-projection.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Points]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-points.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-points.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Rasterization]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-rasterization.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-rasterization.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Resizing the Canvas.]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-resizing-the-canvas.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-resizing-the-canvas.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Resources]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-resources.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-resources.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Rotation]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-rotation.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-rotation.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Scale]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-scale.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-scale.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Scene Graphs]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-scene-graphs.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-scene-graphs.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Shadows]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-shadows.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-shadows.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU SkyBox]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-skybox.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-skybox.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Storage Buffers]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-storage-buffers.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-storage-buffers.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Storage Textures]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-storage-textures.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-storage-textures.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Using Video Efficiently]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-textures-external-video.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-textures-external-video.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Textures]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-textures.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-textures.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Timing Performance]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Translation]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-translation.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-translation.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Transparency and Blending]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-transparency.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-transparency.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Uniforms]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-uniforms.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-uniforms.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Utils and wgpu-matrix]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU Vertex Buffers]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-vertex-buffers.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-vertex-buffers.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WGSL Function Reference]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl-function-reference.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl-function-reference.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WGSL Offset Computer]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl-offset-computer.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl-offset-computer.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[WebGPU WGSL]]></title>
         <id>https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html</id>
         <link href="https://webgpufundamentals.org/webgpu/lessons/webgpu-wgsl.html"/>
-        <updated>2025-01-10T02:53:37.000Z</updated>
+        <updated>2025-01-10T06:30:14.000Z</updated>
         <author>
             <name>webgpufundamentals Contributors</name>
             <uri>https://webgpufundamentals.org/contributors.html</uri>
         </author>
-        <published>2025-01-10T02:53:37.000Z</published>
+        <published>2025-01-10T06:30:14.000Z</published>
     </entry>
 </feed>
