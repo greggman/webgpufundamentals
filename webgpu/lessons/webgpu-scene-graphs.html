@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -229,7 +230,1079 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>TBD</p>
+      <p>This article is the 9th in a series of articles that will hopefully teach
+you about 3D math. Each one builds on the previous lesson so you may find
+them easiest to understand by reading them in order.</p>
+<ol>
+<li><a href="webgpu-translation.html">Translation</a></li>
+<li><a href="webgpu-rotation.html">Rotation</a></li>
+<li><a href="webgpu-scale.html">Scaling</a></li>
+<li><a href="webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="webgpu-cameras.html">Cameras</a></li>
+<li><a href="webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="webgpu-scene-graphs.html">Scene Graphs</a> ⬅ you are here</li>
+</ol>
+<p>In the last article we covered a matrix stack. It allowed us
+to build up a stack of matrix changes which was helpful for positioning,
+orienting, and scaling things relative to others.</p>
+<p>A Scene Graph is in a sense, the same thing, except instead of using
+code, we use data. We build up a graph of parents and children where
+the children compute their matrix based on the matrix of their parent.</p>
+<p>The scene graph for the filing cabinets would look something like this</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">root
+ &nbsp;+-cabinet0
+ &nbsp;|&nbsp;&nbsp;+-cabinet0-mesh
+ &nbsp;|&nbsp;&nbsp;+-drawer0
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer0-drawer-mesh
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer0-handle-mesh
+ &nbsp;|&nbsp;&nbsp;+-drawer1
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer1-drawer-mesh
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer1-handle-mesh
+ &nbsp;|&nbsp;&nbsp;+-drawer2
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer2-drawer-mesh
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer2-handle-mesh
+ &nbsp;|&nbsp;&nbsp;+-drawer3
+ &nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-drawer3-drawer-mesh
+ &nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-drawer3-handle-mesh
+ &nbsp;+-cabinet1
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-cabinet2
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-cabinet3
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-cabinet4
+ &nbsp;&nbsp;&nbsp;&nbsp;+-cabinet4-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;+-drawer0
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer0-drawer-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer0-handle-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;+-drawer1
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer1-drawer-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer1-handle-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;+-drawer2
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer2-drawer-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer2-handle-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;+-drawer3
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-drawer3-drawer-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-drawer3-handle-mesh
+</pre>
+<p>The advantage to a scene graph is it stores data as nodes in a graph
+so you can easily manipulate some sub portion of the graph without
+having to recurse in code.</p>
+<h2 id="lets-switch-the-file-cabinet-example-from-the-previous-article-to-use-a-scene-graph">Let’s switch the file cabinet example from the previous article to use a scene graph.</h2>
+<p>The first thing we need is a class to represent our scene graph.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class SceneGraphNode {
+  constructor(name, source) {
+    this.name = name;
+    this.children = [];
+    this.localMatrix = mat4.identity();
+    this.worldMatrix = mat4.identity();
+    this.source = source;
+  }
+
+  addChild(child) {
+    child.setParent(this);
+  }
+
+  removeChild(child) {
+    child.setParent(null);
+  }
+
+  setParent(parent) {
+    // remove us from our parent
+    if (this.parent) {
+      const ndx = this.parent.children.indexOf(this);
+      if (ndx &gt;= 0) {
+        this.parent.children.splice(ndx, 1);
+      }
+    }
+
+    // Add us to our new parent
+    if (parent) {
+      parent.children.push(this);
+    }
+    this.parent = parent;
+  }
+
+  updateWorldMatrix(parentWorldMatrix) {
+    // update the local matrix from its source if it has one.
+    this.source?.getMatrix(this.localMatrix);
+
+    if (parentWorldMatrix) {
+      // a matrix was passed in so do the math
+      mat4.multiply(parentWorldMatrix, this.localMatrix, this.worldMatrix);
+    } else {
+      // no matrix was passed in so just copy local to world
+      mat4.copy(this.localMatrix, this.worldMatrix);
+    }
+
+    // now process all the children
+    const worldMatrix = this.worldMatrix;
+    this.children.forEach(function(child) {
+      child.updateWorldMatrix(worldMatrix);
+    });
+  }
+}
+</pre>
+<p>The <code class="notranslate" translate="no">SceneGraphNode</code> above is pretty straight forward. Each node has an array of
+<code class="notranslate" translate="no">children</code>. There are functions to add and remove children as well as set a
+node’s parent. Each node has a <code class="notranslate" translate="no">localMatrix</code> which represents the position,
+orientation, and scale of this node relative to its parent. Each node has a
+<code class="notranslate" translate="no">worldMatrix</code> that represents this node’s position, orientation, and scale
+relative to “the world” or more specifically, relative to the outside of the
+scene graph. And finally there’s <code class="notranslate" translate="no">updateWorldMatrix</code> which updates the
+<code class="notranslate" translate="no">worldMatrix</code> of a node and all of its children. Each node also has an optional
+<code class="notranslate" translate="no">source</code> which is an object that provides a <code class="notranslate" translate="no">getMatrix</code> function. We can use this
+to provide different ways to compute a local matrix for a particular node.</p>
+<p>Let’s provide a source.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class TRS {
+  constructor({
+    translation = [0, 0, 0],
+    rotation = [0, 0, 0],
+    scale = [1, 1, 1],
+  } = {}) {
+     this.translation = new Float32Array(translation);
+     this.rotation = new Float32Array(rotation);
+     this.scale = new Float32Array(scale);
+  }
+
+  getMatrix(dst) {
+   mat4.translation(this.translation, dst);
+   mat4.rotateX(dst, this.rotation[0], dst);
+   mat4.rotateY(dst, this.rotation[1], dst);
+   mat4.rotateZ(dst, this.rotation[2], dst);
+   mat4.scale(dst, this.scale, dst);
+   return dst;
+ }
+}
+</pre>
+<p><code class="notranslate" translate="no">TRS</code> is short for Translation, Rotation, Scale. This is a common way to
+compute a local matrix in a scene graph. Often, some implementations use
+“position” instead of “translation”. For this tutorial, I thought it might
+be better to use “translation” since it matches what we do in <code class="notranslate" translate="no">getMatrix</code>.</p>
+<p>One thing that sticks out above is setting <code class="notranslate" translate="no">this.translation</code>, <code class="notranslate" translate="no">this.rotation</code>
+and <code class="notranslate" translate="no">this.scale</code> to <code class="notranslate" translate="no">new Float32Array(value)</code>. The advantage to <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a>
+is it has <code class="notranslate" translate="no">set</code> function so we can do <code class="notranslate" translate="no">someTRS.translation.set(someNewValue)</code>.</p>
+<p>You can see <code class="notranslate" translate="no">getMatrix</code> computes a matrix by using effectively</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">translation * rotationX * rotationY * rotationZ * scale
+</pre>
+<p>It’s common to have options to change the order of applying rotation.
+Instead of XYZ it might by ZYX or YZX or whatever. It’s also common
+to use a <a href="https://google.com/search?quaternion">quaternion</a> and it’s getting
+more common to use <a href="https://www.youtube.com/watch?v=Idlv83CxP-8">geometric algebra</a>.</p>
+<p>In any case, we’re going to start with what’s above.</p>
+<p>Now that we have a <code class="notranslate" translate="no">SceneGraphNode</code> and <code class="notranslate" translate="no">TRS</code> source, let’s build our
+scene graph.</p>
+<p>First let’s make a function that adds both a <code class="notranslate" translate="no">SceneGraphNode</code> and a <code class="notranslate" translate="no">TRS</code> source to some parent.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addTRSSceneGraphNode(
+    name,
+    parent,
+    trs,
+  ) {
+    const node = new SceneGraphNode(name, new TRS(trs));
+    if (parent) {
+      node.setParent(parent);
+    }
+    return node;
+  }
+</pre>
+<p>Let’s add a function that makes a “mesh”. I’m not sure what to call this
+but it will be a list of things to draw. Each “thing to draw” will be a
+combination of a <code class="notranslate" translate="no">SceneGraphNode</code>, the vertices for the thing we want to
+draw, and a color to draw it with.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const meshes = [];
+  function addMesh(node, vertices, color) {
+    const mesh = {
+      node,
+      vertices,
+      color,
+    };
+    meshes.push(mesh);
+    return mesh;
+  }
+</pre>
+<p>Now, since we only have a cube, let’s make a function that adds a cube
+to the scene graph and adds a “mesh” to render the cube.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addCubeNode(name, parent, trs, color) {
+    const node = addTRSSceneGraphNode(name, parent, trs);
+    return addMesh(node, cubeVertices, color);
+  }
+</pre>
+<p>With those in place, lets build the graph for the filing cabinets. First let’s
+make a “root” node. The root doesn’t need a “source”.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const root = new SceneGraphNode('root');
+</pre>
+<p>Then let’s add cabinets</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const root = new SceneGraphNode('root');
++  // Add cabinets
++  for (let cabinetNdx = 0; cabinetNdx &lt; kNumCabinets; ++cabinetNdx) {
++    addCabinet(root, cabinetNdx);
++  }
+</pre>
+<p>Let’s write <code class="notranslate" translate="no">addCabinet</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addCabinet(parent, cabinetNdx) {
+    const cabinetName = `cabinet${cabinetNdx}`;
+
+    // add a node for the entire cabinet
+    const cabinet = addTRSSceneGraphNode(
+      cabinetName, parent, {
+         translation: [cabinetNdx * kCabinetSpacing, 0, 0],
+       });
+
+    // add a node with a cube for the cabinet
+    const kCabinetSize = [
+      kDrawerSize[kWidth] + 6,
+      kDrawerSpacing * kNumDrawersPerCabinet + 6,
+      kDrawerSize[kDepth] + 4,
+    ];
+    addCubeNode(
+      `${cabinetName}-mesh`, cabinet, {
+        scale: kCabinetSize,
+      }, kCabinetColor);
+
+    // Add the drawers
+    for (let drawerNdx = 0; drawerNdx &lt; kNumDrawersPerCabinet; ++drawerNdx) {
+      addDrawer(cabinet, drawerNdx);
+    }
+  }
+</pre>
+<p>And, let’s write <code class="notranslate" translate="no">addDrawer</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addDrawer(parent, drawerNdx) {
+    const drawerName = `drawer${drawerNdx}`;
+
+    // add a node for the entire drawer
+    const drawer = addTRSSceneGraphNode(
+      drawerName, parent, {
+        translation: [3, drawerNdx * kDrawerSpacing + 5, 1],
+      });
+    animNodes.push(drawer);
+
+    // add a node with a cube for the drawer cube.
+    addCubeNode(`${drawerName}-drawer-mesh`, drawer, {
+      scale: kDrawerSize,
+    }, kDrawerColor);
+
+    // add a node with a cube for the handle
+    addCubeNode(`${drawerName}-handle-mesh`, drawer, {
+      translation: kHandlePosition,
+      scale: kHandleSize,
+    }, kHandleColor);
+  }
+</pre>
+<p>With our scene graph in place, we need to update our render
+function.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    stack.save();
+-    stack.rotateY(settings.baseRotation);
+-    stack.translate([(kNumCabinets - 0.5) * kCabinetSpacing * -0.5, 0, 0]);
+-    objectNdx = 0;
+-    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawCabinets(ctx, kNumCabinets);
+-    stack.restore();
++    const ctx = { pass, viewProjectionMatrix };
++    root.updateWorldMatrix();
++    for (const mesh of meshes) {
++      drawMesh(ctx, mesh);
++    }
+</pre>
+<p>And let’s tweak the camera code</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+-    baseRotation: 0,
++    cameraRotation: 0,
+  };
+
+  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+-  gui.add(settings, 'baseRotation', radToDegOptions);
++  gui.add(settings, 'cameraRotation', radToDegOptions);
+
+...
+
+  function render() {
+    ...
+
+-    const eye = [0, 80, 200];
+-    const target = [0, 80, 0];
+-    const up = [0, 1, 0];
+-
+-    // Compute a view matrix
+-    const viewMatrix = mat4.lookAt(eye, target, up);
++    // Compute a camera matrix
++    const cameraMatrix = mat4.identity();
++    mat4.translate(cameraMatrix, [120, 100, 0], cameraMatrix);
++    mat4.rotateY(cameraMatrix, settings.cameraRotation, cameraMatrix);
++    mat4.translate(cameraMatrix, [60, 0, 300], cameraMatrix);
++
++    // Compute a view matrix
++    const viewMatrix = mat4.inverse(cameraMatrix);
+
+    // combine the view and projection matrixes
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+</pre>
+<p>And that gives us the same filing cabinets but using a scene graph.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<h2 id="add-a-gui"><a id="a-gui"></a> Add a GUI</h2>
+<p>A major point of a scene graph is that, because it’s just data, we can
+manipulate it. Let’s add a UI to adjust and tweak the graph.</p>
+<p>First, lets add some controls for translation, rotation, and scale.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+-    cameraRotation: 0,
++    cameraRotation: degToRad(-45),
++    translation: new Float32Array([0, 0, 0]),
++    rotation: new Float32Array([0, 0, 0]),
++    scale: new Float32Array([1, 1, 1]),
+  };
+
+-  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
++  const radToDegOptions = { min: -90, max: 90, step: 1, converters: GUI.converters.radToDeg };
++  const cameraRadToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+-  gui.add(settings, 'cameraRotation', radToDegOptions);
++  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  const trsFolder = gui.addFolder('orientation');
++  trsFolder.add(settings.translation, '0', -50, 50, 1).name('translation x');
++  trsFolder.add(settings.translation, '1', -50, 50, 1).name('translation y');
++  trsFolder.add(settings.translation, '2', -50, 50, 1).name('translation z');
++  trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x');
++  trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y');
++  trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z');
++  trsFolder.add(settings.scale, '0', 0.1, 100).name('scale x');
++  trsFolder.add(settings.scale, '1', 0.1, 100).name('scale y');
++  trsFolder.add(settings.scale, '2', 0.1, 100).name('scale z');
+</pre>
+<p>Then lets add some code to update whatever the currently selected node is in the
+scene graph.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let currentNode;
++  function updateCurrentNodeFromSettings() {
++    const source = currentNode.source;
++    source.translation.set(settings.translation);
++    source.rotation.set(settings.rotation);
++    source.scale.set(settings.scale);
++  }
+</pre>
+<p>and let’s call this any time one of the translation, rotation, or scale widgets is
+changed.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+  const trsFolder = gui.addFolder('orientation');
++  trsFolder.onChange(updateCurrentNodeFromSettings);
+  ...
+</pre>
+<p>Now we need a way to select a node so let’s walk the scene graph and make a
+button for each node.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import GUI from '../3rdparty/muigui-0.x.module.js';
++import { addButtonLeftJustified } from './resources/js/gui-helpers.js';
+
+...
+  let currentNode;
+  function updateCurrentNodeFromSettings() {
+    const source = currentNode.source;
+    source.translation.set(settings.translation);
+    source.rotation.set(settings.rotation);
+    source.scale.set(settings.scale);
+  }
+
++  function updateCurrentNodeGUI() {
++    const source = currentNode.source;
++    settings.translation.set(source.translation);
++    settings.rotation.set(source.rotation);
++    settings.scale.set(source.scale);
++    trsFolder.updateDisplay();
++  }
++
++  function setCurrentSceneGraphNode(node) {
++    currentNode = node;
++    trsFolder.name(`orientation: ${node.name}`);
++    updateCurrentNodeGUI();
++  }
++
++  // \u00a0 is non-breaking space.
++  const threeSpaces = '\u00a0\u00a0\u00a0';
++  const barTwoSpaces = '\u00a0|\u00a0';
++  const plusDash = '\u00a0+-';
++  // add a scene graph node to the GUI and adds the appropriate
++  // prefix so it looks something like
++  //
++  // +-root
++  // | +-child
++  // | | +-child
++  // | +-child
++  // +-child
++  function addSceneGraphNodeToGUI(gui, node, last, prefix) {
++    if (node.source instanceof TRS) {
++      const label = `${prefix === undefined ? '' : `${prefix}${plusDash}`}${node.name}`;
++      addButtonLeftJustified(
++        gui, label, () =&gt; setCurrentSceneGraphNode(node));
++    }
++    const childPrefix = prefix === undefined
++      ? ''
++      : `${prefix}${last ? threeSpaces : barTwoSpaces}`;
++    node.children.forEach((child, i) =&gt; {
++      const childLast = i === node.children.length - 1;
++      addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
++    });
++  }
+
+  const gui = new GUI();
+  ...
++  const nodesFolder = gui.addFolder('nodes');
++  addSceneGraphNodeToGUI(nodesFolder, root);
++
++  setCurrentSceneGraphNode(root.children[0]);
+</pre>
+<p>Above we made a button for each node that has a <code class="notranslate" translate="no">TRS</code> source.
+When a button is clicked it calls
+<code class="notranslate" translate="no">setCurrentSceneGraphNode</code> and passes it the node for that button.
+<code class="notranslate" translate="no">setCurrentSceneGraphNode</code> updates the folder name and then calls
+<code class="notranslate" translate="no">updateCurrentNodeGUI</code> to update <code class="notranslate" translate="no">settings</code> with the data from the newly
+selected node.</p>
+<p>This works but I found the UI is a little cluttered for our small windows so
+here’s a few more tweaks.</p>
+<ol>
+<li>
+<p>Reduce the translate, rotation, scale controls.</p>
+<p>For the file cabinets, although we can set any of the 9 settings of
+translation, rotation, and scale on each node. The only one that’s really
+relevant is “translation z”. So, lets hide all but translation by default.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const settings = {
+   cameraRotation: degToRad(-45),
++   showAllTRS: false,
+   translation: new Float32Array([0, 0, 0]),
+   rotation: new Float32Array([0, 0, 0]),
+   scale: new Float32Array([1, 1, 1]),
+ };
+
+ const gui = new GUI();
+ gui.onChange(render);
+ gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++ gui.add(settings, 'showAllTRS').onChange(showTRS);
+ const trsFolder = gui.addFolder('orientation');
+ trsFolder.onChange(updateCurrentNodeFromSettings);
++ const trsControls = [
+*   trsFolder.add(settings.translation, '0', -50, 50, 1).name('translation x'),
+*   trsFolder.add(settings.translation, '1', -50, 50, 1).name('translation y'),
+*   trsFolder.add(settings.translation, '2', -50, 50, 1).name('translation z'),
+*   trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x'),
+*   trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y'),
+*   trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z'),
+*   trsFolder.add(settings.scale, '0', 0.1, 100).name('scale x'),
+*   trsFolder.add(settings.scale, '1', 0.1, 100).name('scale y'),
+*   trsFolder.add(settings.scale, '2', 0.1, 100).name('scale z'),
++ ];
+const nodesFolder = gui.addFolder('nodes');
+addSceneGraphNodeToGUI(nodesFolder, root);
+
++const alwaysShow = new Set([0, 1, 2]);
++function showTRS(show) {
++  trsControls.forEach((trs, i) =&gt; {
++    trs.show(show || alwaysShow.has(i));
++  });
++}
++showTRS(false);
+</pre>
+<p>This code collects the translation, rotation, scale controls into an array
+and shows all or just the first 3.</p>
+</li>
+<li>
+<p>Don’t show the meshes</p>
+<p>We have a ‘-mesh’ node in the graph for each cube which we don’t really need
+to move the cabinets or the drawers so lets hide them by default.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // \u00a0 is non-breaking space.
+  const threeSpaces = '\u00a0\u00a0\u00a0';
+  const barTwoSpaces = '\u00a0|\u00a0';
+  const plusDash = '\u00a0+-';
+  // add a scene graph node to the GUI and adds the appropriate
+  // prefix so it looks something like
+  //
+  // +-root
+  // | +-child
+  // | | +-child
+  // | +-child
+  // +-child
+  function addSceneGraphNodeToGUI(gui, node, last, prefix) {
++   const nodes = [];
+    if (node.source instanceof TRS) {
+      const label = `${prefix === undefined ? '' : `${prefix}${plusDash}`}${node.name}`;
+-      addButtonLeftJustified(gui, label, () =&gt; setCurrentSceneGraphNode(node));
++      nodes.push(addButtonLeftJustified(
++        gui, label, () =&gt; setCurrentSceneGraphNode(node)));
+    const childPrefix = prefix === undefined
+      ? ''
+      : `${prefix}${last ? threeSpaces : barTwoSpaces}`;
+-    node.children.forEach((child, i) =&gt; {
++    nodes.push(...node.children.map((child, i) =&gt; {
+*      const childLast = i === node.children.length - 1;
+-      addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
++      return addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
+*    }));
++    return nodes.flat();
+  }
+
+  const settings = {
+    cameraRotation: degToRad(-45),
++    showMeshNodes: false,
+    showAllTRS: false,
+    translation: new Float32Array([0, 0, 0]),
+    rotation: new Float32Array([0, 0, 0]),
+    scale: new Float32Array([1, 1, 1]),
+  };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
+
+   ...
+
+-  const nodesFolder = gui.addFolder('nodes');
+  addSceneGraphNodeToGUI(nodesFolder, root);
++  const nodeButtons = addSceneGraphNodeToGUI(nodesFolder, root);
+
++ function showMeshNodes(show) {
++   for (const child of nodeButtons) {
++     if (child.domElement.textContent.includes('mesh')) {
++       child.show(show);
++     }
++   }
++ }
++ showMeshNodes(false);
+</pre>
+</li>
+</ol>
+<p>Try selecting a “drawer” and adjusting “translation z”.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets-w-gui.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets-w-gui.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>As you can see, by having data for each node it makes it easy to change the
+position, rotation, and scale of any individual node.</p>
+<h2 id="animate"><a id="a-animate"></a> Animate</h2>
+<p>For fun, let’s animate the drawers.</p>
+<p>First lets make a list of the drawer nodes.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const animNodes = [];
+
+  function addDrawer(parent, drawerNdx) {
+    const drawerName = `drawer${drawerNdx}`;
+
+    // add a node for the entire drawer
+    const drawer = addTRSSceneGraphNode(
+      drawerName, parent, {
+        translation: [3, drawerNdx * kDrawerSpacing + 5, 1],
+      });
++    animNodes.push(drawer);
+
+    // add a node with a cube for the drawer cube.
+    addCubeNode(`${drawerName}-drawer-mesh`, drawer, {
+      scale: kDrawerSize,
+    }, kDrawerColor);
+
+    // add a node with a cube for the handle
+    addCubeNode(`${drawerName}-handle-mesh`, drawer, {
+      translation: kHandlePosition,
+      scale: kHandleSize,
+    }, kHandleColor);
+  }
+</pre>
+<p>Then let’s write some code to animate the drawers based on the time.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const lerp = (a, b, t) =&gt; a + (b - a) * t;
+
+  function animate(time) {
+    animNodes.forEach((node, i) =&gt; {
+      const source = node.source;
+      const t = time + i * 1;
+      const l = Math.sin(t) * 0.5 + 0.5;
+      source.translation[2] = lerp(1, kDrawerSize[2] * 0.8, l);
+    });
+  }
+</pre>
+<p>Let’s make a render loop. We’ll make it request an animation frame only if we
+haven’t already requested one and no frame has yet rendered.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // request render if not already requested.
++  let renderRequestId;
++  function requestRender() {
++    if (!renderRequestId) {
++      renderRequestId = requestAnimationFrame(render);
++    }
++  }
+
+  function render() {
++    renderRequestId = undefined;
+    ...
+
+  }
+</pre>
+<p>And we need to update the places that used to call <code class="notranslate" translate="no">render</code> to call
+<code class="notranslate" translate="no">requestRender</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
+-  gui.onChange(render);
++  gui.onChange(requestRender);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+
+  ...
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // re-render
+-      render();
++      requestRender();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>Finally lets setup some code to let us turn the animation on/off</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
++    animate: false,
+    showMeshNodes: false,
+    showAllTRS: false,
+    translation: new Float32Array([0, 0, 0]),
+    rotation: new Float32Array([0, 0, 0]),
+    scale: new Float32Array([1, 1, 1]),
+    cameraRotation: degToRad(-45),
+  };
+
+  const gui = new GUI();
+  gui.onChange(requestRender);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  gui.add(settings, 'animate').onChange(v =&gt; {
++    trsFolder.enable(!v);
++  });
+  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
+
+  ...
+
++  let then;
++  let time = 0;
++  let wasRunning = false;
+  function render() {
+    renderRequestId = undefined;
+
+  ...
+
++    const isRunning = settings.animate;
++    const now = performance.now() * 0.001;
++    const deltaTime = wasRunning ? now - then : 0;
++    then = now;
++
++    if (isRunning) {
++      time += deltaTime;
++    }
++    wasRunning = isRunning;
++
++    if (settings.animate) {
++      animate(time);
++      updateCurrentNodeGUI();
++      requestRender();
++    }
+  }
+</pre>
+<p>A complication above is that we’d prefer to only run the clock if “animate” is
+checked. So we check if it <code class="notranslate" translate="no">wasRunning</code> last frame. If not then we set
+<code class="notranslate" translate="no">deltaTime</code> to 0. That way the clock won’t jump forward the amount of time we
+were not animating.</p>
+<p>We disable the translation, rotation, scale controls if we’re animating.</p>
+<p>Finally, if <code class="notranslate" translate="no">settings.animate</code> is set we request another animation frame. The
+gui code will already call <code class="notranslate" translate="no">requestRender</code> on any change so it will start a
+render, see that <code class="notranslate" translate="no">settings.animate</code> is true, and request another frame.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets-w-animation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets-w-animation.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Another advantage to a scene graph is it makes it easy to apply animation.
+We just apply it to the nodes. We don’t have to care in advance how they were
+created.</p>
+<h2 id="making-a-hand"><a id="a-hand"></a> Making a Hand</h2>
+<p>Let’s make a new example of a hand. To keep it simple we’ll stick with
+cubes.</p>
+<p>Here’s a diagram of what the scene graph will look like</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">oot
+ +-wrist
+    +-palm
+    |  +-thumb
+    |  |  +-thumb-mesh
+    |  |  +-thumb-1
+    |  |     +-thumb-1-mesh
+    |  +-index finger
+    |  |  +-index finger-mesh
+    |  |  +-index finger-1
+    |  |     +-index finger-1-mesh
+    |  |     +-index finger-2
+    |  |        +-index finger-2-mesh
+    |  +-middle finger
+    |  |  +-middle finger-mesh
+    |  |  +-middle finger-1
+    |  |     +-middle finger-1-mesh
+    |  |     +-middle finger-2
+    |  |        +-middle finger-2-mesh
+    |  +-ring finger
+    |  |  +-ring finger-mesh
+    |  |  +-ring finger-1
+    |  |     +-ring finger-1-mesh
+    |  |     +-ring finger-2
+    |  |        +-ring finger-2-mesh
+    |  +-pinky
+    |     +-pinky-mesh
+    |     +-pinky-1
+    |        +-pinky-1-mesh
+    |        +-pinky-2
+    |           +-pinky-2-mesh
+    +-palm-mesh
+</pre>
+<p>First, let’s move the cube vertices so they are centered above the XZ plane. We
+could do this by adding more nodes in the scene graph or by applying it in each
+‘-mesh’ node but it would be less cluttered to just do it in the vertices
+themselves.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCubeVertices() {
+  const positions = [
+    // left
+-    0, 0,  0,
+-    0, 0, -1,
+-    0, 1,  0,
+-    0, 1, -1,
++   -0.5, 0,  0.5,
++   -0.5, 0, -0.5,
++   -0.5, 1,  0.5,
++   -0.5, 1, -0.5,
+
+    // right
+-    1, 0,  0,
+-    1, 0, -1,
+-    1, 1,  0,
+-    1, 1, -1,
++    0.5, 0,  0.5,
++    0.5, 0, -0.5,
++    0.5, 1,  0.5,
++    0.5, 1, -0.5,
+  ];
+
+  ...
+</pre>
+<p>Now let’s make the scene graph. We delete all the code
+related to creating the file cabinets scene graph and replace it
+with this.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const kWhite = [1, 1, 1, 1];
++  function addFinger(name, parent, segments, segmentHeight, trs) {
++    const nodes = [];
++    const baseName = name;
++    for (let i = 0; i &lt; segments; ++i) {
++      const node = addTRSSceneGraphNode(name, parent, trs);
++      nodes.push(node);
++      const meshNode = addTRSSceneGraphNode(`${name}-mesh`, node, { scale: [10, segmentHeight, 10] });
++      addMesh(meshNode, cubeVertices, kWhite);
++      parent = node;
++      name = `${baseName}-${i + 1}`;
++      trs = {
++        translation: [0, segmentHeight, 0],
++        rotation: [degToRad(15), 0, 0],
++      };
++    }
++    return nodes;
++  }
+
+  const root = new SceneGraphNode('root');
++  const wrist = addTRSSceneGraphNode('wrist', root);
++  const palm = addTRSSceneGraphNode('palm', wrist, { translation: [0, 100, 0] });
++  const palmMesh = addTRSSceneGraphNode('palm-mesh', wrist, { scale: [100, 100, 10] });
++  addMesh(palmMesh, cubeVertices, kWhite);
++  const rotation = [degToRad(15), 0, 0];
++  const animNodes = [
++    wrist,
++    palm,
++    ...addFinger('thumb',         palm, 2, 20, { translation: [-50, 0, 0], rotation }),
++    ...addFinger('index finger',  palm, 3, 30, { translation: [-25, 0, 0], rotation }),
++    ...addFinger('middle finger', palm, 3, 35, { translation: [ -0, 0, 0], rotation }),
++    ...addFinger('ring finger',   palm, 3, 33, { translation: [ 25, 0, 0], rotation }),
++    ...addFinger('pinky',         palm, 3, 25, { translation: [ 45, 0, 0], rotation }),
++  ];
+</pre>
+<p>We create a wrist, to which we attach a palm and a palm-mesh. To the palm we attach 5 fingers
+using <code class="notranslate" translate="no">addFinger</code>. Add finger adds the segments of a finger, each a certain length.</p>
+<blockquote>
+<p>Yes, this is not even remotely correct for a human hand 😂</p>
+</blockquote>
+<p>Where as for the file cabinets we only really cared about <code class="notranslate" translate="no">translation z</code>, the most
+important transformation for the hand is <code class="notranslate" translate="no">rotation x</code> so let’s adjust which controls
+are shown by default</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const alwaysShow = new Set([0, 1, 2]);
++  const alwaysShow = new Set([0, 1, 3]);
+  function showTRS(show) {
+    trsControls.forEach((trs, i) =&gt; {
+      trs.show(show || alwaysShow.has(i));
+    });
+  }
+  showTRS(false);
+</pre>
+<p>The animation for the hand needs to rotate x instead of translate z.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function animate(time) {
+    animNodes.forEach((node, i) =&gt; {
+      const source = node.source;
+-      const t = time + i * 1;
++      const t = time + i * 0.1;
+      const l = Math.sin(t) * 0.5 + 0.5;
+-      source.translation[2] = lerp(1, kDrawerSize[2] * 0.8, l);
++      source.rotation[0] = lerp(0, Math.PI * 0.25, l);
+    });
+  }
+</pre>
+<p>Finally, ket’s adjust the camera slightly.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // Compute a camera matrix.
+    const cameraMatrix = mat4.identity();
+-    mat4.translate(cameraMatrix, [120, 100, 0], cameraMatrix);
++    mat4.translate(cameraMatrix, [100, 100, 0], cameraMatrix);
+    mat4.rotateY(cameraMatrix, settings.cameraRotation, cameraMatrix);
+-    mat4.translate(cameraMatrix, [60, 0, 300], cameraMatrix);
++    mat4.translate(cameraMatrix, [100, 0, 300], cameraMatrix);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-hand.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-hand.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Select a finger and just ‘rotation x’ and you’ll see the segments
+further down all rotate with it.</p>
+<h2 id="lets-shoot-a-projectile-from-the-index-finger"><a id="a-shoot"></a> Let’s shoot a projectile from the index finger.</h2>
+<p>Another advantage of a scene graph is that you can easily ask for the
+position and orientation of any node in the graph.</p>
+<p>So, to shoot a from the index finger we need to know the node for the
+tip of the finger.</p>
+<p>Many scene graph APIs have functions to find nodes by name. Let’s add
+one to ours.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class SceneGraphNode {
+  constructor(name, source) {
+    this.name = name;
+    this.children = [];
+    this.localMatrix = mat4.identity();
+    this.worldMatrix = mat4.identity();
+    this.source = source;
+  }
+
++  find(name) {
++    if (this.name === name) {
++      return this;
++    }
++    for (const child of this.children) {
++      const found = child.find(name);
++      if (found) {
++        return found;
++      }
++    }
++    return undefined;
++  }
+
+  ...
+}
+</pre>
+<p>With that added we can find last segment of the index finger by name.
+That node represents the base of the last segment of the index finger,
+the point at which it rotates, not the tip. So, lets add another node
+as a child of that last index finger segment that actually does represent
+the tip.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const root = new SceneGraphNode('root');
+  const wrist = addTRSSceneGraphNode('wrist', root);
+  const palm = addTRSSceneGraphNode('palm', wrist, { translation: [0, 100, 0] });
+  const palmMesh = addTRSSceneGraphNode('palm-mesh', wrist, { scale: [100, 100, 10] });
+  addMesh(palmMesh, cubeVertices, kWhite);
+  const rotation = [degToRad(15), 0, 0];
+  const animNodes = [
+    wrist,
+    palm,
+    ...addFinger('thumb',         palm, 2, 20, { translation: [-50, 0, 0], rotation }),
+    ...addFinger('index finger',  palm, 3, 30, { translation: [-25, 0, 0], rotation }),
+    ...addFinger('middle finger', palm, 3, 35, { translation: [ -0, 0, 0], rotation }),
+    ...addFinger('ring finger',   palm, 3, 33, { translation: [ 25, 0, 0], rotation }),
+    ...addFinger('pinky',         palm, 3, 25, { translation: [ 45, 0, 0], rotation }),
+  ];
++  const fingerTip = addTRSSceneGraphNode('finger-tip', root.find('index finger-2'), { translation: [0, 30, 0] });
+</pre>
+<p>Now we need a projectile. We’ll use the cone we created for ornaments
+in <a href="webgpu-matrix-stacks.html">the previous article</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const cubeVertices = createVertices(createCubeVertices(), 'cube');
++  const shotVertices = createVertices(createConeVertices({
++    radius: 10,
++    height: 20,
++  }), 'shot');
+</pre>
+<p>Now let’s add some code to shoot projectiles.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kShotVelocity = 100; // units per second
+  const shots = [];
+  let shotId = 0;
+  function fireShot() {
+    const node = new SceneGraphNode(`shot-${shotId++}`);
+    node.setParent(root);
+    mat4.translate(fingerTip.worldMatrix, [0, 20, 0], node.localMatrix);
+    const mesh = addMesh(node, shotVertices, kWhite);
+    const velocity = vec3.mulScalar(
+      vec3.normalize(vec3.getAxis(fingerTip.worldMatrix, 1)),
+      kShotVelocity);
+    shots.push({
+      node,
+      mesh,
+      velocity,
+      endTime: performance.now() * 0.001 + 5,
+    });
+    requestRender();
+  }
+</pre>
+<p>This code adds a “shot” to the <code class="notranslate" translate="no">shots</code> array. This includes a <code class="notranslate" translate="no">node</code>,
+a <code class="notranslate" translate="no">mesh</code>, a <code class="notranslate" translate="no">velocity</code>, and an <code class="notranslate" translate="no">endTime</code>.</p>
+<p>The <code class="notranslate" translate="no">node</code> is positioned 20 units out on the Y axis. This is because the
+code to make a cone vertices makes the tip 20 units out so we need to
+compensate. We could go modify the cone vertex code instead but this was
+less work 😅.  Notice we are not adding a <code class="notranslate" translate="no">TRS</code> source for this node.
+We will update the local matrix directly.</p>
+<p><code class="notranslate" translate="no">mesh</code> is the mesh vertices. We need this so we can remove the shot’s
+mesh from the list of things to render when the shot is done.</p>
+<p><code class="notranslate" translate="no">velocity</code> is the direction and speed to move the shot. We call <code class="notranslate" translate="no">vec3.getAxis</code>
+to get the y axis as the direction to shoot as that’s the axis the fingers point. As we covered in
+<a href="webgpu-orthographic-projection.html">the article on 3d math</a>, the y
+axis is the 2nd row of the matrix or elements 4,5,6 so <code class="notranslate" translate="no">vec3.getAxis</code>
+can be implemented like this</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
++  // 0 = x, 1 = y, 2 = z;
++  getAxis(m, axis, dst) {
++    dst = dst || new Float32Array(3);
++
++    const offset = axis * 4;
++    dst[0] = m[offset + 0];
++    dst[1] = m[offset + 1];
++    dst[2] = m[offset + 2];
++
++    return dst;
++  },
+  ...
+};
+</pre>
+<p>Or code gets that y axis and normalizes that direction and then uses
+<code class="notranslate" translate="no">vec3.mulScalar</code> to get it to our desired velocity.</p>
+<p>We need to supply <code class="notranslate" translate="no">vec3.mulScalar</code></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
+  mulScalar(a, scale, dst) {
+    dst = dst || new Float32Array(3);
+
+    dst[0] = a[0] * scale;
+    dst[1] = a[1] * scale;
+    dst[2] = a[2] * scale;
+
+    return dst;
+  },  ...
+};
+</pre>
+<p>Finally the <code class="notranslate" translate="no">endTime</code> is some time in the future to remove the shot.</p>
+<p>With that, let’s add some code to move the projectiles.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function processShots(now, deltaTime) {
+    if (shots.length &gt; 0) {
+      requestRender();
+      while (shots.length &amp;&amp; shots[0].endTime &lt;= now) {
+        const shot = shots.shift();
+        shot.node.setParent(null);
+        removeMesh(shot.mesh);
+      }
+      for (const shot of shots) {
+        const v = vec3.mulScalar(shot.velocity, deltaTime);
+        mat4.multiply(mat4.translation(v), shot.node.localMatrix, shot.node.localMatrix);
+      }
+    }
+  }
+</pre>
+<p>That code checks if the shot’s time has expired. If so it removes the shot’s node
+from the scene graph and it removes the mesh from the list of things to render.</p>
+<p>Otherwise, for each shot in the array, it adds the velocity to the shot’s matrix,
+scaling it by the <code class="notranslate" translate="no">deltaTime</code> so it’s framerate independent.</p>
+<p>We need to supply <code class="notranslate" translate="no">removeMesh</code></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function removeMesh(mesh) {
+    meshes.splice(meshes.indexOf(mesh), 1);
+  }
+</pre>
+<p>Now we need to add a button to shoot with as well as actually call
+this processing function.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
+  gui.onChange(requestRender);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+  gui.add(settings, 'animate').onChange(v =&gt; {
+    trsFolder.enable(!v);
+  });
+  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
++  gui.addButton('Fire!', fireShot);
+
+  ...
+
+  function render() {
+    ...
+
+-      const isRunning = settings.animate;
++      const isRunning = settings.animate || shots.length;
+      const now = performance.now() * 0.001;
+      const deltaTime = wasRunning ? now - then : 0;
+      then = now;
+
+      if (isRunning) {
+        time += deltaTime;
+      }
+      wasRunning = isRunning;
+
+      if (settings.animate) {
+        animate(time);
+        updateCurrentNodeGUI();
+        requestRender();
+      }
+
++      processShots(now, deltaTime);
+  }
+</pre>
+<p>We need to keep running if there are shots. When the ‘Fire!’ button is pressed
+it will add a shot. The GUI will also call <code class="notranslate" translate="no">requestRender</code> so it will come
+through this code and call <code class="notranslate" translate="no">processShots</code>. <code class="notranslate" translate="no">processShots</code> calls <code class="notranslate" translate="no">requestRender</code>
+if there are any shots and so the animation loop will continue until all shots
+are finished.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-hand-shoot.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-hand-shoot.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Try selecting one of the index fingers, adjusting the rotation x, and then
+pressing ‘Fire!’. Or click ‘Fire!’ while it’s animating.</p>
+<p>This article should have given you some idea of what a scene graph is and how to
+use one. Unity, Blender, Unreal, Maya, 3DSMax, Three.js, all have a scene graph.
+They can take different forms. Some put the meshes in the graph itself making it
+non-homogenous. Others are more “pure” and keep them separate. Some have fairly
+complex “source” classes. Having a scene graph is generally the start of a 3d
+engine. Not every 3d engine has one but most do.</p>
+<p>In our code above we kept the camera itself outside of the scene graph but it’s
+more common for the camera to be part of the graph itself. That’s how you can
+see and manipulate multiple cameras in programs like Unity, Unreal, Blender,
+etc…</p>
+<p>By putting it in the graph itself we can have the camera be a child of some node
+and therefore have it affected by it’s parent. For example, a camera from the
+perspective of the driver of a car or a camera on a rotating security camera.</p>
+<p>Similarly, scene graphs can help with implementing 3d manipulators like many
+3d editors have. These are the UI elements that let you translate, rotate,
+and scale objects in the 3D view rather than from some separate GUI like we
+used above. Maybe we can cover 3D manipulators in another article.</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -264,6 +1337,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -338,9 +1412,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

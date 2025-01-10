@@ -46,7 +46,7 @@ canvas {
 //import 'https://greggman.github.io/webgl-lint/webgl-lint.js';
 import GUI from '../3rdparty/muigui-0.x.module.js';
 import * as twgl from '../3rdparty/twgl-full.module.js';
-import RollingAverage from './resources/js/rolling-average.js';
+import NonNegativeRollingAverage from './resources/js/non-negative-rolling-average.js';
 
 class TimingHelper {
   #ext;
@@ -118,10 +118,10 @@ const mat3 = {
   },
 };
 
-const fpsAverage = new RollingAverage();
-const jsAverage = new RollingAverage();
-const gpuAverage = new RollingAverage();
-const mathAverage = new RollingAverage();
+const fpsAverage = new NonNegativeRollingAverage();
+const jsAverage = new NonNegativeRollingAverage();
+const gpuAverage = new NonNegativeRollingAverage();
+const mathAverage = new NonNegativeRollingAverage();
 
 /** Given a css color string, return an array of 4 values from 0 to 255 */
 const cssColorToRGBA8 = (() => {

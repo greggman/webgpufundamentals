@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -531,6 +532,13 @@ since <code class="notranslate" translate="no">pos</code> is an array of <code c
 the remaining 2 values.</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">        return vec4f(pos[vertexIndex], 0.0, 1.0);
 </pre>
+<p>Note that for drawing something in 2D we usually only need the x and y values
+for position. The z value is used for depth testing and will come up in
+<a href="webgpu-orthographic-projection.html">the article on orthographic projection</a>.
+The z value is used for perspective divide and will come up in
+<a href="webgpu-perspective-projection.html">the article on perspective projection</a>.
+For now, setting them to z to 0.0 and w to 1.0 is what we need to draw
+the triangle.</p>
 <p>The shader module also declares a function called <code class="notranslate" translate="no">fs</code> that is declared with
 <code class="notranslate" translate="no">@fragment</code> attribute making it a fragment shader function.</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @fragment fn fs() -&gt; @location(0) vec4f {
@@ -1154,6 +1162,7 @@ never use a bind group with multiple pipelines. We’ll cover explicit layouts i
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -1228,9 +1237,6 @@ never use a bind group with multiple pipelines. We’ll cover explicit layouts i
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

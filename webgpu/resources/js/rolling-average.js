@@ -1,4 +1,3 @@
-// See https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
 export default class RollingAverage {
   #total = 0;
   #samples = [];

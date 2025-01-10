@@ -51,12 +51,12 @@ import {mat4, mat3, vec3} from '../3rdparty/wgpu-matrix.module.js';
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
 import TimingHelper from './resources/js/timing-helper.js';
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
-import RollingAverage from './resources/js/rolling-average.js';
+import NonNegativeRollingAverage from './resources/js/non-negative-rolling-average.js';
 
-const fpsAverage = new RollingAverage();
-const jsAverage = new RollingAverage();
-const gpuAverage = new RollingAverage();
-const mathAverage = new RollingAverage();
+const fpsAverage = new NonNegativeRollingAverage();
+const jsAverage = new NonNegativeRollingAverage();
+const gpuAverage = new NonNegativeRollingAverage();
+const mathAverage = new NonNegativeRollingAverage();
 
 /** Given a css color string, return an array of 4 values from 0 to 255 */
 const cssColorToRGBA8 = (() => {

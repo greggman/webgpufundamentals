@@ -8,9 +8,6 @@
   commentSectionHeader: `
 <div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
 <div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
-<div class="lesson-comment-notes">
-   使用 <b>&lt;pre&gt;&lt;code&gt;</b> 代码 <b>&lt;/code&gt;&lt;/pre&gt;</b> 的格式编写代码块
-</div>
   `,
   missing: `
 本课程还没有简体中文版翻译哦  (~￣△￣)~\n\n
@@ -22,8 +19,13 @@
   categoryMapping: {
     'basics': "基础概念",
     'misc': "杂项",
+    'textures': '纹理',
+    'techniques': '技术',
+    '3d': '3D',
+    '2d': '2D',
     '3d-math': '3D数学',
     'reference': '参考',
+    'lighting': '光照',
     'compute-shaders': '计算着色器',
   },
 }

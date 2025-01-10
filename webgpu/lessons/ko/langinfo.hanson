@@ -13,9 +13,6 @@
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">이슈</a> /
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">버그</a>
 </div>
-<div class="lesson-comment-notes">
-   코드 블럭의 경우 <b>&lt;pre&gt;&lt;code&gt;</b>코드<b>&lt;/code&gt;&lt;/pre&gt;</b>을 사용하세요.
-</div>
   `,
   missing: `
 죄송합니다. 이 글은 아직 번역이 되지 않았습니다.

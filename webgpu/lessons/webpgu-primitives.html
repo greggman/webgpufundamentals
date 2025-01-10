@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/webgpu-bindgrouplayout.md. Do not edited directly --><!--
-Copyright 2023, GfxFundamentals Contributors
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/langinfo.hanson. Do not edited directly --><!--
+Copyright 2020, Gregg Tavares
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-* Redistributions of source code must retain the above copyright
-  notice, this list of conditions and the following disclaimer.
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
 
-* Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the following disclaimer
-  in the documentation and/or other materials provided with the
-  distribution.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following disclaimer
+      in the documentation and/or other materials provided with the
+      distribution.
 
-* Neither the name of GfxFundamentals nor the names of the
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
+    * Neither the name of Gregg Tavares nor the names of the
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,89 +29,45 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
 --><html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<meta name="description" content="Creating BindGroupLayouts">
-<meta name="keywords" content="webgpu graphics">
-<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bindgrouplayout_en.jpg">
-
-<meta property="og:title" content="WebGPU BindGroupLayout">
+<meta property="og:title" content="WebGPU Geometric Primitives">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bindgrouplayout_en.jpg">
-<meta property="og:description" content="Creating BindGroupLayouts">
-<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-bindgrouplayout.html">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta property="og:description" content="Geometric Primitive Vertex Data">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/webpgu-primitives.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU BindGroupLayout">
-<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-bindgrouplayout.html">
-<meta name="twitter:description" content="Creating BindGroupLayouts">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bindgrouplayout_en.jpg">
+<meta name="twitter:title" content="WebGPU Geometric Primitives">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webpgu-primitives.html">
+<meta name="twitter:description" content="Geometric Primitive Vertex Data">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
 
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@graph":[
-    {
-      "@type":"WebSite",
-      "@id":"https://webgpufundamentals.org/#website",
-      "url":"https://webgpufundamentals.org/",
-      "name":"webgpufundamentals"
-    },
-    {
-      "@type":"ImageObject",
-      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-bindgrouplayout.html#primaryimage",
-      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bindgrouplayout_en.jpg",
-      "width":1200,
-      "height":630
-    },
-    {
-      "@type":"WebPage",
-      "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-bindgrouplayout.html#webpage",
-      "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-bindgrouplayout.html",
-      "inLanguage":"en",
-      "name":"WebGPU BindGroupLayout",
-      "keywords":"webgpu graphics programming",
-      "isPartOf":{
-        "@id":"https://webgpufundamentals.org/#website"
-      },
-      "primaryImageOfPage":{
-        "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-bindgrouplayout.html#primaryimage"
-      }
-    }
-  ]
-}
-</script>
 
-<title>WebGPU BindGroupLayout</title>
+<title>WebGPU Geometric Primitives</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
-<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
-<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
-
-<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
 <div class="webgpu_navbar">
   <div>
     <select class="language">
-    <option value="/webgpu/lessons/webgpu-bindgrouplayout.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-bindgrouplayout.html">Spanish
-    </option><option value="/webgpu/lessons/ja/webgpu-bindgrouplayout.html">日本語
-    </option><option value="/webgpu/lessons/ko/webgpu-bindgrouplayout.html">한국어
-    </option><option value="/webgpu/lessons/ru/webgpu-bindgrouplayout.html">Русский
-    </option><option value="/webgpu/lessons/uk/webgpu-bindgrouplayout.html">Українська
-    </option><option value="/webgpu/lessons/zh_cn/webgpu-bindgrouplayout.html">简体中文
+    <option value="/webgpu/lessons/webpgu-primitives.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webpgu-primitives.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webpgu-primitives.html">日本語
+    </option><option value="/webgpu/lessons/ko/webpgu-primitives.html">한국어
+    </option><option value="/webgpu/lessons/ru/webpgu-primitives.html">Русский
+    </option><option value="/webgpu/lessons/uk/webpgu-primitives.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webpgu-primitives.html">简体中文
 </option></select>
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -225,27 +181,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU BindGroupLayout</h1>
+    <h1>WebGPU Geometric Primitives</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>TBD</p>
+      <p>Sorry this article has not been translated yet.</p>
+<p><a href="https://github.com/webgpu/webgpufundamentals">Translations Welcome</a>! 😄</p>
+<p><a href="/webgpu/lessons/webpgu-primitives.html">Here’s the original English article for now</a>.</p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
-    <option value="/webgpu/lessons/webgpu-bindgrouplayout.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-bindgrouplayout.html">Spanish
-    </option><option value="/webgpu/lessons/ja/webgpu-bindgrouplayout.html">日本語
-    </option><option value="/webgpu/lessons/ko/webgpu-bindgrouplayout.html">한국어
-    </option><option value="/webgpu/lessons/ru/webgpu-bindgrouplayout.html">Русский
-    </option><option value="/webgpu/lessons/uk/webgpu-bindgrouplayout.html">Українська
-    </option><option value="/webgpu/lessons/zh_cn/webgpu-bindgrouplayout.html">简体中文
+    <option value="/webgpu/lessons/webpgu-primitives.html" selected="">English
+    </option><option value="/webgpu/lessons/es/webpgu-primitives.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webpgu-primitives.html">日本語
+    </option><option value="/webgpu/lessons/ko/webpgu-primitives.html">한국어
+    </option><option value="/webgpu/lessons/ru/webpgu-primitives.html">Русский
+    </option><option value="/webgpu/lessons/uk/webpgu-primitives.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webpgu-primitives.html">简体中文
 </option></select>
 
 
-        <div id="toc">
-          <ul>  <li>Basics</li>
+        <ul>  <li>Basics</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
 <li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
@@ -264,6 +221,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -328,56 +286,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
 
-        </div>
-    </div>
-    <div class="lesson-comments">
-        
-<div>Questions? <a href="http://stackoverflow.com/questions/tagged/webgpu">Ask on stackoverflow</a>.</div>
-<div>
-   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Suggestion</a>?
-   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
-   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
-   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
-</div>
-  
-
-        <div id="disqus_thread"></div>
-        <script>
-            var disqus_config = function () {
-              this.page.url = `${window.location.origin}${window.location.pathname}`;
-              this.page.identifier = `WebGPU BindGroupLayout`;
-            };
-            (function() { // DON'T EDIT BELOW THIS LINE
-                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
-                    return;
-                }
-                var d = document, s = d.createElement('script');
-                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
-<script>
-const settings = {
-  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
-  owner: "gfxfundamentals",
-  repo: "webgpufundamentals",
-};
-</script>
-<script src="/contributors.js"></script>
-<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/lesson.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

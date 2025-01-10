@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -282,13 +283,11 @@ is the recommended solution.</p>
 <li>
 <p>Storage buffers can be much larger than uniform buffers.</p>
 <ul>
-<li>The minimum maximum size of a uniform buffer is 64k</li>
-<li>The minimum maximum size of a storage buffer is 128meg</li>
+<li>By default, the maximum size of a uniform buffer is 64 kiB (65536 bytes).</li>
+<li>By default, the maximum size of a storage buffer is 128 MiB (134217728 bytes).</li>
 </ul>
-<p>By minimum maximum, there is a maximum size a buffer of a certain type
-can be. For uniform buffers, the maximum size is at least 64k.
-For storage buffers, it’s at least 128meg. We’ll cover limits in
-<a href="webgpu-limits-and-features.html">another article</a>.</p>
+<p>All implementations are required to support at least these sizes. We’ll cover how to check for and request larger limits in
+detail in <a href="webgpu-limits-and-features.html">another article</a>.</p>
 </li>
 <li>
 <p>Storage buffers can be read/write, Uniform buffers are read-only.</p>
@@ -702,6 +701,7 @@ which we’ll cover next in an article on <a href="webgpu-vertex-buffers.html">v
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -776,9 +776,6 @@ which we’ll cover next in an article on <a href="webgpu-vertex-buffers.html">v
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

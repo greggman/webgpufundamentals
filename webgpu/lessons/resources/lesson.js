@@ -100,7 +100,25 @@ $(document).ready(function($) {
     window.location.href = this.dataset.href;
   });
 
+  $('#search').on('keyup', function(e) {
+    if (e.key !== 'Enter') {
+      return;
+    }
+    const a = document.createElement('a');
+    a.target = '_blank';
+    const u = new URL('https://google.com/search');
+    u.searchParams.set('q', `site:webgpufundamentals.org ${this.value}`);
+    a.href = u.toString();
+    a.click();
+  });
+
   $('[data-table]').html();
+  $('a[id]:not([href])')
+    .addClass('permalink')
+    .each(function(i, e) {
+      $(e).attr('href', `#${$(e).attr('id')}`);
+    })
+    .append('<div class="permalink">#</div>');
 
 });
 }(jQuery));

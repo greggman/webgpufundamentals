@@ -113,6 +113,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">목차</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -312,7 +313,7 @@ GPU는 여러분이 제공한 함수를 실행할 때마다 반복 회수를 넘
 커맨드 버퍼는 이름 그대로입니다. 커맨드의 버퍼죠.
 여러분은 인코더(encoder)를 만들고 이 인코더는 커맨드 버퍼에 커맨드들을 인코딩합니다.
 인코딩을 <em>종료</em>하면 생성된 커맨드 버퍼를 얻을 수 있습니다.
-이후에 커맨드 버퍼를 *제출(submit)*하여 WebGPU가 카맨드를 실행하게 할 수 있습니다.</p>
+이후에 커맨드 버퍼를 *제출(submit)*하여 WebGPU가 커맨드를 실행하게 할 수 있습니다.</p>
 <p>아래는 커맨드 버퍼를 인코딩하는 의사 코드(pseudo code)와 생성된 커맨드 버퍼를 표현한 그림입니다.</p>
 <div class="webgpu_center side-by-side"><div style="min-width: 300px; max-width: 400px; flex: 1 1;"><pre class="prettyprint showlinemods notranslate notranslate" translate="no">encoder = device.createCommandEncoder()
 // 무언가를 그림
@@ -1017,6 +1018,7 @@ function main(device) {
 <li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
@@ -1092,9 +1094,6 @@ function main(device) {
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">요청 사항</a> /
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">이슈</a> /
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">버그</a>
-</div>
-<div class="lesson-comment-notes">
-   코드 블럭의 경우 <b>&lt;pre&gt;&lt;code&gt;</b>코드<b>&lt;/code&gt;&lt;/pre&gt;</b>을 사용하세요.
 </div>
   
 

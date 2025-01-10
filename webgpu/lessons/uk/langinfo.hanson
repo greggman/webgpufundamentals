@@ -13,9 +13,6 @@
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">Проблема</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">Помилка</a>?
 </div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
-</div>
   `,
   missing: `
 Вибачте, ця стаття ще не була перекладена.

@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -699,7 +700,8 @@ them in JavaScript we can use a <a href="https://developer.mozilla.org/en-US/doc
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt64Array"><code class="notranslate" translate="no">BigInt64Array</code></a> requires special care. When you read an element from a
 <code class="notranslate" translate="no">BitInt64Array</code> the type is a <code class="notranslate" translate="no">bigint</code>, not a <code class="notranslate" translate="no">number</code> so you can’t use with
 with lots of math functions. Also, when you convert them to numbers they may
-lose precision because a <code class="notranslate" translate="no">number`` can only hold integers of 53 bits in size. So, first we subtract the 2 </code>bigint<code class="notranslate" translate="no">s which stays a </code>bigint`. Then we convert
+lose precision because a <code class="notranslate" translate="no">number</code> can only hold integers of 53 bits in size.
+So, first we subtract the 2 <code class="notranslate" translate="no">bigint</code>s which stays a <code class="notranslate" translate="no">bigint</code>. Then we convert
 the result to a number so we can use it as normal.</p>
 <p>In the code above, we are are only copying the results to <code class="notranslate" translate="no">resultBuffer</code> some
 times, when it’s not mapped. That means we’ll only be reading the time on some
@@ -723,7 +725,10 @@ js: ${jsTime.toFixed(1)}ms
 useful. One way to fix that is to compute a rolling
 average. Here’s a class to help compute a rolling
 average.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class RollingAverage {
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// Note: We disallow negative values as this is used for timestamp queries
+// where it's possible for a query to return a beginning time greater than the
+// end time. See: https://gpuweb.github.io/gpuweb/#timestamp
+class NonNegativeRollingAverage {
   #total = 0;
   #samples = [];
   #cursor = 0;
@@ -732,9 +737,11 @@ average.</p>
     this.#numSamples = numSamples;
   }
   addSample(v) {
-    this.#total += v - (this.#samples[this.#cursor] || 0);
-    this.#samples[this.#cursor] = v;
-    this.#cursor = (this.#cursor + 1) % this.#numSamples;
+    if (!Number.isNaN(v) &amp;&amp; Number.isFinite(v) &amp;&amp; v &gt;= 0) {
+      this.#total += v - (this.#samples[this.#cursor] || 0);
+      this.#samples[this.#cursor] = v;
+      this.#cursor = (this.#cursor + 1) % this.#numSamples;
+    }
   }
   get() {
     return this.#total / this.#samples.length;
@@ -744,9 +751,9 @@ average.</p>
 <p>It keeps an array of values and a total. When a new value is added the
 oldest value is subtracted from the total as the new value is added.</p>
 <p>We can use it like this.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const fpsAverage = new RollingAverage();
-+const jsAverage = new RollingAverage();
-+const gpuAverage = new RollingAverage();
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const fpsAverage = new NonNegativeRollingAverage();
++const jsAverage = new NonNegativeRollingAverage();
++const gpuAverage = new NonNegativeRollingAverage();
 
 function render(now) {
   ...
@@ -815,14 +822,16 @@ class TimingHelper {
   constructor(device) {
     this.#device = device;
     this.#canTimestamp = device.features.has('timestamp-query');
-    this.#querySet = device.createQuerySet({
-       type: 'timestamp',
-       count: 2,
-    });
-    this.#resolveBuffer = device.createBuffer({
-      size: this.#querySet.count * 8,
-      usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC,
-    });
+    if (this.#canTimestamp) {
+      this.#querySet = device.createQuerySet({
+         type: 'timestamp',
+         count: 2,
+      });
+      this.#resolveBuffer = device.createBuffer({
+        size: this.#querySet.count * 8,
+        usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC,
+      });
+    }
   }
 
   #beginTimestampPass(encoder, fnName, descriptor) {
@@ -1036,6 +1045,14 @@ the best example</p>
 <li><a target="_blank" href="../webgpu-compute-shaders-histogram-slow-w-timing.html">1 channel single core histogram</a></li>
 <li><a target="_blank" href="../webgpu-compute-shaders-histogram-javascript-w-timing.html">1 channel JavaScript histogram</a></li>
 </ul>
+<h1 id="important-timestamp-query-results-are-implementation-defined"><a id="a-implementation-defined"></a> Important: <code class="notranslate" translate="no">timestamp-query</code> results are implementation-defined</h1>
+<p>This effectively means you can use them for debugging and for comparing techniques but you can not trust them to return similar results for all of your users.
+You can’t not even assume relative results. Different GPUs work in different ways
+and are able to optimize rendering and computing across passes. That means
+on one machine a first pass might take 200µs to draw 100 things and the 2nd pass
+might also take 200µs to 200 things but, another GPU might take 100µs to draw the first 100 things and 200µs to draw the 2nd 100 things so where as the first GPU
+had a relative difference of 0µs, the 2nd had a relative difference of 100µs
+even though both GPUs were asked to draw the same thing.</p>
 <div class="webgpu_bottombar">By default the `'timestamp-query'` time values
 are quantized to 100µ seconds. In Chrome, if you enable <a href="chrome://flags/#enable-webgpu-developer-features" target="_blank">"enable-webgpu-developer-features"</a> in <a href="chrome://flags/#enable-webgpu-developer-features" target="_blank">about:flags</a>, the time values may not be quantized. This would
 theoretically give you more accurate timings. That said, normally 100µ second quantized values should be enough for you to compare shaders techniques for performance.
@@ -1089,6 +1106,7 @@ to copy the results to a mappable buffer. <a href="#fnref3" class="footnote-back
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -1163,9 +1181,6 @@ to copy the results to a mappable buffer. <a href="#fnref3" class="footnote-back
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

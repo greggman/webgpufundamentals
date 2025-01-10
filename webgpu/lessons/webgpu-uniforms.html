@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -339,8 +340,8 @@ The offsets were computed using what we covered in
 to the left 1/4th of the canvas and down 1/8th. (remember, clip space goes
 from -1 to 1 which is 2 units wide so 0.25 is 1/8 of 2).</p>
 <p>Next, <a href="webgpu-fundamentals.html#a-draw-diagram">as the diagram showed in the first article</a>,
-to tell a shader about our buffer we need to create a bind group
-and bind the buffer to the same <code class="notranslate" translate="no">@binding(?)</code> we set in our shader.</p>
+to tell a shader about our buffer we need to create a bind group and bind the buffer.
+We need to pass the same <code class="notranslate" translate="no">@group(?)</code> and <code class="notranslate" translate="no">@binding(?)</code> we set in our shader.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
@@ -671,11 +672,11 @@ whereas before we were uploading the color + offset + scale for each object.</p>
 <p></p>
 <p>While in this simple example, splitting into multiple uniform buffers was probably
 overkill, it’s common to split based on what changes and when. Examples might include
-one uniform buffer for matrices that are shared. For example a project matrix, a view
-matrix, and a camera matrix. Since often these are the same for all things we want to draw
+one uniform buffer for matrices that are shared. For example <a href="webgpu-cameras.html">a projection matrix, a view
+matrix, and a camera matrix</a>. Since often these are the same for all things we want to draw
 we can just make one buffer and have all objects use the same uniform buffer.</p>
 <p>Separately our shader might reference another uniform buffer that contains just the
-things that are specific to this object like its world / model matrix and its normal matrix.</p>
+things that are specific to this object like its <a href="webgpu-cameras.html">world / model matrix</a> and its <a href="webgpu-lighting-directional.html">normal matrix</a>.</p>
 <p>Another uniform buffer might contain material settings. Those settings might be shared
 by multiple objects.</p>
 <p>We’ll do much of this when we cover drawing 3D.</p>
@@ -714,6 +715,7 @@ by multiple objects.</p>
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -788,9 +790,6 @@ by multiple objects.</p>
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -259,7 +260,7 @@ and translation of 100, 0.</p>
 <p>The results are completely different. Even worse, if we needed the
 second example we’d have to write a different shader that applied
 the translation, rotation, and scale in our new desired order.</p>
-<p>Well, some smart people way figured out that you can do
+<p>Well, some smart people figured out a way that you can do
 all the same stuff with matrix math. For 2D we use a 3x3 matrix.
 A 3x3 matrix is like a grid with 9 boxes:</p>
 <div class="glocal-center">
@@ -1292,7 +1293,7 @@ Next <a href="webgpu-orthographic-projection.html">we’ll move on to 3D</a>.
 In 3D the matrix math follows the same principles and usage.
 We started with 2D to hopefully keep it simple to understand.</p>
 <p>Also, if you really want to become an expert
-in matrix math <a href="https://www.youtube.com/watch?v=kjBOesZCoqc&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">check out this amazing videos</a>.</p>
+in matrix math <a href="https://www.youtube.com/watch?v=kjBOesZCoqc&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">check out this amazing video</a>.</p>
 <div class="webgpu_bottombar">
 <h3>What are <code class="notranslate" translate="no">clientWidth</code> and <code class="notranslate" translate="no">clientHeight</code>?</h3>
 <p>Up until this point, whenever we referred to the canvas's dimensions we used <code class="notranslate" translate="no">canvas.width</code> and <code class="notranslate" translate="no">canvas.height</code>
@@ -1383,6 +1384,7 @@ projection matrix's aspect ratio using <code class="notranslate" translate="no">
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -1457,9 +1459,6 @@ projection matrix's aspect ratio using <code class="notranslate" translate="no">
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

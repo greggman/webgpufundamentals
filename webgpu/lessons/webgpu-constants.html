@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -333,13 +334,174 @@ const code = `
 the shader module has been created which makes them technically faster
 to apply then creating a new shader module. Creating a pipeline is
 not a fast operation though so it’s not clear how much time this saves
-on the overall process of creating a pipeline. I’d suspect the more
-complex the shader the more time it saves.</p>
+on the overall process of creating a pipeline. It’s possible though,
+that the WebGPU implementation can use information from the first time
+you created a pipeline with certain constants so that the next time
+you create it with different constants, much less work is done.</p>
 <p>In any case, it is one way to get some small amount of data into a shader.</p>
-<p>It is <strong>not</strong> common to use pipeline overridable constants to pass in a color.
-That example was used because it’s easy to understand and to show the results.
-It <em>might</em> be useful for an iteration count, the size of an array (for
-example the number of lights), etc…</p>
+<h2 id="entry-points-are-independently-evaluated">entry points are independently evaluated</h2>
+<p>It’s also important to remember that entry points are evaluated in
+isolation as was partially covered in
+<a href="webgpu-inter-stage-variables.html#a-builtin-position">the article on inter-stage variables</a>.</p>
+<p>It’s as though the code passed to <code class="notranslate" translate="no">createShaderModule</code> was striped
+of everything not relevant to the current entry point. Pipeline
+override constants are applied, then, the shader for that entry point is
+created.</p>
+<p>Let’s expand our example above. We’ll change the shader so both the vertex
+and fragment stages use the constants. We’ll pass the vertex stage’s value
+to the fragment stage. We’ll then draw every other vertical strip of 50
+pixels with one value or the other.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VOut {
++  @builtin(position) pos: vec4f,
++  @location(0) color: vec4f,
++}
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+-) -&gt; @builtin(position) vec4f {
++) -&gt; VOut {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
+
+-  return vec4f(pos[vertexIndex], 0.0, 1.0);
++  return VOut(
++    vec4f(pos[vertexIndex], 0.0, 1.0),
++    vec4f(red, green, blue, 1),
++  );
+}
+
+override red = 0.0;
+override green = 0.0;
+override blue = 0.0;
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return vec4f(red, green, blue, 1.0);
++@fragment fn fs(v: VOut) -&gt; @location(0) vec4f {
++  let colorFromVertexShader = v.color;
++  let colorFromFragmentShader = vec4f(red, green, blue, 1.0);
++  // select one color or the other every 50 pixels
++  return select(
++    colorFromVertexShader,
++    colorFromFragmentShader,
++    v.pos.x % 100.0 &gt; 50.0);
+}
+</pre>
+<p>Now we’ll pass different constants into the each entry point</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded triangle pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
++      constants: {
++        red: 1,
++        green: 1,
++        blue: 0,
++      },
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+      constants: {
+        red: 1,
+        green: 0.5,
+        blue: 1,
+      },
+    },
+  });
+</pre>
+<p>The result shows the constants were different in each stage</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants-override-set-entry-points.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants-override-set-entry-points.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Again, functionally, the fact that we used one shader module with one WGSL <code class="notranslate" translate="no">code</code>
+is just a convenience. The code above is functionally equivalent to</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const vertexModule = device.createShaderModule({
+    code: `
+      struct VOut {
+        @builtin(position) pos: vec4f,
+        @location(0) color: vec4f,
+      }
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; VOut {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // top center
+          vec2f(-0.5, -0.5),  // bottom left
+          vec2f( 0.5, -0.5)   // bottom right
+        );
+
+        return VOut(
+          vec4f(pos[vertexIndex], 0.0, 1.0),
+          vec4f(red, green, blue, 1),
+        );
+      }
+
+      override red = 0.0;
+      override green = 0.0;
+      override blue = 0.0;
+    `,
+  });
+
+  const fragmentModule = device.createShaderModule({
+    code: `
+      struct VOut {
+        @builtin(position) pos: vec4f,
+        @location(0) color: vec4f,
+      }
+
+      override red = 0.0;
+      override green = 0.0;
+      override blue = 0.0;
+
+      @fragment fn fs(v: VOut) -&gt; @location(0) vec4f {
+        let colorFromVertexShader = v.color;
+        let colorFromFragmentShader = vec4f(red, green, blue, 1.0);
+        // select one color or the other every 50 pixels
+        return select(
+          colorFromVertexShader,
+          colorFromFragmentShader,
+          v.pos.x % 100.0 &gt; 50.0);
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded triangle pipeline',
+    layout: 'auto',
+    vertex: {
+*      module: vertexModule,
+      constants: {
+        red: 1,
+        green: 1,
+        blue: 0,
+      },
+    },
+    fragment: {
+*      module: fragmentModule,
+      targets: [{ format: presentationFormat }],
+      constants: {
+        red: 1,
+        green: 0.5,
+        blue: 1,
+      },
+    },
+  });
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants-override-separate-modules.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants-override-separate-modules.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Note: It is <strong>not</strong> common to use pipeline overridable constants to pass in a color.
+We used a color because it’s easy to understand and to show the results.</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -374,6 +536,7 @@ example the number of lights), etc…</p>
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -448,9 +611,6 @@ example the number of lights), etc…</p>
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -848,17 +849,17 @@ the example even more. We needed something showing animation I threw something t
   +});
   +observer.observe(canvas);
 </pre>
-<p>Let’s also add in some timing. We’ll use the <code class="notranslate" translate="no">RollingAverage</code> and <code class="notranslate" translate="no">TimingHelper</code> classes
+<p>Let’s also add in some timing. We’ll use the <code class="notranslate" translate="no">NonNegativeRollingAverage</code> and <code class="notranslate" translate="no">TimingHelper</code> classes
 we made in <a href="webgpu-timing.html">the article on timing</a>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// see https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
 import TimingHelper from './resources/js/timing-helper.js';
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
-import RollingAverage from './resources/js/rolling-average.js';
+import NonNegativeRollingAverage from './resources/js/non-negative-rolling-average.js';
 
-const fpsAverage = new RollingAverage();
-const jsAverage = new RollingAverage();
-const gpuAverage = new RollingAverage();
-const mathAverage = new RollingAverage();
+const fpsAverage = new NonNegativeRollingAverage();
+const jsAverage = new NonNegativeRollingAverage();
+const gpuAverage = new NonNegativeRollingAverage();
+const mathAverage = new NonNegativeRollingAverage();
 </pre>
 <p>Then we’ll time our JavaScript from the beginning to the end of our rendering code</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
@@ -2260,6 +2261,7 @@ some ideas for getting more speed in specialized situations.</p>
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -2334,9 +2336,6 @@ some ideas for getting more speed in specialized situations.</p>
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

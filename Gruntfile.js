@@ -12,6 +12,7 @@ const path = require('path');
 const c = require('ansi-colors');
 const liveEditor = require('@gfxfundamentals/live-editor');
 const fixLinks = require('./build/fix-links.js');
+const generateIndex = require('./build/generate-index.js');
 const liveEditorPath = path.dirname(require.resolve('@gfxfundamentals/live-editor'));
 const webgpuTypesPath = path.join(__dirname, 'node_modules', '@webgpu', 'types');
 const dataDir = require('./build/appdata')('servez-cli');
@@ -192,6 +193,10 @@ module.exports = function(grunt) {
     buildStuff(buildSettings).finally(finish);
   });
 
+  grunt.registerTask('buildindex', function() {
+    generateIndex('out/webgpu');
+  });
+
   grunt.registerTask('serve', function() {
     //const done = this.async();
     const logger = {
@@ -227,7 +232,7 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('build', ['clean', 'copy:main', 'buildlessons']);
+  grunt.registerTask('build', ['clean', 'copy:main', 'buildlessons', 'buildindex']);
   grunt.registerTask('buildwatch', ['build', 'serve', 'watch']);
 
   grunt.registerTask('default', ['eslint', 'build']);

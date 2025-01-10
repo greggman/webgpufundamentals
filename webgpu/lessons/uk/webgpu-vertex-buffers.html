@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/uk/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/uk/webgpu-vertex-buffers.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="uk"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Vertex Buffers">
+
+<meta name="description" content="Передача даних вершин в шейдери">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-vertex-buffers_uk.jpg">
+
+<meta property="og:title" content="Буфери вершин в WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Passing Vertex Data to Shaders">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-vertex-buffers_uk.jpg">
+<meta property="og:description" content="Передача даних вершин в шейдери">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-vertex-buffers.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Vertex Buffers">
+<meta name="twitter:title" content="Буфери вершин в WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-vertex-buffers.html">
-<meta name="twitter:description" content="Passing Vertex Data to Shaders">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Передача даних вершин в шейдери">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-vertex-buffers_uk.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-vertex-buffers.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-vertex-buffers_uk.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-vertex-buffers.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-vertex-buffers.html",
+      "inLanguage":"uk",
+      "name":"Буфери вершин в WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-vertex-buffers.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Vertex Buffers</title>
+<title>Буфери вершин в WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -67,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Зміст</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -180,13 +226,946 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Vertex Buffers</h1>
+    <h1>Буфери вершин в WebGPU</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Вибачте, ця стаття ще не була перекладена.</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">Будемо раді допомозі в перекладі</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Тут ви знайдете оригінальну англійську версію статті на цю тему</a>.</p>
+      <p>В <a href="webgpu-storage-buffers.html">попередній статті</a> ми помістили дані
+вершин в буфер зберігання і проіндексували їх з допомогою вбудованої
+змінної <code class="notranslate" translate="no">vertex_index</code>. Не зважаючи на те, що ця техніка набуває
+популярності, більш традиційним підходом вважається передача даних
+вершин у шейдер з допомогою буферів вершин та атрибутів.</p>
+<p>Буфери вершин є схожими на будь-які інші буфери в WebGPU - вони
+зберігають дані. Основна різниця полягає в тому, що ми не маємо
+до них прямого доступу з вершинного шейдера. Натомість, ми вказуємо
+WebGPU на тип даних, який ми помістили в цей буфер і на те, як
+вони розміщенні. Після цього WebGPU автоматично дістає ці дані
+з буфера і надає їх нам.</p>
+<p>Візьмемо для прикладу наш код з
+<a href="webgpu-storage-buffers.html">попередньої статті</a>
+і змінимо в ньому використання буфера зберігання на використання
+буфера вершин.</p>
+<p>Спершу нам потрібно змінити шейдер таким чином, щоб він отримував
+інформацію про вершини з буфера вершин.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurStruct {
+  color: vec4f,
+  offset: vec2f,
+};
+
+struct OtherStruct {
+  scale: vec2f,
+};
+
+struct Vertex {
+-  position: vec2f,
++  @location(0) position: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;storage, read&gt; ourStructs: array&lt;OurStruct&gt;;
+@group(0) @binding(1) var&lt;storage, read&gt; otherStructs: array&lt;OtherStruct&gt;;
+-@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
+
+@vertex fn vs(
+-  @builtin(vertex_index) vertexIndex : u32,
++  vert: Vertex,
+  @builtin(instance_index) instanceIndex: u32
+) -&gt; VSOutput {
+  let otherStruct = otherStructs[instanceIndex];
+  let ourStruct = ourStructs[instanceIndex];
+
+  var vsOut: VSOutput;
+  vsOut.position = vec4f(
+-      pos[vertexIndex].position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++      vert.position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+  vsOut.color = ourStruct.color;
+  return vsOut;
+}
+
+...
+</pre>
+<p>Як ви можете бачити, це невеликі зміни. Важливим тут є декларування
+поля <code class="notranslate" translate="no">position</code> з атрибутом <code class="notranslate" translate="no">@location(0)</code>.</p>
+<p>Далі ми миємо вказати WebGPU, як отримати дані для <code class="notranslate" translate="no">@location(0)</code> -
+для цього ми можемо використати пайплайн рендерингу:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'vertex buffer pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
++      buffers: [
++        {
++          arrayStride: 2 * 4, // 2 floats, 4 bytes each
++          attributes: [
++            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
++          ],
++        },
++      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>До поля <a href="https://www.w3.org/TR/webgpu/#dictdef-gpuvertexstate"><code class="notranslate" translate="no">vertex</code></a>
+<a href="https://www.w3.org/TR/webgpu/#dictdef-gpurenderpipelinedescriptor">дескриптора пайплайну</a> ми додали
+масив <code class="notranslate" translate="no">buffers</code>, який використовується для опису отримання даних
+з одного чи більше буферів вершин. Для нашого першого і єдиного
+буфера ми встановлюємо значення <code class="notranslate" translate="no">arrayStride</code> як кількість байтів.
+we added a <code class="notranslate" translate="no">buffers</code> array which is used to describe how to pull data out of 1 or more vertex buffers. <em>stride</em> або ж <em>крок</em> в цьому випадку
+визначає як багато байтів потрібно взяти з набору даних для однієї
+вершини з нашого буфера.</p>
+<div class="webgpu_center"><img src="../resources/vertex-buffer-one.svg" style="width: 1024px;"></div>
+<p>Оскільки наші дані мають тип <code class="notranslate" translate="no">vec2f</code>, що по суті є двома <code class="notranslate" translate="no">float32</code>
+числами, ми встановлюємо в значення <code class="notranslate" translate="no">arrayStride</code> число 8.</p>
+<p>Далі ми оголошуємо масив атрибутів. Ми маємо тільки один атрибут.
+<code class="notranslate" translate="no">shaderLocation: 0</code> відповідає атрибуту <code class="notranslate" translate="no">location(0)</code> в нашій
+структурі <code class="notranslate" translate="no">Vertex</code>. <code class="notranslate" translate="no">offset: 0</code> позначає, що дані для цього
+атрибуту починаються з нульового байту в буфері вершин. І нарешті
+<code class="notranslate" translate="no">format: 'float32x2'</code> позначає те, що ми просимо WebGPU витягнути
+дані з буфера у форматі двох 32-бітних чисел з рухомою комою. (Нотатка: властивість <code class="notranslate" translate="no">attributes</code> показана на
+<a href="../webgpu-fundamentals.html#a-draw-diagram">спрощеній діаграмі малювання</a> з першої статті).</p>
+<p>Тепер ми маємо змінити тип використання буфера, який міститиме
+вершини з <code class="notranslate" translate="no">STORAGE</code> на <code class="notranslate" translate="no">VERTEX</code> і видалити його з групи прив’язки.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const vertexStorageBuffer = device.createBuffer({
+-    label: 'storage buffer vertices',
+-    size: vertexData.byteLength,
+-    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+-  });
++  const vertexBuffer = device.createBuffer({
++    label: 'vertex buffer vertices',
++    size: vertexData.byteLength,
++    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
++  });
++  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+
+  const bindGroup = device.createBindGroup({
+    label: 'bind group for objects',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: staticStorageBuffer }},
+      { binding: 1, resource: { buffer: changingStorageBuffer }},
+-      { binding: 2, resource: { buffer: vertexStorageBuffer }},
+    ],
+  });
+</pre>
+<p>І після цього, в момент перед малюванням, ми повинні вказати
+WebGPU на той буфер вершин, який він має використати.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    pass.setPipeline(pipeline);
++    pass.setVertexBuffer(0, vertexBuffer);
+</pre>
+<p>Значення <code class="notranslate" translate="no">0</code> тут відповідає першому елементу з пайплайну рендерингу <code class="notranslate" translate="no">buffers</code>, який ми визначили вище.</p>
+<p>З усім цим, ми перейшли з використання буферу зберігання на буфер
+вершин.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-vertex-buffers.html" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<p>Стан системи після того, коли команда <code class="notranslate" translate="no">draw</code> виконана, буде виглядати так:</p>
+<div class="webgpu_center"><img src="../resources/webgpu-draw-diagram-vertex-buffer.svg" style="width: 960px;"></div>
+<p>Поле атрибуту <code class="notranslate" translate="no">format</code> може мати один із цих типів:</p>
+<div class="webgpu_center data-table">
+  <style>
+    .vertex-type {
+      text-align: center;
+    }
+  </style>
+  <div>
+  <table class="vertex-type">
+    <thead>
+     <tr>
+      <th>Vertex format</th>
+      <th>Data type</th>
+      <th>Components</th>
+      <th>Byte size</th>
+      <th>Example WGSL type</th>
+     </tr>
+    </thead>
+    <tbody>
+      <tr><td><code class="notranslate" translate="no">"uint8x2"</code></td><td>unsigned int </td><td>2 </td><td>2 </td><td><code class="notranslate" translate="no">vec2&lt;u32&gt;</code>, <code class="notranslate" translate="no">vec2u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"uint8x4"</code></td><td>unsigned int </td><td>4 </td><td>4 </td><td><code class="notranslate" translate="no">vec4&lt;u32&gt;</code>, <code class="notranslate" translate="no">vec4u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"sint8x2"</code></td><td>signed int </td><td>2 </td><td>2 </td><td><code class="notranslate" translate="no">vec2&lt;i32&gt;</code>, <code class="notranslate" translate="no">vec2i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"sint8x4"</code></td><td>signed int </td><td>4 </td><td>4 </td><td><code class="notranslate" translate="no">vec4&lt;i32&gt;</code>, <code class="notranslate" translate="no">vec4i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"unorm8x2"</code></td><td>unsigned normalized </td><td>2 </td><td>2 </td><td><code class="notranslate" translate="no">vec2&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"unorm8x4"</code></td><td>unsigned normalized </td><td>4 </td><td>4 </td><td><code class="notranslate" translate="no">vec4&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"snorm8x2"</code></td><td>signed normalized </td><td>2 </td><td>2 </td><td><code class="notranslate" translate="no">vec2&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"snorm8x4"</code></td><td>signed normalized </td><td>4 </td><td>4 </td><td><code class="notranslate" translate="no">vec4&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"uint16x2"</code></td><td>unsigned int </td><td>2 </td><td>4 </td><td><code class="notranslate" translate="no">vec2&lt;u32&gt;</code>, <code class="notranslate" translate="no">vec2u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"uint16x4"</code></td><td>unsigned int </td><td>4 </td><td>8 </td><td><code class="notranslate" translate="no">vec4&lt;u32&gt;</code>, <code class="notranslate" translate="no">vec4u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"sint16x2"</code></td><td>signed int </td><td>2 </td><td>4 </td><td><code class="notranslate" translate="no">vec2&lt;i32&gt;</code>, <code class="notranslate" translate="no">vec2i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"sint16x4"</code></td><td>signed int </td><td>4 </td><td>8 </td><td><code class="notranslate" translate="no">vec4&lt;i32&gt;</code>, <code class="notranslate" translate="no">vec4i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"unorm16x2"</code></td><td>unsigned normalized </td><td>2 </td><td>4 </td><td><code class="notranslate" translate="no">vec2&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"unorm16x4"</code></td><td>unsigned normalized </td><td>4 </td><td>8 </td><td><code class="notranslate" translate="no">vec4&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"snorm16x2"</code></td><td>signed normalized </td><td>2 </td><td>4 </td><td><code class="notranslate" translate="no">vec2&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"snorm16x4"</code></td><td>signed normalized </td><td>4 </td><td>8 </td><td><code class="notranslate" translate="no">vec4&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"float16x2"</code></td><td>float </td><td>2 </td><td>4 </td><td><code class="notranslate" translate="no">vec2&lt;f16&gt;</code>, <code class="notranslate" translate="no">vec2h</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"float16x4"</code></td><td>float </td><td>4 </td><td>8 </td><td><code class="notranslate" translate="no">vec4&lt;f16&gt;</code>, <code class="notranslate" translate="no">vec4h</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"float32"</code></td><td>float </td><td>1 </td><td>4 </td><td><code class="notranslate" translate="no">f32</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"float32x2"</code></td><td>float </td><td>2 </td><td>8 </td><td><code class="notranslate" translate="no">vec2&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec2f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"float32x3"</code></td><td>float </td><td>3 </td><td>12 </td><td><code class="notranslate" translate="no">vec3&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec3f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"float32x4"</code></td><td>float </td><td>4 </td><td>16 </td><td><code class="notranslate" translate="no">vec4&lt;f32&gt;</code>, <code class="notranslate" translate="no">vec4f</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"uint32"</code></td><td>unsigned int </td><td>1 </td><td>4 </td><td><code class="notranslate" translate="no">u32</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"uint32x2"</code></td><td>unsigned int </td><td>2 </td><td>8 </td><td><code class="notranslate" translate="no">vec2&lt;u32&gt;</code>, <code class="notranslate" translate="no">vec2u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"uint32x3"</code></td><td>unsigned int </td><td>3 </td><td>12 </td><td><code class="notranslate" translate="no">vec3&lt;u32&gt;</code>, <code class="notranslate" translate="no">vec3u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"uint32x4"</code></td><td>unsigned int </td><td>4 </td><td>16 </td><td><code class="notranslate" translate="no">vec4&lt;u32&gt;</code>, <code class="notranslate" translate="no">vec4u</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"sint32"</code></td><td>signed int </td><td>1 </td><td>4 </td><td><code class="notranslate" translate="no">i32</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"sint32x2"</code></td><td>signed int </td><td>2 </td><td>8 </td><td><code class="notranslate" translate="no">vec2&lt;i32&gt;</code>, <code class="notranslate" translate="no">vec2i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"sint32x3"</code></td><td>signed int </td><td>3 </td><td>12 </td><td><code class="notranslate" translate="no">vec3&lt;i32&gt;</code>, <code class="notranslate" translate="no">vec3i</code></td></tr>
+      <tr><td><code class="notranslate" translate="no">"sint32x4"</code></td><td>signed int </td><td>4 </td><td>16 </td><td><code class="notranslate" translate="no">vec4&lt;i32&gt;</code>, <code class="notranslate" translate="no">vec4i</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<h2 id="створення-екземплярів-з-допомогою-буферів-вершин"><a id="a-instancing"></a>Створення екземплярів з допомогою буферів вершин</h2>
+<p>Атрибути можуть передаватись як для кожної вершини так і для кожного екземпляру.
+Передавання для кожного екземпляру це практично те ж, що ми і робимо, коли
+індексуємо <code class="notranslate" translate="no">otherStructs[instanceIndex]</code> та <code class="notranslate" translate="no">ourStructs[instanceIndex]</code>, де
+<code class="notranslate" translate="no">instanceIndex</code> отримує своє значення з <code class="notranslate" translate="no">@builtin(instance_index)</code>.</p>
+<p>Давайте позбавимось від буферів зберігання і використаємо буфери вершин для
+отримання того ж результату. Спершу давайте змінимо шейдер так, щоб використовувати
+атрибути вершин замість буферів зберігання.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-struct OurStruct {
+-  color: vec4f,
+-  offset: vec2f,
+-};
+-
+-struct OtherStruct {
+-  scale: vec2f,
+-};
+
+struct Vertex {
+  @location(0) position: vec2f,
++  @location(1) color: vec4f,
++  @location(2) offset: vec2f,
++  @location(3) scale: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+-@group(0) @binding(0) var&lt;storage, read&gt; ourStructs: array&lt;OurStruct&gt;;
+-@group(0) @binding(1) var&lt;storage, read&gt; otherStructs: array&lt;OtherStruct&gt;;
+
+@vertex fn vs(
+  vert: Vertex,
+-  @builtin(instance_index) instanceIndex: u32
+) -&gt; VSOutput {
+-  let otherStruct = otherStructs[instanceIndex];
+-  let ourStruct = ourStructs[instanceIndex];
+
+  var vsOut: VSOutput;
+-  vsOut.position = vec4f(
+-      vert.position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+-  vsOut.color = ourStruct.color;
++  vsOut.position = vec4f(
++      vert.position * vert.scale + vert.offset, 0.0, 1.0);
++  vsOut.color = vert.color;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vsOut.color;
+}
+</pre>
+<p>Тепер ми повинні оновити наш пайплайн рендерингу для того, щоб
+вказати на те, як ми хочемо надавати дані для цих атрибутів.
+Для того, щоб зберегти кількість змін в коді мінімальною,
+ми використаємо дані, які ми створили для буферів зберігання.
+Ми використаємо два буфери: один буде зберігати значення <code class="notranslate" translate="no">color</code> та
+<code class="notranslate" translate="no">offset</code> для кожного екземпляра, а інший буде зберігати значення
+<code class="notranslate" translate="no">scale</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'flat colors',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: 2 * 4, // 2 floats, 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+          ],
+        },
++        {
++          arrayStride: 6 * 4, // 6 floats, 4 bytes each
++          stepMode: 'instance',
++          attributes: [
++            {shaderLocation: 1, offset:  0, format: 'float32x4'},  // color
++            {shaderLocation: 2, offset: 16, format: 'float32x2'},  // offset
++          ],
++        },
++        {
++          arrayStride: 2 * 4, // 2 floats, 4 bytes each
++          stepMode: 'instance',
++          attributes: [
++            {shaderLocation: 3, offset: 0, format: 'float32x2'},   // scale
++          ],
++        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>Вище ми додали 2 нових записи в масив <code class="notranslate" translate="no">buffers</code> в нашому описі пайплайну тож
+ми отримали 3 записи в буфері. Це означає, що ми вказуємо WebGPU на те, що
+ми передаватимемо дані в 3 буферах.</p>
+<p>Для двох нових записів ви встановили значення <code class="notranslate" translate="no">stepMode</code> як <code class="notranslate" translate="no">instance</code>. Це
+означає, що атрибут буде оновлюватись до наступного значення раз на кожен
+екземпляр. За замовчуванням <code class="notranslate" translate="no">stepMode</code> має значення <code class="notranslate" translate="no">vertex</code>, що вказує на
+те, що оновлювати атрибут потрібно для кожної вершини (і починати заново
+для кожного екземпляра).</p>
+<p>Ми маємо 2 буфера. Один містить в собі лише значення <code class="notranslate" translate="no">scale</code>. Як і наш
+перший буфер, який містить значення <code class="notranslate" translate="no">position</code>, він являє собою
+два 32-бітних числа з рухомою комою на кожну вершину.</p>
+<p>Два наступних буфери містять в собі значення <code class="notranslate" translate="no">color</code> і <code class="notranslate" translate="no">offset</code> та будуть
+переплетені в таку на вигляд структуру даних:</p>
+<div class="webgpu_center"><img src="../resources/vertex-buffer-f32x4-f32x2.svg" style="width: 1024px;"></div>
+<p>Вище ми вказуємо на те, що значення <code class="notranslate" translate="no">arrayStride</code>, яке позначає відстань
+між наборами даних, дорівнює <code class="notranslate" translate="no">6 * 4</code>, або ж 6 32-бітових чисел з рухомою
+комою по 4 байти кожен (24 байти разом). Значення <code class="notranslate" translate="no">color</code> має зміщення
+0, коли значення <code class="notranslate" translate="no">offset</code> починається після 16 байту.</p>
+<p>Далі, ми можемо змінити код та створити ці буфери.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // create 2 storage buffers
+  const staticUnitSize =
+    4 * 4 + // color is 4 32bit floats (4bytes each)
+-    2 * 4 + // offset is 2 32bit floats (4bytes each)
+-    2 * 4;  // padding
++    2 * 4;  // offset is 2 32bit floats (4bytes each)
+
+  const changingUnitSize =
+    2 * 4;  // scale is 2 32bit floats (4bytes each)
+*  const staticVertexBufferSize = staticUnitSize * kNumObjects;
+*  const changingVertexBufferSize = changingUnitSize * kNumObjects;
+
+*  const staticVertexBuffer = device.createBuffer({
+*    label: 'static vertex for objects',
+*    size: staticVertexBufferSize,
+-    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
++    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+
+*  const changingVertexBuffer = device.createBuffer({
+*    label: 'changing vertex for objects',
+*    size: changingVertexBufferSize,
+-    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
++    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+
+</pre>
+<p>Атрибути вершин не мають такі самі обмеження по вирівнюванню, як структури
+в буферах зберігання, тому нам більше не потрібні ці вирівнювання. Все, що
+ми тут зробили це зміна значення <code class="notranslate" translate="no">usage</code> з <code class="notranslate" translate="no">STORAGE</code> на <code class="notranslate" translate="no">VERTEX</code> (ну і ми
+також змінили назви змінних з “storage” на “vertex”).</p>
+<p>Оскільки ми більше не використовуємо буфери зберігання, нам більше не
+потрібна група прив’язки:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const bindGroup = device.createBindGroup({
+-    label: 'bind group for objects',
+-    layout: pipeline.getBindGroupLayout(0),
+-    entries: [
+-      { binding: 0, resource: { buffer: staticStorageBuffer }},
+-      { binding: 1, resource: { buffer: changingStorageBuffer }},
+-    ],
+-  });
+</pre>
+<p>На сам кінець, ми не потребуємо встановлення групи прив’язки, але
+потрібно встановити буфери вершин:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
++    pass.setVertexBuffer(1, staticVertexBuffer);
++    pass.setVertexBuffer(2, changingVertexBuffer);
+
+    ...
+-    pass.setBindGroup(0, bindGroup);
+    pass.draw(numVertices, kNumObjects);
+
+    pass.end();
+</pre>
+<p>Перший параметр в <code class="notranslate" translate="no">setVertexBuffer</code> відповідає запису в масиві <code class="notranslate" translate="no">buffers</code> в
+пайплайні, який ми створили вище.</p>
+<p>З усім цим ми отримали той самий результат, який ми і мали раніше, але
+з використанням буферів вершин замість буферів зберігання.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers-instanced-colors"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-vertex-buffers-instanced-colors" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<p>Давайте, суто для розваги, додамо ще один атрибут для кольору кожної вершини.
+Спершу давайте змінимо шейдер:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) color: vec4f,
+  @location(2) offset: vec2f,
+  @location(3) scale: vec2f,
++  @location(4) perVertexColor: vec3f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+@vertex fn vs(
+  vert: Vertex,
+) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = vec4f(
+      vert.position * vert.scale + vert.offset, 0.0, 1.0);
+-  vsOut.color = vert.color;
++  vsOut.color = vert.color * vec4f(vert.perVertexColor, 1);
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vsOut.color;
+}
+</pre>
+<p>Далі нам потрібно оновити пайплайн для того, щоб описати, як ми
+будемо надавати ці дані. Ми збираємось переплести дані <code class="notranslate" translate="no">perVertexColor</code> з
+даними <code class="notranslate" translate="no">position</code> так, як на малюнку:</p>
+<div class="webgpu_center"><img src="../resources/vertex-buffer-mixed.svg" style="width: 1024px;"></div>
+<p>Тому, значення кроку <code class="notranslate" translate="no">arrayStride</code> повинне бути змінене для відображення нашої
+нової структури даних. Нові дані починаються після двох 32-бітних чисел
+з рухомою комою, тому їхнє зміщення <code class="notranslate" translate="no">offset</code> буде дорівнювати 8 байтам.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'per vertex color',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: 2 * 4, // 2 floats, 4 bytes each
++          arrayStride: 5 * 4, // 5 floats, 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
++            {shaderLocation: 4, offset: 8, format: 'float32x3'},  // perVertexColor
+          ],
+        },
+        {
+          arrayStride: 6 * 4, // 6 floats, 4 bytes each
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 1, offset:  0, format: 'float32x4'},  // color
+            {shaderLocation: 2, offset: 16, format: 'float32x2'},  // offset
+          ],
+        },
+        {
+          arrayStride: 2 * 4, // 2 floats, 4 bytes each
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 3, offset: 0, format: 'float32x2'},   // scale
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>Ми оновимо код генерації вершин кола для надання темних кольорів
+для вершин на зовнішньому боці кола і світлих кольорів на внутрішньому
+боці.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCircleVertices({
+  radius = 1,
+  numSubdivisions = 24,
+  innerRadius = 0,
+  startAngle = 0,
+  endAngle = Math.PI * 2,
+} = {}) {
+  // 2 triangles per subdivision, 3 verts per tri, 5 values (xyrgb) each.
+  const numVertices = numSubdivisions * 3 * 2;
+-  const vertexData = new Float32Array(numVertices * 2);
++  const vertexData = new Float32Array(numVertices * (2 + 3));
+
+  let offset = 0;
+-  const addVertex = (x, y, r, g, b) =&gt; {
++  const addVertex = (x, y, r, g, b) =&gt; {
+    vertexData[offset++] = x;
+    vertexData[offset++] = y;
++    vertexData[offset++] = r;
++    vertexData[offset++] = g;
++    vertexData[offset++] = b;
+  };
+
++  const innerColor = [1, 1, 1];
++  const outerColor = [0.1, 0.1, 0.1];
+
+  // 2 triangles per subdivision
+  //
+  // 0--1 4
+  // | / /|
+  // |/ / |
+  // 2 3--5
+  for (let i = 0; i &lt; numSubdivisions; ++i) {
+    const angle1 = startAngle + (i + 0) * (endAngle - startAngle) / numSubdivisions;
+    const angle2 = startAngle + (i + 1) * (endAngle - startAngle) / numSubdivisions;
+
+    const c1 = Math.cos(angle1);
+    const s1 = Math.sin(angle1);
+    const c2 = Math.cos(angle2);
+    const s2 = Math.sin(angle2);
+
+    // first triangle
+-    addVertex(c1 * radius, s1 * radius);
+-    addVertex(c2 * radius, s2 * radius);
+-    addVertex(c1 * innerRadius, s1 * innerRadius);
++    addVertex(c1 * radius, s1 * radius, ...outerColor);
++    addVertex(c2 * radius, s2 * radius, ...outerColor);
++    addVertex(c1 * innerRadius, s1 * innerRadius, ...innerColor);
+
+    // second triangle
+-    addVertex(c1 * innerRadius, s1 * innerRadius);
+-    addVertex(c2 * radius, s2 * radius);
+-    addVertex(c2 * innerRadius, s2 * innerRadius);
++    addVertex(c1 * innerRadius, s1 * innerRadius, ...innerColor);
++    addVertex(c2 * radius, s2 * radius, ...outerColor);
++    addVertex(c2 * innerRadius, s2 * innerRadius, ...innerColor);
+  }
+
+  return {
+    vertexData,
+    numVertices,
+  };
+}
+</pre>
+<p>І з усім цим ми отримуємо затемненні кола:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers-per-vertex-colors.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-vertex-buffers-per-vertex-colors.html" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<h2 id="атрибути-в-wgsl-не-зобовязані-повторювати-атрибути-в-javascript"><a id="a-default-values"></a>Атрибути в WGSL не зобов’язані повторювати атрибути в JavaScript</h2>
+<p>Вище ми задекларували значення атрибуту <code class="notranslate" translate="no">perVertexColor</code> в WGSL як <code class="notranslate" translate="no">vec3f</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) color: vec4f,
+  @location(2) offset: vec2f,
+  @location(3) scale: vec2f,
+*  @location(4) perVertexColor: vec3f,
+};
+</pre>
+<p>І використали його таким чином:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs(
+  vert: Vertex,
+) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = vec4f(
+      vert.position * vert.scale + vert.offset, 0.0, 1.0);
+*  vsOut.color = vert.color * vec4f(vert.perVertexColor, 1);
+  return vsOut;
+}
+</pre>
+<p>Ми також могли б задекларувати його як <code class="notranslate" translate="no">vec4f</code> і використати таким чином:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) color: vec4f,
+  @location(2) offset: vec2f,
+  @location(3) scale: vec2f,
+-  @location(4) perVertexColor: vec3f,
++  @location(4) perVertexColor: vec4f,
+};
+
+...
+
+@vertex fn vs(
+  vert: Vertex,
+) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = vec4f(
+      vert.position * vert.scale + vert.offset, 0.0, 1.0);
+-  vsOut.color = vert.color * vec4f(vert.perVertexColor, 1);
++  vsOut.color = vert.color * vert.perVertexColor;
+  return vsOut;
+}
+</pre>
+<p>І більше нічого не змінювати. В JavaScript ми б могли досі передавати
+дані як три 32-бітних числа з рухомою комою на кожну вершину.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    {
+      arrayStride: 5 * 4, // 5 floats, 4 bytes each
+      attributes: [
+        {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+*        {shaderLocation: 4, offset: 8, format: 'float32x3'},  // perVertexColor
+      ],
+    },
+</pre>
+<p>Це працює тому, що атрибути завжди мають 4 значення доступних в шейдері.
+Їхні типові значення <code class="notranslate" translate="no">0, 0, 0, 1</code>, тому кожне значення, яке ми не передали
+отримує одне з типових значень.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers-per-vertex-colors-3-in-4-out.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-vertex-buffers-per-vertex-colors-3-in-4-out.html" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<h2 id="використання-нормалізованих-значень-для-зберігання-даних"><a id="a-normalized-attributes"></a>Використання нормалізованих значень для зберігання даних</h2>
+<p>Ми використовуємо 32-бітні числа з рухомою комою для кольорів. Кожен
+<code class="notranslate" translate="no">perVertexColor</code> містить 3 значення загальним розміром 12 байт для кожного
+кольору кожної вершини. Кожен <code class="notranslate" translate="no">color</code> має 4 значення, які в сумі дають
+16 байт для кожного кольору кожного екземпляру.</p>
+<p>Ми б могли оптимізувати це використовуючи 8-бітні значення і вказуючи
+WebGPU, щоб він нормалізував ці значення з 0 ↔ 255 до 0.0 ↔ 1.0.</p>
+<p>Переглянувши список валідних форматів атрибутів, ми не знайдемо 3-значного
+8-бітного формату, але ми маємо <code class="notranslate" translate="no">'unorm8x4'</code>. Тому давайте використаємо його.</p>
+<p>Спершу давайте змінимо код, який генерує вершини для зберігання кольорів, як
+8-бітні значення, які будуть нормалізовані:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCircleVertices({
+  radius = 1,
+  numSubdivisions = 24,
+  innerRadius = 0,
+  startAngle = 0,
+  endAngle = Math.PI * 2,
+} = {}) {
+-  // 2 triangles per subdivision, 3 verts per tri, 5 values (xyrgb) each.
++  // 2 triangles per subdivision, 3 verts per tri
+  const numVertices = numSubdivisions * 3 * 2;
+-  const vertexData = new Float32Array(numVertices * (2 + 3));
++  // 2 32-bit values for position (xy) and 1 32-bit value for color (rgb_)
++  // The 32-bit color value will be written/read as 4 8-bit values
++  const vertexData = new Float32Array(numVertices * (2 + 1));
++  const colorData = new Uint8Array(vertexData.buffer);
+
+  let offset = 0;
++  let colorOffset = 8;
+  const addVertex = (x, y, r, g, b) =&gt; {
+    vertexData[offset++] = x;
+    vertexData[offset++] = y;
+-    vertexData[offset++] = r;
+-    vertexData[offset++] = g;
+-    vertexData[offset++] = b;
++    offset += 1;  // skip the color
++    colorData[colorOffset++] = r * 255;
++    colorData[colorOffset++] = g * 255;
++    colorData[colorOffset++] = b * 255;
++    colorOffset += 9;  // skip extra byte and the position
+  };
+</pre>
+<p>Вище ми робимо <code class="notranslate" translate="no">colorData</code>, яке є <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"><code class="notranslate" translate="no">Uint8Array</code></a> відображенням тих самих
+даних як і <code class="notranslate" translate="no">vertexData</code>. Перегляньте <a href="../webgpu-memory-layout.html#multiple-views-of-the-same-arraybuffer">статтю про схему розміщення даних</a> якшо це не до кінця зрозуміло.</p>
+<p>Далі ми використовуємо <code class="notranslate" translate="no">colorData</code> для отримання кольорів, перетворюючи
+їх з 0 ↔ 1 до 0 ↔ 255.</p>
+<p>Розміщення даних в пам’яті (для кожної вершини) виглядає так:</p>
+<div class="webgpu_center"><img src="../resources/vertex-buffer-f32x2-u8x4.svg" style="width: 1024px;"></div>
+<p>Нам потрібно також оновити дані для кожного екземпляру.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumObjects = 100;
+  const objectInfos = [];
+
+  // create 2 vertex buffers
+  const staticUnitSize =
+-    4 * 4 + // color is 4 32bit floats (4bytes each)
++    4 +     // color is 4 bytes
+    2 * 4;  // offset is 2 32bit floats (4bytes each)
+  const changingUnitSize =
+    2 * 4;  // scale is 2 32bit floats (4bytes each)
+  const staticVertexBufferSize = staticUnitSize * kNumObjects;
+  const changingVertexBufferSize = changingUnitSize * kNumObjects;
+
+  const staticVertexBuffer = device.createBuffer({
+    label: 'static vertex for objects',
+    size: staticVertexBufferSize,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+
+  const changingVertexBuffer = device.createBuffer({
+    label: 'changing storage for objects',
+    size: changingVertexBufferSize,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+
+  // offsets to the various uniform values in float32 indices
+  const kColorOffset = 0;
+  const kOffsetOffset = 1;
+
+  const kScaleOffset = 0;
+
+  {
+-    const staticVertexValues = new Float32Array(staticVertexBufferSize / 4);
++    const staticVertexValuesU8 = new Uint8Array(staticVertexBufferSize);
++    const staticVertexValuesF32 = new Float32Array(staticVertexValuesU8.buffer);
+    for (let i = 0; i &lt; kNumObjects; ++i) {
+-      const staticOffset = i * (staticUnitSize / 4);
++      const staticOffsetU8 = i * staticUnitSize;
++      const staticOffsetF32 = staticOffsetU8 / 4;
+
+      // These are only set once so set them now
+-      staticVertexValues.set([rand(), rand(), rand(), 1], staticOffset + kColorOffset);        // set the color
+-      staticVertexValues.set([rand(-0.9, 0.9), rand(-0.9, 0.9)], staticOffset + kOffsetOffset);      // set the offset
++      staticVertexValuesU8.set(        // set the color
++          [rand() * 255, rand() * 255, rand() * 255, 255],
++          staticOffsetU8 + kColorOffset);
++
++      staticVertexValuesF32.set(      // set the offset
++          [rand(-0.9, 0.9), rand(-0.9, 0.9)],
++          staticOffsetF32 + kOffsetOffset);
+
+      objectInfos.push({
+        scale: rand(0.2, 0.5),
+      });
+    }
+    device.queue.writeBuffer(staticVertexBuffer, 0, staticVertexValuesF32);
+  }
+</pre>
+<p>Розміщення даних в пам’яті для кожного екземпляру виглядає так:</p>
+<div class="webgpu_center"><img src="../resources/vertex-buffer-u8x4-f32x2.svg" style="width: 1024px;"></div>
+<p>Далі нам потрібно змінити пайплайн для отримання даних у вигляді 8-бітних
+беззнакових значень для нормалізації їх назад у вигляд 0 ↔ 1, оновити зміщення
+та оновити крок для нового значення розміру.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'per vertex color',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: 5 * 4, // 5 floats, 4 bytes each
++          arrayStride: 2 * 4 + 4, // 2 floats, 4 bytes each + 4 bytes
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+-            {shaderLocation: 4, offset: 8, format: 'float32x3'},  // perVertexColor
++            {shaderLocation: 4, offset: 8, format: 'unorm8x4'},   // perVertexColor
+          ],
+        },
+        {
+-          arrayStride: 6 * 4, // 6 floats, 4 bytes each
++          arrayStride: 4 + 2 * 4, // 4 bytes + 2 floats, 4 bytes each
+          stepMode: 'instance',
+          attributes: [
+-            {shaderLocation: 1, offset:  0, format: 'float32x4'},  // color
+-            {shaderLocation: 2, offset: 16, format: 'float32x2'},  // offset
++            {shaderLocation: 1, offset: 0, format: 'unorm8x4'},   // color
++            {shaderLocation: 2, offset: 4, format: 'float32x2'},  // offset
+          ],
+        },
+        {
+          arrayStride: 2 * 4, // 2 floats, 4 bytes each
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 3, offset: 0, format: 'float32x2'},   // scale
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>З усім цим ми зберегли трохи пам’яті. Ми використовували 20 байт на
+кожну вершину раніше, а тепер лише 12 байт, на 40% менше. Також ми використовували 24 байти на кожен екземпляр, а тепер це 12 байт, шо дає
+50% економії.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers-8bit-colors.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-vertex-buffers-8bit-colors.html" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<p>Зауважте, що ми не мусимо використовувати структури. Це працюватиме також:</p>
+<pre class="prettyprint showlinemods notranslate lang-WGSL" translate="no">@vertex fn vs(
+-  vert: Vertex,
++  @location(0) position: vec2f,
++  @location(1) color: vec4f,
++  @location(2) offset: vec2f,
++  @location(3) scale: vec2f,
++  @location(4) perVertexColor: vec3f,
+) -&gt; VSOutput {
+  var vsOut: VSOutput;
+-  vsOut.position = vec4f(
+-      vert.position * vert.scale + vert.offset, 0.0, 1.0);
+-  vsOut.color = vert.color * vec4f(vert.perVertexColor, 1);
++  vsOut.position = vec4f(
++      position * scale + offset, 0.0, 1.0);
++  vsOut.color = color * vec4f(perVertexColor, 1);
+  return vsOut;
+}
+</pre>
+<p>І знову ж таки, усе про що переймається WebGPU, це те чи ми
+оголосили <code class="notranslate" translate="no">locations</code> в шейдері і чи передали дані для цих локацій
+через API.</p>
+<h2 id="буфери-індексів"><a id="a-index-buffers"></a>Буфери індексів</h2>
+<p>Ще одна річ, про яку варто тут поговорити це буфери індексів.
+Буфери індексів описують порядок обробки і використання вершин.</p>
+<p>Можна вважать, що команда <code class="notranslate" translate="no">draw</code> проходиться по вершинах в
+такому порядку:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">0, 1, 2, 3, 4, 5, .....
+</pre>
+<p>З допомогою буфера індексів ми можемо змінити цей порядок.</p>
+<p>Ми створюємо 6 вершин для частини кола попри те, що дві з цих вершин
+ідентичні.</p>
+<div class="webgpu_center"><img src="../resources/vertices-non-indexed.svg" style="width: 400px"></div>  
+<p>Натомість тепер ми будемо створювати тільки 4 вершини і
+використаємо індекси для того, щоб використати їх 6 разів
+вказуючи WebGPU на такий порядок використання цих вершин:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">0, 1, 2, 2, 1, 3, ...
+</pre>
+<div class="webgpu_center"><img src="../resources/vertices-indexed.svg" style="width: 400px"></div>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCircleVertices({
+  radius = 1,
+  numSubdivisions = 24,
+  innerRadius = 0,
+  startAngle = 0,
+  endAngle = Math.PI * 2,
+} = {}) {
+-  // 2 triangles per subdivision, 3 verts per tri
+-  const numVertices = numSubdivisions * 3 * 2;
++  // 2 vertices at each subdivision, + 1 to wrap around the circle.
++  const numVertices = (numSubdivisions + 1) * 2;
+  // 2 32-bit values for position (xy) and 1 32-bit value for color (rgb)
+  // The 32-bit color value will be written/read as 4 8-bit values
+  const vertexData = new Float32Array(numVertices * (2 + 1));
+  const colorData = new Uint8Array(vertexData.buffer);
+
+  let offset = 0;
+  let colorOffset = 8;
+  const addVertex = (x, y, r, g, b) =&gt; {
+    vertexData[offset++] = x;
+    vertexData[offset++] = y;
+    offset += 1;  // skip the color
+    colorData[colorOffset++] = r * 255;
+    colorData[colorOffset++] = g * 255;
+    colorData[colorOffset++] = b * 255;
+    colorOffset += 9;  // skip extra byte and the position
+  };
+  const innerColor = [1, 1, 1];
+  const outerColor = [0.1, 0.1, 0.1];
+
+-  // 2 triangles per subdivision
+-  //
+-  // 0--1 4
+-  // | / /|
+-  // |/ / |
+-  // 2 3--5
+-  for (let i = 0; i &lt; numSubdivisions; ++i) {
+-    const angle1 = startAngle + (i + 0) * (endAngle - startAngle) / numSubdivisions;
+-    const angle2 = startAngle + (i + 1) * (endAngle - startAngle) / numSubdivisions;
+-
+-    const c1 = Math.cos(angle1);
+-    const s1 = Math.sin(angle1);
+-    const c2 = Math.cos(angle2);
+-    const s2 = Math.sin(angle2);
+-
+-    // first triangle
+-    addVertex(c1 * radius, s1 * radius, ...outerColor);
+-    addVertex(c2 * radius, s2 * radius, ...outerColor);
+-    addVertex(c1 * innerRadius, s1 * innerRadius, ...innerColor);
+-
+-    // second triangle
+-    addVertex(c1 * innerRadius, s1 * innerRadius, ...innerColor);
+-    addVertex(c2 * radius, s2 * radius, ...outerColor);
+-    addVertex(c2 * innerRadius, s2 * innerRadius, ...innerColor);
+-  }
++  // 2 triangles per subdivision
++  //
++  // 0  2  4  6  8 ...
++  //
++  // 1  3  5  7  9 ...
++  for (let i = 0; i &lt;= numSubdivisions; ++i) {
++    const angle = startAngle + (i + 0) * (endAngle - startAngle) / numSubdivisions;
++
++    const c1 = Math.cos(angle);
++    const s1 = Math.sin(angle);
++
++    addVertex(c1 * radius, s1 * radius, ...outerColor);
++    addVertex(c1 * innerRadius, s1 * innerRadius, ...innerColor);
++  }
+
++  const indexData = new Uint32Array(numSubdivisions * 6);
++  let ndx = 0;
++
++  // 1st tri  2nd tri  3rd tri  4th tri
++  // 0 1 2    2 1 3    2 3 4    4 3 5
++  //
++  // 0--2        2     2--4        4  .....
++  // | /        /|     | /        /|
++  // |/        / |     |/        / |
++  // 1        1--3     3        3--5  .....
++  for (let i = 0; i &lt; numSubdivisions; ++i) {
++    const ndxOffset = i * 2;
++
++    // first triangle
++    indexData[ndx++] = ndxOffset;
++    indexData[ndx++] = ndxOffset + 1;
++    indexData[ndx++] = ndxOffset + 2;
++
++    // second triangle
++    indexData[ndx++] = ndxOffset + 2;
++    indexData[ndx++] = ndxOffset + 1;
++    indexData[ndx++] = ndxOffset + 3;
++  }
+
+  return {
+    vertexData,
++    indexData,
+-    numVertices,
++    numVertices: indexData.length,
+  };
+}
+</pre>
+<p>Тепер нам потрібно створити буфер індексів:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const { vertexData, numVertices } = createCircleVertices({
++  const { vertexData, indexData, numVertices } = createCircleVertices({
+    radius: 0.5,
+    innerRadius: 0.25,
+  });
+  const vertexBuffer = device.createBuffer({
+    label: 'vertex buffer',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
++  const indexBuffer = device.createBuffer({
++    label: 'index buffer',
++    size: indexData.byteLength,
++    usage: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
++  });
++  device.queue.writeBuffer(indexBuffer, 0, indexData);
+</pre>
+<p>Зверніть увагу, що поле <code class="notranslate" translate="no">usage</code> має значення <code class="notranslate" translate="no">INDEX</code>.</p>
+<p>І нарешті нам потрібно задати цей буфер для команди <code class="notranslate" translate="no">draw</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setVertexBuffer(1, staticVertexBuffer);
+    pass.setVertexBuffer(2, changingVertexBuffer);
++    pass.setIndexBuffer(indexBuffer, 'uint32');
+</pre>
+<p>Через те, що наш буфер містить 32-бітні беззнакові цілі числа
+для позначення індексів, ми маємо передати в функцію <code class="notranslate" translate="no">'uint32'</code>.
+Ми б могли також використати 16-бітні числа і тоді ми б мали
+передати тут значення <code class="notranslate" translate="no">'uint16'</code>.</p>
+<p>Також нам потрібно викликати метод <code class="notranslate" translate="no">drawIndexed</code> замість <code class="notranslate" translate="no">draw</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    pass.draw(numVertices, kNumObjects);
++    pass.drawIndexed(numVertices, kNumObjects);
+</pre>
+<p>З усім цим ми зекономили трішки пам’яті і потенційно
+таку ж кількість процесорного часу під час обробки вершин
+у шейдері, оскільки можливо, що GPU може повторно використовувати
+вершини, які він уже обчислив.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-vertex-buffers-index-buffer.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-vertex-buffers-index-buffer.html" target="_blank">натисніть сюди, щоб відкрити в окремому вікні</a>
+</div>
+
+<p></p>
+<p>Зверніть увагу, що ми могли б так само використати буфери
+індексів у прикладі з буферами зберігання <a href="webgpu-storage-buffers.html">в попередній статті</a>. В цьому випадку значення
+<code class="notranslate" translate="no">@builtin(vertex_index)</code> відповідає індексу з буфера індексів.</p>
+<p>Далі ми розглянемо <a href="webgpu-textures.html">текстури</a>.</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -201,13 +1180,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Основи</li>
+        <div id="toc">
+          <ul>  <li>Основи</li>
         <ul>
           <li><a href="/webgpu/lessons/uk/webgpu-fundamentals.html">Основи</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-inter-stage-variables.html">Міжетапні змінні</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-uniforms.html">Юніформи</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-storage-buffers.html">Буфери зберігання</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-vertex-buffers.html">Буфери вершин</a></li>
   <li>Текстури</li>
         <ul>
           <li><a href="/webgpu/lessons/uk/webgpu-textures.html">Textures</a></li>
@@ -220,6 +1200,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/uk/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-memory-layout.html">Схема розміщення даних в пам’яті</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-timing.html">Timing Performance</a></li>
@@ -284,13 +1265,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
 
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>Запитання? <a href="http://stackoverflow.com/questions/tagged/webgpu">Запитати на stackoverflow</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Пропозиція</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Запит</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Проблема</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Помилка</a>?
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Буфери вершин в WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

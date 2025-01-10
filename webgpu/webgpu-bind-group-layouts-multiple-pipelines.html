@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Bind Group Layouts - multiple pipelines</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="module">
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  const moduleTimes2 = device.createShaderModule({
+    label: 'doubling compute module',
+    code: `
+      @group(0) @binding(0) var<storage, read_write> data: array<f32>;
+
+      @compute @workgroup_size(1) fn computeSomething(
+        @builtin(global_invocation_id) id: vec3u
+      ) {
+        let i = id.x;
+        data[i] = data[i] * 2.0;
+      }
+    `,
+  });
+
+  const modulePlus3 = device.createShaderModule({
+    label: 'adding 3 compute module',
+    code: `
+      @group(0) @binding(0) var<storage, read_write> data: array<f32>;
+
+      @compute @workgroup_size(1) fn computeSomething(
+        @builtin(global_invocation_id) id: vec3u
+      ) {
+        let i = id.x;
+        data[i] = data[i] + 3.0;
+      }
+    `,
+  });
+
+  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: false,
+          minBindingSize: 0,
+        },
+      },
+    ],
+  });
+
+  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+
+  const pipelineTimes2 = device.createComputePipeline({
+    label: 'doubling compute pipeline',
+    layout: pipelineLayout,
+    compute: {
+      module: moduleTimes2,
+    },
+  });
+
+  const pipelinePlus3 = device.createComputePipeline({
+    label: 'plus 3 compute pipeline',
+    layout: pipelineLayout,
+    compute: {
+      module: modulePlus3,
+    },
+  });
+
+  const input = new Float32Array([1, 3, 5]);
+
+  // create a buffer on the GPU to hold our computation
+  // input and output
+  const workBuffer = device.createBuffer({
+    label: 'work buffer',
+    size: input.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
+  });
+  // Copy our input data to that buffer
+  device.queue.writeBuffer(workBuffer, 0, input);
+
+  // create a buffer on the GPU to get a copy of the results
+  const resultBuffer = device.createBuffer({
+    label: 'result buffer',
+    size: input.byteLength,
+    usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+  });
+
+  // Setup a bindGroup to tell the shader which
+  // buffer to use for the computation
+  const bindGroup = device.createBindGroup({
+    label: 'bindGroup for work buffer',
+    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: { buffer: workBuffer } },
+    ],
+  });
+
+  // Encode commands to do the computation
+  const encoder = device.createCommandEncoder();
+  const pass = encoder.beginComputePass();
+  pass.setPipeline(pipelineTimes2);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(input.length);
+  pass.setPipeline(pipelinePlus3);
+  pass.dispatchWorkgroups(input.length);
+  pass.end();
+
+  // Encode a command to copy the results to a mappable buffer.
+  encoder.copyBufferToBuffer(workBuffer, 0, resultBuffer, 0, resultBuffer.size);
+
+  // Finish encoding and submit the commands
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+
+  // Read the results
+  await resultBuffer.mapAsync(GPUMapMode.READ);
+  const result = new Float32Array(resultBuffer.getMappedRange().slice());
+  resultBuffer.unmap();
+
+  console.log('input', input);
+  console.log('result', result);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

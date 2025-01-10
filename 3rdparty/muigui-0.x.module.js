@@ -1,4 +1,4 @@
-/* muigui@0.0.14, license MIT */
+/* muigui@0.0.21, license MIT */
 var css = {
   default: `
 .muigui {
@@ -85,6 +85,7 @@ var css = {
   font-size: var(--font-size);
   box-sizing: border-box;
   line-height: 100%;
+  white-space: nowrap;
 }
 .muigui * {
   box-sizing: inherit;
@@ -149,6 +150,10 @@ var css = {
   --color: var(--disabled-color) !important;
   --value-color: var(--disabled-color) !important;
   --range-left-color: var(--disabled-color) !important;
+}
+/* this shouldn't be needed! */
+.muigui-disabled label {
+  color: var(--disabled-color) 
 }
 
 .muigui canvas,
@@ -288,7 +293,7 @@ var css = {
 }
 .muigui-closed>.muigui-open-container>* {
   transition: all 0.1s ease-out;
-  margin-top: -100%;
+  margin-top: -1000%;
 }
 
 /* ---- popdown ---- */
@@ -1208,11 +1213,13 @@ class Button extends Controller {
   }
   name(name) {
     this.#buttonElem.textContent = name;
+    return this;
   }
   setOptions(options) {
     copyExistingProperties(this.#options, options);
     const {name} = this.#options;
     this.#buttonElem.textContent = name;
+    return this;
   }
 }
 
@@ -2620,6 +2627,9 @@ class Canvas extends LabelController {
   get canvas() {
     return this.#canvasElem;
   }
+  listen() {
+    return this;
+  }
 }
 
 class ColorView extends EditView {
@@ -2759,6 +2769,12 @@ class Container extends Controller {
   }
   popContainer() {
     this.#childDestController = this.#childDestController.parent;
+    return this;
+  }
+  listen() {
+    this.#controllers.forEach(c => {
+      c.listen();
+    });
     return this;
   }
 }
@@ -3269,11 +3285,22 @@ class Row extends Layout {
   }
 }
 
+function camelCaseToSnakeCase(id) {
+  return id
+    .replace(/(.)([A-Z][a-z]+)/g, '$1_$2')
+    .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+    .toLowerCase();
+}
+
+function prepName(name) {
+  return camelCaseToSnakeCase(name.toString()).replaceAll('_', ' ');
+}
+
 class GUIFolder extends Folder {
   add(object, property, ...args) {
     const controller = object instanceof Controller
         ? object
-        : createController(object, property, ...args);
+        : createController(object, property, ...args).name(prepName(property));
     return this.addController(controller);
   }
   addCanvas(name) {
@@ -3282,9 +3309,13 @@ class GUIFolder extends Folder {
   addColor(object, property, options = {}) {
     const value = object[property];
     if (hasAlpha(options.format || guessFormat(value))) {
-      return this.addController(new ColorChooser(object, property, options));
+      return this
+        .addController(new ColorChooser(object, property, options))
+        .name(prepName(property));
     } else {
-      return this.addController(new Color(object, property, options));
+      return this
+        .addController(new Color(object, property, options))
+        .name(prepName(property));
     }
   }
   addDivider() {
@@ -3298,7 +3329,7 @@ class GUIFolder extends Folder {
   }
   addButton(name, fn) {
     const o = {fn};
-    return this.add(o, 'fn').name(name);
+    return this.add(o, 'fn').name(prepName(name));
   }
 }
 

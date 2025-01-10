@@ -51,33 +51,16 @@ canvas {
   </body>
   <script type="module">
 import TimingHelper from './resources/js/timing-helper.js';
+import NonNegativeRollingAverage from './resources/js/non-negative-rolling-average.js';
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
 import { mat4 } from '../3rdparty/wgpu-matrix.module.js';
 
 const range = (i, fn) => new Array(i).fill(0).map((_, i) => fn(i));
 
-class RollingAverage {
-  #total = 0;
-  #samples = [];
-  #cursor = 0;
-  #numSamples;
-  constructor(numSamples = 30) {
-    this.#numSamples = numSamples;
-  }
-  addSample(v) {
-    this.#total += v - (this.#samples[this.#cursor] || 0);
-    this.#samples[this.#cursor] = v;
-    this.#cursor = (this.#cursor + 1) % this.#numSamples;
-  }
-  get() {
-    return this.#total / this.#samples.length;
-  }
-}
-
-const fpsAverage = new RollingAverage();
-const jsAverage = new RollingAverage();
-const histogramAverage = new RollingAverage();
-const renderAverage = new RollingAverage();
+const fpsAverage = new NonNegativeRollingAverage();
+const jsAverage = new NonNegativeRollingAverage();
+const histogramAverage = new NonNegativeRollingAverage();
+const renderAverage = new NonNegativeRollingAverage();
 
 async function main() {
   const adapter = await navigator.gpu?.requestAdapter();

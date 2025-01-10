@@ -1,4 +1,4 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/uk/langinfo.hanson. Do not edited directly --><!--
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ko/langinfo.hanson. Do not edited directly --><!--
 Copyright 2020, Gregg Tavares
 All rights reserved.
 
@@ -29,26 +29,26 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---><html lang="uk"><head>
+--><html lang="ko"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU BindGroupLayout">
+<meta property="og:title" content="WebGPU Geometric Primitives">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Creating BindGroupLayouts">
-<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-bindgrouplayout.html">
+<meta property="og:description" content="Geometric Primitive Vertex Data">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webpgu-primitives.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU BindGroupLayout">
-<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/uk/webgpu-bindgrouplayout.html">
-<meta name="twitter:description" content="Creating BindGroupLayouts">
+<meta name="twitter:title" content="WebGPU Geometric Primitives">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webpgu-primitives.html">
+<meta name="twitter:description" content="Geometric Primitive Vertex Data">
 <meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
 
 
-<title>WebGPU BindGroupLayout</title>
+<title>WebGPU Geometric Primitives</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
@@ -56,21 +56,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="webgpu_navbar">
   <div>
     <select class="language">
-    <option value="/webgpu/lessons/webgpu-bindgrouplayout.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-bindgrouplayout.html">Spanish
-    </option><option value="/webgpu/lessons/ja/webgpu-bindgrouplayout.html">日本語
-    </option><option value="/webgpu/lessons/ko/webgpu-bindgrouplayout.html">한국어
-    </option><option value="/webgpu/lessons/ru/webgpu-bindgrouplayout.html">Русский
-    </option><option value="/webgpu/lessons/uk/webgpu-bindgrouplayout.html" selected="">Українська
-    </option><option value="/webgpu/lessons/zh_cn/webgpu-bindgrouplayout.html">简体中文
+    <option value="/webgpu/lessons/webpgu-primitives.html">English
+    </option><option value="/webgpu/lessons/es/webpgu-primitives.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webpgu-primitives.html">日本語
+    </option><option value="/webgpu/lessons/ko/webpgu-primitives.html" selected="">한국어
+    </option><option value="/webgpu/lessons/ru/webpgu-primitives.html">Русский
+    </option><option value="/webgpu/lessons/uk/webpgu-primitives.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webpgu-primitives.html">简体中文
 </option></select>
 
 
-    <a href="#toc">Зміст</a>
+    <a href="#toc">목차</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
-  <h1><a href="/webgpu/lessons/uk/">webgpufundamentals.org</a></h1>
+  <h1><a href="/webgpu/lessons/ko/">webgpufundamentals.org</a></h1>
 <style>
 #forkongithub>div {
     background: #000;
@@ -180,102 +181,104 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU BindGroupLayout</h1>
+    <h1>WebGPU Geometric Primitives</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Вибачте, ця стаття ще не була перекладена.</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">Будемо раді допомозі в перекладі</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-bindgrouplayout.html">Тут ви знайдете оригінальну англійську версію статті на цю тему</a>.</p>
+      <p>죄송합니다. 이 글은 아직 번역이 되지 않았습니다.</p>
+<p><a href="https://github.com/webgpu/webgpufundamentals">번역을 도와주세요</a>! 😄</p>
+<p><a href="/webgpu/lessons/webpgu-primitives.html">여기서 원문을 볼 수 있습니다</a>.</p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
-    <option value="/webgpu/lessons/webgpu-bindgrouplayout.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-bindgrouplayout.html">Spanish
-    </option><option value="/webgpu/lessons/ja/webgpu-bindgrouplayout.html">日本語
-    </option><option value="/webgpu/lessons/ko/webgpu-bindgrouplayout.html">한국어
-    </option><option value="/webgpu/lessons/ru/webgpu-bindgrouplayout.html">Русский
-    </option><option value="/webgpu/lessons/uk/webgpu-bindgrouplayout.html" selected="">Українська
-    </option><option value="/webgpu/lessons/zh_cn/webgpu-bindgrouplayout.html">简体中文
+    <option value="/webgpu/lessons/webpgu-primitives.html">English
+    </option><option value="/webgpu/lessons/es/webpgu-primitives.html">Spanish
+    </option><option value="/webgpu/lessons/ja/webpgu-primitives.html">日本語
+    </option><option value="/webgpu/lessons/ko/webpgu-primitives.html" selected="">한국어
+    </option><option value="/webgpu/lessons/ru/webpgu-primitives.html">Русский
+    </option><option value="/webgpu/lessons/uk/webpgu-primitives.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webpgu-primitives.html">简体中文
 </option></select>
 
 
-        <ul>  <li>Основи</li>
+        <ul>  <li>기초</li>
         <ul>
-          <li><a href="/webgpu/lessons/uk/webgpu-fundamentals.html">Основи</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-inter-stage-variables.html">Міжетапні змінні</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-uniforms.html">Юніформи</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-storage-buffers.html">Буфери зберігання</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Текстури</li>
+          <li><a href="/webgpu/lessons/ko/webgpu-fundamentals.html">기초</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-vertex-buffers.html">정점 버퍼</a></li>
+  <li>Textures</li>
         <ul>
-          <li><a href="/webgpu/lessons/uk/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ko/webgpu-textures.html">텍스처</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-importing-textures.html">이미지 로딩</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-textures-external-video.html">비디오 사용하기</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/uk/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-memory-layout.html">Схема розміщення даних в пам’яті</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-timing.html">Timing Performance</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
         </ul>
-  <li>3D математика</li>
+  <li>3D 수학</li>
         <ul>
-          <li><a href="/webgpu/lessons/uk/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ko/webgpu-translation.html">Translation</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-rotation.html">Rotation</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-scale.html">Scale</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-cameras.html">Cameras</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-scene-graphs.html">Scene Graphs</a></li>
         </ul>
-  <li>Освітлення</li>
+  <li>Lighting</li>
         <ul>
-          <li><a href="/webgpu/lessons/uk/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ko/webgpu-lighting-directional.html">Directional Lighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-lighting-point.html">Point Lighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-lighting-spot.html">Spot Lighting</a></li>
         </ul>
-  <li>Техніки</li>
+  <li>Techniques</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/uk/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ko/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/uk/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ko/webgpu-environment-maps.html">Environment maps</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
         </ul>
-  <li>Обчислювальні шейдери</li>
+  <li>컴퓨트 셰이더</li>
         <ul>
-          <li><a href="/webgpu/lessons/uk/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ko/webgpu-compute-shaders.html">컴퓨트 셰이더 기초</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
         </ul>
-  <li>Різне</li>
+  <li>기타</li>
         <ul>
-          <li><a href="/webgpu/lessons/uk/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/uk/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
+          <li><a href="/webgpu/lessons/ko/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-points.html">Points</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-optimization.html">Speed and Optimization</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-debugging.html">Debugging and Errors</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
+  <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
   <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
   <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
   <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>

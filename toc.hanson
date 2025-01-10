@@ -18,6 +18,7 @@
     'webgpu-constants.md',
     'webgpu-memory-layout.md',
     'webgpu-transparency.md',
+    'webgpu-bind-group-layouts.md',
     'webgpu-copying-data.md',
     'webgpu-limits-and-features.md',
     'webgpu-timing.md',

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>WebGPU Timing - Step 1 - Animated</title>
+    <title>WebGPU Timing - with averages</title>
     <style>
       @import url(resources/webgpu-lesson.css);
 html, body {
@@ -47,7 +47,10 @@ const rand = (min, max) => {
   return min + Math.random() * (max - min);
 };
 
-class RollingAverage {
+// Note: We disallow negative values as this is used for timestamp queries
+// where it's possible for a query to return a beginning time greater than the
+// end time. See: https://gpuweb.github.io/gpuweb/#timestamp
+class NonNegativeRollingAverage {
   #total = 0;
   #samples = [];
   #cursor = 0;
@@ -56,18 +59,20 @@ class RollingAverage {
     this.#numSamples = numSamples;
   }
   addSample(v) {
-    this.#total += v - (this.#samples[this.#cursor] || 0);
-    this.#samples[this.#cursor] = v;
-    this.#cursor = (this.#cursor + 1) % this.#numSamples;
+    if (!Number.isNaN(v) && Number.isFinite(v) && v >= 0) {
+      this.#total += v - (this.#samples[this.#cursor] || 0);
+      this.#samples[this.#cursor] = v;
+      this.#cursor = (this.#cursor + 1) % this.#numSamples;
+    }
   }
   get() {
     return this.#total / this.#samples.length;
   }
 }
 
-const fpsAverage = new RollingAverage();
-const jsAverage = new RollingAverage();
-const gpuAverage = new RollingAverage();
+const fpsAverage = new NonNegativeRollingAverage();
+const jsAverage = new NonNegativeRollingAverage();
+const gpuAverage = new NonNegativeRollingAverage();
 
 function createCircleVertices({
   radius = 1,

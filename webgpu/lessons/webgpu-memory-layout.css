@@ -1,0 +1,44 @@
+:root {
+  --whl-th-bg-color: lightblue;
+  --whl-row-bg-color: linear-gradient(#FFF, #EEE);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --whl-th-bg-color: blue;
+    --whl-row-bg-color: linear-gradient(#333, #111);
+  }
+}
+div[data-diagram="typedArrays"] {
+  font-family: monospace;
+  font-size: small;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  overflow-x: auto;
+
+  label { display: flex; align-items: center;}
+  table { border-collapse: collapse; line-height: 1.5; width: max-content; }
+  thead { background-color: var(--whl-th-bg-color);}
+  th, td { border: 1px solid gray; position: relative; padding: 0.2em; margin: 0 }
+  input[type="text"] { border: none; font-family: monospace; background-color: inherit; width: 100%; padding: 0; margin: 0; text-align: right; }
+  .error { background-color: red; }
+
+  /*
+  tr:nth-child(even) { background-color: #333;}
+  tr:nth-child(odd) { background-color: #222;}
+  */
+  tr { background: var(--whl-row-bg-color); }
+
+  td[colspan="1"] { width: 3em }
+  td[colspan="2"] { width: 6em }
+  td[colspan="4"] { width: 12em }
+  td[colspan="8"] { width: 24em }
+}
+
+@media (width < 740px) {
+  div[data-diagram="typedArrays"] {
+    font-size: x-small;
+    display: block;
+  }
+}
+

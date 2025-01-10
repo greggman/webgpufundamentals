@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -231,12 +232,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <div class="lesson-main">
       <p>Bind Group Layouts are used to make it easy and efficient
 for WebGPU to match Bind Groups to Compute and Render Pipelines.</p>
-<p>How it works:</p>
+<h2 id="how-it-works">How it works:</h2>
 <p>A Pipeline, like a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUComputePipeline"><code class="notranslate" translate="no">GPUComputePipeline</code></a> or <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPURenderPipeline"><code class="notranslate" translate="no">GPURenderPipeline</code></a>
 uses a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a> which defines 0 or more
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>s. Each <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> is assigned
 to a specific group index.</p>
-<p>Bind Groups are created with a specific <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>
+<div class="webgpu_center"><img src="resources/webgpu-bind-group-layouts.svg" style="width: 900px;"></div>
+<p>Bind Groups are each created with a specific <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>
 as well.</p>
 <p>When you go to <code class="notranslate" translate="no">draw</code> or to <code class="notranslate" translate="no">dispatchWorkgroups</code>, WebGPU only
 needs to check, does the <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> for each group index
@@ -246,28 +248,567 @@ This check is trivially simple. Most of the detailed checking
 happens when you create the bind group. That way, when you’re
 actually drawing or computing, there’s almost nothing left to
 check.</p>
-<p>Pipelines with generate their own <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a> and
+<p>Pipelines will generate their own <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a> and
 populate it with <code class="notranslate" translate="no">GPUBindGroupLayouts</code> automatically if you
 create the pipeline with <code class="notranslate" translate="no">layout: 'auto'</code> which is what
 most of the samples on this website do.</p>
 <p>There are 2 main reasons to <strong>NOT</strong> use <code class="notranslate" translate="no">layout: 'auto'</code>.</p>
 <ol>
 <li>
+<p><strong>You want a layout that’s different than the default <code class="notranslate" translate="no">'auto'</code> layout</strong></p>
+<p>For example you want to use a <code class="notranslate" translate="no">rgba32float</code> as a texture
+but you get an error when you try. (see below)</p>
+</li>
+<li>
 <p><strong>You want to use a bind group with more than 1 pipeline</strong></p>
-<p>You can not use a bind group made with from a bindGroupLayout
+<p>You can not use a bind group made from a bindGroupLayout
 that was made from a pipeline with <code class="notranslate" translate="no">layout: 'auto'</code> with a
 different pipeline.</p>
 </li>
+</ol>
+<h2 id="using-a-bind-group-layout-different-than-layout-auto---rgba32float"><a id="a-rgba32float"></a> Using a bind group layout different than <code class="notranslate" translate="no">layout: 'auto'</code> - <code class="notranslate" translate="no">'rgba32float'</code></h2>
+<p>The rules for how a bind group layout is automatically created are
+<a href="https://www.w3.org/TR/webgpu/#abstract-opdef-default-pipeline-layout">detailed in the spec</a>, but, as one example…</p>
+<p>Let’s say we want to use an <code class="notranslate" translate="no">rgba32float</code> texture. Let’s take
+<a href="http://localhost:8080/webgpu/lessons/webgpu-textures.html">our first example of using a texture from the article on textures</a> which drew an upside down 5x7 texel ‘F’.  Let’s update it to use an <code class="notranslate" translate="no">rgba32float</code> texture.</p>
+<p>Here are the changes.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kTextureWidth = 5;
+  const kTextureHeight = 7;
+-  const _ = [255,   0,   0, 255];  // red
+-  const y = [255, 255,   0, 255];  // yellow
+-  const b = [  0,   0, 255, 255];  // blue
+-  const textureData = new Uint8Array([
++  const _ = [1, 0, 0, 1];  // red
++  const y = [1, 1, 0, 1];  // yellow
++  const b = [0, 0, 1, 1];  // blue
++  const textureData = new Float32Array([
+    b, _, _, _, _,
+    _, y, y, y, _,
+    _, y, _, _, _,
+    _, y, y, _, _,
+    _, y, _, _, _,
+    _, y, _, _, _,
+    _, _, _, _, _,
+  ].flat());
+
+  const texture = device.createTexture({
+    label: 'yellow F on red',
+    size: [kTextureWidth, kTextureHeight],
+-    format: 'rgba8unorm',
++    format: 'rgba32float',
+    usage:
+      GPUTextureUsage.TEXTURE_BINDING |
+      GPUTextureUsage.COPY_DST,
+  });
+  device.queue.writeTexture(
+      { texture },
+      textureData,
+-      { bytesPerRow: kTextureWidth * 4 },
++      { bytesPerRow: kTextureWidth * 4 * 4 },
+      { width: kTextureWidth, height: kTextureHeight },
+  );
+
+</pre>
+<p>When we run it we’ll get an error.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-rgba32float-broken.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-rgba32float-broken.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>The error I got in the browser I tested in was:</p>
+<blockquote>
+<ul>
+<li>WebGPU GPUValidationError: None of the supported sample types (UnfilterableFloat) of [Texture “yellow F on red”] match the expected sample types (Float).`<br></li>
+<li>While validating entries[1] as a Sampled Texture. Expected entry layout: {sampleType: TextureSampleType::Float, viewDimension: 2, multisampled: 0}`<br></li>
+<li>While validating [BindGroupDescriptor] against [BindGroupLayout (unlabeled)]`<br></li>
+<li>While calling [Device].CreateBindGroup([BindGroupDescriptor])`</li>
+</ul>
+</blockquote>
+<p>What’s up with that? It turns out that <code class="notranslate" translate="no">rgba32float</code> (and all <code class="notranslate" translate="no">xxx32float</code>)
+textures are not filterable by default. There is an <a href="webgpu-limits-and-features.html">optional feature</a> to make them filterable but, that
+feature might not be available everywhere. This is especially likely on
+mobile devices, at least in 2024.</p>
+<p>By default, when you declare a binding with a <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code> like
+this:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+</pre>
+<p>And you use <code class="notranslate" translate="no">layout: 'auto'</code> when creating your pipeline, WebGPU creates
+a bind group layout that specifically requires filterable textures. If
+you try to bind an unfilterable one you get an error.</p>
+<p>If you want to use a texture that can not be filtered then you’ll need
+to manually create a bind group layout.</p>
+<p>There’s a tool, <a href="resources/wgsl-offset-computer.html">here</a>, that if you
+paste your shaders, it will generate the auto layout for you. Pasting
+in the shader from the example above it gives me</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayoutDescriptors = [
+  {
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.FRAGMENT,
+        sampler: {
+          type: "filtering",
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.FRAGMENT,
+        texture: {
+          sampleType: "float",
+          viewDimension: "2d",
+          multisampled: false,
+        },
+      },
+    ],
+  },
+];
+</pre>
+<p>This is an array of <a href="https://www.w3.org/TR/webgpu/#dictdef-gpubindgrouplayoutdescriptor"><code class="notranslate" translate="no">GPUBindGroupLayoutDescriptor</code></a>s. Above you can
+see the bind group uses <code class="notranslate" translate="no">sampleType: "float"</code>. That’s the type for
+<code class="notranslate" translate="no">'rgba8unorm'</code> but it’s not the type for <code class="notranslate" translate="no">'rgba32float'</code>. You can read
+the sample types a particular texture format works with in
+<a href="https://www.w3.org/TR/webgpu/#texture-format-caps">this table in the spec</a>.</p>
+<p>To fix the example we need to adjust both the texture binding and the
+sampler binding. The sampler binding needs to be changed into a
+<code class="notranslate" translate="no">'non-filtering'</code> sampler. The texture binding needs to be changed to
+an <code class="notranslate" translate="no">'unfilterable-float'</code>.</p>
+<p>So, first, we need to create a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.FRAGMENT,
+        sampler: {
+*          type: 'non-filtering',
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.FRAGMENT,
+        texture: {
+*          sampleType: 'unfilterable-float',
+          viewDimension: '2d',
+          multisampled: false,
+        },
+      },
+    ],
+  });
+</pre>
+<p>The two changes are marked above.</p>
+<p>Then we need to create a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a> which is an array
+of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>s used by a pipeline.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+</pre>
+<p><code class="notranslate" translate="no">createPipelineLayout</code> takes an object with an array of <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>s.
+They are ordered by group index so the first entry becomes <code class="notranslate" translate="no">@group(0)</code>,
+the 2nd entry becomes <code class="notranslate" translate="no">@group(1)</code>, etc… If you need
+to skip one you’ll need to add an empty bind group layout.</p>
+<p>Finally, when we create the pipeline, we pass in the pipeline layout</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'hardcoded textured quad pipeline',
+-    layout: 'auto',
++    layout: pipelineLayout,
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>With that, our example works again but now it’s using an <code class="notranslate" translate="no">rgba32float</code>
+texture.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-rgba32float-fixed.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-rgba32float-fixed.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Note: the example works both because we did the work above to make
+a bind group layout that accepted unfilterable-float but it also happens
+to work because the example uses a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUSampler"><code class="notranslate" translate="no">GPUSampler</code></a> using only <code class="notranslate" translate="no">'nearest'</code>
+filtering. If we set any of the filters, <code class="notranslate" translate="no">magFilter</code>, <code class="notranslate" translate="no">minFilter</code> or
+<code class="notranslate" translate="no">mipmapFilter</code> to <code class="notranslate" translate="no">'linear'</code> we’d get an error saying that we tried
+to use a <code class="notranslate" translate="no">'filtering'</code> sampler on a <code class="notranslate" translate="no">'non-filtering'</code> sampler binding.</p>
+<h2 id="using-a-bind-group-layout-different-than-layout-auto---dynamic-offsets">Using a bind group layout different than <code class="notranslate" translate="no">layout: 'auto'</code> - dynamic offsets</h2>
+<p>By default, when you make a bind group and you bind a uniform or storage buffer, the entire buffer is bound. You can also pass in an offset and length when creating your bind group. In both cases, once set, they can not
+be changed.</p>
+<p>WebGPU has an option to let you change the offset when you call
+<code class="notranslate" translate="no">setBindGroup</code>. To use this feature, you have to manually create bind group
+layouts and set <code class="notranslate" translate="no">hasDynamicOffsets: true</code> for each binding you want to be
+able to set later.</p>
+<p>To keep this simple, let’s use the simple compute example
+from <a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">the article on fundamentals</a>. We’ll modify it to add
+2 sets of values from the same buffer and we’ll choose which
+set using dynamic offsets.</p>
+<p>First lets change the shader to this</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; a: array&lt;f32&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; b: array&lt;f32&gt;;
+@group(0) @binding(2) var&lt;storage, read_write&gt; dst: array&lt;f32&gt;;
+
+@compute @workgroup_size(1) fn computeSomething(
+  @builtin(global_invocation_id) id: vec3u
+) {
+  let i = id.x;
+  dst[i] = a[i] + b[i];
+}
+</pre>
+<p>you can see it just adds <code class="notranslate" translate="no">a</code> to <code class="notranslate" translate="no">b</code> and writes into <code class="notranslate" translate="no">dst</code>.</p>
+<p>Next let’s make the bind group layout</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+      {
+        binding: 2,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+    ],
+  });
+</pre>
+<p>All of them are marked as <code class="notranslate" translate="no">hasDynamicStorage: true</code></p>
+<p>now let’s use it to create our pipeline</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+
+  const pipeline = device.createComputePipeline({
+-    label: 'double compute pipeline',
+-    layout: 'auto',
++    label: 'add elements compute pipeline',
++    layout: pipelineLayout,
+    compute: {
+      module,
+    },
+  });
+</pre>
+<p>Let’s setup the buffer. Offset must be a multiple of 256 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> so, let’s create a buffer
+256 * 3 bytes large so we have at least 3 valid offsets, 0, 256, and 512.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const input = new Float32Array([1, 3, 5]);
++  const input = new Float32Array(64 * 3);
++  input.set([1, 3, 5]);
++  input.set([11, 12, 13], 64);
+
+  // create a buffer on the GPU to hold our computation
+  // input and output
+  const workBuffer = device.createBuffer({
+    label: 'work buffer',
+    size: input.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
+  });
+  // Copy our input data to that buffer
+  device.queue.writeBuffer(workBuffer, 0, input);
+</pre>
+<p>The code above makes an array of <code class="notranslate" translate="no">64 * 3</code> 32bit floats. That’s 768 bytes.</p>
+<p>Since our original example read and wrote to the same buffer
+we’ll just bind the same buffer 3 times.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Setup a bindGroup to tell the shader which
+  // buffers to use for the computation
+  const bindGroup = device.createBindGroup({
+    label: 'bindGroup for work buffer',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+-      { binding: 0, resource: { buffer: workBuffer } },
++      { binding: 0, resource: { buffer: workBuffer, size: 256 } },
++      { binding: 1, resource: { buffer: workBuffer, size: 256 } },
++      { binding: 2, resource: { buffer: workBuffer, size: 256 } },
+    ],
+  });
+</pre>
+<p>Note, we must specify the size, otherwise it will default to the size
+of the entire buffer. If we were to then set an offset &gt; 0 we’d get an
+error since we’d be specifying a portion of the buffer that’s out of range.</p>
+<p>In <code class="notranslate" translate="no">setBindGroup</code> we now pass in 1 offset for each buffer that has dynamic offsets. Since we marked all 3 entries in the bind group layout as
+<code class="notranslate" translate="no">hasDynamicOffset: true</code> we need 3 offsets in the order of their binding slot.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
+  pass.setPipeline(pipeline);
+-  pass.setBindGroup(0, bindGroup);
++  pass.setBindGroup(0, bindGroup, [0, 256, 512]);
+  pass.dispatchWorkgroups(3);
+  pass.end();
+</pre>
+<p>Finally, we need to change the code to show the result</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  console.log(input);
+-  console.log(result);
++  console.log('a', input.slice(0, 3));
++  console.log('b', input.slice(64, 64 + 3));
++  console.log('dst', result.slice(128, 128 + 3));
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-dynamic-offsets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-dynamic-offsets.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Note that, using dynamic offsets is slightly slower than non-dynamic offsets. The reason is, with non-dynamic offsets, whether the offset and size are in range of the buffer is checked when you create the bind group. With dynamic offsets, that check can not be made until you call <code class="notranslate" translate="no">setBindGroup</code>. If you’re only calling <code class="notranslate" translate="no">setBindGroup</code> a few hundred times
+that difference probably won’t matter. If you’re calling <code class="notranslate" translate="no">setBindGroup</code>
+1000s of times it might be more noticeable.</p>
+<h2 id="using-a-bind-group-with-more-than-1-pipeline"><a id="a-sharing-bind-groups"></a> Using a bind group with more than 1 pipeline</h2>
+<p>Another reason to create bind group layouts manually is so we
+can use the same bind group with more than one pipeline.</p>
+<p>A common places you might want to be able to reuse a bind group is in a basic 3d scene renderer with shadows.</p>
+<p>In a basic 3d scene renderer it’s common to separate bindings
+into</p>
+<ul>
+<li>globals (like the perspective and view matrices)</li>
+<li>materials (the textures, colors)</li>
+<li>locals (like the model matrix)</li>
+</ul>
+<p>You then render like this</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">setBindGroup(0, globalsBG)
+for each material
+  setBindGroup(1, materialBG)
+  for each object that uses material
+    setBindGroup(2, localBG)
+    draw(...)
+</pre>
+<p>When you add <a href="webgpu-shadows.html">shadows</a>, you need to first
+draw the shadow maps with a shadow map pipeline. Rather than
+having separate bind groups of all of those things, ones to work
+with the pipeline that draws and different bind groups to work
+with the pipeline that renders the shadow map, it would be much
+easier to just make one set of bind groups and use the same ones
+for both cases.</p>
+<p>That’s a rather large sample to write, just to show off sharing
+bind groups. Although, <a href="webgpu-shadows.html">the article on shadows</a>
+uses shared bind groups we’ll take the simple compute example from <a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">the article on fundamentals</a> again and make it use 2 compute pipelines with one bind group.</p>
+<p>First let’s add another shader module that adds 3</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const module = device.createShaderModule({
++  const moduleTimes2 = device.createShaderModule({
+    label: 'doubling compute module',
+    code: `
+      @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
+
+      @compute @workgroup_size(1) fn computeSomething(
+        @builtin(global_invocation_id) id: vec3u
+      ) {
+        let i = id.x;
+        data[i] = data[i] * 2.0;
+      }
+    `,
+  });
+
++  const modulePlus3 = device.createShaderModule({
++    label: 'adding 3 compute module',
++    code: `
++      @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
++
++      @compute @workgroup_size(1) fn computeSomething(
++        @builtin(global_invocation_id) id: vec3u
++      ) {
++        let i = id.x;
++        data[i] = data[i] + 3.0;
++      }
++    `,
++  });
+</pre>
+<p>Then let’s create a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>
+we can use to make the 2 pipelines share the same <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroup"><code class="notranslate" translate="no">GPUBindGroup</code></a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          minBindingSize: 0,
+        },
+      },
+    ],
+  });
+
+  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+</pre>
+<p>Now let’s use them when creating the pipelines.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const pipeline = device.createComputePipeline({
++  const pipelineTimes2 = device.createComputePipeline({
+    label: 'doubling compute pipeline',
+-    layout: 'auto',
++    layout: pipelineLayout,
+    compute: {
+      module: moduleTimes2,
+    },
+  });
+
++  const pipelinePlus3 = device.createComputePipeline({
++    label: 'plus 3 compute pipeline',
++    layout: pipelineLayout,
++    compute: {
++      module: modulePlus3,
++    },
++  });
+</pre>
+<p>When we setup the bind group, let’s use the <code class="notranslate" translate="no">bindGroupLayout</code>
+directly</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Setup a bindGroup to tell the shader which
+  // buffer to use for the computation
+  const bindGroup = device.createBindGroup({
+    label: 'bindGroup for work buffer',
+-    layout: pipeline.getBindGroupLayout(0),
++    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: { buffer: workBuffer } },
+    ],
+  });
+</pre>
+<p>Finally let’s use both pipelines</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Encode commands to do the computation
+  const encoder = device.createCommandEncoder();
+  const pass = encoder.beginComputePass();
+-  pass.setPipeline(pipeline);
++  pass.setPipeline(pipelineTimes2);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(input.length);
++  pass.setPipeline(pipelinePlus3);
++  pass.dispatchWorkgroups(input.length);
+  pass.end();
+</pre>
+<p>The result is we multiply by 2 and add 3 with one bind group.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-multiple-pipelines.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-multiple-pipelines.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Not very exciting but at least it’s a working and simple example.</p>
+<p>When to manually make bind group layouts and when to not is really up
+to you. In the example above it would arguably have been easier to
+just make 2 bind groups, 1 for each pipeline.</p>
+<p>For simple situations it’s often not necessary to manually make bind group layouts but, as your
+WebGPU programs get more complex, it’s likely making bind group layouts
+will be a technique you reach for.</p>
+<h2 id="bind-group-layout-notes"><a id="a-bind-group-layout-notes"></a> Bind Group Layout notes:</h2>
+<p>Some things to note about creating a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a></p>
+<ul>
 <li>
-<p><strong>You want a layout that’s different than the default <code class="notranslate" translate="no">'auto'</code> layout</strong></p>
+<h2 id="each-entry-must-declare-which-binding-it-is-for">Each entry must declare which <code class="notranslate" translate="no">binding</code> it is for</h2>
+</li>
+<li>
+<h2 id="each-entry-must-declare-which-stages-it-will-be-visible-in">Each entry must declare which stages it will be visible in.</h2>
+<p>In our examples above we declared just one visibility.
+If, for example, we wanted to reference the bind group both
+the vertex and the fragment shader we’d use:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   visibility: GPUShaderStage.FRAGMENT | GPUShaderStage.VERTEX
+</pre>
+<p>or all 3 stages:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   visibility: GPUShaderStage.COMPUTE |
+               GPUShaderStage.FRAGMENT | 
+               GPUShaderStage.VERTEX
+</pre>
+</li>
+<li>
+<h2 id="there-are-several-defaults">There are several defaults:</h2>
+<p>For <code class="notranslate" translate="no">texture:</code> bindings the defaults are:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
+  sampleType: 'float',
+  viewDimension: '2d',
+  multisampled: false,
+}
+</pre>
+<p>For a <code class="notranslate" translate="no">sampler:</code> bindings the defaults are:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
+  type: 'filtering',
+}
+</pre>
+<p>That means, in the most common sampler and texture usages, you could declare
+the sampler and texture entries like this</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayout = device.createBindGroupLayout({
+  entries: [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.FRAGMENT,
+      sampler: {},  // use the defaults
+    },
+    {
+      binding: 1,
+      visibility: GPUShaderStage.FRAGMENT,
+      texture: {},  // use the defaults
+    },
+  ],
+});
+</pre>
+</li>
+<li>
+<h2 id="buffer-entries-should-declare-a-minbindingsize-when-possible">buffer entries should declare a <code class="notranslate" translate="no">minBindingSize</code> when possible.</h2>
+<p>When you declare a buffer binding you can specify a <code class="notranslate" translate="no">minBindingSize</code>.</p>
+<p>A good example might be you make a struct for uniforms. For example
+in <a href="webgpu-uniforms.html">the article on uniforms</a> we had this struct:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurStruct {
+  color: vec4f,
+  scale: vec2f,
+  offset: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+</pre>
+<p>It requires 32 bytes so, we should declare it’s <code class="notranslate" translate="no">minBindingSize</code> like
+this:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayout = device.createBindGroupLayout({
+  entries: [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.COMPUTE,
+      buffer: {
+        type: 'uniform',
+        minBindingSize: 32,
+      },
+    },
+  ],
+});
+</pre>
+<p>The reason to declare a <code class="notranslate" translate="no">minBindingSize</code> is it lets WebGPU check
+if your buffer size/offset is the correct size when you call
+<code class="notranslate" translate="no">createBindGroup</code>.  If you don’t set a <code class="notranslate" translate="no">minBindingSize</code>, then
+WebGPU will have to check at draw/dispatchWorkgroups time that
+the buffer is the correct size of the pipeline. Checking every
+draw calls is slower than checking once when you create a bind
+group.</p>
+<p>On the the other hand, in our example above that used a storage
+buffer to double numbers etc, we didn’t declare a <code class="notranslate" translate="no">minBindingSize</code>.
+That’s because, since the storage buffer is declared as an <code class="notranslate" translate="no">array</code>,
+are able to bind different size buffers depending on how
+many values you pass in.</p>
+</li>
+</ul>
+<p><a href="https://www.w3.org/TR/webgpu/#dictdef-gpubindgrouplayoutentry">This part of the spec</a> details all the options for making
+bind group layouts.</p>
+<p><a href="https://toji.dev/webgpu-best-practices/bind-groups">This article</a> also
+has some advice on bind groups and bind group layouts.</p>
+<p><a href="https://greggman.github.io/webgpu-utils">This Library</a> will compute
+struct sizes and default bind group layouts for you.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>It’s possible your device
+supports smaller offsets. See the <code class="notranslate" translate="no">minStorageBufferOffsetAlignment</code>
+or <code class="notranslate" translate="no">minUniformBufferOffsetAlignment</code> in <a href="webgpu-limits-and-features.html">limits and features</a>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
-<h2 id="using-a-bind-group-with-more-than-1-pipeline">Using a bind group with more than 1 pipeline</h2>
-<p>— need a good example - problem is, drawing twice in 2 different locations
-— requires 2 different uniform buffers which means it requires 2 bind groups
-— which means sharing doesn’t matter.</p>
-<p>Let’s made a toy example. We’ll make 2 render pipelines and try
-to draw a cube with both pipelines.</p>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -302,6 +843,7 @@ to draw a cube with both pipelines.</p>
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -376,9 +918,6 @@ to draw a cube with both pipelines.</p>
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-wgsl.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,13 +29,20 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="WebGPU着色语言简介">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_zh-cn.jpg">
+
 <meta property="og:title" content="WebGPU WGSL">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="An introduction to WebGPU Shading Language">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_zh-cn.jpg">
+<meta property="og:description" content="WebGPU着色语言简介">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-wgsl.html">
 
 <meta name="twitter:card" content="summary_large_image">
@@ -44,12 +51,51 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <meta name="twitter:domain" content="webgpufundamentals.org">
 <meta name="twitter:title" content="WebGPU WGSL">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-wgsl.html">
-<meta name="twitter:description" content="An introduction to WebGPU Shading Language">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPU着色语言简介">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-wgsl.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-wgsl.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-wgsl.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU WGSL",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-wgsl.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
 <title>WebGPU WGSL</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -67,6 +113,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">目录</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -184,9 +231,656 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-wgsl.html">英文原版地址</a></p>
+      <p>对于WGSL的深入概述，请参见 <a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a>。
+我们还有 <a href="https://www.w3.org/TR/WGSL/">实际的WGSL规范</a> ，尽管它是为 <a href="http://catb.org/jargon/html/L/language-lawyer.html">语言律师们</a> 编写的，可能难以理解 😂</p>
+<p>本文假设您已经知道如何编程。它可能过于简略，但希望它能帮助您理解和编写WGSL着色程序。</p>
+<h2 id="wgsl-是严格类型的">WGSL 是严格类型的</h2>
+<p>与 JavaScript 不同，WGSL 要求了解每个变量、结构字段、函数参数和函数返回类型的具体类型。如果您使用过TypeScript、Rust、C++、C#、Java、Swift、Kotlin 等，那么您对此应该很熟悉。</p>
+<h3 id="基本类型">基本类型</h3>
+<p>WGSL 中包括这些<em>基本</em>类型</p>
+<ul>
+<li><code class="notranslate" translate="no">i32</code> 一个32位有符号整数</li>
+<li><code class="notranslate" translate="no">u32</code> 一个32位无符号整数</li>
+<li><code class="notranslate" translate="no">f32</code> 一个32位浮点数</li>
+<li><code class="notranslate" translate="no">bool</code> 一个布尔值</li>
+<li><code class="notranslate" translate="no">f16</code> 一个16位浮点数（这是一个可选特性，使用前请检查并请求）</li>
+</ul>
+<h3 id="变量声明">变量声明</h3>
+<p>在JavaScript中，您可以像这样声明变量和函数：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">var a = 1;
+let c = 3;
+function d(e) { return e * 2; }
+</pre>
+<p>在WGSL中，这些声明的完整形式将会是：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">var a: f32 = 1;
+let c: f32 = 3;
+fn d(e: f32) -&gt; f32 { return e * 2; }
+</pre>
+<p>需要注意的是，我们在变量声明中添加了 <code class="notranslate" translate="no">: &lt;类型&gt;</code>，例如 <code class="notranslate" translate="no">: f32</code>，以及在函数声明中添加了 <code class="notranslate" translate="no">-&gt; &lt;类型&gt;</code>。</p>
+<h3 id="自动类型">自动类型</h3>
+<p>WGSL为变量提供了一个<em>快捷方式</em>。类似于 TypeScript，如果您没有声明变量的类型，则它将自动成为右侧表达式的类型。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn foo() -&gt; bool { return false; }
+
+var a = 1;     // a 是 i32 类型
+let b = 2.0;   // b 是 f32 类型
+var c = 3u;    // c 是 u32 类型
+var d = foo(); // d 是 bool 类型
+</pre>
+<h3 id="类型转换">类型转换</h3>
+<p>此外，严格的类型意味着您经常需要转换类型。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;     // a 是 i32 类型
+let b = 2.0;   // b 是 f32 类型
+*let c = a + b; // 错误：不能将一个 i32 的值添加到 f32 的值上
+</pre>
+<p>为了修复该错误，我们将其中一个变量的类型转换为另一个的类型：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;     // a 是 i32 类型
+let b = 2.0;   // b 是 f32 类型
+let c = f32(a) + b; // 这样就行了
+</pre>
+<p>但是！WGSL有所谓的 “抽象整数（AbstractInt）” 和 “抽象浮点数（AbstractFloat）” 。您可以将它们视为尚未决定其类型的数字。这些都是仅在编译时有效的特性。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;            // a 是 i32 类型
+let b = 2.0;          // b 是 f32 类型
+*let c = a + b;       // 错误：不能将一个 i32 的值添加到 f32 的值上
+let d = 1 + 2.0;      // d 是 f32 类型
+</pre>
+<h3 id="数值后缀">数值后缀</h3>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">2i   // i32
+3u   // u32
+4f   // f32
+4.5f // f32
+5h   // f16
+5.6h // f16
+6    // 抽象整数
+7.0  // 抽象浮点数
+</pre>
+<h2 id="let-var-和-const-在-wgsl-和-javascript-中的含义不同"><code class="notranslate" translate="no">let</code> <code class="notranslate" translate="no">var</code> 和 <code class="notranslate" translate="no">const</code> 在 WGSL 和 Javascript 中的含义不同</h2>
+<p>在JavaScript中，<code class="notranslate" translate="no">var</code> 是一个具有函数作用域的变量。<code class="notranslate" translate="no">let</code> 是一个具有块作用域的变量。<code class="notranslate" translate="no">const</code> 是一个常量变量（不能改变）<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>，具有块作用域。</p>
+<p>在WGSL中，所有变量都具有块作用域。<code class="notranslate" translate="no">var</code> 是一个具有存储空间的变量，因此是可变的。<code class="notranslate" translate="no">let</code> 是一个常量值。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn foo() {
+  let a = 1;
+*  a = a + 1;  // 错误：a 是常量表达式
+  var b = 2;
+  b = b + 1;  // 彳亍
+}
+</pre>
+<p><code class="notranslate" translate="no">const</code> 不是一个变量，而是一个编译时常量。您不能将 <code class="notranslate" translate="no">const</code> 用于运行时。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const one = 1;              // 彳亍
+const two = one * 2;        // 很好
+const PI = radians(180.0);  // 没问题
+
+fn add(a: f32, b: f32) -&gt; f32 {
+*  const result = a + b;   // 错误！const 只能用于编译时表达式
+  return result;
+}
+</pre>
+<h2 id="向量类型">向量类型</h2>
+<p>WGSL有三种向量类型 <code class="notranslate" translate="no">vec2</code>, <code class="notranslate" translate="no">vec3</code>, 和 <code class="notranslate" translate="no">vec4</code>。它们的基本样式是 <code class="notranslate" translate="no">vec?&lt;type&gt;</code>
+例如 <code class="notranslate" translate="no">vec2&lt;i32&gt;</code> （两个i32的向量）, <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>（三个f32的向量）, <code class="notranslate" translate="no">vec4&lt;u32&gt;</code>（四个u32的向量）,
+<code class="notranslate" translate="no">vec3&lt;bool&gt;</code>（三个布尔值的向量）。</p>
+<p>示例:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec2&lt;i32&gt;(1, -2);
+let b = vec3&lt;f32&gt;(3.4, 5.6, 7.8);
+let c = vec4&lt;u32&gt;(9, 10, 11, 12);
+</pre>
+<h3 id="选择器（accessors）">选择器（accessors）</h3>
+<p>您可以使用各种选择器来访问向量内的值。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = a.z;   // 通过 x,y,z,w 访问
+let c = a.b;   // 通过 r,g,b,a 访问
+let d = a[2];  // 通过数组元素选择器访问
+</pre>
+<p>在上面的例子中，<code class="notranslate" translate="no">b</code>, <code class="notranslate" translate="no">c</code> 和 <code class="notranslate" translate="no">d</code>都是相同的。它们都在访问 a 的第三个元素，而它们都是’3’。</p>
+<h3 id="调制">调制</h3>
+<p>您也可以同时访问多个元素。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = a.zx;   // 通过 x,y,z,w 访问
+let c = a.br;   // 通过 r,g,b,a 访问
+let d = vec2&lt;f32&gt;(a[2], a[0]);
+</pre>
+<p>在上面的例子中，<code class="notranslate" translate="no">b</code>, <code class="notranslate" translate="no">c</code> 和 <code class="notranslate" translate="no">d</code> 都是相同的，它们都是 <code class="notranslate" translate="no">vec2&lt;f32&gt;(3, 1)</code>。</p>
+<p>您还可以重复元素。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = vec3&lt;f32&gt;(a.z, a.z, a.y);
+let c = a.zzy;
+</pre>
+<p>在上面的例子中，<code class="notranslate" translate="no">b</code> 和 <code class="notranslate" translate="no">c</code> 是一样的。它们都是 <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>，其内容是 3, 3, 2。</p>
+<h3 id="向量快捷方式">向量快捷方式</h3>
+<p>基本类型有快捷方式。您可以将 <code class="notranslate" translate="no">&lt;i32&gt;</code> 改为 <code class="notranslate" translate="no">i</code>, <code class="notranslate" translate="no">&lt;f32&gt;</code> 改为 <code class="notranslate" translate="no">f</code>, <code class="notranslate" translate="no">&lt;u32&gt;</code> 改为 <code class="notranslate" translate="no">u</code> , <code class="notranslate" translate="no">&lt;f16&gt;</code> 改为 <code class="notranslate" translate="no">h</code>，如：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = vec4f(1, 2, 3, 4);
+</pre>
+<p><code class="notranslate" translate="no">a</code> 和 <code class="notranslate" translate="no">b</code> 是相同的类型。</p>
+<h3 id="向量构造">向量构造</h3>
+<p>可以用更小的类型构建向量。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec2f(2, 3);
+let c = vec4f(1, b, 4);
+let d = vec4f(1, a.yz, 4);
+let e = vec4f(a.xyz, 4);
+let f = vec4f(1, a.yzw);
+</pre>
+<p><code class="notranslate" translate="no">a</code>, <code class="notranslate" translate="no">c</code>, <code class="notranslate" translate="no">d</code>, <code class="notranslate" translate="no">e</code> 和 <code class="notranslate" translate="no">f</code> 是相同的。</p>
+<h3 id="向量数学">向量数学</h3>
+<p>您可以在向量上进行数学运算。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec4f(5, 6, 7, 8);
+let c = a + b;  // c 是 vec4f(6, 8, 10, 12)
+let d = a * b;  // d 是 vec4f(5, 12, 21, 32)
+let e = a - b;  // e 是 vec4f(-4, -4, -4, -4)
+</pre>
+<p>许多函数也适用于向量：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec4f(5, 6, 7, 8);
+let c = mix(a, b, 0.5);                   // c is vec4f(3, 4, 5, 6)
+let d = mix(a, b, vec4f(0, 0.5, 0.5, 1)); // d is vec4f(1, 4, 5, 8)
+</pre>
+<h2 id="矩阵">矩阵</h2>
+<p>WGSL有许多矩阵类型。矩阵是向量的数组，格式是 <code class="notranslate" translate="no">mat&lt;向量数量&gt;x&lt;向量大小&gt;&lt;类型&gt;</code>，例如 <code class="notranslate" translate="no">mat3x4&lt;f32&gt;</code> 是一个包含3个 <code class="notranslate" translate="no">vec4&lt;f32&gt;</code> 的数组。就像向量一样，矩阵也有相同的快捷方式：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a: mat4x4&lt;f32&gt; = ...
+let b: mat4x4f = ...
+</pre>
+<p><code class="notranslate" translate="no">a</code> 和 <code class="notranslate" translate="no">b</code> 是相同的类型。</p>
+<h3 id="矩阵向量访问">矩阵向量访问</h3>
+<p>您可以使用数组语法引用矩阵中的向量。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = mat4x4f(...);
+let b = a[2];  // b 是 a 中第3个向量的一个 vec4f
+</pre>
+<p>最常用的3D计算矩阵类型是 <code class="notranslate" translate="no">mat4x4f</code> ，可以直接与<code class="notranslate" translate="no">vec4f</code> 相乘产生另一个 <code class="notranslate" translate="no">vec4f</code>。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = mat4x4f(....);
+let b = vec4f(1, 2, 3, 4);
+let c = a * b;  // c 是一个 vec4f，是 a * b 的结果
+</pre>
+<h2 id="数组">数组</h2>
+<p>WGSL中的数组使用 <code class="notranslate" translate="no">array&lt;type, numElements&gt;</code> 语法声明。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = array&lt;f32, 5&gt;;   // 一个包含五个 f32 的数组
+let b = array&lt;vec4f, 6&gt;; // 一个包含六个 vec4f 的数组
+</pre>
+<p>但是也有 <code class="notranslate" translate="no">array</code> 构造函数。
+它可以接受任意数量的参数，并返回一个数组。参数必须全部是相同类型。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl;" translate="no">let arrOf3Vec3fsA = array(vec3f(1,2,3), vec3f(4,5,6), vec3f(7,8,9));
+let arrOf3Vec3fsB = array&lt;vec3f, 3&gt;(vec3f(1,2,3), vec3f(4,5,6), vec3f(7,8,9));
+</pre>
+<p>在上面的例子中，<code class="notranslate" translate="no">arrOf3Vec3fsA</code> 和 <code class="notranslate" translate="no">arrOf3Vec3fsB</code> 是相同的类型。</p>
+<p>不幸的是，在WGSL版本1中，没有方法获取固定大小数组的大小。</p>
+<h3 id="运行时大小数组">运行时大小数组</h3>
+<p>只有根作用域存储声明或作为根作用域结构体最后一个字段的数组才能指定为没有大小。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Stuff {
+  color: vec4f,
+  size: f32,
+  verts: array&lt;vec3f&gt;,
+};
+@group(0) @binding(0) var&lt;storage&gt; foo: array&lt;mat4x4f&gt;;
+@group(0) @binding(1) var&lt;storage&gt; bar: Stuff;
+</pre>
+<p><code class="notranslate" translate="no">foo</code> 和 <code class="notranslate" translate="no">bar.verts</code> 中的元素数量由运行时使用的绑定组设置定义。您可以在 WGSL 中使用 <code class="notranslate" translate="no">arrayLength</code> 查询此大小。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage&gt; foo: array&lt;mat4x4f&gt;;
+@group(0) @binding(1) var&lt;storage&gt; bar: Stuff;
+
+...
+  let numMatrices = arrayLength(&amp;foo);
+  let numVerts = arrayLength(&amp;bar.verts);
+</pre>
+<h2 id="函数">函数</h2>
+<p>WGSL 中的函数遵循 <code class="notranslate" translate="no">fn 函数名(参数) -&gt; 返回类型 { ..函数体... }</code> 的模式。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn add(a: f32, b: f32) -&gt; f32 {
+  return a + b;
+}
+</pre>
+<h2 id="入口点">入口点</h2>
+<p>WGSL 的程序需要一个入口点。入口点由 <code class="notranslate" translate="no">@vertex</code>, <code class="notranslate" translate="no">@fragment</code> 或者 <code class="notranslate" translate="no">@compute</code> 标记。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn myFunc(a: f32, b: f32) -&gt; @builtin(position): vec4f {
+  return vec4f(0, 0, 0, 0);
+}
+</pre>
+<h2 id="着色器只使用其入口点访问的内容">着色器只使用其入口点访问的内容</h2>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;uniforms&gt; uni: vec4f;
+
+vec4f fn foo() {
+  return uni;
+}
+
+@vertex fn vs1(): @builtin(position) vec4f {
+  return vec4f(0);
+}
+
+@vertex fn vs2(): @builtin(position) vec4f {
+  return foo();
+}
+</pre>
+<p>上面 <code class="notranslate" translate="no">uni</code> 没有被 <code class="notranslate" translate="no">vs1</code> 访问，因此如果在管道中使用 <code class="notranslate" translate="no">vs1</code>，它不会显示为必需的绑定。<code class="notranslate" translate="no">vs2</code> 通过调用 <code class="notranslate" translate="no">foo</code> 间接引用了 <code class="notranslate" translate="no">uni</code>，所以在管道中使用 <code class="notranslate" translate="no">vs2</code> 时，它会显示为必需的绑定。</p>
+<h2 id="属性（attributes）">属性（attributes）</h2>
+<p><em>属性（attributes）</em> 这个词在WebGPU有双重含义，一个是 <em>顶点属性（vertex attributes）</em> 这在<a href="webgpu-vertex-buffers.html">顶点缓冲区的文章</a>有过介绍。
+另一个是在WGSL中，属性以 <code class="notranslate" translate="no">@</code> 开头。</p>
+<h3 id="locationnumber"><code class="notranslate" translate="no">@location(number)</code></h3>
+<p><code class="notranslate" translate="no">@location(number)</code> 用于定义着色器的输入和输出。</p>
+<h4 id="顶点着色器输入">顶点着色器输入</h4>
+<p>对于顶点着色器，输入由顶点着色器入口点函数的 <code class="notranslate" translate="no">@location</code> 属性定义。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex vs1(@location(0) foo: f32, @location(1) bar: vec4f) ...
+
+struct Stuff {
+  @location(0) foo: f32,
+  @location(1) bar: vec4f,
+};
+@vertex vs2(s: Stuff) ...
+</pre>
+<p><code class="notranslate" translate="no">vs1</code> 和 <code class="notranslate" translate="no">vs2</code> 定义了在地址0和1的输入，它们需要由<a href="webgpu-vertex-buffers.html">顶点着色器</a>提供。</p>
+<h4 id="inter-stage-变量">Inter-stage 变量</h4>
+<p>对于 Inter-stage 变量, <code class="notranslate" translate="no">@location</code> 属性定义了变量在着色器之间传递的位置。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VSOut {
+  @builtin(position) pos: vec4f,
+  @location(0) color: vec4f,
+  @location(1) texcoords: vec2f,
+};
+
+struct FSIn {
+  @location(1) uv: vec2f,
+  @location(0) diffuse: vec4f,
+};
+
+@vertex fn foo(...) -&gt; VSOut { ... }
+@fragment fn bar(moo: FSIn) ... 
+</pre>
+<p>上面的例子中, 顶点着色器 <code class="notranslate" translate="no">foo</code> 将 <code class="notranslate" translate="no">color</code> 作为 <code class="notranslate" translate="no">location(0)</code> 上的 <code class="notranslate" translate="no">vec4f</code>，<code class="notranslate" translate="no">texcoords</code> 作为 <code class="notranslate" translate="no">location(1)</code>上的 <code class="notranslate" translate="no">vec2f</code>。
+而片段着色器 <code class="notranslate" translate="no">bar</code> 将他们以 <code class="notranslate" translate="no">uv</code> 和 <code class="notranslate" translate="no">diffuse</code> 接收，因为它们的位置是匹配的。</p>
+<h4 id="片段着色器输出">片段着色器输出</h4>
+<p>对于片段着色器，<code class="notranslate" translate="no">@location</code> 指定了将结果存储在哪个<code class="notranslate" translate="no">GPURenderPassDescriptor.colorAttachment</code> 中。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct FSOut {
+  @location(0) albedo: vec4f;
+  @location(1) normal: vec4f;
+}
+@fragment fn bar(...) -&gt; FSOut { ... }
+</pre>
+<h3 id="builtinname"><code class="notranslate" translate="no">@builtin(name)</code></h3>
+<p><code class="notranslate" translate="no">@builtin</code> 属性用于指定某个特定变量的值来自WebGPU的内置功能。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs1(@builtin(vertex_index) foo: u32, @builtin(instance_index) bar: u32) ... {
+  ...
+}
+</pre>
+<p>在上面的例子中，<code class="notranslate" translate="no">foo</code> 的值来自内置的 <code class="notranslate" translate="no">vertex_index</code> 而 <code class="notranslate" translate="no">bar</code> 的值来自内置的 <code class="notranslate" translate="no">instance_index</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Foo {
+  @builtin(vertex_index) vNdx: u32,
+  @builtin(instance_index) iNdx: u32,
+}
+@vertex fn vs1(blap: Foo) ... {
+  ...
+}
+</pre>
+<p>在这个例子中，<code class="notranslate" translate="no">blap.vNdx</code> 的值来自内置的<code class="notranslate" translate="no">vertex_index</code> 而 <code class="notranslate" translate="no">blap.iNdx</code>的值来自内置的 <code class="notranslate" translate="no">instance_index</code>.</p>
+<div class="webgpu_center center data-table">
+<table class="data">
+  <thead>
+    <tr>
+      <th>内部名称</th>
+      <th>阶段</th>
+      <th>IO</th>
+      <th>类型</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-vertex_index">vertex_index</dfn> </td>
+      <td>vertex </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">
+      当前顶点在当前API级绘制命令中的索引， 不依赖于绘制实例化。
+       <p>对于非索引绘制，第一个顶点的索引等于绘制的<code class="notranslate" translate="no">firstVertex</code> 参数的值，无论是直接还是间接提供的。 绘制实例中每个额外的顶点，索引递增一。</p>
+       <p>对于索引绘制，索引等于顶点的索引缓冲条目， 加上绘制的<code class="notranslate" translate="no">baseVertex</code> 参数的值，无论是直接还是间接提供的。</p></td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-instance_index">instance_index</dfn> </td>
+      <td>vertex </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">
+       当前顶点在当前API级绘制命令中的实例索引。
+       <p>第一个实例的索引等于绘制的<code class="notranslate" translate="no">firstInstance</code> 参数的值，
+         无论是直接还是间接提供的。 绘制中每个额外的实例，索引递增一。</p></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-position">position</dfn> </td>
+      <td>vertex </td>
+      <td>output </td>
+      <td>vec4&lt;f32&gt; </td>
+      <td style="width:50%">当前顶点的输出位置，使用齐次坐标。 齐次归一化（也就是所有的 <em>x</em>, <em>y</em>, 和 <em>z</em> 分量都除以 <em>w</em> 分量）后, 位置处于WebGPU标准化设备坐标空间。参见<a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>。 </td>
+    </tr>
+    <tr>
+      <td>fragment </td>
+      <td>input </td>
+      <td>vec4&lt;f32&gt; </td>
+      <td style="width:50%">当前片段在<a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#framebuffer" id="ref-for-framebuffer">帧缓冲（framebuffer）</a> 空间的位置。
+      (<em>x</em>, <em>y</em>和<em>z</em> 分量都已经被缩放过所以 <em>w</em> 现在是1。)
+      参见 <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-front_facing">front_facing</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>bool </td>
+      <td style="width:50%">当当前片段位于<a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#front-facing" id="ref-for-front-facing">面向前方的</a> 图元上时为真，否则为假。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-frag_depth">frag_depth</dfn> </td>
+      <td>fragment </td>
+      <td>output </td>
+      <td>f32 </td>
+      <td style="width:50%">视口深度范围内的片段更新后的深度。参见<a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_id">local_invocation_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">当前调用的<a data-link-type="dfn" href="#local-invocation-id" id="ref-for-local-invocation-id①">局部调用ID（local invocation ID）</a>， 即其在<a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid①">工作组网格（workgroup grid）</a>中的位置。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_index">local_invocation_index</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">当前调用的<a data-link-type="dfn" href="#local-invocation-index" id="ref-for-local-invocation-index">局部调用索引（local invocation index）</a>, 即调用在<a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid②">工作组网格（workgroup grid）</a>中的线性索引。 </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-global_invocation_id">global_invocation_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">当前调用的<a data-link-type="dfn" href="#global-invocation-id" id="ref-for-global-invocation-id">全局调用ID（global invocation ID）</a>,
+          也就是它在<a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">计算着色器（compute shader grid）</a>中的位置。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-workgroup_id">workgroup_id</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">当前调用的<a data-link-type="dfn" href="#workgroup-id" id="ref-for-workgroup-id">工作组ID（workgroup ID）</a>,
+          也就是该工作组在<a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid③">工作组网格（workgroup grid）</a>中的位置。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-num_workgroups">num_workgroups</dfn> </td>
+      <td>compute </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">通过API<a href="https://www.w3.org/TR/webgpu/#compute-pass-encoder-dispatch">调度的</a>计算着色器的<a data-link-type="dfn" href="#dispatch-size" id="ref-for-dispatch-size">调度大小（dispatch size）</a>，即<code class="notranslate" translate="no">vec&lt;u32&gt;(group_count_x, group_count_y, group_count_z)</code></td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_index">sample_index</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">当前片段的样本索引。 该值至少为0且至多为<code class="notranslate" translate="no">sampleCount</code>-1, 其中<code class="notranslate" translate="no">sampleCount</code> 是为GPU渲染管线指定的MSAA样本<code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-count" id="ref-for-dom-gpumultisamplestate-count">数量</a></code><br>参见<a href="https://www.w3.org/TR/webgpu/#gpurenderpipeline"><cite>WebGPU</cite> § 10.3 GPURenderPipeline</a>. </td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_mask">sample_mask</dfn> </td>
+      <td>fragment </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">当前片段的样本覆盖率掩码。它包含一个位掩码，指示此片段中哪些样本被正在渲染的图元覆盖。<br>参见<a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
+    </tr>
+    <tr>
+      <td>fragment </td>
+      <td>output </td>
+      <td>u32 </td>
+      <td style="width:50%">控制当前片段的样本覆盖率的掩码。写入此变量的最后一个值成为<a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#shader-output-mask" id="ref-for-shader-output-mask">着色器输出掩码</a>.
+         写入值中的零位将导致颜色附件（color attachments）中相应的样本被丢弃。<br>See <a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<h2 id="流程控制">流程控制</h2>
+<p>像大多数计算机语言一样，WGSL具有流程控制语句。</p>
+<h3 id="for">for</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; i++) { ... }
+</pre>
+<h3 id="if">if</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    if (i &lt; 5) {
+      ...
+    } else if (i &gt; 7) {
+      ..
+    } else {
+      ...
+    }
+</pre>
+<h3 id="while">while</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var j = 0;
+  while (j &lt; 5) {
+    ...
+    j++;
+  }
+</pre>
+<h3 id="loop">loop</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    if (k &gt;= 5) {
+      break;
+    }
+  }
+</pre>
+<h3 id="break">break</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    if (k &gt;= 5) {
+      break;
+    }
+  }
+</pre>
+<h3 id="break-if">break if</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    break if (k &gt;= 5);
+  }
+</pre>
+<h3 id="continue">continue</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; ++i) {
+    if (i % 2 == 1) {
+      continue;
+    }
+    ...
+  }
+</pre>
+<h3 id="continuing">continuing</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; ++i) {
+    if (i % 2 == 1) {
+      continue;
+    }
+    ...
+
+    continuing {
+      // continue goes here
+      ...
+    }
+  }
+</pre>
+<h3 id="discard">discard</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">   if (v &lt; 0.5) {
+     discard;
+   }
+</pre>
+<p>使用 <code class="notranslate" translate="no">discard</code> 会退出当前着色器。它只能在片段着色器中使用。</p>
+<h3 id="switch">switch</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">var a : i32;
+let x : i32 = generateValue();
+switch x {
+  case 0: {      // 冒号是可选的
+    a = 1;
+  }
+  default {      // 默认分支不需要出现在最后
+    a = 2;
+  }
+  case 1, 2, {   // 可以使用多个选择值
+    a = 3;
+  }
+  case 3, {      // 尾随逗号也是可选的
+    a = 4;
+  }
+  case 4 {
+    a = 5;
+  }
+}
+</pre>
+<p><code class="notranslate" translate="no">switch</code> 仅与 <code class="notranslate" translate="no">u32</code> 和 <code class="notranslate" translate="no">i32</code> 类型的变量工作，并且各分支的匹配值必须是常量。</p>
+<h2 id="操作符">操作符</h2>
+<div class="webgpu_center center data-table">
+<table class="data">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>操作符</th>
+      <th>Associativity </th>
+      <th>Binding </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Parenthesized </td>
+      <td><code class="notranslate" translate="no">(...)</code> </td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Primary </td>
+      <td><code class="notranslate" translate="no">a()</code>, <code class="notranslate" translate="no">a[]</code>, <code class="notranslate" translate="no">a.b</code> </td>
+      <td>Left-to-right </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Unary </td>
+      <td><code class="notranslate" translate="no">-a</code>, <code class="notranslate" translate="no">!a</code>, <code class="notranslate" translate="no">~a</code>, <code class="notranslate" translate="no">*a</code>, <code class="notranslate" translate="no">&amp;a</code> </td>
+      <td>Right-to-left </td>
+      <td>All above </td>
+    </tr>
+    <tr>
+      <td>Multiplicative </td>
+      <td><code class="notranslate" translate="no">a * b</code>, <code class="notranslate" translate="no">a / b</code>, <code class="notranslate" translate="no">a % b</code> </td>
+      <td>Left-to-right </td>
+      <td>All above </td>
+    </tr>
+    <tr>
+      <td>Additive </td>
+      <td><code class="notranslate" translate="no">a + b</code>, <code class="notranslate" translate="no">a - b</code> </td>
+      <td>Left-to-right </td>
+      <td>All above </td>
+    </tr>
+    <tr>
+      <td>Shift </td>
+      <td><code class="notranslate" translate="no">a &lt;&lt; b</code>, <code class="notranslate" translate="no">a &gt;&gt; b</code> </td>
+      <td>Requires parentheses </td>
+      <td>Unary </td>
+    </tr>
+    <tr>
+      <td>Relational </td>
+      <td><code class="notranslate" translate="no">a &lt; b</code>, <code class="notranslate" translate="no">a &gt; b</code>, <code class="notranslate" translate="no">a &lt;= b</code>, <code class="notranslate" translate="no">a &gt;= b</code>, <code class="notranslate" translate="no">a == b</code>, <code class="notranslate" translate="no">a != b</code> </td>
+      <td>Requires parentheses </td>
+      <td>All above </td>
+    </tr>
+    <tr>
+      <td>Binary AND </td>
+      <td><code class="notranslate" translate="no">a &amp; b</code> </td>
+      <td>Left-to-right </td>
+      <td>Unary </td>
+    </tr>
+    <tr>
+      <td>Binary XOR </td>
+      <td><code class="notranslate" translate="no">a ^ b</code> </td>
+      <td>Left-to-right </td>
+      <td>Unary </td>
+    </tr>
+    <tr>
+      <td>Binary OR </td>
+      <td><code class="notranslate" translate="no">a | b</code> </td>
+      <td>Left-to-right </td>
+      <td>Unary </td>
+    </tr>
+    <tr>
+      <td>Short-circuit AND </td>
+      <td><code class="notranslate" translate="no">a &amp;&amp; b</code> </td>
+      <td>Left-to-right </td>
+      <td>Relational </td>
+    </tr>
+    <tr>
+      <td>Short-circuit OR </td>
+      <td><code class="notranslate" translate="no">a || b</code> </td>
+      <td>Left-to-right </td>
+      <td>Relational </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h2 id="内部函数">内部函数</h2>
+<p>请见 <a href="webgpu-wgsl-function-reference.html">the WGSL Function reference</a>.</p>
+<h2 id="与其他语言的不同">与其他语言的不同</h2>
+<h3 id="if-while-switch-break-if-表达式不需要括号。"><code class="notranslate" translate="no">if</code>, <code class="notranslate" translate="no">while</code>, <code class="notranslate" translate="no">switch</code>, <code class="notranslate" translate="no">break-if</code> 表达式不需要括号。</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">if a &lt; 5 {
+  doTheThing();
+}
+</pre>
+<h3 id="没有三元运算符">没有三元运算符</h3>
+<p>许多语言有一个三元运算符 <code class="notranslate" translate="no">condition ? trueExpression : falseExpression</code>
+但WGSL没有。WGSL有 <code class="notranslate" translate="no">select</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let a = select(falseExpression, trueExpression, condition);
+</pre>
+<h3 id="-and----are-statements-not-expressions"><code class="notranslate" translate="no">++</code> and <code class="notranslate" translate="no">--</code> are statements, not expressions.</h3>
+<p>许多语言有 *前置递增 * 和 <em>后置递增</em> 运算符。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// JavaScript
+let a = 5;
+let b = a++;  // b = 5, a = 6  (前置递增)
+let c = ++a;  // c = 7, a = 7  (后置递增)
+</pre>
+<p>WGSL没有这些。它只有递增和递减语句。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">// WGSL
+var a = 5;
+a++;          // a 现在是 6
+*++a;          // 错误：没有前置递增这种东西
+*let b = a++;  // 错误：a++ 不是一个表达式，而是一个语句（译者注：语句（statement）不返回值）
+</pre>
+<h2 id="---不是表达式，它们是赋值语句"><code class="notranslate" translate="no">+=</code>, <code class="notranslate" translate="no">-=</code> 不是表达式，它们是赋值语句</h2>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// JavaScript
+let a = 5;
+a += 2;          // a = 7
+let b = a += 2;  // a = 9, b = 9
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">// WGSL
+let a = 5;
+a += 2;           // a 是 7
+*let b = a += 2;  // 错误：a += 2 不是一个表达式
+</pre>
+<h2 id="调制（swizzles）不能出现在左边">调制（swizzles）不能出现在左边</h2>
+<p>在某些语言中可以这样做，但在WGSL中不可以。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">var color = vec4f(0.25, 0.5, 0.75, 1);
+*color.rgb = color.bgr; // 错误
+color = vec4(color.bgr, color.a);  // 彳亍
+</pre>
+<p>Note：有一个提议是增加这个功能。</p>
+<h2 id="假装赋值给-_">假装赋值给 <code class="notranslate" translate="no">_</code></h2>
+<p><code class="notranslate" translate="no">_</code> 是一个特殊的变量，你可以赋值给它，来让某些东西看起来被使用了，但实际上并不使用它。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;uniforms&gt; uni1: vec4f;
+@group(0) @binding(0) var&lt;uniforms&gt; uni2: mat4x4f;
+
+@vertex fn vs1(): @builtin(position) vec4f {
+  return vec4f(0);
+}
+
+@vertex fn vs2(): @builtin(position) vec4f {
+  _ = uni1;
+  _ = uni2;
+  return vec4f(0);
+}
+</pre>
+<p>上面的例子中，无论是 <code class="notranslate" translate="no">uni1</code> 还是 <code class="notranslate" translate="no">uni2</code> 都没有被 <code class="notranslate" translate="no">vs1</code> 访问到，因此如果在管线中使用 <code class="notranslate" translate="no">vs1</code>，它们都不会作为必需的绑定出现。而 <code class="notranslate" translate="no">vs2</code> 则引用了 <code class="notranslate" translate="no">uni1</code> 和 <code class="notranslate" translate="no">uni2</code>，所以当使用 <code class="notranslate" translate="no">vs2</code> 在管线中时，它们都会作为必需的绑定出现。</p>
+<p class="copyright" data-fill-with="copyright">  <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>JavaScript中的变量有基础类型 <code class="notranslate" translate="no">undefined</code>, <code class="notranslate" translate="no">null</code>, <code class="notranslate" translate="no">boolean</code>, <code class="notranslate" translate="no">number</code>, <code class="notranslate" translate="no">string</code>, <code class="notranslate" translate="no">reference-to-object</code>。
+新手程序员们可能会因 <code class="notranslate" translate="no">const o = {name: 'foo'}; o.name = 'bar';</code> 能够工作而困惑，因为 <code class="notranslate" translate="no">o</code> 已经被声明为了 <code class="notranslate" translate="no">const</code>。
+事实上 <code class="notranslate" translate="no">o</code> 确实是常量，它是对一个对象的常量引用。你不能再次设置 <code class="notranslate" translate="no">o</code> 引用哪个对象，但你可以改变对象本身。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -201,14 +895,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
-  <li>Textures</li>
+  <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
@@ -220,6 +915,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
@@ -238,13 +934,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scene-graphs.html">Scene Graphs</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>光照</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-lighting-directional.html">Directional Lighting</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-lighting-point.html">Point Lighting</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-lighting-spot.html">Spot Lighting</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>技术</li>
         <ul>
             <li>2D</li>
         <ul>
@@ -283,13 +979,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU WGSL`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

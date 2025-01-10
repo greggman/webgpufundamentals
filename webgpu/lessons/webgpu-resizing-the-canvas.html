@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -247,8 +248,8 @@ displayed.</p>
 canvas.width = 400;
 canvas.height = 300;
 </pre>
-<p>As for setting a canvas’s display size if you don’t have any CSS that affects the canvas’s display size
-the display size will be the same size as its drawing buffer. So in the 2 examples above the canvas’s drawingbuffer is 400x300
+<p>As for setting a canvas’s display size, if you don’t have any CSS that affects the canvas’s display size
+the display size will be the same size as its drawing buffer. So, in the 2 examples above, the canvas’s drawingbuffer is 400x300
 and its display size is also 400x300.</p>
 <p>Here’s an example of a canvas whose drawing buffer is 10x15 pixels that is displayed 400x300 pixels on the page</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas id="c" width="10" height="15" style="width: 400px; height: 300px;"&gt;&lt;/canvas&gt;
@@ -272,7 +273,7 @@ and its display size is also 400x300.</p>
 <p>Why is it so blurry? Because the browser takes our 10x15 pixel canvas and stretches it to 400x300 pixels and
 generally it <em>filters</em> it when it stretches it.</p>
 <p>So, what do we do if, for example, we want the canvas to fill the window? Well, first we can get
-the browser to stretch the canvas to fill the window with CSS. Example</p>
+the browser to stretch the canvas to fill the window with CSS. Example:</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;html&gt;
   &lt;head&gt;
     &lt;style&gt;
@@ -293,7 +294,7 @@ the browser to stretch the canvas to fill the window with CSS. Example</p>
 &lt;/html&gt;
 </pre>
 <p>Now we just need to make the drawing buffer match whatever size the browser has stretched the canvas.
-This is unfortunately a complicated topic. Let’s go over some different methods</p>
+This is unfortunately a more complicated topic than you might expect. Let’s go over some different methods</p>
 <h2 id="use-resizeobserver">Use <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a></h2>
 <p>We covered this in <a href="webgpu-fundamentals.html">the article on webgpu fundamentals</a>.
 This is the modern way and every browser that supports WebGPU also supports
@@ -308,7 +309,7 @@ observe.</p>
     const height = entry.contentBoxSize[0].blockSize;
     const canvas = entry.target;
     canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
-    canvas.height = Math.max(1, Math.min(height, device.limits.axTextureDimension2D));
+    canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
   }
 });
 observer.observe(canvas);
@@ -318,10 +319,11 @@ because we’re only observing one canvas. We need to limit the size of the canv
 to the largest size our device supports otherwise WebGPU will start generating
 errors that we tried to make a texture that is too large. We also need to make
 sure it doesn’t go to zero or again we’ll get errors.</p>
-<p>If we’re only rendering on demand then we might put a call to our render function
-inside the code above. Otherwise, if we’re animating by using a <code class="notranslate" translate="no">requestAnimationFrame</code> loop (rAF loop), or other means, then the next time
-we render we’ll get a texture the matches the size we set on the canvas
-when we call <code class="notranslate" translate="no">context.getCurrentTexture()</code>.</p>
+<p>If we’re only rendering on demand then we might put a call to our render
+function inside the code above. Otherwise, if we’re animating by using a
+<code class="notranslate" translate="no">requestAnimationFrame</code> loop (rAF loop), or other means, then the next time we
+render we’ll get a texture that matches the size we set on the canvas when we
+call <code class="notranslate" translate="no">context.getCurrentTexture()</code>.</p>
 <blockquote>
 <p>Note that <code class="notranslate" translate="no">inlineSize</code> and <code class="notranslate" translate="no">blockSize</code> are not integers</p>
 </blockquote>
@@ -340,7 +342,7 @@ its drawing buffer size to match.</p>
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
-  canvas.height = Math.max(1, Math.min(height, device.limits.axTextureDimension2D));
+  canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
 </pre>
 <p>We’d use this code just before calling <code class="notranslate" translate="no">context.getCurrentTexture()</code>.</p>
 <p>This way seems out of date personally but you’ll likely see it here and there
@@ -352,7 +354,7 @@ probably copy and pasted from old examples using other APIs.</p>
   const width = rect.width; 
   const height = rect.height; 
   canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
-  canvas.height = Math.max(1, Math.min(height, device.limits.axTextureDimension2D));
+  canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
 </pre>
 <p>The difference between <code class="notranslate" translate="no">clientWidth</code>, <code class="notranslate" translate="no">clientHeight</code> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect"><code class="notranslate" translate="no">getBoundingClientRect</code></a>
 is that the width and height from <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect"><code class="notranslate" translate="no">getBoundingClientRect</code></a> is not required to
@@ -363,9 +365,9 @@ be an integer where as the values of <code class="notranslate" translate="no">cl
 The reason is it’s inflexible. The 2 techniques above work in every situation
 whereas using <code class="notranslate" translate="no">window.innerWidth</code> and <code class="notranslate" translate="no">window.innerHeight</code> only work in one
 specific situation, when you want to fill the page. We’ve already shown
-the techniques above fill the page just find but they also work in every other
+the techniques above fill the page just fine but they also work in every other
 situation.</p>
-<p>Having the canvas <em>not</em> fill page. Like a diagram in an article
+<p>Having the canvas <em>not</em> fill the page. Like a diagram in an article
 Or in an editor with a toolbar.</p>
 <p>It’s not more work to use the first 2 techniques so it seems silly to use
 this less useful technique. Unfortunately the “copy and paste” force is strong 😂</p>
@@ -377,16 +379,18 @@ at the top of this article we set the canvas’s display size to 400x300 CSS
 pixels. Depending on if the user has an HD-DPI display, or is zoomed in or
 zoomed out, or has an OS zoom level set, how many actual pixels that becomes on
 the monitor will be different.</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> will tell us in general, the ratio of actual pixels
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> will tell us, in general, the ratio of actual pixels
 to CSS pixels on your monitor. For example here’s your browser’s current setting</p>
 <blockquote>
 <div>devicePixelRatio = <span data-diagram="dpr"></span></div>
 </blockquote>
-<p>If you’re on a desktop or laptop try pressing <kbd>ctrl</kbd>+<kbd>+</kbd> and <kbd>ctrl</kbd>+<kbd>-</kbd> to zoom in and out (<kbd>⌘</kbd>+<kbd>+</kbd> and <kbd>⌘</kbd>+<kbd>-</kbd> on Mac). You should see the number change in Firefox,
-Chrome, Edge (but not Safari)</p>
-<p>So if we want the number of pixels in the canvas to match the number of pixels actually used to display it
-the seemingly obvious solution would be to multiply the values we looked
-up above like this</p>
+<p>If you’re on a desktop or laptop try pressing
+<kbd>ctrl</kbd>+<kbd>+</kbd> and <kbd>ctrl</kbd>+<kbd>-</kbd> to zoom in and out
+(<kbd>⌘</kbd>+<kbd>+</kbd> and <kbd>⌘</kbd>+<kbd>-</kbd> on Mac). You should see
+the number change in Firefox, Chrome, Edge (but not Safari)</p>
+<p>So if we want the number of pixels in the canvas to match the number of pixels
+actually used to display it the seemingly obvious solution would be to multiply
+the values we looked up above like this</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const observer = new ResizeObserver(entries =&gt; {
   for (const entry of entries) {
 -    const width = entry.contentBoxSize[0].inlineSize;
@@ -408,7 +412,7 @@ up above like this</p>
 +  const height = rect.height * devicePixelRatio; 
 </pre>
 <blockquote>
-<p><strong>THE EXAMPLES ABOVE WILL NOT ACTUALLY GIVE THE CORRECT VALUE!!!</strong></p>
+<p><strong>THE EXAMPLES ABOVE WILL NOT ACTUALLY GIVE THE CORRECT RESULT!!!</strong></p>
 </blockquote>
 <p>That said, it’s close and might be good enough for your needs. If you don’t
 care you’re not getting a perfect 1 to 1 pixel rendering on the screen
@@ -547,8 +551,8 @@ changes <sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup>. 
 didn’t actually change. For example if the element is the full size of the page
 then zooming doesn’t change the fact that it’s still the full size of the page
 and therefore still the same number of device pixels.</p>
-<p>To tell <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> which size ot observe you pass it in when calling
-<code class="notranslate" translate="no">observer</code>.</p>
+<p>To tell <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> which size to observe you pass it in when calling
+<code class="notranslate" translate="no">observe</code>.</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">resizeObserver.observe(someElement1, {box: 'device-pixel-content-box'});
 resizeObserver.observe(someElement2, {box: 'content-box'});
 </pre>
@@ -593,7 +597,7 @@ the pattern to a magenta, green, white, black checkerboard.</p>
 +           vec4f(0, 1, 0, 1) * hv.y;
   }
 </pre>
-<p>Let’s also make the triangle big enough to cover the canvas</p>
+<p>Let’s also make the triangle big enough to cover the canvas <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    let pos = array(
 -      vec2f( 0.0,  0.5),  // top center
 -      vec2f(-0.5, -0.5),  // bottom left
@@ -613,9 +617,8 @@ the pattern to a magenta, green, white, black checkerboard.</p>
 except on Safari where if you zoom you may see <a href="https://www.google.com/search?q=moire+pattern">moiré patterns</a> showing
 that it was impossible to get pixel perfection on Safari.</p>
 <blockquote>
-<p>Note: Because, as of November 2023, Safari has no support for WebGPU, <a href="../webgpu-resize-pixel-perfect-webgl-for-safari.html">here
-is the equivalent WebGL example you can run on Safari</a>. If you’d like to
-add your polite voice for Safari to support this feature you can
+<p>Note: If you’d like to
+add your polite voice for Safari to support <code class="notranslate" translate="no">devicePixelContentBox</code> you can
 add to the bug report <a href="https://bugs.webkit.org/show_bug.cgi?id=264158">here</a>
 as well as the bug about Safari not changing <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> in response
 to zoom <a href="https://bugs.webkit.org/show_bug.cgi?id=124862">here</a>. Bugs are often
@@ -638,6 +641,8 @@ if they want resolution or speed.</p>
 <section class="footnotes">
 <ol class="footnotes-list">
 <li id="fn1" class="footnote-item"><p>Except on Safari 🤬 <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a> <a href="#fnref1:2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>See [this article](webgpu-large-triangle-to-cover-clip-space.html] for why these vertex positions. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -675,6 +680,7 @@ if they want resolution or speed.</p>
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -749,9 +755,6 @@ if they want resolution or speed.</p>
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

@@ -113,6 +113,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">목차</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -1226,7 +1227,7 @@ struct Uniforms {
 </div>
 
 <p></p>
-<p>왼쪽 위의 경우 모든 필터링을 <code class="notranslate" translate="no">nearest</code>로, 로흔쪽 아래의 경우 모든 필터링을 <code class="notranslate" translate="no">linear</code>로 설정한 것의 차이가 보이시나요?
+<p>왼쪽 위의 경우 모든 필터링을 <code class="notranslate" translate="no">nearest</code>로, 오른쪽 아래의 경우 모든 필터링을 <code class="notranslate" translate="no">linear</code>로 설정한 것의 차이가 보이시나요?
 특히이 예제에서는 <code class="notranslate" translate="no">mipmapFilter</code>를 추가했기 때문에 이미지를 클릭하면
 모든 레벨이 다른 색상으로 그려진 체크 무늬의 텍스처가 보이고
 위쪽의 경우 모든 <code class="notranslate" translate="no">mipmapFilter</code>가 <code class="notranslate" translate="no">nearest</code>인 경우이니
@@ -1455,6 +1456,7 @@ WGSL에서 사용해야 합니다.</p>
 <li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
@@ -1530,9 +1532,6 @@ WGSL에서 사용해야 합니다.</p>
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">요청 사항</a> /
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">이슈</a> /
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">버그</a>
-</div>
-<div class="lesson-comment-notes">
-   코드 블럭의 경우 <b>&lt;pre&gt;&lt;code&gt;</b>코드<b>&lt;/code&gt;&lt;/pre&gt;</b>을 사용하세요.
 </div>
   
 

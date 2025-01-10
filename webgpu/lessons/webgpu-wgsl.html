@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -232,7 +233,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       <p>For an in-depth overview of WGSL see <a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a>.
 There’s also <a href="https://www.w3.org/TR/WGSL/">the actual WGSL spec</a> though it can be hard
 to process since it’s written for <a href="http://catb.org/jargon/html/L/language-lawyer.html">language lawyers</a> 😂</p>
-<p>This article assumes you already know how to program. It’s probably way too
+<p>This article assumes you already know how to program so that that just
+by looking at examples of WGSL you should be likely be able to kind of <em>grok</em> what you see. It’s probably way too
 terse but hopefully it can give you some help in understanding and writing WGSL
 shader programs.</p>
 <h2 id="wgsl-is-strictly-typed">WGSL is strictly typed</h2>
@@ -364,9 +366,9 @@ let b = vec4f(1, 2, 3, 4);
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
 let b = vec2f(2, 3);
 let c = vec4f(1, b, 4);
-let d = vec2f(1, a.yz, 4);
-let e = vec2f(a.xyz, 4);
-let f = vec2f(1, a.yzw);
+let d = vec4f(1, a.yz, 4);
+let e = vec4f(a.xyz, 4);
+let f = vec4f(1, a.yzw);
 </pre>
 <p><code class="notranslate" translate="no">a</code>, <code class="notranslate" translate="no">c</code>, <code class="notranslate" translate="no">d</code>, <code class="notranslate" translate="no">e</code> and <code class="notranslate" translate="no">f</code> are the same.</p>
 <h3 id="vector-math">vector math</h3>
@@ -630,7 +632,7 @@ from a built-in feature of WebGPU.</p>
       <td>input </td>
       <td>vec3&lt;u32&gt; </td>
       <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#workgroup-id" id="ref-for-workgroup-id">workgroup ID</a>,
-          i.e. the position of the workgroup in the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid③">workgroup grid</a>. </td>
+          i.e. the position of the workgroup in the <a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">compute shader grid</a>. </td>
     </tr>
     <tr>
       <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-num_workgroups">num_workgroups</dfn> </td>
@@ -957,6 +959,7 @@ The thing is, <code class="notranslate" translate="no">o</code> is const. It is 
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -1031,9 +1034,6 @@ The thing is, <code class="notranslate" translate="no">o</code> is const. It is 
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

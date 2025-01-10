@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -417,7 +418,7 @@ you get will already be premultiplied.</p>
 <p>The point of this section was</p>
 <ol>
 <li>
-<p>To explain `alphaMode: ‘premultiplied’ WebGPU canvas configuration option.</p>
+<p>To explain <code class="notranslate" translate="no">alphaMode: 'premultiplied'</code> WebGPU canvas configuration option.</p>
 <p>This lets a WebGPU canvas have transparency</p>
 </li>
 <li>
@@ -463,7 +464,7 @@ for one of the two cases.</p>
 </pre>
 <p>A few other changes, we’ll add in the CSS above to make the
 canvas have a CSS checkerboard background. We’ll also set
-<code class="notranslate" translate="no">alphaMode: 'premultiplied</code>. And we’ll set the <code class="notranslate" translate="no">clearValue</code>
+<code class="notranslate" translate="no">alphaMode: 'premultiplied'</code>. And we’ll set the <code class="notranslate" translate="no">clearValue</code>
 to <code class="notranslate" translate="no">[0, 0, 0, 0]</code></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  context.configure({
     device,
@@ -670,7 +671,7 @@ function createDestinationImage(size) {
 <p></p>
 <p>Here’s some code for making an image we’ll use for our
 src texture.</p>
-<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const hsla = (h, s, l, a) =&gt; `hsla(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%, ${a})`;
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const hsla = (h, s, l, a) =&gt; `hsla(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%, ${a})`;
 
 function createSourceImage(size) {
   const canvas = document.createElement('canvas');
@@ -816,8 +817,8 @@ time.</p>
 bindGroupLayout and tell the pipelines to use it. This way we can create the bindGroups
 at init time and they’ll be compatible with any pipeline that uses the same bindGroupLayout.</p>
 <p>The details of creating a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout">bindGroupLayout</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout">pipelineLayout</a>
-are covered <a href="webgpu-bindgrouplayout.html">in another article</a>. For now, here’s the code to create
-them that match our shader module</p>
+are covered <a href="webgpu-bind-group-layouts.html">in another article</a>. For now, here’s the code to create
+them that matches our shader module</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
     entries: [
       { binding: 0, visibility: GPUShaderStage.FRAGMENT, sampler: { }, },
@@ -877,7 +878,7 @@ them that match our shader module</p>
   });
 </pre>
 <p>Now that we have bindGroups and textures let’s make an array of
-the premultiplied texture vs the un-premultiplied textures so we can
+the premultiplied textures vs the un-premultiplied textures so we can
 easily select one set or the other</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const textureSets = [
     {
@@ -1398,6 +1399,7 @@ cover various techniques.</p>
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -1472,9 +1474,6 @@ cover various techniques.</p>
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

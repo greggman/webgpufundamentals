@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -304,11 +305,13 @@ this value.</p>
 </ul>
 <p>You can think of the copy as working like this</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">   // pseudo code
-   const [x, y, z] = origin || [0, 0, 0];
-   const [blockWidth, blockHeight] = getBlockSizeForTextureFormat(texture.format);
+   const [x, y, z] = origin ?? [0, 0, 0];
+   const [blockWidth, blockHeight, bytesPerBlock] = 
+      getBlockInfoForTextureFormat(texture.format);
 
    const blocksAcross = width / blockWidth;
    const blocksDown = height / blockHeight;
+   const bytesPerBlockRow = blocksAcross * bytesPerBlock;
 
    for (layer = 0; layer &lt; depthOrArrayLayers; layer) {
       for (row = 0; row &lt; blocksDown; ++row) {
@@ -317,16 +320,16 @@ this value.</p>
             texture,               // texture to copy to
             x, y + row, z + layer, // where in texture to copy to
             srcDataAsBytes + start,
-            bytesPerRow);
+            bytesPerBlockRow);
       }
    }
 </pre>
 <h3 id="block-row"><a id="a-block-rows"></a><strong>block row</strong></h3>
 <p>Textures are organized into blocks. For most <em>regular</em> textures the block width
 and block height are both 1. For compressed textures that changes. For example
-the format, <code class="notranslate" translate="no">bc1-rgba-unorm</code> as a block width of 4 and a block height of 4.
+the format, <code class="notranslate" translate="no">bc1-rgba-unorm</code> has a block width of 4 and a block height of 4.
 That means if you set the width to 8, and the height to 12, only 6 blocks will be copied.
-2 blocks for the first row, 2 for the 2nd row, 3 for the 3rd.</p>
+2 blocks for the first row, 2 for the 2nd row, 2 for the 3rd.</p>
 <p>For compressed textures, size and origin must be aligned to blocks sizes.</p>
 <blockquote>
 <p>Important: Anywhere in the WebGPU that takes size (defined as a <code class="notranslate" translate="no">GPUExtent3D</code>)
@@ -358,6 +361,27 @@ of 3 numbers, or a object with <code class="notranslate" translate="no">x</code>
 <li><code class="notranslate" translate="no">aspect</code> really only comes into play when copying data to a depth-stencil format.
 You can only copy to one aspect at a time, either the <code class="notranslate" translate="no">depth-only</code> or the <code class="notranslate" translate="no">stencil-only</code>.</li>
 </ul>
+<blockquote>
+<p>Trivia: A texture has <code class="notranslate" translate="no">width</code>, <code class="notranslate" translate="no">height</code>, and <code class="notranslate" translate="no">depthOrArrayLayer</code> properties on it which
+means it’s a valid <code class="notranslate" translate="no">GPUExtent3D</code>. In other words, given this texture</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const texture = device.createTexture({
+  format: 'r8unorm',
+  size: [2, 4],
+  usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_ATTACHMENT,
+});
+</pre>
+<p>all of these work</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// copy 2x4 pixels of data to texture
+const bytesPerRow = 2;
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, [2, 4]);
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, [texture.width, texture.height]);
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, {width: 2, height: 4});
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, {width: texture.width, height: texture.height});
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, texture); // !!!
+</pre>
+<p>That last one works because a texture has a <code class="notranslate" translate="no">width</code>, <code class="notranslate" translate="no">height</code>, and <code class="notranslate" translate="no">depthOrArrayLayers</code>.
+We haven’t used that style because it’s no so clear but, it is valid.</p>
+</blockquote>
 <h2 id="copybuffertobuffer"><code class="notranslate" translate="no">copyBufferToBuffer</code></h2>
 <p><code class="notranslate" translate="no">copyBufferToBuffer</code>, like the name suggests, copies data from one buffer to another.</p>
 <p>signature:</p>
@@ -377,7 +401,7 @@ You can only copy to one aspect at a time, either the <code class="notranslate" 
 <h2 id="copybuffertotexture"><code class="notranslate" translate="no">copyBufferToTexture</code></h2>
 <p><code class="notranslate" translate="no">copyBufferToTexture</code>, like the name suggests, copies data from a buffer to a texture.</p>
 <p>signature:</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encode.copyBufferToTexture(
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyBufferToTexture(
   // details of the source buffer
   { buffer, offset: 0, bytesPerRow, rowsPerImage },
 
@@ -398,7 +422,7 @@ a multiple of 256!!</strong></p>
 <h2 id="copytexturetobuffer"><code class="notranslate" translate="no">copyTextureToBuffer</code></h2>
 <p><code class="notranslate" translate="no">copyTextureToBuffer</code> like the name suggests, copies data from a texture to a buffer.</p>
 <p>signature:</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encode.copyTextureToBuffer(
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyTextureToBuffer(
   // details of the source texture
   { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
 
@@ -422,7 +446,7 @@ a multiple of 256!!</strong></p>
 <p>The two textures must be must either be the same format, or they
 must only differ by the suffix <code class="notranslate" translate="no">'-srgb'</code>.</p>
 <p>signature:</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encode.copyTextureToBuffer(
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyTextureToBuffer(
   // details of the source texture
   src: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
 
@@ -438,10 +462,10 @@ must only differ by the suffix <code class="notranslate" translate="no">'-srgb'<
 <li>dst.<code class="notranslate" translate="no">texture</code> must have a usage of <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code></li>
 <li><code class="notranslate" translate="no">width</code> must be a multiple of block width</li>
 <li><code class="notranslate" translate="no">height</code> must be a multiple of block height</li>
-<li>src.<code class="notranslate" translate="no">origin[0]</code> or <code class="notranslate" translate="no">.x</code> must be a multiple block width</li>
-<li>src.<code class="notranslate" translate="no">origin[1]</code> or <code class="notranslate" translate="no">.y</code> must be a multiple block height</li>
-<li>dst.<code class="notranslate" translate="no">origin[0]</code> or <code class="notranslate" translate="no">.x</code> must be a multiple block width</li>
-<li>dst.<code class="notranslate" translate="no">origin[1]</code> or <code class="notranslate" translate="no">.y</code> must be a multiple block height</li>
+<li>src.<code class="notranslate" translate="no">origin[0]</code> or <code class="notranslate" translate="no">.x</code> must be a multiple of block width</li>
+<li>src.<code class="notranslate" translate="no">origin[1]</code> or <code class="notranslate" translate="no">.y</code> must be a multiple of block height</li>
+<li>dst.<code class="notranslate" translate="no">origin[0]</code> or <code class="notranslate" translate="no">.x</code> must be a multiple of block width</li>
+<li>dst.<code class="notranslate" translate="no">origin[1]</code> or <code class="notranslate" translate="no">.y</code> must be a multiple of block height</li>
 </ul>
 <h2 id="shaders">Shaders</h2>
 <p>Shaders can write to storage buffers, storage textures,
@@ -454,8 +478,8 @@ available to read or write from JavaScript.
 At least in version 1 of WebGPU,
 mappable buffers have severe restrictions, namely, a
 mappable buffer can can only be used as a temporary place
-to copy from to. A mappable buffer can not be used as any
-other type of buffer (like a Uniform buffer, vertex buffer,
+to copy from or to. A mappable buffer can not be used as any
+other type of buffer (like a uniform buffer, vertex buffer,
 index buffer, storage buffer, etc…) <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <p>You can create a mappable buffer with 2 combinations
 of usage flags.</p>
@@ -463,7 +487,7 @@ of usage flags.</p>
 <li>
 <p><code class="notranslate" translate="no">GPUBufferUsage.MAP_READ | GPU_BufferUsage.COPY_DST</code></p>
 <p>This is a buffer you can use the copy commands above to copy
-data to from another buffer or a texture, then map it to
+data from another buffer or a texture, then map it to
 read the values in JavaScript</p>
 </li>
 <li>
@@ -481,7 +505,7 @@ the size of the entire buffer. <code class="notranslate" translate="no">mode</co
 <code class="notranslate" translate="no">GPUMapMode.READ</code> or <code class="notranslate" translate="no">GPUMapMode.WRITE</code> and must of course
 match the <code class="notranslate" translate="no">MAP_</code> usage flag you passed in when you created
 the buffer.</p>
-<p><code class="notranslate" translate="no">mapAsync</code> returns a Promise.
+<p><code class="notranslate" translate="no">mapAsync</code> returns a <code class="notranslate" translate="no">Promise</code>.
 When the promise resolves the buffer is mappable. You can then
 view some or all of the buffer by calling <code class="notranslate" translate="no">buffer.getMappedRange(offset = 0, size?)</code>
 where <code class="notranslate" translate="no">offset</code> a byte offset into the portion of the buffer you
@@ -496,7 +520,7 @@ be of any use, you’d use that to construct TypedArray.</p>
 // map the entire buffer
 await buffer.mapAsync(GPUMapMode.READ);
 
-// get the entire buffer
+// get the entire buffer as an array of 32bit floats.
 const f32 = new Float32Array(buffer.getMappedRange())
 
 ...
@@ -515,10 +539,10 @@ buffer.unmap();
 
 console.log(f32[0]); // prints undefined
 </pre>
-<p>We’ve already seen examples of mapping a buffer for read.
-Once in <a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">the first article</a> where we doubled some numbers
+<p>We’ve already seen examples of mapping a buffer for reading
+in <a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">the first article</a> where we doubled some numbers
 in a storage buffer and the copied the results to a mappable buffer and mapped it to read out the results</p>
-<p>Another is the article on <a href="webgpu-compute-shaders.md">compute shader basics</a>
+<p>Another example is the article on <a href="webgpu-compute-shaders.md">compute shader basics</a>
 where we output the various <code class="notranslate" translate="no">@builtin</code> compute shader values to a storage buffer.
 We then copied those results to a mappable buffer and mapped it read out the results.</p>
 <h2 id="mappedatcreation"><a id="a-mapped-at-creation"></a>mappedAtCreation</h2>
@@ -547,6 +571,10 @@ buffer. The buffer is created, already mapped for writing. Example:</p>
  new Float32Array(buffer.getMappedRange(0, buffer.size)).set([1, 2, 3, 4]);
  buffer.unmap();
 </pre>
+<p>Note that a buffer created with <code class="notranslate" translate="no">mappedAtCreation: true</code> does not have
+to have <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> usage. But, if <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> is
+not set, you can not map the buffer again. It is only mapped once, at creation
+time.</p>
 <h2 id="efficiently-using-mappable-buffers"><a id="a-efficient"></a>Efficiently using mappable buffers</h2>
 <p>Above we saw that mapping a buffer is asynchronous. This means there’s
 an indeterminate amount of time from the point we ask for the buffer
@@ -554,11 +582,10 @@ to be mapped by calling <code class="notranslate" translate="no">mapAsync</code>
 <p>A common way to workaround this is to keep a set of buffers always mapped.
 Since they are already mapped they are ready to use immediately. As soon
 as you use one and unmap it, and as soon as you’ve submitted whatever
-commands use the buffer, you ask for to to be mapped again. When it promise
-resolves you put it back in a pool of already mapped buffers. If you ever
+commands use the buffer, you ask for to to be mapped again. When its promise
+resolves, you put it back in a pool of already mapped buffers. If you ever
 need a mapped buffer and none are available you create a new one and add
 it to the pool.</p>
-<p>TBD: Example</p>
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
@@ -601,6 +628,7 @@ See <a href="#a-mapped-at-creation">mappedAtCreation</a>. <a href="#fnref1" clas
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -675,9 +703,6 @@ See <a href="#a-mapped-at-creation">mappedAtCreation</a>. <a href="#fnref1" clas
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 

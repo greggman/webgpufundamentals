@@ -113,6 +113,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">목차</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -234,7 +235,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 이 글에서는 스테이지간 변수(inter-stage variable)에 대한 <em>기초</em>를 다룰 것입니다.</p>
 <p>스테이지간 변수는 정점 셰이더와 프래그먼트 셰이더 사이에서 역할을 하게 됩니다.</p>
 <p>정점 셰이더가 세 개의 위치값을 출력하면 삼각형이 래스터화됩니다.
-정섬 셰이더에서 이러한 각 위치값에 추가적인 값을 더해서 출력할 수 있는데,
+정점 셰이더에서 이러한 각 위치값에 추가적인 값을 더해서 출력할 수 있는데,
 이러한 값은 기본적으로 그 세 점 사이에서 보간됩니다.</p>
 <p>짧은 예제를 만들어 봅시다. 이전 글에서의 삼각형을 그리는 프로그램에서,
 셰이더를 수정할 것입니다.</p>
@@ -403,7 +404,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <code class="notranslate" translate="no">xy</code> 좌표를 두 개의 부호없는 정수인 <code class="notranslate" translate="no">vec2u</code>로 좌표를 변환합니다.
 그리고 나서 이를 8로 나누어 8개의 픽셀마다 값이 증가되도록 합니다.
 그리고 <code class="notranslate" translate="no">x</code>와 <code class="notranslate" translate="no">y</code> 그리드 좌표를 더하고 2로 나눈 나머지를 계산하여 그 결과를 1과 비교합니다.
-그 결과 모든 정수에 대해 1 또는 0 값을 반한합니다.
+그 결과 모든 정수에 대해 1 또는 0 값을 반환합니다.
 마지막으로 불리언(boolean) 값에 따라 두 개의 값 중 하나를 반환하는 WGSL의 <code class="notranslate" translate="no">select</code> 함수를 사용합니다.
 자바스크립트로, <code class="notranslate" translate="no">select</code> 함수는 다음과 같습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// condition이 false면 `a`를, 아니면 `b`를 반환함
@@ -556,6 +557,7 @@ select = (a, b, condition) =&gt; condition ? b : a;
 <li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
@@ -631,9 +633,6 @@ select = (a, b, condition) =&gt; condition ? b : a;
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">요청 사항</a> /
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">이슈</a> /
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">버그</a>
-</div>
-<div class="lesson-comment-notes">
-   코드 블럭의 경우 <b>&lt;pre&gt;&lt;code&gt;</b>코드<b>&lt;/code&gt;&lt;/pre&gt;</b>을 사용하세요.
 </div>
   
 

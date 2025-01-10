@@ -112,6 +112,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
     <a href="#toc">Table of Contents</a>
+    <input type="search" placeholder="?" id="search">
   </div>
 </div>
 <div class="webgpu_header">
@@ -229,7 +230,995 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>TBD</p>
+      <p>This article is the 8th in a series of articles that will hopefully teach
+you about 3D math. Each one builds on the previous lesson so you may find
+them easiest to understand by reading them in order.</p>
+<ol>
+<li><a href="webgpu-translation.html">Translation</a></li>
+<li><a href="webgpu-rotation.html">Rotation</a></li>
+<li><a href="webgpu-scale.html">Scaling</a></li>
+<li><a href="webgpu-matrix-math.html">Matrix Math</a></li>
+<li><a href="webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+<li><a href="webgpu-perspective-projection.html">Perspective Projection</a></li>
+<li><a href="webgpu-cameras.html">Cameras</a></li>
+<li><a href="webgpu-matrix-stacks.html">Matrix Stacks</a> ⬅ you are here</li>
+<li><a href="webgpu-scene-graphs.html">Scene Graphs</a></li>
+</ol>
+<p>A matrix stack is exactly what it sounds like, a [stack] of matrices.
+It is useful for positioning and orientating things relative to each other.
+To demonstrate, let’s make a set of file cabinets. Using a matrix stack will make this easy.</p>
+<p>To keep it simple we’ll make them from cubes starting with
+<a href="webgpu-cameras#a-aim-fs">the last example from the previous article</a>.</p>
+<p>The first thing we’ll do is swap the F we’be been drawing for a unit cube.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function createFVertices() {
++function createCubeVertices() {
+*    // left
+*    0, 0,  0,
+*    0, 0, -1,
+*    0, 1,  0,
+*    0, 1, -1,
+*
+*    // right
+*    1, 0,  0,
+*    1, 0, -1,
+*    1, 1,  0,
+*    1, 1, -1,
+*  ];
+*
+*  const indices = [
+*     0,  2,  1,    2,  3,  1,   // left
+*     4,  5,  6,    6,  5,  7,   // right
+*     0,  4,  2,    2,  4,  6,   // front
+*     1,  3,  5,    5,  3,  7,   // back
+*     0,  1,  4,    4,  1,  5,   // bottom
+*     2,  6,  3,    3,  6,  7,   // top
+*  ];
+*
+*  const quadColors = [
+*      200,  70, 120,  // left column front
+*       80,  70, 200,  // left column back
+*       70, 200, 210,  // top
+*      160, 160, 220,  // top rung right
+*       90, 130, 110,  // top rung bottom
+*      200, 200,  70,  // between top and middle rung
+*  ];
+
+  ...
+</pre>
+<p>The data above makes a cube like this.</p>
+<div class="webgpu_center"><img src="resources/unit-cube.png" class="nobg"></div>
+<p>The old code pre-created 26 “objectsInfos” where each “objectInfo” was a set of
+uniform buffer, and bindGroup, one for each thing we want to draw. Let’s change
+the code to instead create these on demand. That way we can just draw as many
+things as we want.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const numFs = 5 * 5 + 1;
+  const objectInfos = [];
+-  for (let i = 0; i &lt; numFs; ++i) {
+  function createObjectInfo() {
+    // matrix
+    const uniformBufferSize = (16) * 4;
+    const uniformBuffer = device.createBuffer({
+    
+    ...
+
+-    objectInfos.push({
++    return {
+      uniformBuffer,
+      uniformValues,
+      matrixValue,
+      bindGroup,
+-    });
++    };
+  }
+</pre>
+<p>We’re going to be using the same unit cube for everything just to keep things
+simple but we need some way to change the color a little so we can tell cubes
+apart. So, let’s update the fragment to take a color via our uniform buffer and
+we’ll multiply the vertex colors by this uniform color. That will let us
+slightly change the vertex colors.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
++  color: vec4f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+  @location(1) color: vec4f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = uni.matrix * vert.position;
+  vsOut.color = vert.color;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+-  return vsOut.color;
++  return vsOut.color * uni.color;
+}
+</pre>
+<p>We need to update the uniform buffer creation to
+add space for the new color.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function createObjectInfo() {
+-    // matrix
+-    const uniformBufferSize = (16) * 4;
++    // matrix and color
++    const uniformBufferSize = (16 + 4) * 4;
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+    // offsets to the various uniform values in float32 indices
+    const kMatrixOffset = 0;
++    const kColorOffset = 16;
+
+    const matrixValue = uniformValues.subarray(kMatrixOffset, kMatrixOffset + 16);
++    const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+
+    const bindGroup = device.createBindGroup({
+      label: 'bind group for object',
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: uniformBuffer }},
+      ],
+    });
+
+    return {
+      uniformBuffer,
+      uniformValues,
++      colorValue,
+      matrixValue,
+      bindGroup,
+    };
+  }
+</pre>
+<p>Now we need to extract the code that “draws” an object into a
+function.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  let depthTexture;
++  let objectNdx = 0;
+
++  function drawObject(ctx, matrix, color) {
++    const { pass, viewProjectionMatrix } = ctx;
++    if (objectNdx === objectInfos.length) {
++      objectInfos.push(createObjectInfo());
++    }
++    const {
++      matrixValue,
++      colorValue,
++      uniformBuffer,
++      uniformValues,
++      bindGroup,
++    } = objectInfos[objectNdx++];
++
++    mat4.multiply(viewProjectionMatrix, matrix, matrixValue);
++    colorValue.set(color);
++
++    // upload the uniform values to the uniform buffer
++    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
++
++    pass.setBindGroup(0, bindGroup);
++    pass.draw(numVertices);
++  }
+
+  function render() {
+    ...
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+
+-    // update target X,Z based on angle
+-    settings.target[0] = Math.cos(settings.targetAngle) * radius;
+-    settings.target[2] = Math.sin(settings.targetAngle) * radius;
+
+    ...
+
++    objectNdx = 0;
+-    objectInfos.forEach(({
+-      matrixValue,
+-      uniformBuffer,
+-      uniformValues,
+-      bindGroup,
+-    }, i) =&gt; {
+-      const deep = 5;
+-      const across = 5;
+-      if (i &lt; 25) {
+-        // compute grid positions
+-        const gridX = i % across;
+-        const gridZ = i / across | 0;
+-
+-        // compute 0 to 1 positions
+-        const u = gridX / (across - 1);
+-        const v = gridZ / (deep - 1);
+-
+-        // center and spread out
+-        const x = (u - 0.5) * across * 150;
+-        const z = (v - 0.5) * deep * 150;
+-
+-        // aim this F from it's position toward the target F
+-        const aimMatrix = mat4.aim([x, 0, z], settings.target, up);
+-        mat4.multiply(viewProjectionMatrix, aimMatrix, matrixValue);
+-      } else {
+-        mat4.translate(viewProjectionMatrix, settings.target, matrixValue);
+-      }
+-
+-      // upload the uniform values to the uniform buffer
+-      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+-
+-      pass.setBindGroup(0, bindGroup);
+-      pass.draw(numVertices);
+-    });
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>We added a function <code class="notranslate" translate="no">drawObject</code> that will make a new “objectInfo” (a uniform
+buffer, and typed array views) if it needs to. <code class="notranslate" translate="no">drawObject</code> takes a context
+called <code class="notranslate" translate="no">ctx</code> that has the render pass encoder and the current
+<code class="notranslate" translate="no">viewProjectionMatrix</code>. It also takes a matrix and a color. It fills out he
+uniform buffer for this object by multiplying the matrix passed in with the
+<code class="notranslate" translate="no">viewProjectionMatrix</code> and then sets the bind group to use that specific uniform
+buffer and calls <code class="notranslate" translate="no">draw</code>.</p>
+<p>Now let’s add some code to use it to draw the cube</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+
+    ...
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+
+    ...
+
+    objectNdx = 0;
++    const ctx = { pass, viewProjectionMatrix };
++    drawObject(ctx, mat4.rotationY(settings.baseRotation), [1, 1, 1, 1]);
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+}
+</pre>
+<p>Above we pass in a matrix that rotates around the y axis and the color white.
+This means the cube will be drawn with its vertex colors unchanged.</p>
+<p>We need a few more tweaks for the gui and camera</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const radius = 200;
+  const settings = {
+-    target: [0, 200, 300],
+-    targetAngle: 0,
++    baseRotation: 0,
+  };
+
+  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+-  gui.add(settings.target, '1', -100, 300).name('target height');
+-  gui.add(settings, 'targetAngle', radToDegOptions).name('target angle');
++  gui.add(settings, 'baseRotation', radToDegOptions);
+
+  ...
+
+  function render() {
+    ...
+
+-    const eye = [-500, 300, -500];
+-    const target = [0, -100, 0];
++    const eye = [0, 2, 3];
++    const target = [0, 1, 0];
+    const up = [0, 1, 0];
+
+    // Compute a view matrix
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+</pre>
+<p>We have a cube.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-cube.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-cube.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Now that we are able to render cubes, lets use a matrix stack
+to help us make a set of file cabinets.</p>
+<p>First, lets make a matrix stack class.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class MatrixStack {
+  #matrix;
+  #stack;
+
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.#matrix = mat4.identity();
+    this.#stack = [];
+    return this;
+  }
+  save() {
+    this.#stack.push(this.#matrix);
+    this.#matrix = mat4.copy(this.#matrix);
+    return this;
+  }
+  restore() {
+    this.#matrix = this.#stack.pop();
+    return this;
+  }
+  get() {
+    return this.#matrix;
+  }
+  set(matrix) {
+    return this.#matrix.set(matrix);
+  }
+  translate(translation) {
+    mat4.translate(this.#matrix, translation, this.#matrix);
+    return this;
+  }
+  rotateX(angle) {
+    mat4.rotateX(this.#matrix, angle, this.#matrix);
+    return this;
+  }
+  rotateY(angle) {
+    mat4.rotateY(this.#matrix, angle, this.#matrix);
+    return this;
+  }
+  rotateZ(angle) {
+    mat4.rotateZ(this.#matrix, angle, this.#matrix);
+    return this;
+  }
+  scale(scale) {
+    mat4.scale(this.#matrix, scale, this.#matrix);
+    return this;
+  }
+}
+</pre>
+<p>The class above is pretty straight forward. It keeps a <code class="notranslate" translate="no">#stack</code> which is
+an array of matrices. And it keeps a <code class="notranslate" translate="no">#matrix</code> which is effectively
+the top matrix on the stack.</p>
+<p>It adds a bunch of methods that use the <code class="notranslate" translate="no">mat4</code> functions
+<a href="webgpu-orthograph-projection.html">we wrote previously</a>
+to manipulate the matrix at the top of the stack.</p>
+<p>Note: It’s a stack but I choose the names <code class="notranslate" translate="no">save</code> and <code class="notranslate" translate="no">restore</code> instead of
+the more traditional <code class="notranslate" translate="no">push</code> and <code class="notranslate" translate="no">pop</code> because <code class="notranslate" translate="no">save</code> and <code class="notranslate" translate="no">restore</code> match
+the functions from the Canvas 2D API’s
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/save">save</a> and
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/restore">restore</a></p>
+<p>One thing we referenced above that didn’t exist yet is a <code class="notranslate" translate="no">mat4.copy</code> function
+so let’s supply that.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat4 = {
++  copy(src, dst) {
++    dst = dst || new Float32Array(16);
++    dst.set(src);
++    return dst;
++  },
+
+  ...
+</pre>
+<p>With that let’s draw a single filing cabinet drawer with a handle.
+The drawer will be a large cube. The handle will be a small
+cube.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const kHandleColor = [0.5, 0.5, 0.5, 1];
++  const kDrawerColor = [1, 1, 1, 1];
++
++  const kDrawerSize = [40, 30, 50];
++  const kHandleSize = [10, 2, 2];
++
++  const [kWidth, kHeight, kDepth] = [0, 1, 2];
++
++  const kHandlePosition = [
++    (kDrawerSize[kWidth] - kHandleSize[kWidth]) / 2,
++    kDrawerSize[kHeight] * 2 / 3,
++    kHandleSize[kDepth],
++  ];
++
++  function drawDrawer(ctx) {
++    const { stack } = ctx;
++    stack.save();
++      stack.scale(kDrawerSize);
++      drawObject(ctx, stack.get(), kDrawerColor);
++    stack.restore();
++
++    stack.save();
++      stack.translate(kHandlePosition);
++      stack.scale(kHandleSize);
++      drawObject(ctx, stack.get(), kHandleColor);
++    stack.restore();
++  }
++
++  const stack = new MatrixStack();
+
+  ...
+
+  function render() {
+    ...
+
+    // combine the view and projection matrixes
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
++    stack.save();
++    stack.rotateY(settings.baseRotation);
++    stack.translate([(kDrawerSize[kWidth] * -0.5), 0, 0]);
+    objectNdx = 0;
+-    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawObject(ctx, mat4.rotationY(settings.baseRotation), [1, 1, 1, 1]);
++    const ctx = { stack, viewProjectionMatrix };
++    drawDrawer(ctx);
++    stack.restore();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>The code above creates a <code class="notranslate" translate="no">MatrixStack</code> and adds it to the
+context (ctx) pass into drawDrawer. It uses this to
+help us compute matrices. Instead of creating a rotation
+matrix directly, we do it on the stack, then translate
+half the width of the drawer so as to center it.</p>
+<p>We pass the stack into <code class="notranslate" translate="no">drawDrawer</code> which draws 2 cubes.
+One it scales to the size of <code class="notranslate" translate="no">kDrawerSize</code>. The other it
+positions to <code class="notranslate" translate="no">kHandlePosition</code> and scales to the size of
+<code class="notranslate" translate="no">kHandleSize</code>. Because it’s using the matrix stack, both
+will be relative to the rotation and translation already
+on the stack.</p>
+<p>The drawer cube is drawn with color <code class="notranslate" translate="no">kDrawerColor</code> which
+white and so will leave the vertex colors unchanged.
+The handle is drawn with color <code class="notranslate" translate="no">kHandleColor</code> which is 50% gray
+and so will draw the cube darker.</p>
+<p>A minor tweak for the camera position:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    const eye = [0, 2, 3];
+-    const target = [0, 1, 0];
++    const eye = [0, 20, 100];
++    const target = [0, 20, 0];
+    const up = [0, 1, 0];
+
+    // Compute a view matrix
+    const viewMatrix = mat4.lookAt(eye, target, up);
+</pre>
+<p>That gives us a filing cabinet drawer.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-filing-drawer.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-filing-drawer.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>You might be asking, why go through all this trouble of a
+matrix stack? Let’s draw a filing cabinet with 4 draws and
+we’ll see why.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kHandleColor = [0.5, 0.5, 0.5, 1];
+  const kDrawerColor = [1, 1, 1, 1];
++  const kCabinetColor = [0.75, 0.75, 0.75, 0.75];
++  const kNumDrawersPerCabinet = 4;
+
+  const kDrawerSize = [40, 30, 50];
+  const kHandleSize = [10, 2, 2];
+
+  const [kWidth, kHeight, kDepth] = [0, 1, 2];
+
+  const kHandlePosition = [
+    (kDrawerSize[kWidth] - kHandleSize[kWidth]) / 2,
+    kDrawerSize[kHeight] * 2 / 3,
+    kHandleSize[kDepth],
+  ];
+
++  const kDrawerSpacing = kDrawerSize[kHeight] + 3;
+
+  function drawDrawer(ctx) {
+    const { stack } = ctx;
+    stack.save();
+      stack.scale(kDrawerSize);
+      drawObject(ctx, stack.get(), kDrawerColor);
+    stack.restore();
+
+    stack.save();
+      stack.translate(kHandlePosition);
+      stack.scale(kHandleSize);
+      drawObject(ctx, stack.get(), kHandleColor);
+    stack.restore();
+  }
+
++  function drawCabinet(ctx, numDrawersPerCabinet) {
++    const { stack } = ctx;
++
++    const kCabinetSize = [
++      kDrawerSize[kWidth] + 6,
++      kDrawerSpacing * numDrawersPerCabinet + 6,
++      kDrawerSize[kDepth] + 4,
++    ];
++
++    stack.save();
++      stack.scale(kCabinetSize);
++      drawObject(ctx, stack.get(), kCabinetColor);
++    stack.restore();
++
++    for (let i = 0; i &lt; numDrawersPerCabinet; ++i) {
++      stack.save();
++        stack.translate([3, i * kDrawerSpacing + 5, 1]);
++        drawDrawer(ctx);
++      stack.restore();
++    }
++  }
+
+  function render() {
+    ...
+-    const eye = [0, 20, 100];
+-    const target = [0, 20, 0];
++    const eye = [0, 80, 200];
++    const target = [0, 80, 0];
+    const up = [0, 1, 0];
+
+    // Compute a view matrix
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+    // combine the view and projection matrixes
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    // combine the view and projection matrixes
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    stack.save();
+    stack.rotateY(settings.baseRotation);
+    stack.translate([(kDrawerSize[kWidth] * -0.5), 0, 0]);
+    objectNdx = 0;
+    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawDrawer(ctx);
++    drawCabinet(ctx, kNumDrawersPerCabinet);
+    stack.restore();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+</pre>
+<p>Above, <code class="notranslate" translate="no">drawCabinet</code> draws a cube the size of
+<code class="notranslate" translate="no">kCabinetSize</code> which is slightly taller than the number
+of cabinets we ask it to draw.</p>
+<p>It then just uses the matrix stack to translate each
+drawer to appears at the correct position and slightly
+in front of the cabinet cube.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-filing-cabinet.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-filing-cabinet.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>We didn’t have to change <code class="notranslate" translate="no">drawDrawer</code> at all. Because of
+the matrix stack we were able to just use it as is.</p>
+<p>Let’s keep going. Let’s draw multiple cabinets.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kHandleColor = [0.5, 0.5, 0.5, 1];
+  const kDrawerColor = [1, 1, 1, 1];
+  const kCabinetColor = [0.75, 0.75, 0.75, 0.75];
+  const kNumDrawersPerCabinet = 4;
++  const kNumCabinets = 5;
+
+  const kDrawerSize = [40, 30, 50];
+  const kHandleSize = [10, 2, 2];
+
+  const [kWidth, kHeight, kDepth] = [0, 1, 2];
+
+  const kHandlePosition = [
+    (kDrawerSize[kWidth] - kHandleSize[kWidth]) / 2,
+    kDrawerSize[kHeight] * 2 / 3,
+    kHandleSize[kDepth],
+  ];
+
+  const kDrawerSpacing = kDrawerSize[kHeight] + 3;
++  const kCabinetSpacing = kDrawerSize[kWidth] + 10;
+
+  ...
+
+  function drawCabinet(ctx, numDrawersPerCabinet) {
+    const { stack } = ctx;
+
+    const kCabinetSize = [
+      kDrawerSize[kWidth] + 6,
+      kDrawerSpacing * numDrawersPerCabinet + 6,
+      kDrawerSize[kDepth] + 4,
+    ];
+
+    stack.save();
+      stack.scale(kCabinetSize);
+      drawObject(ctx, stack.get(), kCabinetColor);
+    stack.restore();
+
+    for (let i = 0; i &lt; numDrawersPerCabinet; ++i) {
+      stack.save();
+        stack.translate([3, i * kDrawerSpacing + 5, 1]);
+        drawDrawer(ctx);
+      stack.restore();
+    }
+  }
+
++  function drawCabinets(ctx, numCabinets) {
++    const { stack } = ctx;
++    for (let i = 0; i &lt; numCabinets; ++i) {
++      stack.save();
++        stack.translate([i * kCabinetSpacing, 0, 0]);
++        drawCabinet(ctx, kNumDrawersPerCabinet);
++      stack.restore();
++    }
++  }
+
+  function render() {
+    ...
+    // combine the view and projection matrixes
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    stack.save();
+    stack.rotateY(settings.baseRotation);
+-    stack.translate([(kDrawerSize[kWidth] * -0.5), 0, 0]);
++    stack.translate([(kNumCabinets - 0.5) * kCabinetSpacing * -0.5, 0, 0]);
+    objectNdx = 0;
+    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawCabinet(ctx, kNumDrawersPerCabinet);
++    drawCabinets(ctx, kNumCabinets);
+    stack.restore();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+</pre>
+<p>Now we have <code class="notranslate" translate="no">drawCabinets</code> that just uses <code class="notranslate" translate="no">drawCabinet</code>
+to draw however many cabinets we specify.</p>
+<p>Back out in <code class="notranslate" translate="no">render</code> we translate half the width of the
+cabinets to center them.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-filing-cabinets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-filing-cabinets.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Hopefully this gives some idea of the usefulness of a matrix
+stack. It lets us easily re-use things and/or position, orient,
+and scale them.</p>
+<h2 id="recursive-tree"><a id="a-recursive-tree"></a> Recursive Tree</h2>
+<p>Let’s make another example. Let’s create a recursive tree out
+of cubes. To do this we need a function that will add a “branch” of the
+tree. We’ll make it recursive and pass in <code class="notranslate" translate="no">treeDepth</code>. If the
+depth is &gt; 0 then we will recursively add 2 more branches and pass
+in one lower depth.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const degToRad = d =&gt; d * Math.PI / 180;
+
+  const settings = {
+    baseRotation: 0,
++    scale: 0.9,
++    rotationX: degToRad(20),
++    rotationY: degToRad(10),
+  };
+
+  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
++  const treeRadToDegOptions = { min: 0, max: 90, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
++  gui.add(settings, 'scale', 0.1, 1.2);
++  gui.add(settings, 'rotationX', treeRadToDegOptions);
++  gui.add(settings, 'rotationY', treeRadToDegOptions);
+  gui.add(settings, 'baseRotation', radToDegOptions);
+
++  const kTreeDepth = 6;
++  const [/*kWidth*/, kHeight, /*kDepth*/] = [0, 1, 2];
++  // Moves the 1 unit cube so it's center above the origin so that when it scales
++  // it scales out in x and z and up (y) from the origin
++  const kBranchPosition = [-0.5, 0, 0.5];
++  const kBranchSize = [20, 150, 20];
++
++  const kWhite = [1, 1, 1, 1];
++
++  function drawBranch(ctx) {
++    const { stack } = ctx;
++    stack
++      .save()
++      .scale(kBranchSize)
++      .translate(kBranchPosition);
++    drawObject(ctx, stack.get(), kWhite);
++    stack.restore();
++  }
++
++  function drawTreeLevel(ctx, offset, treeDepth) {
++    const { stack } = ctx;
++    const s = offset ? settings.scale : 1;
++    const y = offset ? kBranchSize[kHeight] : 0;
++    stack
++      .save()
++      .translate([0, y, 0])
++      .rotateZ(offset * settings.rotationX)
++      .rotateY(Math.abs(offset) * settings.rotationY)
++      .scale([s, s, s]);
++
++    drawBranch(ctx);
++
++    if (treeDepth &gt; 0) {
++      drawTreeLevel(ctx, -1, treeDepth - 1);
++      drawTreeLevel(ctx, +1, treeDepth - 1);
++    }
++
++    stack.restore();
++  }
+
+  function render() {
+    ...
+
+-    const eye = [0, 80, 200];
+-    const target = [0, 80, 0];
++    const eye = [0, 450, 1000];
++    const target = [0, 450, 0];
+    const up = [0, 1, 0];
+
+    // Compute a view matrix
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+    // combine the view and projection matrixes
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    stack.save();
+    stack.rotateY(settings.baseRotation);
+-    stack.translate([(kNumCabinets - 0.5) * kCabinetSpacing * -0.5, 0, 0]);
+    objectNdx = 0;
+    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawCabinets(ctx, kNumCabinets);
++    drawTreeLevel(ctx, 0, kTreeDepth);
+    stack.restore();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+</pre>
+<p><code class="notranslate" translate="no">drawTreeLevel</code> uses our matrix stack. First it calls <code class="notranslate" translate="no">save</code> to save the current
+matrix. Then <code class="notranslate" translate="no">translate</code>s it to move the branch to the end of the current
+branch. If the <code class="notranslate" translate="no">offset</code> is <code class="notranslate" translate="no">0</code> it’s the root so no translation needed.</p>
+<p>The <code class="notranslate" translate="no">offset</code> is then used to <code class="notranslate" translate="no">rotateZ</code> the current branch either clockwise or
+counter-clockwise. Because of the matrix stack it will be rotated relative to
+the parent branch.</p>
+<p>The <code class="notranslate" translate="no">offset</code> is used again to <code class="notranslate" translate="no">rotateY</code> the branch. This time we use the
+absolute value of <code class="notranslate" translate="no">offset</code>. Feel free to remove the <code class="notranslate" translate="no">Math.abs</code> so see the
+difference.</p>
+<p>Finally we <code class="notranslate" translate="no">scale</code> the branch, making each one smaller (or larger) than its
+parent, except for the root, the branch with an <code class="notranslate" translate="no">offset</code> of <code class="notranslate" translate="no">0</code>.</p>
+<p>We then call <code class="notranslate" translate="no">drawBranch</code>. Draw branch draws a cube that is <code class="notranslate" translate="no">kBranchSize</code> big.
+It also translates the original unit cube so that the cube will be centered over
+and above the origin. That way, when it scales, it will grow up (along the +Y
+axis).</p>
+<p>Then, if the depth &gt; 0 we recursively call <code class="notranslate" translate="no">drawTreeLevel</code> to add 2 more
+branches. One with an offset of <code class="notranslate" translate="no">-1</code> and one with <code class="notranslate" translate="no">+1</code>. Each branch will start
+with the matrix on the stack and so will be positioned and oriented relative
+to its parent.</p>
+<p>Finally we <code class="notranslate" translate="no">restore</code> the stack.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-tree.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-tree.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Adjust “rotationX” and you’ll see the branches fan out or bunch up.
+Adjust “rotationY” and you’ll see the branches spread out from the x-plane.
+You may need to adjust “baseRotation” to see what’s happening.
+Adjust “scale” and you’ll see each branch get smaller or larger than its
+parent.</p>
+<p>Maybe this could give you some inspiration to make an algorithmic tree generator. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>Let’s add an ornament to each branch. Instead of using a cube, let’s use a cone
+for the ornament. Here’s some code to generate cone vertices.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// tip is at origin, base is below
+function createConeVertices({radius = 1, height = 1, subdivisions = 6} = {}) {
+  const positions = [];
+  const colors = [];
+
+  function addVertex(angle, radius, height, color) {
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    positions.push(c * radius, height, s * radius);
+    colors.push(...color);
+  }
+
+  for (let i = 0; i &lt; subdivisions; ++i) {
+    const angle0 = (i + 0) / subdivisions * Math.PI * 2;
+    const angle1 = (i + 1) / subdivisions * Math.PI * 2;
+
+    const u = (i + 1) / subdivisions;
+    const color = [u * 128 + 127, 0, 0];
+
+    // add side
+    addVertex(angle0, 0, 0, color);
+    addVertex(angle1, radius, -height, color);
+    addVertex(angle0, radius, -height, color);
+
+    // add top
+    addVertex(angle0, radius, -height, color);
+    addVertex(angle1, radius, -height, color);
+    addVertex(angle0, 0, -height, color);
+  }
+
+  const numVertices = positions.length / 3;
+  const vertexData = new Float32Array(numVertices * 4); // xyz + color
+  const colorData = new Uint8Array(vertexData.buffer);
+
+  for (let i = 0; i &lt; numVertices; ++i) {
+    const position = positions.slice(i * 3, i * 3 + 3);
+    vertexData.set(position, i * 4);
+
+    const color = colors.slice(i * 3, i * 3 + 3);
+    colorData.set(color, i * 16 + 12);
+    colorData[i * 16 + 15] = 255;
+  }
+
+  return {
+    vertexData,
+    numVertices,
+  };
+}
+</pre>
+<p>The code above walks around a circle and adds a triangle on each side and a
+corresponding triangle on top. It sets each face to a shade of red. Like the
+cube function it returns <code class="notranslate" translate="no">vertexData</code> and <code class="notranslate" translate="no">numVertices</code>. We’ll go over <a href="webgpu-primitives.html">making
+various geometric primitives in another article</a>.</p>
+<p>Let’s wrap our code that makes a vertex buffer into a function so we can call it
+twice, one for the cube and once for the cone.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const { vertexData, numVertices } = createCubeVertices();
+
++  function createVertices({vertexData, numVertices}, name) {
+*    const vertexBuffer = device.createBuffer({
+-      label: `vertex buffer vertices`,
++      label: `${name}: vertex buffer vertices`,
+      size: vertexData.byteLength,
+      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(vertexBuffer, 0, vertexData);
++    return {
++      vertexBuffer,
++      numVertices,
++    };
+*  }
+
++  const cubeVertices = createVertices(createCubeVertices(), 'cube');
++  const ornamentVertices = createVertices(createConeVertices({
++    radius: 20,
++    height: 60,
++  }), 'ornament');
+</pre>
+<p>Then let’s update are <code class="notranslate" translate="no">drawObject</code> function to take a vertices parameter.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function drawObject(ctx, matrix, color) {
++  function drawObject(ctx, vertices, matrix, color) {
+    const { pass, viewProjectionMatrix } = ctx;
++    const { vertexBuffer, numVertices } = vertices;
+    if (objectNdx === objectInfos.length) {
+      objectInfos.push(createObjectInfo());
+    }
+    const {
+      matrixValue,
+      colorValue,
+      uniformBuffer,
+      uniformValues,
+      bindGroup,
+    } = objectInfos[objectNdx++];
+
+    mat4.multiply(viewProjectionMatrix, matrix, matrixValue);
+    colorValue.set(color);
+
+    // upload the uniform values to the uniform buffer
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
++    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setBindGroup(0, bindGroup);
+    pass.draw(numVertices);
+  }
+</pre>
+<p>and update the code that draws a branch to pass in the cube vertices</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function drawBranch(ctx) {
+    const { stack } = ctx;
+    stack
+      .save()
+      .scale(kBranchSize)
+      .translate(kBranchPosition);
+-    drawObject(ctx, stack.get(), kWhite);
++    drawObject(ctx, cubeVertices, stack.get(), kWhite);
+    stack.restore();
+  }
+</pre>
+<p>And we no longer need to set the vertex buffer early.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+
+    ...
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+-    pass.setVertexBuffer(0, vertexBuffer);
+
+    ...
+</pre>
+<p>And then, let’s add some code to <code class="notranslate" translate="no">drawTreeLevel</code> to draw an ornament when
+depth equals zero.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function drawTreeLevel(ctx, offset, treeDepth) {
+    const { stack } = ctx;
+    const s = offset ? settings.scale : 1;
+    const y = offset ? kBranchSize[kHeight] : 0;
+    stack
+      .save()
+      .translate([0, y, 0])
+      .rotateZ(offset * settings.rotationX)
+      .rotateY(Math.abs(offset) * settings.rotationY)
+      .scale([s, s, s]);
+
+    drawBranch(ctx);
+
+    if (treeDepth &gt; 0) {
+      drawTreeLevel(ctx, -1, treeDepth - 1);
+      drawTreeLevel(ctx, +1, treeDepth - 1);
+    }
+
++    if (treeDepth === 0 &amp;&amp; offset &gt; 0) {
++      const position = vec3.getTranslation(stack.get());
++      drawObject(ctx, ornamentVertices, mat4.translation(position), kWhite);
++    }
+
+    stack.restore();
+  }
+</pre>
+<p>We’re using a function <code class="notranslate" translate="no">vec3.getTranslation</code> which we need to supply.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
+  getTranslation(m, dst) {
+    dst = dst || new Float32Array(3);
+
+    dst[0] = m[12];
+    dst[1] = m[13];
+    dst[2] = m[14];
+
+    return dst;
+  },
+};
+</pre>
+<p><code class="notranslate" translate="no">getTranslation</code> gets the current translation from a matrix like we covered in
+<a href="webgpu-orthographic-projection.html">the article on 3d math</a>.</p>
+<p>Above, the code we added to draw an ornament, calls <code class="notranslate" translate="no">getTranslation</code> to get the
+current translation of the matrix stack. This will be the base of the last
+branch. We can not just draw an ornament directly from the matrix stack because
+it would be oriented and scaled with the branch and we want the ornaments to
+hang down. So, instead, we get the current translation from the stack and then
+pass in a matrix with that translation. Because the translation is at the base
+of the branch we only need to draw one which is why we only draw if <code class="notranslate" translate="no">offset &gt; 0</code>. Otherwise we’d draw 2 ornaments at the exact same location.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-tree-with-ornaments.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-tree-with-ornaments.html" target="_blank">click here to open in a separate window</a>
+</div>
+
+<p></p>
+<p>Next Up, <a href="webgpu-scene-graphs.html">Scenegraphs</a>.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>It would likely not be normal to generate a tree from individual
+cubes or cylinders. The technique of recursion and a matrix stack would be used
+but instead of drawing cubes we’d use the matrices to help generate vertices and
+build a single mesh for the entire tree. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -264,6 +1253,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
 <li><a href="/webgpu/lessons/webgpu-copying-data.html">Copying Data</a></li>
 <li><a href="/webgpu/lessons/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
@@ -338,9 +1328,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Request</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Issue</a>?
    <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
-</div>
-<div class="lesson-comment-notes">
-   Use <b>&lt;pre&gt;&lt;code&gt;</b>code goes here<b>&lt;/code&gt;&lt;/pre&gt;</b> for code blocks
 </div>
   
 
