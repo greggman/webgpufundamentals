@@ -132,7 +132,7 @@ describe('data-byte-diagram-tests', () => {
               uni5: new Int32Array(fooValues, 32, 2),
               uni6: new Uint32Array(fooValues, 40, 2),
               uni7: new Float32Array(fooValues, 48, 2),
-              uni8: new Uint16Array(fooValues, 56, 4),
+              uni8: new Uint16Array(fooValues, 56, 2),
             };
           `);
 
