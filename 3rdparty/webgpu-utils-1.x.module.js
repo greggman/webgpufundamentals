@@ -1,4 +1,4 @@
-/* webgpu-utils@1.9.1, license MIT */
+/* webgpu-utils@1.9.4, license MIT */
 const roundUpToMultipleOf = (v, multiple) => (((v + multiple - 1) / multiple) | 0) * multiple;
 function keysOf(obj) {
     return Object.keys(obj);
@@ -252,7 +252,7 @@ function isIntrinsic(typeDef) {
  * };
  * ```
  *
- * You can use the views directly or you can use @link {setStructuredView}
+ * You can use the views directly or you can use {@link setStructuredView}
  *
  * @param typeDef Definition of the various types of views.
  * @param arrayBuffer Optional ArrayBuffer to use (if one provided one will be created)
@@ -335,7 +335,7 @@ function makeTypedArrayViews(typeDef, arrayBuffer, offset) {
  * The code above will set the various views, which all point to different
  * locations within the same array buffer.
  *
- * See @link {makeTypedArrayViews}.
+ * See {@link makeTypedArrayViews}.
  *
  * @param data The new values
  * @param views TypedArray views as returned from {@link makeTypedArrayViews}
@@ -383,11 +383,162 @@ function setStructuredView(data, views) {
 }
 /**
  * Given a VariableDefinition, create matching TypedArray views
+ *
  * @param varDef A VariableDefinition as returned from {@link makeShaderDataDefinitions}
  * @param arrayBuffer Optional ArrayBuffer for the views
  * @param offset Optional offset into the ArrayBuffer for the views
  * @returns TypedArray views for the various named fields of the structure as well
  *    as a `set` function to make them easy to set, and the arrayBuffer
+ *
+ * ```js
+ * const code = `
+ * struct HSL {
+ *   hue: f32,
+ *   sat: f32,
+ *   lum: f32,
+ * };
+ * struct MyStorage {
+ *    colors: array<HSL, 4>,
+ *    brightness: f32,
+ *    kernel: array<f32, 9>,
+ * };
+ * @group(0) @binding(0) var<storage> myStorage: MyStorage;
+ * `;
+ * const defs = makeShaderDataDefinitions(code);
+ * const myUniformValues = makeStructuredView(defs.storages.myStorage);
+ *
+ * myUniformValues.set({
+ *   colors: [
+ *     ,
+ *     ,
+ *     { hue: 0.5, sat: 1.0, lum: 0.5 },  // only set the 3rd color
+ *   ],
+ *   brightness: 0.8,
+ *   kernel: [
+ *      1, 0, -1,
+ *      2, 0, -2,
+ *      1, 0, -1,
+ *   ],
+ * });
+ * ```
+ *
+ * data definition can come from `defs.uniforms.<nameOfUniform>`, `defs.storages.<nameOfStorage>`
+ * and `defs.structs.<nameOfStruct>`.
+ *
+ * What this function does:
+ *
+ * 1. It creates an `ArrayBuffer` of the size equal to the definition passed in (unless you pass in an existing ArrayBuffer)
+ *
+ * 2. It makes `TypedArray` views of to match the definition.
+ *
+ * 3. It returns an object with the the `ArrayBuffer`, the TypedArray views, and a `set` function which is just a wrapper
+ *    for `setStructView` that passes in the views.
+ *
+ * For example: Given a data definition created by makeShaderDataDefinitions for this WGSL
+ *
+ * ```wgsl
+ * struct Light {
+ *   lightWorldPosition: vec3f,
+ *   shininess: f32,
+ *   lightDirection: vec3f,
+ *   innerLimit: f32,
+ *   outerLimit: f32,
+ * };
+ * struct Uniforms {
+ *   normalMatrix: mat3x3f,
+ *   worldViewProjection: mat4x4f,
+ *   world: mat4x4f,
+ *   color: vec4f,
+ *   viewWorldPosition: vec3f,
+ *   lights: array<Light, 3>,
+ * };
+ * @group(0) @binding(0) var<uniform> myUniforms: Uniforms;
+ * ```
+ *
+ * `makeStructuredView(defs.uniforms.myUniforms)` would return this
+ *
+ * ```js
+ * const arrayBuffer = new ArrayBuffer(368)
+ * const views = {
+ *   normalMatrix: new Float32Array(arrayBuffer, 0, 12),
+ *   worldViewProjection: new Float32Array(arrayBuffer, 48, 16),
+ *   world: new Float32Array(arrayBuffer, 112, 16),
+ *   color: new Float32Array(arrayBuffer, 176, 4),
+ *   viewWorldPosition: new Float32Array(arrayBuffer, 192, 3),
+ *   lights: [
+ *     {
+ *       lightWorldPosition: new Float32Array(arrayBuffer, 208, 3),
+ *       shininess: new Float32Array(arrayBuffer, 220, 1),
+ *       lightDirection: new Float32Array(arrayBuffer, 224, 3),
+ *       innerLimit: new Float32Array(arrayBuffer, 236, 1),
+ *       outerLimit: new Float32Array(arrayBuffer, 240, 1),
+ *     },
+ *     {
+ *       lightWorldPosition: new Float32Array(arrayBuffer, 256, 3),
+ *       shininess: new Float32Array(arrayBuffer, 268, 1),
+ *       lightDirection: new Float32Array(arrayBuffer, 272, 3),
+ *       innerLimit: new Float32Array(arrayBuffer, 284, 1),
+ *       outerLimit: new Float32Array(arrayBuffer, 288, 1),
+ *     },
+ *     {
+ *       lightWorldPosition: new Float32Array(arrayBuffer, 304, 3),
+ *       shininess: new Float32Array(arrayBuffer, 316, 1),
+ *       lightDirection: new Float32Array(arrayBuffer, 320, 3),
+ *       innerLimit: new Float32Array(arrayBuffer, 332, 1),
+ *       outerLimit: new Float32Array(arrayBuffer, 336, 1),
+ *     },
+ *   ],
+ *   mode: new Uint32Array(UniformsValues, 352, 1),
+ * };
+ * result = {
+ *   arrayBuffer,
+ *   views,
+ *   set(data: any) {
+ *     setStructuredView(data, views.views);
+ *   },
+ * }
+ * ```
+ *
+ * From this, you can see you can set the value in the array buffer for any field/member/property
+ * directly. Example
+ *
+ * ```js
+ * result.views.lights[2].lightDirection.set([7, 8, 9]);
+ * result.views.lights[2].innerLimit[0] = 4;
+ * ```
+ *
+ * `set` just takes a JS object and matches property names to the view names.
+ *
+ * ```js
+ * result.set({
+ *   color: [1, 1, 0, 1],
+ *   viewWorldPosition: [12, 34, 56],
+ *   mode: 8,
+ * });
+ * ```
+ *
+ * Is equivalent to
+ *
+ * ```js
+ * result.views.color.set([1, 1, 0, 1]);
+ * result.views.worldViewPosition.set([12, 34, 56]);
+ * result.views.mode[0] = 8;
+ * ```
+ *
+ * Further, `set` is just a short cut for `setStructuredView` passing in the root
+ * `result'views`.
+ *
+ * So, for example, if you want to set the light at index 2, this would work.
+ *
+ * ```js
+ * setStructuredView({
+ *   lightWorldPosition: [1, 2, 3],
+ *   shininess: 4,
+ *   lightDirection: [5, 6, 7],
+ *   innerLimit: 8,
+ *   outerLimit: 9,
+ * }, result.views.lights[2]);
+ * ```
  */
 function makeStructuredView(varDef, arrayBuffer, offset = 0) {
     const asVarDef = varDef;
@@ -436,7 +587,7 @@ function setIntrinsicFromArrayLikeOfNumber(typeDef, data, arrayBuffer, offset) {
 }
 /**
  * Sets values on an existing array buffer from a TypeDefinition
- * @param typeDef A type definition provided by @link {makeShaderDataDefinitions}
+ * @param typeDef A type definition provided by {@link makeShaderDataDefinitions}
  * @param data The source data
  * @param arrayBuffer The arrayBuffer who's data to set.
  * @param offset An offset in the arrayBuffer to start at.
@@ -475,8 +626,8 @@ function setTypedValues(typeDef, data, arrayBuffer, offset = 0) {
     }
 }
 /**
- * Same as @link {setTypedValues} except it takes a @link {VariableDefinition}.
- * @param varDef A variable definition provided by @link {makeShaderDataDefinitions}
+ * Same as {@link setTypedValues} except it takes a {@link VariableDefinition}.
+ * @param varDef A variable definition provided by {@link makeShaderDataDefinitions}
  * @param data The source data
  * @param arrayBuffer The arrayBuffer who's data to set.
  * @param offset An offset in the arrayBuffer to start at.
@@ -565,7 +716,7 @@ function getSizeAndAlignmentOfUnsizedArrayElementOfTypeDef(typeDef) {
  *    new ArrayBuffer(defs.storages.f.size + size * numElements));
  * ```
  *
- * @param varDef A variable definition provided by @link {makeShaderDataDefinitions}
+ * @param varDef A variable definition provided by {@link makeShaderDataDefinitions}
  * @returns the size, align, and unalignedSize in bytes of the unsized array element in this type definition.
  *   If there is no unsized array, size = 0.
  */
@@ -729,9 +880,9 @@ class For extends Statement {
     }
     search(callback) {
         var _a, _b, _c;
-        (_a = this.init) === null || _a === void 0 ? void 0 : _a.search(callback);
-        (_b = this.condition) === null || _b === void 0 ? void 0 : _b.search(callback);
-        (_c = this.increment) === null || _c === void 0 ? void 0 : _c.search(callback);
+        (_a = this.init) === null || _a === undefined ? undefined : _a.search(callback);
+        (_b = this.condition) === null || _b === undefined ? undefined : _b.search(callback);
+        (_c = this.increment) === null || _c === undefined ? undefined : _c.search(callback);
         this.searchBlock(this.body, callback);
     }
 }
@@ -755,7 +906,7 @@ class Var extends Statement {
     search(callback) {
         var _a;
         callback(this);
-        (_a = this.value) === null || _a === void 0 ? void 0 : _a.search(callback);
+        (_a = this.value) === null || _a === undefined ? undefined : _a.search(callback);
     }
 }
 /**
@@ -775,7 +926,7 @@ class Override extends Statement {
     }
     search(callback) {
         var _a;
-        (_a = this.value) === null || _a === void 0 ? void 0 : _a.search(callback);
+        (_a = this.value) === null || _a === undefined ? undefined : _a.search(callback);
     }
 }
 /**
@@ -798,7 +949,7 @@ class Let extends Statement {
     search(callback) {
         var _a;
         callback(this);
-        (_a = this.value) === null || _a === void 0 ? void 0 : _a.search(callback);
+        (_a = this.value) === null || _a === undefined ? undefined : _a.search(callback);
     }
 }
 /**
@@ -824,7 +975,7 @@ class Const extends Statement {
     search(callback) {
         var _a;
         callback(this);
-        (_a = this.value) === null || _a === void 0 ? void 0 : _a.search(callback);
+        (_a = this.value) === null || _a === undefined ? undefined : _a.search(callback);
     }
 }
 var IncrementOperator;
@@ -993,7 +1144,7 @@ class Return extends Statement {
     }
     search(callback) {
         var _a;
-        (_a = this.value) === null || _a === void 0 ? void 0 : _a.search(callback);
+        (_a = this.value) === null || _a === undefined ? undefined : _a.search(callback);
     }
 }
 /**
@@ -1251,9 +1402,14 @@ class CreateExpr extends Expression {
     }
     search(callback) {
         callback(this);
-        for (const node of this.args) {
-            node.search(callback);
+        if (this.args) {
+            for (const node of this.args) {
+                node.search(callback);
+            }
         }
+    }
+    evaluate(context) {
+        return this.args[0].evaluate(context);
     }
 }
 /**
@@ -1427,15 +1583,17 @@ class ConstExpr extends Expression {
         var _a, _b;
         if (this.initializer instanceof CreateExpr) {
             // This is a struct constant
-            const property = (_a = this.postfix) === null || _a === void 0 ? void 0 : _a.evaluateString(context);
-            const type = (_b = this.initializer.type) === null || _b === void 0 ? void 0 : _b.name;
+            const property = (_a = this.postfix) === null || _a === undefined ? undefined : _a.evaluateString(context);
+            const type = (_b = this.initializer.type) === null || _b === undefined ? undefined : _b.name;
             const struct = context.structs.get(type);
-            const memberIndex = struct === null || struct === void 0 ? void 0 : struct.getMemberIndex(property);
-            if (memberIndex != -1) {
+            const memberIndex = struct === null || struct === undefined ? undefined : struct.getMemberIndex(property);
+            if (memberIndex !== undefined && memberIndex != -1) {
                 const value = this.initializer.args[memberIndex].evaluate(context);
                 return value;
             }
-            console.log(memberIndex);
+            else {
+                return this.initializer.evaluate(context);
+            }
         }
         return this.initializer.evaluate(context);
     }
@@ -1476,27 +1634,6 @@ class BitcastExpr extends Expression {
     }
     search(callback) {
         this.value.search(callback);
-    }
-}
-/**
- * @class TypecastExpr
- * @extends Expression
- * @category AST
- */
-class TypecastExpr extends Expression {
-    constructor(type, args) {
-        super();
-        this.type = type;
-        this.args = args;
-    }
-    get astNodeType() {
-        return "typecastExpr";
-    }
-    evaluate(context) {
-        return this.args[0].evaluate(context);
-    }
-    search(callback) {
-        this.searchBlock(this.args, callback);
     }
 }
 /**
@@ -1932,8 +2069,6 @@ TokenTypes.tokens = {
     and_and: new TokenType("and_and", TokenClass.token, "&&"),
     arrow: new TokenType("arrow ", TokenClass.token, "->"),
     attr: new TokenType("attr", TokenClass.token, "@"),
-    attr_left: new TokenType("attr_left", TokenClass.token, "[["),
-    attr_right: new TokenType("attr_right", TokenClass.token, "]]"),
     forward_slash: new TokenType("forward_slash", TokenClass.token, "/"),
     bang: new TokenType("bang", TokenClass.token, "!"),
     bracket_left: new TokenType("bracket_left", TokenClass.token, "["),
@@ -1991,8 +2126,6 @@ TokenTypes.literalTokens = {
     "&": _a.tokens.and,
     "&&": _a.tokens.and_and,
     "->": _a.tokens.arrow,
-    "[[": _a.tokens.attr_left,
-    "]]": _a.tokens.attr_right,
     "/": _a.tokens.forward_slash,
     "!": _a.tokens.bang,
     "[": _a.tokens.bracket_left,
@@ -2206,7 +2339,7 @@ class WgslScanner {
         this._start = 0;
         this._current = 0;
         this._line = 1;
-        this._source = source !== null && source !== void 0 ? source : "";
+        this._source = source !== null && source !== undefined ? source : "";
     }
     /// Scan all tokens from the source.
     scanTokens() {
@@ -2314,16 +2447,41 @@ class WgslScanner {
             // and one to close the array).
             // Another ambiguity is '>='. In the case of vec2<i32>=vec2(1,2),
             // it's a greather_than and an equal, not a greater_than_equal.
+            // Another ambiguity is '-'. In the case of a-2, it's a minus; in the case of a*-2, it's a -2;
+            // in the case of foo()->int, it's a ->; in the case of foo-- or --foo, it's a -- decrement.
             // WGSL requires context sensitive parsing to resolve these ambiguities. Both of these cases
             // are predicated on it the > either closing a template, or being part of an operator.
             // The solution here is to check if there was a less_than up to some number of tokens
             // previously, and the token prior to that is a keyword that requires a '<', then it will be
             // split into two operators; otherwise it's a single operator.
             const nextLexeme = this._peekAhead();
+            if (lexeme == "-" && this._tokens.length > 0) {
+                if (nextLexeme == "=") {
+                    this._current++;
+                    lexeme += nextLexeme;
+                    this._addToken(TokenTypes.tokens.minus_equal);
+                    return true;
+                }
+                if (nextLexeme == "-") {
+                    this._current++;
+                    lexeme += nextLexeme;
+                    this._addToken(TokenTypes.tokens.minus_minus);
+                    return true;
+                }
+                const ti = this._tokens.length - 1;
+                const isIdentOrLiteral = TokenTypes.literal_or_ident.indexOf(this._tokens[ti].type) != -1;
+                if ((isIdentOrLiteral || this._tokens[ti].type == TokenTypes.tokens.paren_right) && nextLexeme != ">") {
+                    this._addToken(matchedType);
+                    return true;
+                }
+            }
             if (lexeme == ">" && (nextLexeme == ">" || nextLexeme == "=")) {
                 let foundLessThan = false;
                 let ti = this._tokens.length - 1;
                 for (let count = 0; count < 5 && ti >= 0; ++count, --ti) {
+                    if (TokenTypes.assignment_operators.indexOf(this._tokens[ti].type) !== -1) {
+                        break;
+                    }
                     if (this._tokens[ti].type === TokenTypes.tokens.less_than) {
                         if (ti > 0 && this._tokens[ti - 1].isArrayOrTemplateType()) {
                             foundLessThan = true;
@@ -2544,7 +2702,7 @@ class WgslParser {
     }
     _advance() {
         var _a, _b;
-        this._currentLine = (_b = (_a = this._peek()) === null || _a === void 0 ? void 0 : _a.line) !== null && _b !== void 0 ? _b : -1;
+        this._currentLine = (_b = (_a = this._peek()) === null || _a === undefined ? undefined : _a.line) !== null && _b !== undefined ? _b : -1;
         if (!this._isAtEnd()) {
             this._current++;
         }
@@ -3293,7 +3451,7 @@ class WgslParser {
         // type_decl argument_expression_list
         const type = this._type_decl();
         const args = this._argument_expression_list();
-        return new TypecastExpr(type, args);
+        return new CreateExpr(type, args);
     }
     _argument_expression_list() {
         // paren_left ((short_circuit_or_expression comma)* short_circuit_or_expression comma?)? paren_right
@@ -3434,21 +3592,7 @@ class WgslParser {
     _const_expression() {
         // type_decl paren_left ((const_expression comma)* const_expression comma?)? paren_right
         // const_literal
-        if (this._match(TokenTypes.const_literal)) {
-            return new StringExpr(this._previous().toString());
-        }
-        const type = this._type_decl();
-        this._consume(TokenTypes.tokens.paren_left, "Expected '('.");
-        let args = [];
-        while (!this._check(TokenTypes.tokens.paren_right)) {
-            args.push(this._const_expression());
-            if (!this._check(TokenTypes.tokens.comma)) {
-                break;
-            }
-            this._advance();
-        }
-        this._consume(TokenTypes.tokens.paren_right, "Expected ')'.");
-        return new CreateExpr(type, args);
+        return this._short_circuit_or_expression();
     }
     _variable_decl() {
         // var variable_qualifier? (ident variable_ident_decl)
@@ -3696,33 +3840,6 @@ class WgslParser {
             }
             attributes.push(attr);
         }
-        // Deprecated:
-        // attr_left (attribute comma)* attribute attr_right
-        while (this._match(TokenTypes.tokens.attr_left)) {
-            if (!this._check(TokenTypes.tokens.attr_right)) {
-                do {
-                    const name = this._consume(TokenTypes.attribute_name, "Expected attribute name");
-                    const attr = new Attribute(name.toString(), null);
-                    if (this._match(TokenTypes.tokens.paren_left)) {
-                        // literal_or_ident
-                        attr.value = [
-                            this._consume(TokenTypes.literal_or_ident, "Expected attribute value").toString(),
-                        ];
-                        if (this._check(TokenTypes.tokens.comma)) {
-                            this._advance();
-                            do {
-                                const v = this._consume(TokenTypes.literal_or_ident, "Expected attribute value").toString();
-                                attr.value.push(v);
-                            } while (this._match(TokenTypes.tokens.comma));
-                        }
-                        this._consume(TokenTypes.tokens.paren_right, "Expected ')'");
-                    }
-                    attributes.push(attr);
-                } while (this._match(TokenTypes.tokens.comma));
-            }
-            // Consume ]]
-            this._consume(TokenTypes.tokens.attr_right, "Expected ']]' after attribute declarations");
-        }
         if (attributes.length == 0) {
             return null;
         }
@@ -3898,12 +4015,29 @@ class OutputInfo {
         this.location = location;
     }
 }
+class OverrideInfo {
+    constructor(name, type, attributes, id) {
+        this.name = name;
+        this.type = type;
+        this.attributes = attributes;
+        this.id = id;
+    }
+}
+class ArgumentInfo {
+    constructor(name, type) {
+        this.name = name;
+        this.type = type;
+    }
+}
 class FunctionInfo {
     constructor(name, stage = null) {
         this.stage = null;
         this.inputs = [];
         this.outputs = [];
+        this.arguments = [];
+        this.returnType = null;
         this.resources = [];
+        this.overrides = [];
         this.startLine = -1;
         this.endLine = -1;
         this.inUse = false;
@@ -3917,14 +4051,6 @@ class EntryFunctions {
         this.vertex = [];
         this.fragment = [];
         this.compute = [];
-    }
-}
-class OverrideInfo {
-    constructor(name, type, attributes, id) {
-        this.name = name;
-        this.type = type;
-        this.attributes = attributes;
-        this.id = id;
     }
 }
 class _FunctionResources {
@@ -4043,7 +4169,7 @@ class WgslReflect {
                 const fragmentStage = this._getAttribute(node, "fragment");
                 const computeStage = this._getAttribute(node, "compute");
                 const stage = vertexStage || fragmentStage || computeStage;
-                const fn = new FunctionInfo(node.name, stage === null || stage === void 0 ? void 0 : stage.name);
+                const fn = new FunctionInfo(node.name, stage === null || stage === undefined ? undefined : stage.name);
                 fn.startLine = node.startLine;
                 fn.endLine = node.endLine;
                 this.functions.push(fn);
@@ -4056,6 +4182,12 @@ class WgslReflect {
                     fn.outputs = this._getOutputs(node.returnType);
                     this.entry[stage.name].push(fn);
                 }
+                else {
+                    fn.arguments = node.args.map((arg) => new ArgumentInfo(arg.name, this._getTypeInfo(arg.type, arg.attributes)));
+                    fn.returnType = node.returnType
+                        ? this._getTypeInfo(node.returnType, node.attributes)
+                        : null;
+                }
                 continue;
             }
         }
@@ -4065,6 +4197,19 @@ class WgslReflect {
                 this._addCalls(fn.node, fn.info.calls);
             }
         }
+        for (const fn of this._functions.values()) {
+            fn.node.search((node) => {
+                var _a;
+                if (node.astNodeType === "varExpr") {
+                    const v = node;
+                    for (const override of this.overrides) {
+                        if (v.name == override.name) {
+                            (_a = fn.info) === null || _a === undefined ? undefined : _a.overrides.push(override);
+                        }
+                    }
+                }
+            });
+        }
         for (const u of this.uniforms) {
             this._markStructsInUse(u.type);
         }
@@ -4073,17 +4218,24 @@ class WgslReflect {
         }
     }
     _markStructsInUse(type) {
+        if (!type) {
+            return;
+        }
         if (type.isStruct) {
             type.inUse = true;
-            for (const m of type.members) {
-                this._markStructsInUse(m.type);
+            if (type.members) {
+                for (const m of type.members) {
+                    this._markStructsInUse(m.type);
+                }
             }
         }
         else if (type.isArray) {
             this._markStructsInUse(type.format);
         }
         else if (type.isTemplate) {
-            this._markStructsInUse(type.format);
+            if (type.format) {
+                this._markStructsInUse(type.format);
+            }
         }
         else {
             const alias = this._getAlias(type.name);
@@ -4095,7 +4247,7 @@ class WgslReflect {
     _addCalls(fn, calls) {
         var _a;
         for (const call of fn.calls) {
-            const info = (_a = this._functions.get(call.name)) === null || _a === void 0 ? void 0 : _a.info;
+            const info = (_a = this._functions.get(call.name)) === null || _a === undefined ? undefined : _a.info;
             if (info) {
                 calls.add(info);
             }
@@ -4385,7 +4537,7 @@ class WgslReflect {
         }
         if (type instanceof ArrayType) {
             const a = type;
-            const t = this._getTypeInfo(a.format, a.attributes);
+            const t = a.format ? this._getTypeInfo(a.format, a.attributes) : null;
             const info = new ArrayInfo(a.name, attributes);
             info.format = t;
             info.count = a.count;
@@ -4435,11 +4587,13 @@ class WgslReflect {
     _updateTypeInfo(type) {
         var _a, _b;
         const typeSize = this._getTypeSize(type);
-        type.size = (_a = typeSize === null || typeSize === void 0 ? void 0 : typeSize.size) !== null && _a !== void 0 ? _a : 0;
+        type.size = (_a = typeSize === null || typeSize === undefined ? undefined : typeSize.size) !== null && _a !== undefined ? _a : 0;
         if (type instanceof ArrayInfo) {
-            const formatInfo = this._getTypeSize(type["format"]);
-            type.stride = (_b = formatInfo === null || formatInfo === void 0 ? void 0 : formatInfo.size) !== null && _b !== void 0 ? _b : 0;
-            this._updateTypeInfo(type["format"]);
+            if (type["format"]) {
+                const formatInfo = this._getTypeSize(type["format"]);
+                type.stride = (_b = formatInfo === null || formatInfo === undefined ? undefined : formatInfo.size) !== null && _b !== undefined ? _b : 0;
+                this._updateTypeInfo(type["format"]);
+            }
         }
         if (type instanceof StructInfo) {
             this._updateStructInfo(type);
@@ -4457,7 +4611,7 @@ class WgslReflect {
             if (!sizeInfo) {
                 continue;
             }
-            (_a = this._getAlias(member.type.name)) !== null && _a !== void 0 ? _a : member.type;
+            (_a = this._getAlias(member.type.name)) !== null && _a !== undefined ? _a : member.type;
             const align = sizeInfo.align;
             const size = sizeInfo.size;
             offset = this._roundUp(align, offset + lastSize);
@@ -4472,7 +4626,7 @@ class WgslReflect {
         struct.align = structAlign;
     }
     _getTypeSize(type) {
-        var _a;
+        var _a, _b;
         if (type === null || type === undefined) {
             return null;
         }
@@ -4490,7 +4644,7 @@ class WgslReflect {
         {
             const info = WgslReflect._typeInfo[type.name];
             if (info !== undefined) {
-                const divisor = type["format"] === "f16" ? 2 : 1;
+                const divisor = ((_a = type["format"]) === null || _a === undefined ? undefined : _a.name) === "f16" ? 2 : 1;
                 return new _TypeSize(Math.max(explicitAlign, info.align / divisor), Math.max(explicitSize, info.size / divisor));
             }
         }
@@ -4521,7 +4675,7 @@ class WgslReflect {
                 align = E.align;
             }
             const N = arrayType.count;
-            const stride = this._getAttributeNum((_a = type === null || type === void 0 ? void 0 : type.attributes) !== null && _a !== void 0 ? _a : null, "stride", this._roundUp(align, size));
+            const stride = this._getAttributeNum((_b = type === null || type === undefined ? undefined : type.attributes) !== null && _b !== undefined ? _b : null, "stride", this._roundUp(align, size));
             size = N * stride;
             if (explicitSize) {
                 size = explicitSize;
@@ -4674,7 +4828,7 @@ const byBinding = (a, b) => Math.sign(a.binding - b.binding);
  * MAINTENANCE_TODO: Add example
  *
  * @param defs ShaderDataDefinitions or an array of ShaderDataDefinitions as
- *    returned from @link {makeShaderDataDefinitions}. If an array more than 1
+ *    returned from {@link makeShaderDataDefinitions}. If an array more than 1
  *    definition it's assumed the vertex shader is in the first and the fragment
  *    shader in the second.
  * @param desc A PipelineDescriptor. You should be able to pass in the same object you passed
@@ -5737,7 +5891,7 @@ const kFormatToTypedArray = {
     '32unorm': Uint32Array,
     '32sint': Int32Array,
     '32uint': Uint32Array,
-    '16float': Uint16Array,
+    '16float': Uint16Array, // TODO: change to Float16Array
     '32float': Float32Array,
 };
 const kTextureFormatRE = /([a-z]+)(\d+)([a-z]+)/;
@@ -6230,11 +6384,11 @@ function createSphereVertices({ radius = 1, subdivisionsAxis = 24, subdivisionsH
  * Array of the indices of corners of each face of a cube.
  */
 const CUBE_FACE_INDICES = [
-    [3, 7, 5, 1],
-    [6, 2, 0, 4],
-    [6, 7, 3, 2],
-    [0, 1, 5, 4],
-    [7, 6, 4, 5],
+    [3, 7, 5, 1], // right
+    [6, 2, 0, 4], // left
+    [6, 7, 3, 2], // ??
+    [0, 1, 5, 4], // ??
+    [7, 6, 4, 5], // front
     [2, 3, 1, 0], // back
 ];
 /**
@@ -6259,12 +6413,12 @@ function createCubeVertices({ size = 1 } = {}) {
         [+k, +k, +k],
     ];
     const faceNormals = [
-        [+1, +0, +0],
-        [-1, +0, +0],
-        [+0, +1, +0],
-        [+0, -1, +0],
-        [+0, +0, +1],
-        [+0, +0, -1],
+        [1, 0, 0],
+        [-1, 0, 0],
+        [0, 1, 0],
+        [0, -1, 0],
+        [0, 0, 1],
+        [0, 0, -1],
     ];
     const uvCoords = [
         [1, 0],
@@ -6308,15 +6462,16 @@ function createCubeVertices({ size = 1 } = {}) {
  * truncated cone will be created centered about the origin, with the
  * y axis as its vertical axis. .
  *
- * @param bottomRadius Bottom radius of truncated cone. Default = 1
- * @param topRadius Top radius of truncated cone. Default = 0
- * @param height Height of truncated cone. Default = 1
- * @param radialSubdivisions The number of subdivisions around the
+ * @param params
+ * @param params.bottomRadius Bottom radius of truncated cone. Default = 1
+ * @param params.topRadius Top radius of truncated cone. Default = 0
+ * @param params.height Height of truncated cone. Default = 1
+ * @param params.radialSubdivisions The number of subdivisions around the
  *     truncated cone. Default = 24
- * @param verticalSubdivisions The number of subdivisions down the
+ * @param params.verticalSubdivisions The number of subdivisions down the
  *     truncated cone. Default = 1
- * @param topCap Create top cap. Default = true.
- * @param bottomCap Create bottom cap. Default = true.
+ * @param params.topCap Create top cap. Default = true.
+ * @param params.bottomCap Create bottom cap. Default = true.
  * @return The created cone vertices.
  */
 function createTruncatedConeVertices({ bottomRadius = 1, topRadius = 0, height = 1, radialSubdivisions = 24, verticalSubdivisions = 1, topCap = true, bottomCap = true, } = {}) {
