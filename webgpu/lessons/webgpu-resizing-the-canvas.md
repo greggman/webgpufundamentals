@@ -455,7 +455,7 @@ the pattern to a magenta, green, white, black checkerboard.
 
 Let's also make the triangle big enough to cover the canvas [^large-triangle]
 
-[^large-triangle]: See [this article](webgpu-large-triangle-to-cover-clip-space.html] for why these vertex positions.
+[^large-triangle]: See [this article](webgpu-large-triangle-to-cover-clip-space.html) for why these vertex positions.
 
 ```js
     let pos = array(
