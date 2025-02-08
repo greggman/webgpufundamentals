@@ -708,9 +708,10 @@ workgroup per pixel. In our code above we have for loop</p>
 <p>We could change the code use instead use <code class="notranslate" translate="no">global_invocation_id</code>
 as an input and then process every single pixel in a separate invocation.</p>
 <p>Here’s the needed changes to the shader</p>
-<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; histogram: array&lt;vec4u&gt;;
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;vec4u&gt;;
 @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
 
+// from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
 const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
 fn srgbLuminance(color: vec3f) -&gt; f32 {
   return saturate(dot(color, kSRGBLuminanceFactors));
@@ -720,7 +721,7 @@ fn srgbLuminance(color: vec3f) -&gt; f32 {
 -fn cs() {
 +fn cs(@builtin(global_invocation_id) global_invocation_id: vec3u) {
 -  let size = textureDimensions(ourTexture, 0);
-  let numBins = f32(arrayLength(&amp;histogram));
+  let numBins = f32(arrayLength(&amp;bins));
   let lastBinIndex = u32(numBins - 1);
 -  for (var y = 0u; y &lt; size.y; y++) {
 -    for (var x = 0u; x &lt; size.x; x++) {

@@ -468,10 +468,10 @@ must only differ by the suffix <code class="notranslate" translate="no">'-srgb'<
 <li>dst.<code class="notranslate" translate="no">origin[1]</code> or <code class="notranslate" translate="no">.y</code> must be a multiple of block height</li>
 </ul>
 <h2 id="shaders">Shaders</h2>
-<p>Shaders can write to storage buffers, storage textures,
+<p>Shaders can read and write to storage buffers, storage textures,
 and indirectly they can render to textures. Those are all ways
 of getting data into buffers and textures. In other words
-you can write shaders to generate data.</p>
+you can write shaders to generate and/or copy and transfer data.</p>
 <h2 id="mapping-buffers">Mapping Buffers</h2>
 <p>You can map a buffer. Mapping a buffer means making it
 available to read or write from JavaScript.

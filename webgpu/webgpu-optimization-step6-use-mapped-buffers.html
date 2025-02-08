@@ -494,13 +494,49 @@ async function main() {
 
     const encoder = device.createCommandEncoder();
 
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(
+        degToRad(60),
+        aspect,
+        1,      // zNear
+        2000,   // zFar
+    );
+
+    const eye = [100, 150, 200];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
+
+    // Compute a view matrix
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+    // Combine the view and projection matrixes
+    mat4.multiply(projection, viewMatrix, viewProjectionValue);
+
+    lightWorldPositionValue.set([-10, 30, 300]);
+    viewWorldPositionValue.set(eye);
+
+    device.queue.writeBuffer(globalUniformBuffer, 0, globalUniformValues);
+
     let mathElapsedTimeMs = 0;
 
     const transferBuffer = getMappedTransferBuffer();
     const uniformValues = new Float32Array(transferBuffer.getMappedRange());
 
+    // copy the uniform values from the transfer buffer to the uniform buffer
+    if (settings.numObjects) {
+      // Remember, this is just encoding a command that will happen later.
+      const size = (settings.numObjects - 1) * uniformBufferSpace + uniformBufferSize;
+      encoder.copyBufferToBuffer(transferBuffer, 0, uniformBuffer, 0, size);
+    }
+
+    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setIndexBuffer(indicesBuffer, 'uint16');
+
     for (let i = 0; i < settings.numObjects; ++i) {
       const {
+        bindGroup,
         axis,
         radius,
         speed,
@@ -529,48 +565,11 @@ async function main() {
       mat3.fromMat4(mat4.transpose(mat4.inverse(worldValue)), normalMatrixValue);
 
       mathElapsedTimeMs += performance.now() - mathTimeStartMs;
-    }
-    transferBuffer.unmap();
 
-    // copy the uniform values from the transfer buffer to the uniform buffer
-    if (settings.numObjects) {
-      const size = (settings.numObjects - 1) * uniformBufferSpace + uniformBufferSize;
-      encoder.copyBufferToBuffer(transferBuffer, 0, uniformBuffer, 0, size);
-    }
-
-    const aspect = canvas.clientWidth / canvas.clientHeight;
-    const projection = mat4.perspective(
-        degToRad(60),
-        aspect,
-        1,      // zNear
-        2000,   // zFar
-    );
-
-    const eye = [100, 150, 200];
-    const target = [0, 0, 0];
-    const up = [0, 1, 0];
-
-    // Compute a view matrix
-    const viewMatrix = mat4.lookAt(eye, target, up);
-
-    // Combine the view and projection matrixes
-    mat4.multiply(projection, viewMatrix, viewProjectionValue);
-
-    lightWorldPositionValue.set([-10, 30, 300]);
-    viewWorldPositionValue.set(eye);
-
-    device.queue.writeBuffer(globalUniformBuffer, 0, globalUniformValues);
-
-    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
-    pass.setPipeline(pipeline);
-    pass.setVertexBuffer(0, vertexBuffer);
-    pass.setIndexBuffer(indicesBuffer, 'uint16');
-
-    for (let i = 0; i < settings.numObjects; ++i) {
-      const { bindGroup } = objectInfos[i];
       pass.setBindGroup(0, bindGroup);
       pass.drawIndexed(numVertices);
     }
+    transferBuffer.unmap();
 
     pass.end();
 

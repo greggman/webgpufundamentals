@@ -154,7 +154,7 @@ function createFVertices() {
 const mat4 = {
   projection(width, height, depth, dst) {
     // Note: This matrix flips the Y axis so that 0 is at the top.
-    return mat4.ortho(0, width, height, 0, depth, -depth, dst);
+    return mat4.ortho(0, width, height, 0, depth / 2, -depth / 2, dst);
   },
 
   ortho(left, right, bottom, top, near, far, dst) {

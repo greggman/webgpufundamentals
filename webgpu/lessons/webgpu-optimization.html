@@ -258,14 +258,17 @@ done the following steps</p>
 <li>
 <p>At Render time:</p>
 <ul>
+<li>start an encoder and render pass</li>
 <li>for each thing we want to draw
 <ul>
 <li>update a typed array with our uniform values for this object</li>
 <li>copy the typed array to the uniform buffer for this object</li>
-<li>bind the bindGroup for this object</li>
-<li>draw</li>
+<li>set any pipeline, vertex and index buffers if needed</li>
+<li>encode a command(s) to bind the bindGroup(s) for this object</li>
+<li>encode a command to draw</li>
 </ul>
 </li>
+<li>end the render pass, finish the encoder, submit the command buffer</li>
 </ul>
 </li>
 </ul>
@@ -399,7 +402,7 @@ in general.</p>
 <a href="webgpu-lighting-point.html#a-specular">the point light with specular highlights covered else where</a>.
 It uses a texture because most 3d models use textures so I thought it best to include one.
 It multiplies the texture by a color so we can adjust the colors of each cube.
-And it has all of the uniforms we need to do the lighting and
+And it has all of the uniform values we need to do the lighting and
 <a href="webgpu-perspective-projection.html">project the cube in 3d</a>.</p>
 <p>We need data for a cube and to put that data in buffers.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function createBufferWithData(device, data, usage) {
@@ -745,7 +748,7 @@ we have has a different size then our canvas texture. We did this in
 +    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
 </pre>
 <p>Now we can loop over all the objects and draw them, for each one we need
-to update all of is uniform values, copy the uniform values to its uniform buffer,
+to update all of its uniform values, copy the uniform values to its uniform buffer,
 bind the bind group for this object, and draw.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    for (let i = 0; i &lt; settings.numObjects; ++i) {
       const {
@@ -1045,7 +1048,7 @@ const mathAverage = new NonNegativeRollingAverage();
 every visible cube has every pixel rendered or at least checked if it needs to
 be rendered. Since we’re not optimizing the rendering of pixels but rather
 optimizing the usage of WebGPU itself, it can be useful to be able to draw to a
-1x1 pixel canvas. This effectively removes nearly all of the time spend
+1x1 pixel canvas. This effectively removes nearly all of the time spent
 rasterizing triangles and instead leaves only the part of our code that is doing
 math and communicating with WebGPU.</p>
 <p>So let’s add an option to do that</p>
@@ -1087,7 +1090,7 @@ steps listed near the top of the article, and it works.</p>
 <p>Increase the number of objects and see when the framerate drops for you. For me,
 on my 75hz monitor on an M1 Mac I got ~8000 cubes before the framerate dropped.</p>
 <h1 id="optimization-mapped-on-creation"><a id="a-mapped-on-creation"></a> Optimization: Mapped On Creation</h1>
-<p>In the example above, and in most of the examples on this site we’ve used
+<p>In the example above, and in most of the examples on this site, we’ve used
 <code class="notranslate" translate="no">writeBuffer</code> to copy data into a vertex or index buffer. As a very minor
 optimization, for this particular case, when you create a buffer you can pass in
 <code class="notranslate" translate="no">mappedAtCreation: true</code>. This has 2 benefits.</p>
@@ -1122,7 +1125,7 @@ our performance at render time.</p>
 and one for texture coordinates. It’s common to have 4 to 6 attributes where
 we’d have <a href="webgpu-normal-mapping.html">tangents for normal mapping</a> and, if
 we had <a href="webgpu-skinning.html">a skinned model</a>, we’d add in weights and joints.</p>
-<p>In the example above each attribute is using its own buffer. This is slower both
+<p>In the example above, each attribute is using its own buffer. This is slower both
 on the CPU and GPU. It’s slower on the CPU in JavaScript because we need to call
 <code class="notranslate" translate="no">setVertexBuffer</code> once for each buffer for each model we want to draw.</p>
 <p>Imagine instead of just a cube we had 100s of models. Each time we switched
@@ -1396,7 +1399,7 @@ with <code class="notranslate" translate="no">device.queue.writeBuffer</code></p
   const viewWorldPositionValue = globalUniformValues.subarray(
       kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
 </pre>
-<p>Then we can removed these uniforms from our perObject uniform buffer and add the
+<p>Then we can remove these uniforms from our perObject uniform buffer and add the
 global uniform buffer to each object’s bind group.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 30000;
   const objectInfos = [];
@@ -2048,27 +2051,47 @@ make new typedarray views after mapping.</p>
     });
   }
 </pre>
-<p>At render time we have to loop through the objects twice. Once to update the
-mapped buffer and then again to draw each object. This is because, only after
-we’ve updated every object’s values in the mapped buffer can we then unmap it
-and call <code class="notranslate" translate="no">copyBufferToBuffer</code> to update the uniform buffer. <code class="notranslate" translate="no">copyBufferToBuffer</code>
-only exists on the command encoder. It can not be called while we are encoding
-our render pass. At least not on the same command buffer, so we’ll loop twice.</p>
-<p>First we loop and update the mapped buffer</p>
+<p>At render time we encode a command to copy the transfer buffer
+to the uniform buffer <em>before</em> we start looping through the
+objects. This is because the <code class="notranslate" translate="no">copyBufferToBuffer</code> command is
+a command on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUCommandEncoder"><code class="notranslate" translate="no">GPUCommandEncoder</code></a>. We need it to run before
+the objects are rendered but, as we loop over the object’s we’re
+encoding render pass commands to render them. Before, we called
+<code class="notranslate" translate="no">device.queue.writeBuffer</code> after updating the typed arrays, which
+of course, executes first because we have no called <code class="notranslate" translate="no">submit</code> yet
+on our commands. In this case though, our copy actually is a command
+so we have to encode it before the draw commands. This is fine because
+remember, it’s just a command, it will not be executed until we
+submit the command buffer which means we can still update the transfer
+buffer as the copy has not yet happened.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
 -    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
 -    pass.setPipeline(pipeline);
 -    pass.setVertexBuffer(0, vertexBuffer);
 -    pass.setIndexBuffer(indicesBuffer, 'uint16');
 
+    ...
+
     let mathElapsedTimeMs = 0;
 
 +    const transferBuffer = getMappedTransferBuffer();
 +    const uniformValues = new Float32Array(transferBuffer.getMappedRange());
 
++    // copy the uniform values from the transfer buffer to the uniform buffer
++    if (settings.numObjects) {
++      // Remember, this is just encoding a command that will happen later.
++      const size = (settings.numObjects - 1) * uniformBufferSpace + uniformBufferSize;
++      encoder.copyBufferToBuffer(transferBuffer, 0, uniformBuffer, 0, size);
++    }
+
++    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
++    pass.setPipeline(pipeline);
++    pass.setVertexBuffer(0, vertexBuffer);
++    pass.setIndexBuffer(indicesBuffer, 'uint16');
+
     for (let i = 0; i &lt; settings.numObjects; ++i) {
       const {
--        bindGroup,
+        bindGroup,
 -        normalMatrixValue,
 -        worldValue,
         axis,
@@ -2099,29 +2122,22 @@ our render pass. At least not on the same command buffer, so we’ll loop twice.
       mat3.fromMat4(mat4.transpose(mat4.inverse(worldValue)), normalMatrixValue);
 
       mathElapsedTimeMs += performance.now() - mathTimeStartMs;
+
+      pass.setBindGroup(0, bindGroup);
+      pass.drawIndexed(numVertices);
     }
 +    transferBuffer.unmap();
 
-    // copy the uniform values from the transfer buffer to the uniform buffer
-    if (settings.numObjects) {
-      const size = (settings.numObjects - 1) * uniformBufferSpace + uniformBufferSize;
+-    // upload all uniform values to the uniform buffer
+-    if (settings.numObjects) {
+-      const size = (settings.numObjects - 1) * uniformBufferSpace + uniformBufferSize;
 -      device.queue.writeBuffer( uniformBuffer, 0, uniformValues, 0, size / uniformValues.BYTES_PER_ELEMENT);
-+      encoder.copyBufferToBuffer(transferBuffer, 0, uniformBuffer, 0, size);
-    }
-</pre>
-<p>Then we loop and draw each object.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
-+    pass.setPipeline(pipeline);
-+    pass.setVertexBuffer(0, vertexBuffer);
-+    pass.setIndexBuffer(indicesBuffer, 'uint16');
-+
-+    for (let i = 0; i &lt; settings.numObjects; ++i) {
-+      const { bindGroup } = objectInfos[i];
-+      pass.setBindGroup(0, bindGroup);
-+      pass.drawIndexed(numVertices);
-+    }
+-    }
 
     pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
 </pre>
 <p>Finally, as soon as we’ve submitted the command buffer we map the buffer again.
 Mapping is asynchronous so when it’s finally ready we’ll add it back to the list
@@ -2135,8 +2151,8 @@ of already mapped buffers.</p>
 +      mappedTransferBuffers.push(transferBuffer);
 +    });
 </pre>
-<p>On my machine, this version draws around 13000 objects at 75fps. which is almost
-60% more than we started with.</p>
+<p>On my machine, this version draws around 15000 objects at 75fps. which is about
+87% more than we started with.</p>
 <p></p><div class="webgpu_example_container">
   <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-optimization-step6-use-mapped-buffers.html"></iframe></div>
   <a class="webgpu_center" href="/webgpu/lessons/../webgpu-optimization-step6-use-mapped-buffers.html" target="_blank">click here to open in a separate window</a>
@@ -2151,7 +2167,7 @@ version. That’s a 2x speed up!</p>
 <li>
 <p><strong>Double buffer the large uniform buffer</strong></p>
 <p>This comes up as a possible optimization because WebGPU can not update a
-buffer that is is currently in use.</p>
+buffer that is currently in use.</p>
 <p>So, imagine you start rendering (you call <code class="notranslate" translate="no">device.queue.submit</code>). The GPU
 starts rendering using our large uniform buffer. You immediately try to update
 that buffer. In this case, WebGPU would have to pause and wait for the GPU to
