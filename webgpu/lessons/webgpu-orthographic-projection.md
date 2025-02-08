@@ -1349,8 +1349,8 @@ our original projection function we'd call it with
 +        canvas.clientWidth,  // right
 +        canvas.clientHeight, // bottom
 +        0,                   // top
-+        400,                 // near
-+        -400,                // far
++        200,                 // near
++        -200,                // far
 +        matrixValue,         // dst
 +    );   
 ```
