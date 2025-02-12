@@ -118,7 +118,7 @@
         font-size: small;
         padding: 1em;
         background-color: var(--error-bg-color);
-        white-space: pre-line;
+        white-space: pre-wrap;
         overflow-x: auto;
         line-height: 1.2;
       }
@@ -648,6 +648,7 @@ async function main(editor) {
       const info = await module.getCompilationInfo();
       const hasErrors = info.messages?.reduce((err, msg) => err || msg.type === 'error', false);
       if (hasErrors) {
+        const lines = code.split('\n');
         const errors = info.messages
           .filter(msg => msg.linePos && msg.lineNum && msg.length)
           .map(msg => ({
@@ -670,7 +671,11 @@ async function main(editor) {
           {},
           [
             el('div', {textContent: 'wgsl errors:'}),
-            ...info.messages.map(msg => el('div', {textContent: `${msg.lineNum || 0}:${msg.linePos || 0}: ${msg.message}`})),
+            ...info.messages.map(msg => el('div', {}, [
+              el('div', {className: 'pre', textContent: `\n${lines[msg.lineNum - 1]}`}),
+              el('div', {className: 'pre', textContent: `${''.padStart(msg.linePos - 1)}${''.padStart(msg.length, '^')}\n`}),
+              el('div', {textContent: `${msg.lineNum || 0}:${msg.linePos || 0}: ${msg.message}`}),
+            ])),
           ],
         ));
       }
