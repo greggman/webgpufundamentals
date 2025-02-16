@@ -945,9 +945,9 @@ observe.
 +        const height = entry.contentBoxSize[0].blockSize;
 +        canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
 +        canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
-+        // re-render
-+        render();
 +      }
++      // re-render
++      render();
 +    });
 +    observer.observe(canvas);
 ```
