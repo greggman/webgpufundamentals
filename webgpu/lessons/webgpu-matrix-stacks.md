@@ -97,7 +97,7 @@ We're going to be using the same unit cube for everything just to keep things
 simple but we need some way to change the color a little so we can tell cubes
 apart. So, let's update the fragment to take a color via our uniform buffer and
 we'll multiply the vertex colors by this uniform color. That will let us
-slightly change the vertex colors.
+slightly change the vertex colors for each cube.
 
 ```wgsl
 struct Uniforms {
@@ -262,7 +262,7 @@ function.
 We added a function `drawObject` that will make a new "objectInfo" (a uniform
 buffer, and typed array views) if it needs to. `drawObject` takes a context
 called `ctx` that has the render pass encoder and the current
-`viewProjectionMatrix`. It also takes a matrix and a color. It fills out he
+`viewProjectionMatrix`. It also takes a matrix and a color. It fills out the
 uniform buffer for this object by multiplying the matrix passed in with the
 `viewProjectionMatrix` and then sets the bind group to use that specific uniform
 buffer and calls `draw`.
@@ -390,7 +390,7 @@ class MatrixStack {
 ```
 
 The class above is pretty straight forward. It keeps a `#stack` which is
-an array of matrices. And it keeps a `#matrix` which is effectively
+an array of matrices. And, it keeps a `#matrix` which is effectively
 the top matrix on the stack.
 
 It adds a bunch of methods that use the `mat4` functions
@@ -402,6 +402,7 @@ the more traditional `push` and `pop` because `save` and `restore` match
 the functions from the Canvas 2D API's
 [save](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/save) and
 [restore](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/restore)
+which are used to manipulate its own matrix stack.
 
 One thing we referenced above that didn't exist yet is a `mat4.copy` function
 so let's supply that.
@@ -417,7 +418,7 @@ const mat4 = {
   ...
 ```
 
-With that let's draw a single filing cabinet drawer with a handle.
+With that, let's draw a single filing cabinet drawer with a handle.
 The drawer will be a large cube. The handle will be a small
 cube.
 
@@ -478,7 +479,7 @@ cube.
 ```
 
 The code above creates a `MatrixStack` and adds it to the
-context (ctx) pass into drawDrawer. It uses this to
+context (ctx) passed into `drawDrawer`. It uses this to
 help us compute matrices. Instead of creating a rotation
 matrix directly, we do it on the stack, then translate
 half the width of the drawer so as to center it.
@@ -490,9 +491,9 @@ positions to `kHandlePosition` and scales to the size of
 will be relative to the rotation and translation already
 on the stack.
 
-The drawer cube is drawn with color `kDrawerColor` which
-white and so will leave the vertex colors unchanged. 
-The handle is drawn with color `kHandleColor` which is 50% gray
+The drawer cube is drawn with color `kDrawerColor`, which is
+white, and so will leave the vertex colors unchanged. 
+The handle is drawn with color `kHandleColor`, which is 50% gray,
 and so will draw the cube darker.
 
 A minor tweak for the camera position:
@@ -912,7 +913,7 @@ cube function it returns `vertexData` and `numVertices`. We'll go over [making
 various geometric primitives in another article](webgpu-primitives.html).
 
 Let's wrap our code that makes a vertex buffer into a function so we can call it
-twice, one for the cube and once for the cone.
+twice, once for the cube and once for the cone.
 
 ```js
 -  const { vertexData, numVertices } = createCubeVertices();
@@ -1059,5 +1060,5 @@ of the branch we only need to draw one which is why we only draw if `offset >
 
 {{{example url="../webgpu-matrix-stack-tree-with-ornaments.html"}}}
 
-Next Up, [Scenegraphs](webgpu-scene-graphs.html).
+Next Up, [Scene graphs](webgpu-scene-graphs.html).
 
