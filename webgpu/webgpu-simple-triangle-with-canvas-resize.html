@@ -83,28 +83,7 @@ async function main() {
     ],
   };
 
-  const canvasToSizeMap = new WeakMap();
-
-  function resizeCanvasToDisplaySize(canvas) {
-    // Get the canvas's current display size
-    let { width, height } = canvasToSizeMap.get(canvas) || canvas;
-
-    // Make sure it's valid for WebGPU
-    width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
-    height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
-
-    // Only if the size is different, set the canvas size
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-      canvas.width = width;
-      canvas.height = height;
-    }
-    return needResize;
-  }
-
   function render() {
-    resizeCanvasToDisplaySize(canvas);
-
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     renderPassDescriptor.colorAttachments[0].view =
@@ -122,10 +101,11 @@ async function main() {
 
   const observer = new ResizeObserver(entries => {
     for (const entry of entries) {
-      canvasToSizeMap.set(entry.target, {
-         width: entry.contentBoxSize[0].inlineSize,
-         height: entry.contentBoxSize[0].blockSize,
-      });
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
     }
     render();
   });

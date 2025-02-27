@@ -315,7 +315,7 @@ things as we want.</p>
 simple but we need some way to change the color a little so we can tell cubes
 apart. So, let’s update the fragment to take a color via our uniform buffer and
 we’ll multiply the vertex colors by this uniform color. That will let us
-slightly change the vertex colors.</p>
+slightly change the vertex colors for each cube.</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
   matrix: mat4x4f,
 +  color: vec4f,
@@ -471,7 +471,7 @@ function.</p>
 <p>We added a function <code class="notranslate" translate="no">drawObject</code> that will make a new “objectInfo” (a uniform
 buffer, and typed array views) if it needs to. <code class="notranslate" translate="no">drawObject</code> takes a context
 called <code class="notranslate" translate="no">ctx</code> that has the render pass encoder and the current
-<code class="notranslate" translate="no">viewProjectionMatrix</code>. It also takes a matrix and a color. It fills out he
+<code class="notranslate" translate="no">viewProjectionMatrix</code>. It also takes a matrix and a color. It fills out the
 uniform buffer for this object by multiplying the matrix passed in with the
 <code class="notranslate" translate="no">viewProjectionMatrix</code> and then sets the bind group to use that specific uniform
 buffer and calls <code class="notranslate" translate="no">draw</code>.</p>
@@ -590,7 +590,7 @@ to help us make a set of file cabinets.</p>
 }
 </pre>
 <p>The class above is pretty straight forward. It keeps a <code class="notranslate" translate="no">#stack</code> which is
-an array of matrices. And it keeps a <code class="notranslate" translate="no">#matrix</code> which is effectively
+an array of matrices. And, it keeps a <code class="notranslate" translate="no">#matrix</code> which is effectively
 the top matrix on the stack.</p>
 <p>It adds a bunch of methods that use the <code class="notranslate" translate="no">mat4</code> functions
 <a href="webgpu-orthograph-projection.html">we wrote previously</a>
@@ -599,7 +599,8 @@ to manipulate the matrix at the top of the stack.</p>
 the more traditional <code class="notranslate" translate="no">push</code> and <code class="notranslate" translate="no">pop</code> because <code class="notranslate" translate="no">save</code> and <code class="notranslate" translate="no">restore</code> match
 the functions from the Canvas 2D API’s
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/save">save</a> and
-<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/restore">restore</a></p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/restore">restore</a>
+which are used to manipulate its own matrix stack.</p>
 <p>One thing we referenced above that didn’t exist yet is a <code class="notranslate" translate="no">mat4.copy</code> function
 so let’s supply that.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat4 = {
@@ -611,7 +612,7 @@ so let’s supply that.</p>
 
   ...
 </pre>
-<p>With that let’s draw a single filing cabinet drawer with a handle.
+<p>With that, let’s draw a single filing cabinet drawer with a handle.
 The drawer will be a large cube. The handle will be a small
 cube.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const kHandleColor = [0.5, 0.5, 0.5, 1];
@@ -669,7 +670,7 @@ cube.</p>
   }
 </pre>
 <p>The code above creates a <code class="notranslate" translate="no">MatrixStack</code> and adds it to the
-context (ctx) pass into drawDrawer. It uses this to
+context (ctx) passed into <code class="notranslate" translate="no">drawDrawer</code>. It uses this to
 help us compute matrices. Instead of creating a rotation
 matrix directly, we do it on the stack, then translate
 half the width of the drawer so as to center it.</p>
@@ -679,9 +680,9 @@ positions to <code class="notranslate" translate="no">kHandlePosition</code> and
 <code class="notranslate" translate="no">kHandleSize</code>. Because it’s using the matrix stack, both
 will be relative to the rotation and translation already
 on the stack.</p>
-<p>The drawer cube is drawn with color <code class="notranslate" translate="no">kDrawerColor</code> which
-white and so will leave the vertex colors unchanged.
-The handle is drawn with color <code class="notranslate" translate="no">kHandleColor</code> which is 50% gray
+<p>The drawer cube is drawn with color <code class="notranslate" translate="no">kDrawerColor</code>, which is
+white, and so will leave the vertex colors unchanged.
+The handle is drawn with color <code class="notranslate" translate="no">kHandleColor</code>, which is 50% gray,
 and so will draw the cube darker.</p>
 <p>A minor tweak for the camera position:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    const eye = [0, 2, 3];
@@ -1078,7 +1079,7 @@ corresponding triangle on top. It sets each face to a shade of red. Like the
 cube function it returns <code class="notranslate" translate="no">vertexData</code> and <code class="notranslate" translate="no">numVertices</code>. We’ll go over <a href="webgpu-primitives.html">making
 various geometric primitives in another article</a>.</p>
 <p>Let’s wrap our code that makes a vertex buffer into a function so we can call it
-twice, one for the cube and once for the cone.</p>
+twice, once for the cube and once for the cone.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const { vertexData, numVertices } = createCubeVertices();
 
 +  function createVertices({vertexData, numVertices}, name) {
@@ -1208,7 +1209,7 @@ of the branch we only need to draw one which is why we only draw if <code class=
 </div>
 
 <p></p>
-<p>Next Up, <a href="webgpu-scene-graphs.html">Scenegraphs</a>.</p>
+<p>Next Up, <a href="webgpu-scene-graphs.html">Scene graphs</a>.</p>
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
