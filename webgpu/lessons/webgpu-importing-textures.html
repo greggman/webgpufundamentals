@@ -438,28 +438,29 @@ existing mip level, to the next level, with <code class="notranslate" translate=
         label: 'mip gen encoder',
       });
 
-      let width = texture.width;
-      let height = texture.height;
-      let baseMipLevel = 0;
-      while (width &gt; 1 || height &gt; 1) {
-        width = Math.max(1, width / 2 | 0);
-        height = Math.max(1, height / 2 | 0);
-
+      for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
         const bindGroup = device.createBindGroup({
           layout: pipeline.getBindGroupLayout(0),
           entries: [
             { binding: 0, resource: sampler },
-            { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
+            {
+              binding: 1,
+              resource: texture.createView({
+                baseMipLevel: baseMipLevel - 1,
+                mipLevelCount: 1,
+              }),
+            },
           ],
         });
-
-        ++baseMipLevel;
 
         const renderPassDescriptor = {
           label: 'our basic canvas renderPass',
           colorAttachments: [
             {
-              view: texture.createView({baseMipLevel, mipLevelCount: 1}),
+              view: texture.createView({
+                baseMipLevel,
+                mipLevelCount: 1,
+              }),
               loadOp: 'clear',
               storeOp: 'store',
             },
@@ -472,7 +473,6 @@ existing mip level, to the next level, with <code class="notranslate" translate=
         pass.draw(6);  // call our vertex shader 6 times
         pass.end();
       }
-
       const commandBuffer = encoder.finish();
       device.queue.submit([commandBuffer]);
     };
@@ -526,26 +526,25 @@ not from the <code class="notranslate" translate="no">presentationFormat</code> 
 </li>
 <li>
 <p>We finally use some parameters to <code class="notranslate" translate="no">texture.createView</code></p>
-<p>We loop over each mip level. We create a bind group for the last mip with data in it
-and we set the renderPassDescriptor to draw to the next mip level. Then we encode
+<p>We loop over each mip level that we need to generate.
+We create a bind group for the last mip with data in it
+and we set the renderPassDescriptor to draw to the current mip level. Then we encode
 a renderPass for that specific mip level. When we’re done. All the mips will have
 been filled out.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    let width = texture.width;
-    let height = texture.height;
-    let baseMipLevel = 0;
-    while (width &gt; 1 || height &gt; 1) {
-      width = Math.max(1, width / 2 | 0);
-      height = Math.max(1, height / 2 | 0);
-
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
       const bindGroup = device.createBindGroup({
         layout: pipeline.getBindGroupLayout(0),
         entries: [
           { binding: 0, resource: sampler },
-+          { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
++          {
++            binding: 1,
++            resource: texture.createView({
++              baseMipLevel: baseMipLevel - 1,
++              mipLevelCount: 1,
++            }),
++          },
         ],
       });
-
-+      ++baseMipLevel;
 
       const renderPassDescriptor = {
         label: 'our basic canvas renderPass',
@@ -570,6 +569,13 @@ been filled out.</p>
 </pre>
 </li>
 </ul>
+<blockquote>
+<p>Note: This function only handles 2d textures.
+<a href="webgpu-cube-maps.html#a-texture-helpers">The article on cubemaps</a>
+covers how to expand this function to handle 2d-array textures and
+cube maps.</p>
+</blockquote>
+<h2 id="simple-image-loading-functions"><a id="a-texture-helpers"></a> Simple Image Loading Functions</h2>
 <p>Let’s create some support functions make it simple load an image
 into a texture and generate mips</p>
 <p>Here’s a function that updates the first mip level and optionally flips the image.
@@ -1329,6 +1335,7 @@ They seem to change over time so we won’t go into solutions here. <a href="#fn
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

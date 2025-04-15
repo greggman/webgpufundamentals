@@ -434,28 +434,29 @@ WebGPU에서 우리는 노멀 맵이나 높이(height) 맵등 색상이 아닌 �
         label: 'mip gen encoder',
       });
 
-      let width = texture.width;
-      let height = texture.height;
-      let baseMipLevel = 0;
-      while (width &gt; 1 || height &gt; 1) {
-        width = Math.max(1, width / 2 | 0);
-        height = Math.max(1, height / 2 | 0);
-
+      for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
         const bindGroup = device.createBindGroup({
           layout: pipeline.getBindGroupLayout(0),
           entries: [
             { binding: 0, resource: sampler },
-            { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
+            {
+              binding: 1,
+              resource: texture.createView({
+                baseMipLevel: baseMipLevel - 1,
+                mipLevelCount: 1,
+              }),
+            },
           ],
         });
-
-        ++baseMipLevel;
 
         const renderPassDescriptor = {
           label: 'our basic canvas renderPass',
           colorAttachments: [
             {
-              view: texture.createView({baseMipLevel, mipLevelCount: 1}),
+              view: texture.createView({
+                baseMipLevel,
+                mipLevelCount: 1,
+              }),
               loadOp: 'clear',
               storeOp: 'store',
             },
@@ -468,7 +469,6 @@ WebGPU에서 우리는 노멀 맵이나 높이(height) 맵등 색상이 아닌 �
         pass.draw(6);  // call our vertex shader 6 times
         pass.end();
       }
-
       const commandBuffer = encoder.finish();
       device.queue.submit([commandBuffer]);
     };
@@ -527,22 +527,20 @@ WebGPU에서 우리는 노멀 맵이나 높이(height) 맵등 색상이 아닌 �
 그 과정에서 데이터가 그려진 이전 밉에 대한 데이터를 만들고 renderPassDescriptor를 사용해 다음 밉 레벨을 그릴 수 있도록 설정합니다.
 그리고 그 특정 밉 레벨에 대한 renderPass를 인코딩합니다.
 끝나면 모든 밉이 채워지게 됩니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    let width = texture.width;
-    let height = texture.height;
-    let baseMipLevel = 0;
-    while (width &gt; 1 || height &gt; 1) {
-      width = Math.max(1, width / 2 | 0);
-      height = Math.max(1, height / 2 | 0);
-
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
       const bindGroup = device.createBindGroup({
         layout: pipeline.getBindGroupLayout(0),
         entries: [
           { binding: 0, resource: sampler },
-+          { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
++          {
++            binding: 1,
++            resource: texture.createView({
++              baseMipLevel: baseMipLevel - 1,
++              mipLevelCount: 1,
++            }),
++          },
         ],
       });
-
-+      ++baseMipLevel;
 
       const renderPassDescriptor = {
         label: 'our basic canvas renderPass',
@@ -1295,6 +1293,7 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D 수학</li>
         <ul>

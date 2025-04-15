@@ -673,7 +673,7 @@ the inner vertices.</p>
 +  const vertexData = new Float32Array(numVertices * (2 + 3));
 
   let offset = 0;
--  const addVertex = (x, y, r, g, b) =&gt; {
+-  const addVertex = (x, y) =&gt; {
 +  const addVertex = (x, y, r, g, b) =&gt; {
     vertexData[offset++] = x;
     vertexData[offset++] = y;
@@ -865,7 +865,8 @@ to 0 ↔ 255.</p>
 
   // offsets to the various uniform values in float32 indices
   const kColorOffset = 0;
-  const kOffsetOffset = 1;
+-  const kOffsetOffset = 4;
++  const kOffsetOffset = 1;
 
   const kScaleOffset = 0;
 
@@ -893,7 +894,8 @@ to 0 ↔ 255.</p>
         scale: rand(0.2, 0.5),
       });
     }
-    device.queue.writeBuffer(staticVertexBuffer, 0, staticVertexValuesF32);
+-    device.queue.writeBuffer(staticVertexBuffer, 0, staticVertexValues);
++    device.queue.writeBuffer(staticVertexBuffer, 0, staticVertexValuesF32);
   }
 </pre>
 <p>The layout for the per instance data is like this:</p>
@@ -1178,6 +1180,7 @@ from the index buffer.</p>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

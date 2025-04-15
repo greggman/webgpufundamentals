@@ -4,6 +4,18 @@ function assert(cond, msg = '') {
   }
 }
 
+// We track command buffers so we can generate an error if
+// we try to read the result before the command buffer has been executed.
+const s_unsubmittedCommandBuffer = new Set();
+
+/* global GPUQueue */
+GPUQueue.prototype.submit = (function(origFn) {
+  return function(commandBuffers) {
+    origFn.call(this, commandBuffers);
+    commandBuffers.forEach(cb => s_unsubmittedCommandBuffer.delete(cb));
+  };
+})(GPUQueue.prototype.submit);
+
 // See https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
 export default class TimingHelper {
   #canTimestamp;
@@ -11,6 +23,7 @@ export default class TimingHelper {
   #querySet;
   #resolveBuffer;
   #resultBuffer;
+  #commandBuffer;
   #resultBuffers = [];
   // state can be 'free', 'need resolve', 'wait for result'
   #state = 'free';
@@ -47,12 +60,21 @@ export default class TimingHelper {
       });
 
       const resolve = () => this.#resolveTiming(encoder);
+      const trackCommandBuffer = (cb) => this.#trackCommandBuffer(cb);
       pass.end = (function(origFn) {
         return function() {
           origFn.call(this);
           resolve();
         };
       })(pass.end);
+
+      encoder.finish = (function(origFn) {
+        return function() {
+          const cb = origFn.call(this);
+          trackCommandBuffer(cb);
+          return cb;
+        };
+      })(encoder.finish);
 
       return pass;
     } else {
@@ -68,12 +90,25 @@ export default class TimingHelper {
     return this.#beginTimestampPass(encoder, 'beginComputePass', descriptor);
   }
 
+  #trackCommandBuffer(cb) {
+    if (!this.#canTimestamp) {
+      return;
+    }
+    assert(this.#state === 'need finish', 'you must call encoder.finish');
+    this.#commandBuffer = cb;
+    s_unsubmittedCommandBuffer.add(cb);
+    this.#state = 'wait for result';
+  }
+
   #resolveTiming(encoder) {
     if (!this.#canTimestamp) {
       return;
     }
-    assert(this.#state === 'need resolve', 'must call addTimestampToPass');
-    this.#state = 'wait for result';
+    assert(
+      this.#state === 'need resolve',
+      'you must use timerHelper.beginComputePass or timerHelper.beginRenderPass',
+    );
+    this.#state = 'need finish';
 
     this.#resultBuffer = this.#resultBuffers.pop() || this.#device.createBuffer({
       size: this.#resolveBuffer.size,
@@ -88,7 +123,16 @@ export default class TimingHelper {
     if (!this.#canTimestamp) {
       return 0;
     }
-    assert(this.#state === 'wait for result', 'must call resolveTiming');
+    assert(
+      this.#state === 'wait for result',
+      'you must call encoder.finish and submit the command buffer before you can read the result',
+    );
+    assert(!!this.#commandBuffer); // internal check
+    assert(
+      !s_unsubmittedCommandBuffer.has(this.#commandBuffer),
+      'you must submit the command buffer before you can read the result',
+    );
+    this.#commandBuffer = undefined;
     this.#state = 'free';
 
     const resultBuffer = this.#resultBuffer;

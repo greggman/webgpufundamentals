@@ -449,7 +449,9 @@ div[data-diagram] {
   margin-top: 1em;
   margin-bottom: 1em;
   margin-right: auto;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   max-width: 95%;
 }
@@ -698,6 +700,7 @@ pre.prettyprint button.linedeleted-button {
 
 .side-by-side {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
@@ -714,6 +717,7 @@ pre.prettyprint button.linedeleted-button {
 
 .compare {
   display: flex;
+  flex-direction: row;
   max-width: 1300px;
   background-color: var(--compare-bg-color);
   padding: 1em;  

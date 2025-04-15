@@ -477,8 +477,8 @@ const rand = (min, max) =&gt; {
     const pass = encoder.beginRenderPass(renderPassDescriptor);
     pass.setPipeline(pipeline);
 
-    // Устанавливаем uniform значения в JavaScript как Float32Array
-    const aspect = canvas.width / canvas.height;
++    // Устанавливаем uniform значения в JavaScript как Float32Array
++    const aspect = canvas.width / canvas.height;
 
 +    for (const {scale, bindGroup, uniformBuffer, uniformValues} of objectInfos) {
 +      uniformValues.set([scale / aspect, scale], kScaleOffset); // Устанавливаем размер
@@ -671,6 +671,7 @@ device.queue.submit([commandBuffer]);
 <li><a href="/webgpu/lessons/ru/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/ru/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

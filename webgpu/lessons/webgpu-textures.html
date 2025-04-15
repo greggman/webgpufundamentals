@@ -602,8 +602,8 @@ our canvas. We can do this by setting the css as follows</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const observer = new ResizeObserver(entries =&gt; {
     for (const entry of entries) {
       const canvas = entry.target;
--      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
--      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
+-      const width = entry.contentBoxSize[0].inlineSize;
+-      const height = entry.contentBoxSize[0].blockSize;
 +      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
 +      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
       canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
@@ -1493,6 +1493,7 @@ goes “🟥🟩🟦🟦🟩🟥🟥🟩🟦🟦🟩🟥” <a href="#fnref4" cl
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

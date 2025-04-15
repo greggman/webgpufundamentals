@@ -569,9 +569,9 @@ manipulate it. Let’s add a UI to adjust and tweak the graph.</p>
 -  gui.add(settings, 'cameraRotation', radToDegOptions);
 +  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
 +  const trsFolder = gui.addFolder('orientation');
-+  trsFolder.add(settings.translation, '0', -50, 50, 1).name('translation x');
-+  trsFolder.add(settings.translation, '1', -50, 50, 1).name('translation y');
-+  trsFolder.add(settings.translation, '2', -50, 50, 1).name('translation z');
++  trsFolder.add(settings.translation, '0', -200, 200, 1).name('translation x');
++  trsFolder.add(settings.translation, '1', -200, 200, 1).name('translation y');
++  trsFolder.add(settings.translation, '2', -200, 200, 1).name('translation z');
 +  trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x');
 +  trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y');
 +  trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z');
@@ -689,9 +689,9 @@ relevant is “translation z”. So, lets hide all but translation by default.</
  const trsFolder = gui.addFolder('orientation');
  trsFolder.onChange(updateCurrentNodeFromSettings);
 + const trsControls = [
-*   trsFolder.add(settings.translation, '0', -50, 50, 1).name('translation x'),
-*   trsFolder.add(settings.translation, '1', -50, 50, 1).name('translation y'),
-*   trsFolder.add(settings.translation, '2', -50, 50, 1).name('translation z'),
+*   trsFolder.add(settings.translation, '0', -200, 200, 1).name('translation x'),
+*   trsFolder.add(settings.translation, '1', -200, 200, 1).name('translation y'),
+*   trsFolder.add(settings.translation, '2', -200, 200, 1).name('translation z'),
 *   trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x'),
 *   trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y'),
 *   trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z'),
@@ -1343,6 +1343,7 @@ used above. Maybe we can cover 3D manipulators in another article.</p>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

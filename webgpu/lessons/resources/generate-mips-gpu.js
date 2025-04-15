@@ -90,13 +90,7 @@ export const generateMips = (() => {
       label: 'mip gen encoder',
     });
 
-    let width = texture.width;
-    let height = texture.height;
-    let baseMipLevel = 0;
-    while (width > 1 || height > 1) {
-      width = Math.max(1, width / 2 | 0);
-      height = Math.max(1, height / 2 | 0);
-
+    for (let baseMipLevel = 1; baseMipLevel < texture.mipLevelCount; ++baseMipLevel) {
       const bindGroup = device.createBindGroup({
         layout: pipeline.getBindGroupLayout(0),
         entries: [
@@ -104,8 +98,6 @@ export const generateMips = (() => {
           { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
         ],
       });
-
-      ++baseMipLevel;
 
       const renderPassDescriptor = {
         label: 'our basic canvas renderPass',

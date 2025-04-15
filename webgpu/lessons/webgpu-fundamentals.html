@@ -1020,6 +1020,12 @@ inside <code class="notranslate" translate="no">render</code> so there’s nothi
 </div>
 
 <p></p>
+<blockquote>
+<p>Note: The code above does not handle responding to zoom which may change
+the resolution of the canvas. It also doesn’t deal with higher resolutions
+for high-res displays. For those issues, see
+<a href="webgpu-reszing-the-canvas.html">the article on resizing the canvas</a>.</p>
+</blockquote>
 <p>In the following articles, we’ll cover various ways to pass data into shaders.</p>
 <ul>
 <li><a href="webgpu-inter-stage-variables.html">inter-stage variables</a></li>
@@ -1062,7 +1068,7 @@ way would be something like
     return;
   }
 
-  const device = await adapter?.requestDevice();
+  const device = await adapter.requestDevice();
   device.lost.then((info) =&gt; {
     console.error(`WebGPU device was lost: ${info.message}`);
 
@@ -1168,6 +1174,7 @@ never use a bind group with multiple pipelines. We’ll cover explicit layouts i
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

@@ -520,8 +520,8 @@ const rand = (min, max) =&gt; {
     const pass = encoder.beginRenderPass(renderPassDescriptor);
     pass.setPipeline(pipeline);
 
-    // встановлюємо значення масштабу в типізований масив
-    const aspect = canvas.width / canvas.height;
++    // встановлюємо значення масштабу в типізований масив
++    const aspect = canvas.width / canvas.height;
 
 +    for (const {scale, bindGroup, uniformBuffer, uniformValues} of objectInfos) {
 +      uniformValues.set([scale / aspect, scale], kScaleOffset);
@@ -732,6 +732,7 @@ device.queue.submit([commandBuffer]);
 <li><a href="/webgpu/lessons/uk/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/uk/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/uk/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D математика</li>
         <ul>

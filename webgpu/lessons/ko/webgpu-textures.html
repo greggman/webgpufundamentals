@@ -574,8 +574,8 @@ WGSL의 텍스처 관련한 흥미로운 함수들은 여러 픽셀들을 필터
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const observer = new ResizeObserver(entries =&gt; {
     for (const entry of entries) {
       const canvas = entry.target;
--      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
--      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
+-      const width = entry.contentBoxSize[0].inlineSize;
+-      const height = entry.contentBoxSize[0].blockSize;
 +      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
 +      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
       canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
@@ -1462,6 +1462,7 @@ WGSL에서 사용해야 합니다.</p>
 <li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D 수학</li>
         <ul>

@@ -354,12 +354,33 @@ it didn’t have a location. Instead, it was declared as <code class="notranslat
 </pre>
 <p>That field is <strong>NOT</strong> an inter-stage variable. Instead, it’s a <code class="notranslate" translate="no">builtin</code>. It
 happens that <code class="notranslate" translate="no">@builtin(position)</code> has a different meaning in a vertex shader vs
-a fragment shader.</p>
-<p>In a vertex shader <code class="notranslate" translate="no">@builtin(position)</code> is the output of a coordinate that the GPU uses to draw
-triangles/lines/points.</p>
+a fragment shader. In fact a better way to think about is is vertex shaders
+and fragment shader are just 2 different functions that happen to have a parameter
+with the same name.</p>
+<p>Imagine we have 2 JavaScript functions</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// Draw a circle size radius, at position: [x, y]
+function drawCircle({ ctx, position, radius }) {
+  // from CanvasRenderingContext2D
+  ctx.beginPath();
+  ctx.arc(...position, radius, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// Return the index of an element in an array starting at position
+function findIndex({ array, position, value }) {
+  return array.indexOf(value, position);
+}
+</pre>
+<p>Both of the functions above have a parameter called <code class="notranslate" translate="no">position</code>. There is generally
+no confusion between the two. It’s similar with vertex shaders and fragment shaders.
+They’re builtins are different and unrelated, each of them just happen to have a
+<code class="notranslate" translate="no">@builtin</code> named <code class="notranslate" translate="no">position</code> and when compiling each shader entry point, the WGSL
+code is read for that entry point alone.</p>
+<p>In a vertex shader <code class="notranslate" translate="no">@builtin(position)</code> is the coordinate you provide as output that
+the GPU uses to draw triangles/lines/points.</p>
 <p>In a fragment shader, <code class="notranslate" translate="no">@builtin(position)</code> is an input. It’s the pixel coordinate
 of the pixel that the fragment shader is currently being asked to compute a color
-for.</p>
+or value for.</p>
 <p>Pixel coordinates are specified by the edges of pixels. The values provided to
 the fragment shader are the coordinates of the center of the pixel.</p>
 <p>If the texture we were drawing to was 3x2 pixels in size, these would be the
@@ -586,6 +607,7 @@ pass data into shaders.</p>
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

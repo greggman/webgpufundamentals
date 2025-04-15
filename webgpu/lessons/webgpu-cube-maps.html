@@ -553,13 +553,7 @@ we copy each source to its respective layer.</p>
         label: 'mip gen encoder',
       });
 
-      let width = texture.width;
-      let height = texture.height;
-      let baseMipLevel = 0;
-      while (width &gt; 1 || height &gt; 1) {
-        width = Math.max(1, width / 2 | 0);
-        height = Math.max(1, height / 2 | 0);
-
+      for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
 +        for (let layer = 0; layer &lt; texture.depthOrArrayLayers; ++layer) {
 *          const bindGroup = device.createBindGroup({
 *            layout: pipeline.getBindGroupLayout(0),
@@ -570,7 +564,7 @@ we copy each source to its respective layer.</p>
 +                binding: 1,
 +                resource: texture.createView({
 +                  dimension: '2d',
-+                  baseMipLevel,
++                  baseMipLevel: baseMipLevel - 1,
 +                  mipLevelCount: 1,
 +                  baseArrayLayer: layer,
 +                  arrayLayerCount: 1,
@@ -579,8 +573,6 @@ we copy each source to its respective layer.</p>
 *            ],
 *          });
 *
--        ++baseMipLevel;
-*
 *          const renderPassDescriptor = {
 *            label: 'our basic canvas renderPass',
 *            colorAttachments: [
@@ -588,7 +580,7 @@ we copy each source to its respective layer.</p>
 -                view: texture.createView({baseMipLevel, mipLevelCount: 1}),
 +                view: texture.createView({
 +                  dimension: '2d',
-+                  baseMipLevel: baseMipLevel + 1,
++                  baseMipLevel: baseMipLevel,
 +                  mipLevelCount: 1,
 +                  baseArrayLayer: layer,
 +                  arrayLayerCount: 1,
@@ -605,7 +597,6 @@ we copy each source to its respective layer.</p>
 *          pass.draw(6);  // call our vertex shader 6 times
 *          pass.end();
 +        }
-+        ++baseMipLevel;
 +      }
 
       const commandBuffer = encoder.finish();
@@ -618,6 +609,10 @@ We changed the views so they select a single layer. We also had to explicitly ch
 <code class="notranslate" translate="no">dimension: '2d'</code> for our views because by default, a view of a 2d texture with more than
 1 layer gets the <code class="notranslate" translate="no">dimension: '2d-array'</code> which for the purpose of generating
 mipmaps is not what we want.</p>
+<blockquote>
+<p>Note: <a href="webgpu-compatibility-mode.html">The article on compatibility mode</a> provides
+a version of <code class="notranslate" translate="no">generateMips</code> that works in compatibility mode.</p>
+</blockquote>
 <p>Although we won’t use them here, our original <code class="notranslate" translate="no">createTextureFromSource</code> and
 <code class="notranslate" translate="no">copySourceToTexture</code> functions can easily be replaced with</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function copySourceToTexture(device, texture, source, options = {}) {
@@ -719,6 +714,7 @@ used for? Probably the single most common thing a cubemap is used for is as an
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

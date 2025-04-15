@@ -928,7 +928,7 @@ Uniform은 전역 변수와 유사한 개념으로 모든 셰이더(정점, 프�
     return;
   }
 
-  const device = await adapter?.requestDevice();
+  const device = await adapter.requestDevice();
   device.lost.then((info) =&gt; {
     console.error(`WebGPU device was lost: ${info.message}`);
 
@@ -1024,6 +1024,7 @@ function main(device) {
 <li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D 수학</li>
         <ul>

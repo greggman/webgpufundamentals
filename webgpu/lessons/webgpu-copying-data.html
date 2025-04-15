@@ -572,9 +572,12 @@ buffer. The buffer is created, already mapped for writing. Example:</p>
  buffer.unmap();
 </pre>
 <p>Note that a buffer created with <code class="notranslate" translate="no">mappedAtCreation: true</code> does not have
-to have <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> usage. But, if <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> is
-not set, you can not map the buffer again. It is only mapped once, at creation
-time.</p>
+any flags set automatically. It is just a convenience for putting data
+in the buffer when you first create it. It’s mapped at creation, and
+after you unmap it once, it behaves like any other buffer and will only
+work for the usages you specified. In other words, if you to want to copy
+to it later you need <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> or if you want to map it
+later you need ``GPUBufferData.MAP_READ<code class="notranslate" translate="no">or</code>GPUBufferData.MAP_WRITE`.</p>
 <h2 id="efficiently-using-mappable-buffers"><a id="a-efficient"></a>Efficiently using mappable buffers</h2>
 <p>Above we saw that mapping a buffer is asynchronous. This means there’s
 an indeterminate amount of time from the point we ask for the buffer
@@ -634,6 +637,7 @@ See <a href="#a-mapped-at-creation">mappedAtCreation</a>. <a href="#fnref1" clas
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

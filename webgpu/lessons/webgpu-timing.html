@@ -809,12 +809,26 @@ timing. Here’s one example of a helper that might help with some of these issu
   }
 }
 
-class TimingHelper {
+// We track command buffers so we can generate an error if
+// we try to read the result before the command buffer has been executed.
+const s_unsubmittedCommandBuffer = new Set();
+
+/* global GPUQueue */
+GPUQueue.prototype.submit = (function(origFn) {
+  return function(commandBuffers) {
+    origFn.call(this, commandBuffers);
+    commandBuffers.forEach(cb =&gt; s_unsubmittedCommandBuffer.delete(cb));
+  };
+})(GPUQueue.prototype.submit);
+
+// See https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
+export default class TimingHelper {
   #canTimestamp;
   #device;
   #querySet;
   #resolveBuffer;
   #resultBuffer;
+  #commandBuffer;
   #resultBuffers = [];
   // state can be 'free', 'need resolve', 'wait for result'
   #state = 'free';
@@ -851,12 +865,21 @@ class TimingHelper {
       });
 
       const resolve = () =&gt; this.#resolveTiming(encoder);
+      const trackCommandBuffer = (cb) =&gt; this.#trackCommandBuffer(cb);
       pass.end = (function(origFn) {
         return function() {
           origFn.call(this);
           resolve();
         };
       })(pass.end);
+
+      encoder.finish = (function(origFn) {
+        return function() {
+          const cb = origFn.call(this);
+          trackCommandBuffer(cb);
+          return cb;
+        };
+      })(encoder.finish);
 
       return pass;
     } else {
@@ -872,12 +895,25 @@ class TimingHelper {
     return this.#beginTimestampPass(encoder, 'beginComputePass', descriptor);
   }
 
+  #trackCommandBuffer(cb) {
+    if (!this.#canTimestamp) {
+      return;
+    }
+    assert(this.#state === 'need finish', 'you must call encoder.finish');
+    this.#commandBuffer = cb;
+    s_unsubmittedCommandBuffer.add(cb);
+    this.#state = 'wait for result';
+  }
+
   #resolveTiming(encoder) {
     if (!this.#canTimestamp) {
       return;
     }
-    assert(this.#state === 'need resolve', 'must call addTimestampToPass');
-    this.#state = 'wait for result';
+    assert(
+      this.#state === 'need resolve',
+      'you must use timerHelper.beginComputePass or timerHelper.beginRenderPass',
+    );
+    this.#state = 'need finish';
 
     this.#resultBuffer = this.#resultBuffers.pop() || this.#device.createBuffer({
       size: this.#resolveBuffer.size,
@@ -892,7 +928,16 @@ class TimingHelper {
     if (!this.#canTimestamp) {
       return 0;
     }
-    assert(this.#state === 'wait for result', 'must call resolveTiming');
+    assert(
+      this.#state === 'wait for result',
+      'you must call encoder.finish and submit the command buffer before you can read the result',
+    );
+    assert(!!this.#commandBuffer); // internal check
+    assert(
+      !s_unsubmittedCommandBuffer.has(this.#commandBuffer),
+      'you must submit the command buffer before you can read the result',
+    );
+    this.#commandBuffer = undefined;
     this.#state = 'free';
 
     const resultBuffer = this.#resultBuffer;
@@ -906,7 +951,8 @@ class TimingHelper {
 }
 </pre>
 <p>The asserts are there to helps us not use this class wrong. For example if we
-end a pass but don’t resolve it or, if we resolve it but don’t read the result.</p>
+end a pass but don’t resolve it or, if we resolve it and try to read the result
+but we haven’t submitted.</p>
 <p>With this class, we can remove much of the code we had before.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
   const adapter = await navigator.gpu?.requestAdapter();
@@ -1053,7 +1099,7 @@ on one machine a first pass might take 200µs to draw 100 things and the 2nd pas
 might also take 200µs to 200 things but, another GPU might take 100µs to draw the first 100 things and 200µs to draw the 2nd 100 things so where as the first GPU
 had a relative difference of 0µs, the 2nd had a relative difference of 100µs
 even though both GPUs were asked to draw the same thing.</p>
-<div class="webgpu_bottombar">By default the `'timestamp-query'` time values
+<div class="webgpu_bottombar">By default the <code class="notranslate" translate="no">'timestamp-query'</code> time values
 are quantized to 100µ seconds. In Chrome, if you enable <a href="chrome://flags/#enable-webgpu-developer-features" target="_blank">"enable-webgpu-developer-features"</a> in <a href="chrome://flags/#enable-webgpu-developer-features" target="_blank">about:flags</a>, the time values may not be quantized. This would
 theoretically give you more accurate timings. That said, normally 100µ second quantized values should be enough for you to compare shaders techniques for performance.
 </div>
@@ -1112,6 +1158,7 @@ to copy the results to a mappable buffer. <a href="#fnref3" class="footnote-back
 <li><a href="/webgpu/lessons/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/webgpu-how-it-works.html">How It Works</a></li>
+<li><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
         </ul>
   <li>3D Math</li>
         <ul>

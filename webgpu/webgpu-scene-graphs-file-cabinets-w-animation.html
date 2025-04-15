@@ -870,9 +870,9 @@ async function main() {
   gui.add(settings, 'showAllTRS').onChange(showTRS);
   const trsFolder = gui.addFolder('orientation');
   const trsControls = [
-    trsFolder.add(settings.translation, '0', -50, 50, 1).name('translation x'),
-    trsFolder.add(settings.translation, '1', -50, 50, 1).name('translation y'),
-    trsFolder.add(settings.translation, '2', -50, 50, 1).name('translation z'),
+    trsFolder.add(settings.translation, '0', -200, 200, 1).name('translation x'),
+    trsFolder.add(settings.translation, '1', -200, 200, 1).name('translation y'),
+    trsFolder.add(settings.translation, '2', -200, 200, 1).name('translation z'),
     trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x'),
     trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y'),
     trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z'),

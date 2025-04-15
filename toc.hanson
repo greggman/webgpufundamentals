@@ -24,6 +24,7 @@
     'webgpu-timing.md',
     'webgpu-wgsl.md',
     'webgpu-how-it-works.md',
+    'webgpu-compatibility-mode.md',
   ],
   '3d-math': [
     'webgpu-translation.md',
