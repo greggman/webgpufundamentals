@@ -284,9 +284,14 @@ async function main() {
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, size, size);
     ctx.font = `${size * 0.9}px sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(s, size / 2, size / 2);
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    const m = ctx.measureText(s);
+    ctx.fillText(
+      s,
+      (size - m.actualBoundingBoxRight + m.actualBoundingBoxLeft) / 2,
+      (size - m.actualBoundingBoxDescent + m.actualBoundingBoxAscent) / 2
+    );
     return createTextureFromSource(device, ctx.canvas, {mips: true});
   });
 
