@@ -252,10 +252,15 @@ each of the 6 faces.</p>
   ctx.fillStyle = faceColor;
   ctx.fillRect(0, 0, size, size);
   ctx.font = `${size * 0.7}px sans-serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
   ctx.fillStyle = textColor;
-  ctx.fillText(text, size / 2, size / 2);
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  const m = ctx.measureText(text);
+  ctx.fillText(
+    text,
+    (size - m.actualBoundingBoxRight + m.actualBoundingBoxLeft) / 2,
+    (size - m.actualBoundingBoxDescent + m.actualBoundingBoxAscent) / 2
+  );
   return canvas;
 }
 </pre>

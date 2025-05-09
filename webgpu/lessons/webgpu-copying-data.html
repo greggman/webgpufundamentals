@@ -278,7 +278,7 @@ a view of.</p>
   { offset: 0, bytesPerRow, rowsPerImage },
 
   // size:
-  [ width, height, depthOrArrayLayers ]
+  [ width, height, depthOrArrayLayers ] or { width, height, depthOrArrayLayers }
 )
 </pre>
 <p>Things to note:</p>
@@ -409,7 +409,7 @@ We haven’t used that style because it’s no so clear but, it is valid.</p>
   { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
 
   // size:
-  [ width, height, depthOrArrayLayers ]
+  [ width, height, depthOrArrayLayers ] or { width, height, depthOrArrayLayers }
 )
 </pre>
 <p>This has almost exactly the same parameters as <code class="notranslate" translate="no">writeTexture</code>.
@@ -454,7 +454,7 @@ must only differ by the suffix <code class="notranslate" translate="no">'-srgb'<
   dst: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
 
   // size:
-  [ width, height, depthOrArrayLayers ]
+  [ width, height, depthOrArrayLayers ] or { width, height, depthOrArrayLayers }
 );
 </pre>
 <ul>
@@ -577,7 +577,7 @@ in the buffer when you first create it. It’s mapped at creation, and
 after you unmap it once, it behaves like any other buffer and will only
 work for the usages you specified. In other words, if you to want to copy
 to it later you need <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> or if you want to map it
-later you need ``GPUBufferData.MAP_READ<code class="notranslate" translate="no">or</code>GPUBufferData.MAP_WRITE`.</p>
+later you need <code class="notranslate" translate="no">GPUBufferData.MAP_READ</code> or <code class="notranslate" translate="no">GPUBufferData.MAP_WRITE</code>.</p>
 <h2 id="efficiently-using-mappable-buffers"><a id="a-efficient"></a>Efficiently using mappable buffers</h2>
 <p>Above we saw that mapping a buffer is asynchronous. This means there’s
 an indeterminate amount of time from the point we ask for the buffer

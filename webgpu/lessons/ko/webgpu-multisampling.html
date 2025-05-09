@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ko/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ko/webgpu-multisampling.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ko"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Multisampling">
+
+<meta name="description" content="멀티 샘플링 / MSAA">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_ko.jpg">
+
+<meta property="og:title" content="WebGPU 멀티 샘플링">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Multisampling / MSAA">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_ko.jpg">
+<meta property="og:description" content="멀티 샘플링 / MSAA">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-multisampling.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Multisampling">
+<meta name="twitter:title" content="WebGPU 멀티 샘플링">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-multisampling.html">
-<meta name="twitter:description" content="Multisampling / MSAA">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="멀티 샘플링 / MSAA">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_ko.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-multisampling.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_ko.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-multisampling.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-multisampling.html",
+      "inLanguage":"ko",
+      "name":"WebGPU 멀티 샘플링",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ko/webgpu-multisampling.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Multisampling</title>
+<title>WebGPU 멀티 샘플링</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/ko/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -181,13 +227,305 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Multisampling</h1>
+    <h1>WebGPU 멀티 샘플링</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>죄송합니다. 이 글은 아직 번역이 되지 않았습니다.</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">번역을 도와주세요</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-multisampling.html">여기서 원문을 볼 수 있습니다</a>.</p>
+      <p>MSAA는 멀티샘플링 안티앨리어싱(Multi-Sampling Anti-aliasing)의 약자입니다. 안티앨리어싱이란, 벡터 형태를 개별 픽셀로 그릴 때 발생하는 계단 현상 문제를 해결하는 기술입니다.</p>
+<p><a href="webgpu-fundamentals.html">기본 원리 문서</a>에서 설명한 대로 WebGPU는 버텍스 셰이더의 <code class="notranslate" translate="no">@builtin(position)</code> 값으로 반환된 클립 공간의 꼭짓점들을 받아 삼각형을 계산한 뒤, 해당 삼각형 내 각 픽셀의 중심에 대해 프래그먼트 셰이더를 호출하여 색상을 결정합니다.</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels"></div>
+    <div>버텍스 끌기</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-result"></div>
+    <div>결과</div>
+  </div>
+</div>
+<p>이 삼각형은 계단 현상이 심하게 나타납니다. 해상도를 높여 볼 수도 있겠지만, 최대 해상도는 디스플레이의 한계에 불과하며, 그마저도 충분하지 않을 수 있습니다.</p>
+<p>한 가지 해결법은 더 높은 해상도로 렌더링하는 것입니다. 예를 들어 해상도를 4배(가로 2배, 세로 2배)로 높인 뒤, “이중 선형 필터링(bilinear filtering)을 이용해 캔버스에 결과를 표시할 수 있습니다.”
+"이중 선형 필터링(bilinear filtering)"에 대해서는
+<a href="webgpu-textures.html">텍스쳐 설명 글</a>을 참고하세요.</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x"></div>
+    <div>4x 해상도</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x-result"></div>
+    <div>이중 선형 필터링 결과</div>
+  </div>
+</div>
+<p>이 해결책이 유효하긴 하지만 비효율적입니다. 왼쪽 이미지의 2x2 픽셀은 오른쪽 이미지에서 1픽셀로 변환되는데, 많은 경우 이 4개의 픽셀이 모두 삼각형 안에 있어서 안티 앨리어싱이 필요 없습니다. 4개의 픽셀 모두 빨간색이기 때문입니다.</p>
+<div class="webgpu_center side-by-side flex-gap">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x-waste"></div>
+    <div>4개중 3개의<span style="color: cyan;">청록색</span>픽셀들이 낭비됩니다.</div>
+  </div>
+</div>
+<p>1픽셀만 그리면 될 것을 4개의 빨간색 픽셀을 그리는 건 비효율적입니다. GPU는 프래그먼트 셰이더(fragment shader)를 4번 호출했습니다. 프래그먼트 셰이더는 상당히 크고 많은 연산을 수행할 수 있으므로 가능한 한 적게 호출하는 게 좋습니다. 심지어 삼각형이 3개의 픽셀만을 지나갈 때에도 이런 문제가 발생합니다.</p>
+<div class="webgpu_center">
+  <img src="../resources/antialias-4x.svg" width="600">
+</div>
+<p>위 예시에서는 4배 렌더링(4x rendering)을 사용할 때, 삼각형이 3개 픽셀의 중심을 덮으면 프래그먼트 셰이더가 3번 호출됩니다. 이후 결과에 이중선형 필터링(bilinear filtering)을 적용하게 됩니다.</p>
+<p>바로 이 부분에서 멀티샘플링(multisampling)의 효율성이 더 뛰어납니다. 멀티샘플링을 사용하면 특수한 '멀티샘플 텍스처(multisample texture)'를 생성합니다. 이 멀티샘플 텍스처에 삼각형을 그릴 때, 4개의 ‘샘플(samples)’ 중 하나라도 삼각형 내부에 있으면 GPU는 프래그먼트 셰이더를 단 한 번 호출합니다. 그 후 삼각형 내부에 위치한 샘플에만 결과를 기록하게 됩니다.</p>
+<div class="webgpu_center">
+  <img src="../resources/antialias-multisample-4.svg" width="600">
+</div>
+<p>위의 예시에서 멀티샘플링 렌더링을 사용할 경우, 삼각형이 3개의 *샘플(samples)*을 덮더라도 프래그먼트 셰이더는 단 한 번만 호출됩니다. 그런 다음, 이 결과를 하나의 픽셀로 병합하는 <em>병합(resolve)</em> 과정을 거칩니다. 삼각형이 만약 4개의 샘플 모두를 덮는 경우에도 과정은 비슷합니다. 프래그먼트 셰이더는 한 번만 호출되며, 그 결과는 4개의 샘플 모두에 기록됩니다.</p>
+<p>여기서 주목할 점은, 기존의 4배 렌더링 방식에서는 CPU가 픽셀 4개의 중심이 삼각형 안에 있는지 확인한 반면, 멀티샘플링(multisampled) 렌더링에서는 GPU가 격자(grid)에 정렬되지 않은 '샘플 위치(sample positions)'를 검사한다는 점입니다. 비슷하게 샘플 값(sample values) 또한 정형화된 격자를 이루지 않기 때문에, 이 값들을 하나의 픽셀로 “병합(resolving)” 하는 과정 역시 이중선형 필터링(bilinear filtering)이 아니라 GPU에 의해 처리됩니다. 이렇게 픽셀 중심에서 벗어난 비정형 샘플 위치는 대부분의 상황에서 더 나은 안티 앨리어싱 효과를 제공하게 됩니다.</p>
+<h2 id="멀티샘플링-사용-방법"><a id="a-multisampling"></a> 멀티샘플링 사용 방법</h2>
+<p>그래서 어떻게 멀티샘플링을 할 수 있을까요? 3개 단계를 따르면 됩니다.</p>
+<ol>
+<li>파이프라인에서 멀티 샘플 텍스처로 렌더링하도록 설정하세요.</li>
+<li>멀티 샘플 텍스처를 최종 텍스처와 같은 크기로 만드세요.</li>
+<li>렌더 패스(render pass)를 설정할 때, 멀티샘플 텍스처로 렌더링한 후 그 결과를 최종 텍스처(canvas)에 병합(resolve)하도록 합니다.</li>
+</ol>
+<p>간단히 하기 위해, <a href="../webgpu-fundamentals.html#a-resizing">기본 개념 문서</a> 끝부분에 있는 반응형(responsive) 삼각형 예제를 가져와서, 여기에 멀티샘플링(multisampling)을 추가해 봅시다.</p>
+<h3 id="파이프라인에서-멀티-샘플-텍스처로-렌더링하도록-설정하세요">파이프라인에서 멀티 샘플 텍스처로 렌더링하도록 설정하세요.</h3>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded red triangle pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
++    multisample: {
++      count: 4,
++    },
+  });
+</pre>
+<p>위에 <code class="notranslate" translate="no">multisample</code> 설정을 추가하면, 이 파이프라인은 멀티샘플 텍스처로 렌더링할 수 있게 됩니다.</p>
+<h3 id="멀티-샘플-텍스처를-최종-텍스처와-같은-크기로-만드세요">멀티 샘플 텍스처를 최종 텍스처와 같은 크기로 만드세요.</h3>
+<p>최종 텍스처는 캔버스(canvas)의 텍스처입니다. 사용자가 창 크기를 조절하는 등의 이유로 캔버스 크기가 바뀔 수 있으므로, 이 텍스처는 렌더링할 때마다 생성해주어야 합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  let multisampleTexture;
+
+  function render() {
++    // Get the current texture from the canvas context
++    const canvasTexture = context.getCurrentTexture();
++
++    // If the multisample texture doesn't exist or
++    // is the wrong size then make a new one.
++    if (!multisampleTexture ||
++        multisampleTexture.width !== canvasTexture.width ||
++        multisampleTexture.height !== canvasTexture.height) {
++
++      // If we have an existing multisample texture destroy it.
++      if (multisampleTexture) {
++        multisampleTexture.destroy();
++      }
++
++      // Create a new multisample texture that matches our
++      // canvas's size
++      multisampleTexture = device.createTexture({
++        format: canvasTexture.format,
++        usage: GPUTextureUsage.RENDER_ATTACHMENT,
++        size: [canvasTexture.width, canvasTexture.height],
+*        sampleCount: 4,
++      });
++    }
+
+  ...
+</pre>
+<p>위 코드에서는 다음 두 가지 경우에 멀티샘플 텍스처를 생성합니다:
+(a) 아직 멀티샘플 텍스처가 없는 경우
+(b) 기존 텍스처의 크기가 캔버스와 일치하지 않는 경우</p>
+<p>캔버스와 동일한 크기의 텍스처를 생성하되, sampleCount: 4를 추가하여 이 텍스처가 멀티샘플 텍스처가 되도록 합니다.</p>
+<h3 id="렌더-패스render-pass를-설정할-때-멀티샘플-텍스처로-렌더링한-후-그-결과를-최종-텍스처canvas에-병합resolve하도록-합니다">렌더 패스(render pass)를 설정할 때, 멀티샘플 텍스처로 렌더링한 후 그 결과를 최종 텍스처(canvas)에 병합(resolve)하도록 합니다.</h3>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    // 캔버스 컨텍스트에서 현재 텍스처를 가져와서
+-    // 렌더링할 텍스처로 설정합니다.
+-    renderPassDescriptor.colorAttachments[0].view =
+-        context.getCurrentTexture().createView();
+
++    // 멀티샘플 텍스처를 렌더링할 텍스처로 설정합니다
++    renderPassDescriptor.colorAttachments[0].view =
++        multisampleTexture.createView();
++    // 캔버스 텍스처를 멀티샘플 텍스처를 "병합"할
++    // 대상 텍스처로 설정합니다.
++    renderPassDescriptor.colorAttachments[0].resolveTarget =
++        canvasTexture.createView();
+</pre>
+<p>*병합(resolve)*이란 멀티샘플 텍스처의 데이터를 우리가 실제로 원하는 크기의 텍스처로 변환하는 과정입니다. 이 예제에서는 그 대상이 바로 캔버스입니다.</p>
+<p>앞서 4배(4x) 렌더링 예제에서는 4배 크기의 텍스처를 생성한 후, 그것을 1배 크기의 텍스처로 이중선형 필터링(bilinear filtering)을 통해 직접접 축소(resize)했었습니다.</p>
+<p>멀티샘플링에서도 이와 유사한 방식으로 처리되긴 하지만, 멀티샘플 텍스처는 실제로는 이중선형 필터링을 사용하지 않습니다.</p>
+<p>자세한 내용은 아래의  <a href="#a-not-a-grid">격자가 아닌 구조</a>를 참고하세요.</p>
+<p>그리고 아래는 예제입니다:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-simple.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-simple.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<p>저해상도에서 두 이미지를 나란히 비교해 보면 겉보기에 큰 차이가 없어 보이지만
+왼쪽은 멀티샘플링이 적용되지 않은 원본이고, 오른쪽은 멀티샘플링이 적용된 버전입니다.</p>
+<p>오른쪽의 경우, 계단 현상이 줄어들어 안티 앨리어싱(Anti-Aliasing) 처리가 된 것을 확인할 수 있습니다.</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="simple-triangle"></div>
+    <div>원본</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="simple-triangle-multisample"></div>
+    <div>멀티샘플링이 적용된 버전</div>
+  </div>
+</div>
+<p>다음을 기억하세요.</p>
+<h2 id="count는-반드시-4여야-합니다"><code class="notranslate" translate="no">count</code>는 반드시 <code class="notranslate" translate="no">4</code>여야 합니다.</h2>
+<p>WebGPU 버전 1에서는 렌더 파이프라인의 <code class="notranslate" translate="no">multisample: { count }</code> 설정 값으로 1 또는 4만 사용할 수 있습니다.
+마찬가지로 텍스처를 생성할 때 설정하는 <code class="notranslate" translate="no">sampleCount</code> 역시 1 또는 4만 허용됩니다.</p>
+<p>1은 기본값이며, 텍스처가 멀티샘플링되지 않은(non-multisampled) 상태임을 의미합니다.
+4를 설정하면 4x 멀티샘플링이 적용되어 안티 앨리어싱 품질이 향상됩니다.</p>
+<h2 id="멀티샘플링은-격자grid를-사용하지-않습니다"><a id="a-not-a-grid"></a> 멀티샘플링은 격자(grid)를 사용하지 않습니다</h2>
+<p>앞서 언급했듯이, 멀티샘플링은 일반적인 격자(grid) 형태로 이루어지지 않습니다.
+sampleCount = 4일 때, 샘플 위치는 다음과 같은 방식으로 배치됩니다:</p>
+<div class="webgpu_center">
+  <img src="../resources/multisample-4x.svg" width="256">
+  <div class="center">count: 4</div>
+</div>
+<div class="webgpu_center">
+  <img src="../resources/multisample-2x.svg" width="256">
+  <div class="center">count: 2</div>
+</div>
+<div class="webgpu_center">
+  <img src="../resources/multisample-8x.svg" width="256">
+  <div class="center">count: 8</div>
+</div>
+<div class="webgpu_center">
+  <img src="../resources/multisample-16x.svg" width="256">
+  <div class="center">count: 16</div>
+</div>
+<p><strong>WebGPU 는 현재 count 4만 지원합니다.</strong></p>
+<h2 id="모든-렌더-패스에서-resolvetarget을-설정할-필요는-없습니다">모든 렌더 패스에서 <code class="notranslate" translate="no">resolveTarget</code>을 설정할 필요는 없습니다.</h2>
+<p><code class="notranslate" translate="no">colorAttachment[0].resolveTarget</code>을 설정하면 WebGPU에게 다음과 같이 지시하는 것입니다. “이 렌더 패스의 모든 그리기가 완료되면, 멀티샘플 텍스처를 <code class="notranslate" translate="no">resolveTarget</code>에 설정된 텍스처로 다운스케일하라” 여러 개의 렌더 패스가 있는 경우, 마지막 패스까지 resolve하지 않는 것이 좋습니다. 마지막 패스에서 resolve하는 것이 가장 빠르지만, resolve만을 위한 빈 마지막 렌더 패스를 만드는 것도 완전히 허용됩니다.
+단, 첫 번째 패스를 제외한 모든 패스에서 <code class="notranslate" translate="no">loadOp</code>를 <code class="notranslate" translate="no">'clear'</code>가 아닌 <code class="notranslate" translate="no">'load'</code>로 설정해야 합니다. 그렇지 않으면 텍스처가 지워질 것입니다.</p>
+<h2 id="선택적으로-각-샘플-포인트에서-프래그먼트-셰이더를-실행할-수-있습니다">선택적으로 각 샘플 포인트에서 프래그먼트 셰이더를 실행할 수 있습니다.</h2>
+<p>앞서 우리는 프래그먼트 셰이더가 멀티샘플 텍스처의 4개 샘플마다 한 번만 실행된다고 설명했습니다. 셰이더는 한 번 실행되고 그 결과를 실제로 삼각형 내부에 있는 샘플들에 저장합니다. 이것이 4배 해상도로 렌더링하는 것보다 더 빠른 이유입니다.</p>
+<p><a href="../webgpu-inter-stage-variables.html#a-interpolate">WebGPU에서 인터스테이지 변수에 관한 글</a>에서 우리는 <code class="notranslate" translate="no">@interpolate(...)</code> 속성을 사용하여 인터스테이지 변수의 보간 방법을 지정할 수 있다고 언급했습니다. 여러 옵션 중 하나인 <code class="notranslate" translate="no">sample</code>을 사용하면 프래그먼트 셰이더가 각 샘플마다 한 번씩 실행됩니다.
+WebGPU에는 몇 가지 유용한 내장 변수들이 있습니다. <code class="notranslate" translate="no">@builtin(sample_index)</code>는 현재 작업 중인 샘플이 어떤 것인지 알려주며, <code class="notranslate" translate="no">@builtin(sample_mask)</code>는 입력으로 사용될 때 삼각형 내부에 있는 어떤 샘플들이 있는지 알려주고, 출력으로 사용될 때는 샘플 포인트가 업데이트되는 것을 방지할 수 있게 해줍니다.</p>
+<h2 id="center-대-centroid"><code class="notranslate" translate="no">center</code> 대 <code class="notranslate" translate="no">centroid</code></h2>
+<p>3가지 <em>샘플링</em> 보간 모드가 있습니다. 위에서 우리는 각 샘플마다 프래그먼트 셰이더가 한 번씩 호출되는 <code class="notranslate" translate="no">'sample'</code> 모드에 대해 언급했습니다. 다른 두 가지 모드는 기본값인 <code class="notranslate" translate="no">'center'</code>와 <code class="notranslate" translate="no">'centroid'</code>입니다.</p>
+<ul>
+<li><code class="notranslate" translate="no">'center'</code> 는 픽셀의 중심을 기준으로 값을 보간합니다.</li>
+</ul>
+<div class="webgpu_center">
+  <img src="../resources/multisample-centroid-issue.svg" width="400">
+</div>
+<p>위에서 우리는 샘플 포인트 <code class="notranslate" translate="no">s1</code>과 <code class="notranslate" translate="no">s3</code>가 삼각형 내부에 있는 단일 픽셀/텍셀을 볼 수 있습니다. 프래그먼트 셰이더는 한 번 호출되며, 픽셀의 중심(<code class="notranslate" translate="no">c</code>)을 기준으로 보간된 값을 가진 단계 간 변수들을 전달받게 됩니다. 문제는 <strong><code class="notranslate" translate="no">c</code>가 삼각형 외부에 있다는 것입니다.</strong></p>
+<p>이것이 중요하지 않을 수도 있지만, 값이 삼각형 내부에 있다고 가정하는 수학 계산이 있을 수 있습니다. 좋은 예를 들기는 어렵지만, 각 점에 무게중심 좌표(barycentric coordinates)를 추가한다고 상상해 보세요. 무게중심 좌표는 기본적으로 0에서 1 사이의 값을 가지는 3개의 좌표로, 각 값은 특정 위치가 삼각형의 세 꼭짓점 중 하나로부터 얼마나 떨어져 있는지를 나타냅니다. 이를 위해, 우리는 다음과 같이 무게중심 점들을 추가합니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VOut {
++  @builtin(position) position: vec4f,
++  @location(0) baryCoord: vec3f,
++};
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+-) -&gt; @builtin(position) vec4f {
++) -&gt; VOut {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
++  let bary = array(
++    vec3f(1, 0, 0),
++    vec3f(0, 1, 0),
++    vec3f(0, 0, 1),
++  );
+-    return vec4f(pos[vertexIndex], 0.0, 1.0);
++  var vout: VOut;
++  vout.position = vec4f(pos[vertexIndex], 0.0, 1.0);
++  vout.baryCoord = bary[vertexIndex];
++  return vout;
+}
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return vec4f(1, 0, 0, 1);
++@fragment fn fs(vin: VOut) -&gt; @location(0) vec4f {
++  let allAbove0 = all(vin.baryCoord &gt;= vec3f(0));
++  let allBelow1 = all(vin.baryCoord &lt;= vec3f(1));
++  let inside = allAbove0 &amp;&amp; allBelow1;
++  let red = vec4f(1, 0, 0, 1);
++  let yellow = vec4f(1, 1, 0, 1);
++  return select(yellow, red, inside);
+}
+</pre>
+<p>위 내용에서는 첫 번째 점에 <code class="notranslate" translate="no">1, 0, 0</code>, 두 번째 점에 <code class="notranslate" translate="no">0, 1, 0</code>, 세 번째 점에 <code class="notranslate" translate="no">0, 0, 1</code>을 연결하고 있습니다. 이들 사이를 보간할 때, 어떤 값도 0보다 작거나 1보다 크면 안 됩니다.</p>
+<p>프래그먼트 셰이더에서는 보간된 세 값(x, y, z)이 모두 <code class="notranslate" translate="no">&gt;= 0</code>인지 <code class="notranslate" translate="no">all(vin.baryCoord &gt;= vec3f(0))</code>로 확인합니다. 또한 모두 <code class="notranslate" translate="no">&lt;= 1</code>인지 <code class="notranslate" translate="no">all(vin.baryCoord &lt;= vec3f(1))</code>로 확인합니다. 그리고 이 두 조건을 <code class="notranslate" translate="no">&amp;</code>로 결합합니다. 이는 우리가 삼각형 내부에 있는지 외부에 있는지 알려줍니다. 결과적으로 내부에 있으면 빨간색을, 내부가 아니면 노란색을 선택합니다. 정점들 <em>사이</em>를 보간하고 있으므로 항상 내부에 있을 것으로 예상합니다.</p>
+<p>이 결과를 더 쉽게 확인하기 위해 예제의 해상도를 낮춰 보겠습니다.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+-      const width = entry.contentBoxSize[0].inlineSize;
+-      const height = entry.contentBoxSize[0].blockSize;
++      const width = entry.contentBoxSize[0].inlineSize / 16 | 0;
++      const height = entry.contentBoxSize[0].blockSize / 16 | 0;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // re-render
+      render();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>and some CSS</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">canvas {
++  image-rendering: pixelated;
++  image-rendering: crisp-edges;
+  display: block;  /* canvas block 설정   */
+  width: 100%;     /* 캔버스가 화면에 꽉차게 설정 */
+  height: 100%;
+}
+</pre>
+<p>결과는 다음과 같습니다.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-center-issue.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-center-issue.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<p>우리가 볼 수 있듯이, 일부 가장자리 픽셀에는 노란색이 나타납니다. 이는 앞서 언급했듯이, 프래그먼트 셰이더에 전달되는 보간된 단계 간 변수 값들이 픽셀의 중심을 기준으로 하기 때문입니다. 노란색이 보이는 경우에는 그 중심이 삼각형 외부에 있는 것입니다.</p>
+<p>보간 샘플 모드를 <code class="notranslate" translate="no">'centroid'</code>로 변경하면 이 문제를 해결할 수 있습니다. <code class="notranslate" translate="no">'centroid'</code> 모드에서는 GPU가 픽셀 내부에 있는 삼각형 영역의 중심점을 사용합니다.</p>
+<div class="webgpu_center">
+  <img src="../resources/multisample-centroid-fix.svg" width="400">
+</div>
+<p>만약 우리의 샘플에서 보간 모드를 <code class="notranslate" translate="no">'centroid'</code>로 변경하면,</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VOut {
+  @builtin(position) position: vec4f,
+-  @location(0) baryCoord: vec3f,
++  @location(0) @interpolate(perspective, centroid) baryCoord: vec3f,
+};
+</pre>
+<p>이제 GPU는 중심점(centroid)을 기준으로 보간된 단계 간 변수 값을 전달하므로 노란색 픽셀 문제가 해결됩니다.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-centroid.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-centroid.html" target="_blank">새 창으로 보려면 여기를 클릭하세요</a>
+</div>
+
+<p></p>
+<blockquote>
+<p>참고: GPU가 실제로 픽셀 내 삼각형 영역의 중심점을 계산하는지는 확실하지 않습니다. 보장되는 것은 인터스테이지 변수들이 픽셀과 교차하는 삼각형 영역 내의 어떤 위치를 기준으로 보간된다는 점뿐입니다.</p>
+</blockquote>
+<h2 id="삼각형-내부의-안티앨리어싱은-어떻게-될까요">삼각형 내부의 안티앨리어싱은 어떻게 될까요?</h2>
+<p>멀티샘플링은 일반적으로 삼각형의 가장자리에만 효과가 있습니다. 프래그먼트 셰이더를 한 번만 호출하기 때문에, 모든 샘플 위치가 삼각형 내부에 있을 때는 프래그먼트 셰이더의 결과가 모든 샘플에 동일하게 적용됩니다. 이는 멀티샘플링을 사용하지 않은 경우와 결과가 다르지 않다는 것을 의미합니다.</p>
+<p>위의 예제에서는 단색 빨간색을 그렸기 때문에 문제가 없어 보입니다. 하지만 텍스처를 사용하는 경우, 삼각형 내부에 대비가 강한 색상들이 서로 인접해 있을 수 있습니다. 이런 경우 각 샘플의 색상이 텍스처의 서로 다른 위치에서 가져와야 하지 않을까요?</p>
+<p>삼각형 내부에서는 <a href="webgpu-textures.html">밉맵과 필터링</a>을 사용하여 적절한 색상을 선택하므로, 삼각형 내부의 안티앨리어싱은 상대적으로 덜 중요할 수 있습니다. 그러나 특정 렌더링 기법에서는 이것이 문제가 될 수 있습니다. 이러한 이유로 안티앨리어싱에 대한 다른 해결책들이 존재하며, 샘플별 처리를 원한다면 <code class="notranslate" translate="no">@interpolate(..., sample)</code>을 사용할 수 있습니다.</p>
+<h2 id="멀티샘플링은-안티-앨리어싱만을-위한-유일한-해결책이-아닙니다">멀티샘플링은 안티 앨리어싱만을 위한 유일한 해결책이 아닙니다.</h2>
+<p>이 페이지에서는 2가지 해결책을 언급했었습니다.
+(1) 더 높은 해상도의 텍스처에 먼저 렌더링한 다음, 그 텍스처를 더 낮은 해상도로 다시 그리는 방식
+(2) 멀티샘플링 이용하기</p>
+<p>다른 방법들도 있습니다. <a href="https://vr.arvilab.com/blog/anti-aliasing">그중에 몇가지를 소개합니다.</a>.</p>
+<p>다른 참고자료:</p>
+<ul>
+<li><a href="https://therealmjp.github.io/posts/msaa-overview/">MSAA 개요</a></li>
+<li><a href="https://www.rastergrid.com/blog/gpu-tech/2021/10/multisampling-primer/">멀티샘플링 입문</a></li>
+</ul>
+<!-- keep this at the bottom of the article -->
+<link href="../webgpu-multisampling.css" rel="stylesheet">
+<script type="module" src="../webgpu-multisampling.js"></script>
 
     </div>
     <div class="lesson-sidebar">
@@ -202,7 +540,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>기초</li>
+        <div id="toc">
+          <ul>  <li>기초</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-fundamentals.html">기초</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
@@ -216,7 +555,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/ko/webgpu-textures-external-video.html">비디오 사용하기</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">멀티 샘플링 / MSAA</a></li>
         </ul>
 <li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
@@ -288,13 +627,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
 
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>질문이 있나요? <a href="http://stackoverflow.com/questions/tagged/webgpu">Stack Overflow</a>에 물어보세요.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">제안</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">요청 사항</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">이슈</a> /
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">버그</a>
+</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 멀티 샘플링`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "<a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a>님<br> 당신의 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 기여에 감사드립니다.</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>
