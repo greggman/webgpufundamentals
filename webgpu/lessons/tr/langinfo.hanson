@@ -1,0 +1,40 @@
+{
+  language: 'Türkçe',
+  langCode: 'tr',
+  defaultExampleCaption: "ayrı bir pencerede açmak için buraya tıklayın",
+  title: "WebGPU'nun Temelleri",
+  description: "WebGPU'yu öğrenin",
+  link: 'https://webgpufundamentals.org/webgpu/lessons/tr',
+  commentSectionHeader: `
+<div>Sorular? <a href="http://stackoverflow.com/questions/tagged/webgpu">Stack Overflow'da sorun</a>.</div>
+<div>
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=suggested+topic&template=suggest-topic.md&title=%5BSUGGESTION%5D">Öneri</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=&template=request.md&title=">İstek</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">Sorun</a>?
+   <a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&labels=bug+%2F+issue&template=bug-issue-report.md&title=">Hata</a>?
+</div>
+  `,
+  missing: `
+Üzgünüz, bu makale halihazırda Türkçeye çevrilmemiş.
+
+[Çevirilere katkıda bulunmak ister misiniz?](https://github.com/webgpu/webgpufundamentals)! 😄
+
+[Burada İngilizcesi var]({{{origLink}}}).
+  `,
+  contribTemplate: '<a href="${html_url}"><img src="${avatar_url}">${login}</a>,<br><a href="https://github.com/${owner}/${repo}/commits?author=${login}">${contributions} katkıların</a> için sağ ol.',
+  toc: 'İçindekiler',
+  categoryMapping: {
+    'basics': 'Temel Bilgiler',
+    'misc': 'Diğer Başlıklar',
+    'textures': 'Dokular',
+    'techniques': 'Teknikler',
+    '3d': '3B',
+    '2d': '2B',
+    'reference': 'Referans',
+    '3d-math': '3B Matematik',
+    'lighting': 'Işıklandırma',
+    'compute-shaders': 'Hesap Gölgelendiricileri',
+  },
+}
+
+
