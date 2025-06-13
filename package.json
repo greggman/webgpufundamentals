@@ -6,12 +6,12 @@
   "devDependencies": {
     "@gfxfundamentals/lesson-builder": "github:gfxfundamentals/lesson-builder#v2.4.2",
     "@gfxfundamentals/live-editor": "github:gfxfundamentals/live-editor#v1.5.1",
-    "@types/estree": "^1.0.6",
+    "@types/estree": "^1.0.8",
     "@types/jsdom": "^21.1.7",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@typescript-eslint/typescript-estree": "^7.15.0",
-    "@webgpu/types": "^0.1.60",
+    "@webgpu/types": "^0.1.61",
     "eslint": "^8.57.1",
     "eslint-plugin-google-camelcase": "0.0.2",
     "eslint-plugin-html": "^7.1.0",
@@ -29,11 +29,11 @@
     "ld-check-dependencies": "^1.2.1",
     "load-grunt-tasks": "^5.1.0",
     "minami": "^1.2.3",
-    "puppeteer": "^23.8.0",
-    "semver": "^7.7.1",
+    "puppeteer": "^23.11.1",
+    "semver": "^7.7.2",
     "servez": "^2.3.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.8.3"
   },
   "scripts": {
     "build": "ld-check-dependencies && grunt",

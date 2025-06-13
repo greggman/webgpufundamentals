@@ -46,9 +46,16 @@ async function getText(url) {
 async function initEditor() {
   /* global monaco */
   if (typeof monaco !== 'undefined') {
+    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+      ...monaco.languages.typescript.javascriptDefaults.getCompilerOptions(),
+      moduleDetection: 3,
+    });
+    // inject the WebGPU types
     const basePath = '/types/webgpu/dist/index.d.ts';
-    const text = await getText(basePath);
-    monaco.languages.typescript.javascriptDefaults.addExtraLib(text, '');
+    const originalText = await getText(basePath);
+    // Because of moduleDetection: 3 above, we need to force these types to be global. 🤷‍♂️
+    const wrappedText = `declare global { ${originalText} }`;
+    monaco.languages.typescript.javascriptDefaults.addExtraLib(wrappedText, '');
   }
 
 
