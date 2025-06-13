@@ -942,7 +942,7 @@ previous shader.</p>
 pixels outside of our texture. So for example if our image was 300 pixels
 wide, the first workgroup would work on pixels 0 to 255. The second workgroup
 would work on pixels 256 to 511. But we only need work up to pixel 299.
-This is what the <code class="notranslate" translate="no">if(all(position &lt; size))</code> does. both <code class="notranslate" translate="no">position</code> and <code class="notranslate" translate="no">size</code> are
+This is what the <code class="notranslate" translate="no">if(all(position &lt; size))</code> does. Both <code class="notranslate" translate="no">position</code> and <code class="notranslate" translate="no">size</code> are
 <code class="notranslate" translate="no">vec2u</code> and so <code class="notranslate" translate="no">position &lt; size</code> will produce 2 boolean values which is a<code class="notranslate" translate="no">vec2&lt;bool&gt;</code>.
 the <code class="notranslate" translate="no">all</code> function returns <code class="notranslate" translate="no">true</code> if all of its inputs are true. So, the code
 will only go inside the <code class="notranslate" translate="no">if</code> if <code class="notranslate" translate="no">position.x &lt; size.x</code> and <code class="notranslate" translate="no">position.y &lt; size.y</code>.</p>
