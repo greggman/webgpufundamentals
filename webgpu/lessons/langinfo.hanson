@@ -34,6 +34,7 @@ Sorry this article has not been translated yet.
     '3d-math': '3D Math',
     'lighting': 'Lighting',
     'compute-shaders': 'Compute Shaders',
+    'post-processing': 'Post Processing',
   },
 }
 

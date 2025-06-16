@@ -50,6 +50,9 @@
       'webgpu-environment-maps.md',
       'webgpu-skybox.md',
     ],
+    'post-processing': [
+      'webgpu-post-processing.md',
+    ],
   },
   'compute-shaders': [
     'webgpu-compute-shaders.md',
