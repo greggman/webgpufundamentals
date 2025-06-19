@@ -1,0 +1,21 @@
+/* intentionally empty at the moment */
+
+.img-grid[data-diagram] {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,250px); /* same as column width */
+  gap:10px; /* same as column gap */
+}
+.img-grid-cols {
+  columns: 250px;
+  column-gap: 1em;
+  grid-column: 1/-1; /* take all the columns of the grid*/
+}
+.img-grid-item {
+  display: inline-flex;
+  flex-direction: column;
+  margin-bottom: 0.5em;
+}
+.img-grid img {
+  width: 100%;
+  border: 1px solid #888;
+}
