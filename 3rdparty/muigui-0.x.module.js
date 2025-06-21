@@ -1,4 +1,4 @@
-/* muigui@0.0.21, license MIT */
+/* muigui@0.0.22, license MIT */
 var css = {
   default: `
 .muigui {
@@ -2750,6 +2750,10 @@ class Container extends Controller {
       const elem = c0.domElement;
       elem.remove();
       c0.setParent(null);
+    } else {
+      this.#controllers.forEach(c => {
+        c.remove(controller);
+      });
     }
     return this;
   }

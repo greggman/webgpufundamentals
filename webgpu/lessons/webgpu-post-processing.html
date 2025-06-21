@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <meta name="keywords" content="webgpu graphics">
 <meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_en.jpg">
 
-<meta property="og:title" content="WebGPU Post Processing">
+<meta property="og:title" content="WebGPU Post Processing - Basic CRT Effect">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_en.jpg">
 <meta property="og:description" content="Post Processing">
@@ -49,7 +49,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Post Processing">
+<meta name="twitter:title" content="WebGPU Post Processing - Basic CRT Effect">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/webgpu-post-processing.html">
 <meta name="twitter:description" content="Post Processing">
 <meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_en.jpg">
@@ -76,7 +76,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       "@id":"https://webgpufundamentals.org/webgpu/lessons/webgpu-post-processing.html#webpage",
       "url":"https://webgpufundamentals.org/webgpu/lessons/webgpu-post-processing.html",
       "inLanguage":"en",
-      "name":"WebGPU Post Processing",
+      "name":"WebGPU Post Processing - Basic CRT Effect",
       "keywords":"webgpu graphics programming",
       "isPartOf":{
         "@id":"https://webgpufundamentals.org/#website"
@@ -89,7 +89,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 </script>
 
-<title>WebGPU Post Processing</title>
+<title>WebGPU Post Processing - Basic CRT Effect</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
 <link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
 <link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
@@ -227,7 +227,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Post Processing</h1>
+    <h1>WebGPU Post Processing - Basic CRT Effect</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -874,8 +874,22 @@ to the texture when we’re out of bounds.</p>
 </div>
 
 <p></p>
-<p>This is much faster! But, unfortunately, on some GPUs it is still slower than using a render pass.
-Going into how to make it faster is too big of a topic for this particular article.
+<p>This is much faster! But, unfortunately, on some GPUs it is still slower than using a render pass.</p>
+<div class="webgpu_center data-table">
+  <table>
+    <thead>
+      <tr><th>GPU</th><th>Compute pass time vs<br>Render pass time<br>(higher is worse)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>M1 Mac                 </td><td>1x</td></tr>
+      <tr><td>AMD Radeon Pro 5300M   </td><td>1x</td></tr>
+      <tr><td>AMD Radeon Pro WX 32000</td><td>1.3x</td></tr>
+      <tr><td>Intel UHD Graphics 630 </td><td>1.7x</td></tr>
+      <tr><td>NVidia 2070 Super      </td><td>2x</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Going into how to make it faster is too big of a topic for this particular article.
 Referencing <a href="webgpu-compute-shaders-historgram.html">the article on optimizing compute shaders</a>,
 the same rules apply. Unfortunately none of them are really relevant to this example.
 If the post processing you’re trying to do could benefit from shared workgroup memory
@@ -964,7 +978,7 @@ about that process are highly optimized.</p>
         </ul>
   <li>Post Processing</li>
         <ul>
-          <li><a href="/webgpu/lessons/webgpu-post-processing.html">Post Processing</a></li>
+          <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -1012,7 +1026,7 @@ about that process are highly optimized.</p>
         <script>
             var disqus_config = function () {
               this.page.url = `${window.location.origin}${window.location.pathname}`;
-              this.page.identifier = `WebGPU Post Processing`;
+              this.page.identifier = `WebGPU Post Processing - Basic CRT Effect`;
             };
             (function() { // DON'T EDIT BELOW THIS LINE
                 if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
