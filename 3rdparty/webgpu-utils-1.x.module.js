@@ -1,4 +1,4 @@
-/* webgpu-utils@1.10.2, license MIT */
+/* webgpu-utils@1.11.0, license MIT */
 const roundUpToMultipleOf = (v, multiple) => (((v + multiple - 1) / multiple) | 0) * multiple;
 function keysOf(obj) {
     return Object.keys(obj);
@@ -747,20 +747,81 @@ const byBinding = (a, b) => Math.sign(a.binding - b.binding);
 /**
  * Gets GPUBindGroupLayoutDescriptors for the given pipeline.
  *
- * Important: Assumes you pipeline is valid (it doesn't check for errors).
+ * Important: Assumes your pipeline is valid (it doesn't check for errors).
  *
  * Note: In WebGPU some layouts must be specified manually. For example an unfiltered-float
  *    sampler can not be derived since it is unknown at compile time pipeline creation time
  *    which texture you'll use.
  *
- * MAINTENANCE_TODO: Add example
+ * ```js
+ * import {
+ *   makeShaderDataDefinitions,
+ *   makeBindGroupLayoutDescriptors,
+ * } from 'webgpu-utils';
+ *
+ * const code = `
+ * @group(0) @binding(0) var<uniform> mat: mat4x4f;
+ *
+ * struct MyVSOutput {
+ *   @builtin(position) position: vec4f,
+ *   @location(1) texcoord: vec2f,
+ * };
+ *
+ * @vertex
+ * fn myVSMain(v: MyVSInput) -> MyVSOutput {
+ *   var vsOut: MyVSOutput;
+ *   vsOut.position = mat * v.position;
+ *   vsOut.texcoord = v.texcoord;
+ *   return vsOut;
+ * }
+ *
+ * @group(0) @binding(2) var diffuseSampler: sampler;
+ * @group(0) @binding(3) var diffuseTexture: texture_2d<f32>;
+ *
+ * @fragment
+ * fn myFSMain(v: MyVSOutput) -> @location(0) vec4f {
+ *   return textureSample(diffuseTexture, diffuseSampler, v.texcoord);
+ * }
+ * `;
+ *
+ * const module = device.createShaderModule({code});
+ * const defs = wgh.makeShaderDataDefinitions(code);
+ *
+ * const pipelineDesc = {
+ *   vertex: {
+ *     module,
+ *     entryPoint: 'myVSMain',
+ *     buffers: bufferLayouts,
+ *   },
+ *   fragment: {
+ *     module,
+ *     entryPoint: 'myFSMain',
+ *     targets: [
+ *       {format: 'rgba8unorm'},
+ *     ],
+ *   },
+ * };
+ *
+ * const descriptors = wgh.makeBindGroupLayoutDescriptors(defs, pipelineDesc);
+ * const bindGroupLayouts = descriptors.map(desc => device.createBindGroupLayout(desc));
+ * const layout = device.createPipelineLayout({ bindGroupLayouts });
+ * const pipeline = device.createRenderPipeline({
+ *   layout,
+ *   ...pipelineDesc,
+ * });
+ * ```
  *
  * @param defs ShaderDataDefinitions or an array of ShaderDataDefinitions as
- *    returned from {@link makeShaderDataDefinitions}. If an array more than 1
+ *    returned from {@link makeShaderDataDefinitions}. If an array of  more than 1
  *    definition it's assumed the vertex shader is in the first and the fragment
  *    shader in the second.
- * @param desc A PipelineDescriptor. You should be able to pass in the same object you passed
- *    to `createRenderPipeline` or `createComputePipeline`.
+ * @param desc A PipelineDescriptor. You should be able to pass in the same object you would pass
+ *    to `createRenderPipeline` or `createComputePipeline`. In particular, you need
+ *    the `vertex` / `fragment` or `compute` properties with or without entryPoints.
+ *    The existence of the property means this shader type exists in the pipeline. If
+ *    no entry point is specified the default entry point will be used, which, like
+ *    WebGPU, defaults to the only entry point of that type. If there is more than one
+ *    it's an error and you must specify an entry point.
  * @returns An array of GPUBindGroupLayoutDescriptors which you can pass, one at a time, to
  *    `createBindGroupLayout`. Note: the array will be sparse if there are gaps in group
  *    numbers. Note: Each GPUBindGroupLayoutDescriptor.entries will be sorted by binding.
@@ -784,11 +845,6 @@ function makeBindGroupLayoutDescriptors(defs, desc) {
         });
     }
     const descriptors = bindGroupLayoutDescriptorsByGroupByBinding.map(v => ({ entries: [...v.values()].sort(byBinding) }));
-    for (let i = 0; i < descriptors.length; ++i) {
-        if (!descriptors[i]) {
-            descriptors[i] = { entries: [] };
-        }
-    }
     return descriptors;
 }
 function getNamedVariables(reflect, variables) {
@@ -1884,7 +1940,7 @@ function copySourceToTexture(device, texture, source, options = {}) {
  * sources have a different way to get their size.
  */
 function getSizeFromSource(source, options) {
-    if (source instanceof HTMLVideoElement) {
+    if ('videoWidth' in source && 'videoHeight' in source) {
         return [source.videoWidth, source.videoHeight, 1];
     }
     else {
