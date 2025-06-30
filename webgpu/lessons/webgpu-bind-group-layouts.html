@@ -406,7 +406,7 @@ of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLay
 <p><code class="notranslate" translate="no">createPipelineLayout</code> takes an object with an array of <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>s.
 They are ordered by group index so the first entry becomes <code class="notranslate" translate="no">@group(0)</code>,
 the 2nd entry becomes <code class="notranslate" translate="no">@group(1)</code>, etc… If you need
-to skip one you’ll need to add an empty bind group layout.</p>
+to skip one you’ll need to add empty or undefined element.</p>
 <p>Finally, when we create the pipeline, we pass in the pipeline layout</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
     label: 'hardcoded textured quad pipeline',
