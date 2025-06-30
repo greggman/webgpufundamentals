@@ -202,7 +202,7 @@ of the `GPUBindGroupLayout`s used by a pipeline.
 `createPipelineLayout` takes an object with an array of `GPUBindGroupLayout`s. 
 They are ordered by group index so the first entry becomes `@group(0)`,
 the 2nd entry becomes `@group(1)`, etc... If you need
-to skip one you'll need to add an empty bind group layout.
+to skip one you'll need to add empty or undefined element.
 
 Finally, when we create the pipeline, we pass in the pipeline layout
 
