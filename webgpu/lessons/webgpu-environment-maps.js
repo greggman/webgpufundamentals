@@ -261,9 +261,7 @@ async function showCube(canvas, uiDiv) {
     if (!depthTexture ||
         depthTexture.width !== canvasTexture.width ||
         depthTexture.height !== canvasTexture.height) {
-      if (depthTexture) {
-        depthTexture.destroy();
-      }
+      depthTexture?.destroy();
       depthTexture = device.createTexture({
         size: [canvasTexture.width, canvasTexture.height],
         format: 'depth24plus',

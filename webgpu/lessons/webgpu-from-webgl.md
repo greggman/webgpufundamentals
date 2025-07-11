@@ -963,12 +963,8 @@ function resizeToDisplaySize(device, canvasInfo) {
                      width !== canvas.width ||
                      height !== canvas.height;
   if (needResize) {
-    if (renderTarget) {
-      renderTarget.destroy();
-    }
-    if (depthTexture) {
-      depthTexture.destroy();
-    }
+    renderTarget?.destroy();
+    depthTexture?.destroy();
 
     canvas.width = width;
     canvas.height = height;

@@ -465,9 +465,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
     if (!depthTexture ||
         depthTexture.width !== canvasTexture.width ||
         depthTexture.height !== canvasTexture.height) {
-      if (depthTexture) {
-        depthTexture.destroy();
-      }
+      depthTexture?.destroy();
       depthTexture = device.createTexture({
         size: [canvasTexture.width, canvasTexture.height],
         format: 'depth24plus',

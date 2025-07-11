@@ -512,9 +512,7 @@ we have has a different size then our canvas texture. We did this in
     if (!depthTexture ||
         depthTexture.width !== canvasTexture.width ||
         depthTexture.height !== canvasTexture.height) {
-      if (depthTexture) {
-        depthTexture.destroy();
-      }
+      depthTexture?.destroy();
       depthTexture = device.createTexture({
         size: [canvasTexture.width, canvasTexture.height],
         format: 'depth24plus',
