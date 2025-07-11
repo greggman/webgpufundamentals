@@ -691,7 +691,7 @@ add it to the bind group.</p>
       entries: [
         { binding: 0, resource: sampler },
         { binding: 1, resource: texture.createView() },
-+        { binding: 2, resource: { buffer: uniformBuffer }},
++        { binding: 2, resource: uniformBuffer},
       ],
     });
     bindGroups.push(bindGroup);
@@ -1149,7 +1149,7 @@ buffer per location like we covered in <a href="webgpu-uniforms.html">the articl
         entries: [
           { binding: 0, resource: sampler },
           { binding: 1, resource: texture.createView() },
-          { binding: 2, resource: { buffer: uniformBuffer }},
+          { binding: 2, resource: uniformBuffer},
         ],
       }));
 

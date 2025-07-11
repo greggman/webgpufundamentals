@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-translation.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Translation">
+
+<meta name="description" content="オブジェクトの移動">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-translation_ja.jpg">
+
+<meta property="og:title" content="WebGPU 平行移動">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Moving an object">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-translation_ja.jpg">
+<meta property="og:description" content="オブジェクトの移動">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-translation.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Translation">
+<meta name="twitter:title" content="WebGPU 平行移動">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-translation.html">
-<meta name="twitter:description" content="Moving an object">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="オブジェクトの移動">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-translation_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-translation.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-translation_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-translation.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-translation.html",
+      "inLanguage":"ja",
+      "name":"WebGPU 平行移動",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-translation.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Translation</title>
+<title>WebGPU 平行移動</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,317 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Translation</h1>
+    <h1>WebGPU 平行移動</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-translation.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、<a href="webgpu-fundamentals.html">基礎に関する記事</a>、<a href="webgpu-uniforms.html">ユニフォームに関する記事</a>、<a href="webgpu-vertex-buffers.html">頂点バッファに関する記事</a>を読んでいることを前提としています。まだ読んでいない場合は、最初に読んでから戻ってくることをお勧めします。</p>
+<p>この記事は、3D数学について学ぶことを目的とした一連の記事の最初の記事です。各記事は前のレッスンを基にしているので、順番に読むと最も理解しやすいかもしれません。</p>
+<ol>
+<li><a href="webgpu-translation.html">平行移動</a>  ⬅ ここです</li>
+<li><a href="webgpu-rotation.html">回転</a></li>
+<li><a href="webgpu-scale.html">スケーリング</a></li>
+<li><a href="webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="webgpu-cameras.html">カメラ</a></li>
+<li><a href="webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="webgpu-scene-graphs.html">シーングラフ</a></li>
+</ol>
+<p><a href="webgpu-vertex-buffers.html">頂点バッファに関する記事</a>の例と同様のコードから始めますが、多数の円の代わりに単一のFを描画し、データを小さく保つために<a href="../webgpu-vertex-buffers.html#a-index-buffers">インデックスバッファ</a>を使用します。</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">Canvas 2D API</a>と同様に、クリップ空間ではなくピクセル空間で作業しましょう。Fを作成し、次のような6つの三角形から構築します。</p>
+<div class="webgpu_center"><img src="../resources/f-polygons.svg" style="width: 600px;"></div>
+<p>Fのデータは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createFVertices() {
+  const vertexData = new Float32Array([
+    // 左列
+    0, 0,
+    30, 0,
+    0, 150,
+    30, 150,
+
+    // 上の横木
+    30, 0,
+    100, 0,
+    30, 30,
+    100, 30,
+
+    // 中間の横木
+    30, 60,
+    70, 60,
+    30, 90,
+    70, 90,
+  ]);
+
+  const indexData = new Uint32Array([
+    0,  1,  2,    2,  1,  3,  // 左列
+    4,  5,  6,    6,  5,  7,  // 上の横木
+    8,  9, 10,   10,  9, 11,  // 中間の横木
+  ]);
+
+  return {
+    vertexData,
+    indexData,
+    numVertices: indexData.length,
+  };
+}
+</pre>
+<p>上記の頂点データはピクセル空間にあるため、それをクリップ空間に変換する必要があります。シェーダーに解像度を渡し、いくつかの計算を行うことで、これを行うことができます。一度に1ステップずつ説明します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  color: vec4f,
+  resolution: vec2f,
+};
+
+struct Vertex {
+  @location(0) position: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  
+  let position = vert.position;
+
+  // 位置をピクセルから0.0から1.0の値に変換します
+  let zeroToOne = position / uni.resolution;
+
+  // 0 &lt;-&gt; 1から0 &lt;-&gt; 2に変換します
+  let zeroToTwo = zeroToOne * 2.0;
+
+  // 0 &lt;-&gt; 2から-1 &lt;-&gt; +1（クリップ空間）に変換します
+  let flippedClipSpace = zeroToTwo - 1.0;
+
+  // Yを反転させます
+  let clipSpace = flippedClipSpace * vec2f(1, -1);
+
+  vsOut.position = vec4f(clipSpace, 0.0, 1.0);
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return uni.color;
+}
+</pre>
+<p>頂点位置を取得し、それを解像度で除算することがわかります。これにより、キャンバス全体で0から1までの値が得られます。次に、2を乗算して、キャンバス全体で0から2までの値を取得します。1を減算します。これで、値はクリップ空間にありますが、クリップ空間は正のYが上であるのに対し、キャンバス2Dは正のYが下であるため、反転しています。したがって、Yを-1で乗算して反転させます。これで、シェーダーから出力できる必要なクリップ空間の値が得られました。</p>
+<p>属性は1つしかないので、パイプラインは次のようになります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'just 2d position',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+*          arrayStride: (2) * 4, // (2) floats, 4 bytes each
+*          attributes: [
+*            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+*          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>ユニフォーム用のバッファを設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 色、解像度、パディング
+*  const uniformBufferSize = (4 + 2) * 4 + 8;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+*  const kColorOffset = 0;
+*  const kResolutionOffset = 4;
+*
+*  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+*  const resolutionValue = uniformValues.subarray(kResolutionOffset, kResolutionOffset + 2);
+*
+*  // 色は変更されないので、初期化時に一度設定しましょう
+*  colorValue.set([Math.random(), Math.random(), Math.random(), 1]);
+</pre>
+<p>レンダリング時に解像度を設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    ...
+
+    // JavaScript側のFloat32Arrayでユニフォーム値を設定します
+    resolutionValue.set([canvas.width, canvas.height]);
+
+    // ユニフォーム値をユニフォームバッファにアップロードします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>実行する前に、キャンバスの背景を方眼紙のように見せましょう。方眼紙の各グリッドセルが10x10ピクセルになるようにスケールを設定し、100x100ピクセルごとに太い線を描画します。</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">:root {
+  --bg-color: #fff;
+  --line-color-1: #AAA;
+  --line-color-2: #DDD;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #000;
+    --line-color-1: #666;
+    --line-color-2: #333;
+  }
+}
+canvas {
+  display: block;  /* canvasをブロックのように動作させる */
+  width: 100%;     /* canvasがコンテナを埋めるようにする */
+  height: 100%;
+  background-color: var(--bg-color);
+  background-image: linear-gradient(var(--line-color-1) 1.5px, transparent 1.5px),
+      linear-gradient(90deg, var(--line-color-1) 1.5px, transparent 1.5px),
+      linear-gradient(var(--line-color-2) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-color-2) 1px, transparent 1px);
+  background-position: -1.5px -1.5px, -1.5px -1.5px, -1px -1px, -1px -1px;
+  background-size: 100px 100px, 100px 100px, 10px 10px, 10px 10px;  
+}
+</pre>
+<p>上記のCSSは、明暗両方のケースを処理する必要があります。</p>
+<p>これまでのすべての例では、不透明なキャンバスを使用してきました。透明にして、設定した背景が見えるようにするには、いくつかの変更を加える必要があります。</p>
+<p>まず、キャンバスを構成するときに<code class="notranslate" translate="no">alphaMode</code>を<code class="notranslate" translate="no">'premultiplied'</code>に設定する必要があります。デフォルトは<code class="notranslate" translate="no">'opaque'</code>です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  context.configure({
+    device,
+    format: presentationFormat,
++    alphaMode: 'premultiplied',
+  });
+</pre>
+<p>次に、<a href="https://www.w3.org/TR/webgpu/#dictdef-gpurenderpassdescriptor"><code class="notranslate" translate="no">GPURenderPassDescriptor</code></a>でキャンバスを0、0、0、0にクリアする必要があります。デフォルトの<code class="notranslate" translate="no">clearValue</code>は0、0、0、0なので、他の値に設定していた行を削除するだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: &lt;- レンダリング時に設定されます
+-        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+</pre>
+<p>そして、これでFができました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-translation-prep.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-translation-prep.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>Fのサイズが背後にあるグリッドに対して相対的であることに注意してください。Fデータの頂点位置は、幅100ピクセル、高さ150ピクセルのFを作成し、表示されるものと一致します。Fは0,0から始まり、右に100,0、下に0,150まで伸びます。</p>
+<p>基本ができたので、<em>平行移動</em>を追加しましょう。</p>
+<p>平行移動は、単に物を動かすプロセスなので、ユニフォームに平行移動を追加し、それを位置に追加するだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  color: vec4f,
+  resolution: vec2f,
++  translation: vec2f,
+};
+
+struct Vertex {
+  @location(0) position: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  
++  // 平行移動を追加します
+-  let position = vert.position;
++  let position = vert.position + uni.translation;
+
+  // 位置をピクセルから0.0から1.0の値に変換します
+  let zeroToOne = position / uni.resolution;
+
+  // 0 &lt;-&gt; 1から0 &lt;-&gt; 2に変換します
+  let zeroToTwo = zeroToOne * 2.0;
+
+  // 0 &lt;-&gt; 2から-1 &lt;-&gt; +1（クリップ空間）に変換します
+  let flippedClipSpace = zeroToTwo - 1.0;
+
+  // Yを反転させます
+  let clipSpace = flippedClipSpace * vec2f(1, -1);
+
+  vsOut.position = vec4f(clipSpace, 0.0, 1.0);
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return uni.color;
+}
+</pre>
+<p>ユニフォームバッファにスペースを追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  // 色、解像度、パディング
+-  const uniformBufferSize = (4 + 2) * 4 + 8;
++  // 色、解像度、平行移動
++  const uniformBufferSize = (4 + 2 + 2) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kColorOffset = 0;
+  const kResolutionOffset = 4;
++  const kTranslationOffset = 6;
+
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+  const resolutionValue = uniformValues.subarray(kResolutionOffset, kResolutionOffset + 2);
++  const translationValue = uniformValues.subarray(kTranslationOffset, kTranslationOffset + 2);
+</pre>
+<p>そして、レンダリング時に平行移動を設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const settings = {
++    translation: [0, 0],
++  };
+
+  function render() {
+    ...
+
+    // JavaScript側のFloat32Arrayでユニフォーム値を設定します
+    resolutionValue.set([canvas.width, canvas.height]);
++    translationValue.set(settings.translation);
+
+    // ユニフォーム値をユニフォームバッファにアップロードします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>最後に、平行移動を調整できるUIを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+import GUI from '../3rdparty/muigui-0.x.module.js';
+
+...
+  const settings = {
+    translation: [0, 0],
+  };
+
++  const gui = new GUI();
++  gui.onChange(render);
++  gui.add(settings.translation, '0', 0, 1000).name('translation.x');
++  gui.add(settings.translation, '1', 0, 1000).name('translation.y');
+</pre>
+<p>そして、平行移動を追加しました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-translation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-translation.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>ピクセルグリッドと一致することに注意してください。平行移動を200、300に設定すると、Fは0,0の左上の頂点が200,300にあるように描画されます。</p>
+<p>この記事は非常に単純に見えたかもしれません。すでにいくつかの例で<em>平行移動</em>を使用していましたが、「オフセット」と名付けていました。この記事はシリーズの一部です。単純でしたが、シリーズを続けるにつれて、そのポイントが文脈の中で意味をなすことを願っています。</p>
+<p>次は<a href="webgpu-rotation.html">回転</a>です。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +553,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +642,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 平行移動`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-multisampling.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Multisampling">
+
+<meta name="description" content="マルチサンプリング / MSAA">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_ja.jpg">
+
+<meta property="og:title" content="WebGPU マルチサンプリング">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Multisampling / MSAA">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_ja.jpg">
+<meta property="og:description" content="マルチサンプリング / MSAA">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multisampling.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Multisampling">
+<meta name="twitter:title" content="WebGPU マルチサンプリング">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multisampling.html">
-<meta name="twitter:description" content="Multisampling / MSAA">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="マルチサンプリング / MSAA">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multisampling.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multisampling_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multisampling.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multisampling.html",
+      "inLanguage":"ja",
+      "name":"WebGPU マルチサンプリング",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multisampling.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Multisampling</title>
+<title>WebGPU マルチサンプリング</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,286 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Multisampling</h1>
+    <h1>WebGPU マルチサンプリング</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-multisampling.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>MSAAは、マルチサンプリングアンチエイリアシングの略です。アンチエイリアシングとは、ベクトル形状を離散ピクセルとして描画しようとするときに発生するブロック状の問題であるエイリアシングの問題を防ごうとすることを意味します。</p>
+<p><a href="webgpu-fundamentals.html">基礎に関する記事</a>で、WebGPUがどのようにものを描画するかを示しました。頂点シェーダーで<code class="notranslate" translate="no">@builtin(position)</code>値として返すクリップ空間の頂点を取り、3つごとに三角形を計算し、その三角形の内側にある各ピクセルの中心に対してフラグメントシェーダーを呼び出して、ピクセルを何色にするかを尋ねます。</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels"></div>
+    <div>頂点をドラッグ</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-result"></div>
+    <div>結果</div>
+  </div>
+</div>
+<p>上の三角形は非常にブロック状です。解像度を上げることはできますが、表示できる最高の解像度はディスプレイの解像度であり、ブロック状に見えないようにするには十分ではない場合があります。</p>
+<p>1つの解決策は、より高い解像度でレンダリングすることです。たとえば、解像度を4倍（幅と高さの両方で2倍）に上げてから、結果をキャンバスに「バイリニアフィルタリング」するとします。<a href="webgpu-textures.html">テクスチャに関する記事</a>で「バイリニアフィルタリング」について説明しました。</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x"></div>
+    <div>4倍の解像度</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x-result"></div>
+    <div>バイリニアフィルタリングされた結果</div>
+  </div>
+</div>
+<p>この解決策は機能しますが、無駄が多いです。左の画像の2x2ピクセルごとに、右の画像の1ピクセルに変換されますが、多くの場合、それらの4つのピクセルはすべて三角形の内側にあるため、アンチエイリアシングは必要ありません。4つのピクセルはすべて赤です。</p>
+<div class="webgpu_center side-by-side flex-gap">
+  <div class="multisample-example">
+    <div data-diagram="clip-space-to-texels-4x-waste"></div>
+    <div>4つの<span style="color: cyan;">シアン</span>ピクセルのうち3つは無駄になります</div>
+  </div>
+</div>
+<p>1ピクセルの代わりに4つの赤いピクセルを描画するのは時間の無駄です。GPUはフラグメントシェーダーを4回呼び出しました。フラグメントシェーダーはかなり大きく、多くの作業を行う可能性があるため、できるだけ少ない回数で呼び出したいです。三角形が3ピクセルを横切る場合でも、次のようになります。</p>
+<div class="webgpu_center">
+  <img src="../resources/antialias-4x.svg" width="600">
+</div>
+<p>上記では、4倍のレンダリングで、三角形が3ピクセルの中心をカバーしているため、フラグメントシェーダーは3回呼び出されます。その後、結果をバイリニアフィルタリングします。</p>
+<p>ここで、マルチサンプリングがより効率的になります。特別な「マルチサンプルテクスチャ」を作成します。マルチサンプルテクスチャに三角形を描画すると、4つの<em>サンプル</em>のいずれかが三角形の内側にある場合、GPUはフラグメントシェーダーを1回呼び出し、三角形の内側にある<em>サンプル</em>にのみ結果を書き込みます。</p>
+<div class="webgpu_center">
+  <img src="../resources/antialias-multisample-4.svg" width="600">
+</div>
+<p>上記では、マルチサンプリングレンダリングで、三角形が3つの<em>サンプル</em>をカバーしているため、フラグメントシェーダーは1回しか呼び出されません。次に、結果を<em>解決</em>します。三角形が4つのサンプルポイントすべてをカバーしている場合も、プロセスは同様です。フラグメントシェーダーは1回しか呼び出されませんが、その結果は4つのサンプルすべてに書き込まれます。</p>
+<p>4倍のレンダリングではCPUが4ピクセルの中心が三角形の内側にあるかどうかをチェックしたのに対し、マルチサンプリングレンダリングではGPUがグリッドにない「サンプル位置」をチェックすることに注意してください。同様に、サンプル値自体はグリッドを表さないため、それらを「解決」するプロセスはバイリニアフィルタリングではなく、GPU次第です。これらの中心から外れたサンプル位置は、ほとんどの状況でより良いアンチエイリアシングをもたらすようです。</p>
+<h2 id="マルチサンプリングの使用方法"><a id="a-multisampling"></a>マルチサンプリングの使用方法</h2>
+<p>では、マルチサンプリングをどのように使用するのでしょうか？3つの基本的な手順で行います。</p>
+<ol>
+<li>パイプラインをマルチサンプルテクスチャにレンダリングするように設定します。</li>
+<li>最終的なテクスチャと同じサイズのマルチサンプルテクスチャを作成します。</li>
+<li>レンダーパスをマルチサンプルテクスチャにレンダリングし、最終的なテクスチャ（キャンバス）に<em>解決</em>するように設定します。</li>
+</ol>
+<p>簡単にするために、<a href="../webgpu-fundamentals.html#a-resizing">基礎に関する記事</a>の最後にあるレスポンシブな三角形の例を取り上げ、マルチサンプリングを追加しましょう。</p>
+<h3 id="パイプラインをマルチサンプルテクスチャにレンダリングするように設定する">パイプラインをマルチサンプルテクスチャにレンダリングするように設定する</h3>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded red triangle pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
++    multisample: {
++      count: 4,
++    },
+  });
+</pre>
+<p>上記の<code class="notranslate" translate="no">multisample</code>設定を追加すると、このパイプラインはマルチサンプルテクスチャにレンダリングできるようになります。</p>
+<h3 id="最終的なテクスチャと同じサイズのマルチサンプルテクスチャを作成する">最終的なテクスチャと同じサイズのマルチサンプルテクスチャを作成する</h3>
+<p>最終的なテクスチャはキャンバスのテクスチャです。ユーザーがウィンドウのサイズを変更するなど、キャンバスのサイズが変更される可能性があるため、レンダリング時にこのテクスチャを作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let multisampleTexture;
+
+  function render() {
++    // キャンバスコンテキストから現在のテクスチャを取得します
++    const canvasTexture = context.getCurrentTexture();
++
++    // マルチサンプルテクスチャが存在しないか、
++    // サイズが間違っている場合は、新しいものを作成します。
++    if (!multisampleTexture ||
++        multisampleTexture.width !== canvasTexture.width ||
++        multisampleTexture.height !== canvasTexture.height) {
++
++      // 既存のマルチサンプルテクスチャがある場合は破棄します。
++      if (multisampleTexture) {
++        multisampleTexture.destroy();
++      }
++
++      // キャンバスのサイズに一致する新しいマルチサンプルテクスチャを作成します
++      multisampleTexture = device.createTexture({
++        format: canvasTexture.format,
++        usage: GPUTextureUsage.RENDER_ATTACHMENT,
++        size: [canvasTexture.width, canvasTexture.height],
+*        sampleCount: 4,
++      });
++    }
+
+  ...
+</pre>
+<p>上記のコードは、（a）マルチサンプルテクスチャがない場合、または（b）持っているものがキャンバスのサイズと一致しない場合にマルチサンプルテクスチャを作成します。キャンバスと同じサイズのテクスチャを作成しますが、<code class="notranslate" translate="no">sampleCount: 4</code>を追加してマルチサンプルテクスチャにします。</p>
+<h3 id="レンダーパスをマルチサンプルテクスチャにレンダリングし、最終的なテクスチャ（キャンバス）に解決するように設定する">レンダーパスをマルチサンプルテクスチャにレンダリングし、最終的なテクスチャ（キャンバス）に<em>解決</em>するように設定する</h3>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    // キャンバスコンテキストから現在のテクスチャを取得し、
+-    // レンダリングするテクスチャとして設定します。
+-    renderPassDescriptor.colorAttachments[0].view =
+-        context.getCurrentTexture().createView();
+
++    // マルチサンプルテクスチャをレンダリングするテクスチャとして設定します
++    renderPassDescriptor.colorAttachments[0].view =
++        multisampleTexture.createView();
++    // キャンバステクスチャを、マルチサンプルテクスチャを「解決」する
++    // テクスチャとして設定します。
++    renderPassDescriptor.colorAttachments[0].resolveTarget =
++        canvasTexture.createView();
+</pre>
+<p><em>解決</em>とは、マルチサンプルテクスチャを取得し、本当に欲しかったテクスチャのサイズに変換するプロセスです。この場合、キャンバスです。上記では、4倍のバージョンで、4倍のテクスチャを1倍のテクスチャにバイリニアフィルタリングすることで、この手順を手動で行いました。これは同様のプロセスですが、実際にはマルチサンプルテクスチャを使用したバイリニアフィルタリングではありません。<a href="#a-not-a-grid">下記参照</a></p>
+<p>そして、これが</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-simple.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-simple.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>見るべきものはあまりありませんが、低解像度で並べて比較すると、左側のマルチサンプリングなしのオリジナルと右側のマルチサンプリングありのものでは、右側のものがアンチエイリアシングされていることがわかります。</p>
+<div class="webgpu_center side-by-side flex-gap" style="max-width: 850px">
+  <div class="multisample-example">
+    <div data-diagram="simple-triangle"></div>
+    <div>オリジナル</div>
+  </div>
+  <div class="multisample-example">
+    <div data-diagram="simple-triangle-multisample"></div>
+    <div>マルチサンプリングあり</div>
+  </div>
+</div>
+<p>注意すべき点：</p>
+<h2 id="countは4でなければなりません"><code class="notranslate" translate="no">count</code>は<code class="notranslate" translate="no">4</code>でなければなりません</h2>
+<p>WebGPUバージョン1では、レンダーパイプラインの<code class="notranslate" translate="no">multisample: { count }</code>を4または1にしか設定できません。同様に、テクスチャの<code class="notranslate" translate="no">sampleCount</code>を4または1にしか設定できません。1はデフォルトであり、テクスチャがマルチサンプリングされていないことを意味します。</p>
+<h2 id="マルチサンプリングはグリッドを使用しません"><a id="a-not-a-grid"></a>マルチサンプリングはグリッドを使用しません</h2>
+<p>上記で指摘したように、マルチサンプリングはグリッド上では行われません。sampleCount = 4の場合、サンプル位置は次のようになります。</p>
+<div class="webgpu_center">
+  <img src="../resources/multisample-4x.svg" width="256">
+  <div class="center">count: 4</div>
+</div>
+<div class="webgpu_center">
+  <img src="../resources/multisample-2x.svg" width="256">
+  <div class="center">count: 2</div>
+</div>
+<div class="webgpu_center">
+  <img src="../resources/multisample-8x.svg" width="256">
+  <div class="center">count: 8</div>
+</div>
+<div class="webgpu_center">
+  <img src="../resources/multisample-16x.svg" width="256">
+  <div class="center">count: 16</div>
+</div>
+<p><strong>WebGPUは現在、4のカウントのみをサポートしています</strong></p>
+<h2 id="すべてのレンダーパスで解決ターゲットを設定する必要はありません">すべてのレンダーパスで解決ターゲットを設定する必要はありません</h2>
+<p><code class="notranslate" translate="no">colorAttachment[0].resolveTarget</code>を設定すると、WebGPUに「このレンダーパスのすべての描画が終了したら、マルチサンプルテクスチャを<code class="notranslate" translate="no">resolveTarget</code>に設定されたテクスチャにダウンスケールする」と指示します。複数のレンダーパスがある場合は、おそらく最後のパスまで解決したくないでしょう。最後のパスで解決するのが最も高速ですが、解決するためだけに空の最後のレンダーパスを作成することも完全に許容されます。最初のパス以外のすべてのパスで<code class="notranslate" translate="no">loadOp</code>を<code class="notranslate" translate="no">'clear'</code>ではなく<code class="notranslate" translate="no">'load'</code>に設定するようにしてください。そうしないと、クリアされます。</p>
+<h2 id="オプションで、各サンプルポイントでフラグメントシェーダーを実行できます。">オプションで、各サンプルポイントでフラグメントシェーダーを実行できます。</h2>
+<p>上記では、フラグメントシェーダーはマルチサンプルテクスチャの4つのサンプルごとに1回しか実行されないと述べました。1回実行し、三角形の内側にあるサンプルに結果を格納します。これが、解像度を4倍にしてレンダリングするよりも高速な理由です。</p>
+<p><a href="../webgpu-inter-stage-variables.html#a-interpolate">ステージ間変数に関する記事</a>では、<code class="notranslate" translate="no">@interpolate(...)</code>属性を使用してステージ間変数を補間する方法を説明しました。1つのオプションは<code class="notranslate" translate="no">sample</code>で、この場合、フラグメントシェーダーはサンプルごとに1回実行されます。また、<code class="notranslate" translate="no">@builtin(sample_index)</code>のような組み込みもあり、現在作業しているサンプルを教えてくれます。また、<code class="notranslate" translate="no">@builtin(sample_mask)</code>は、入力として、三角形の内側にあるサンプルを教えてくれ、出力として、サンプルポイントが更新されるのを防ぐことができます。</p>
+<h2 id="centerとcentroid"><code class="notranslate" translate="no">center</code>と<code class="notranslate" translate="no">centroid</code></h2>
+<p>3つの<em>サンプリング</em>補間モードがあります。上記では、フラグメントシェーダーがサンプルごとに1回呼び出される<code class="notranslate" translate="no">'sample'</code>モードについて説明しました。他の2つのモードは、デフォルトの<code class="notranslate" translate="no">'center'</code>と<code class="notranslate" translate="no">'centroid'</code>です。</p>
+<ul>
+<li><code class="notranslate" translate="no">'center'</code>は、ピクセルの中心を基準に値を補間します。</li>
+</ul>
+<div class="webgpu_center">
+  <img src="../resources/multisample-centroid-issue.svg" width="400">
+</div>
+<p>上記では、サンプルポイント<code class="notranslate" translate="no">s1</code>と<code class="notranslate" translate="no">s3</code>が三角形の内側にある単一のピクセル/テクセルを見ることができます。フラグメントシェーダーは1回呼び出され、ピクセルの中心（<code class="notranslate" translate="no">c</code>）を基準に補間された値を持つステージ間変数が渡されます。問題は、<strong><code class="notranslate" translate="no">c</code>が三角形の外側にある</strong>ことです。</p>
+<p>これは問題にならないかもしれませんが、値が三角形の内側にあると仮定する数学がある可能性があります。良い例はわかりませんが、各点に重心座標を追加すると想像してください。重心座標は、基本的に0から1までの3つの座標であり、各値は三角形の頂点の1つから特定の位置までの距離を表します。これを行うには、次のように重心点を追加するだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VOut {
++  @builtin(position) position: vec4f,
++  @location(0) baryCoord: vec3f,
++};
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+-) -&gt; @builtin(position) vec4f {
++) -&gt; VOut {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
++  let bary = array(
++    vec3f(1, 0, 0),
++    vec3f(0, 1, 0),
++    vec3f(0, 0, 1),
++  );
+-    return vec4f(pos[vertexIndex], 0.0, 1.0);
++  var vout: VOut;
++  vout.position = vec4f(pos[vertexIndex], 0.0, 1.0);
++  vout.baryCoord = bary[vertexIndex];
++  return vout;
+}
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return vec4f(1, 0, 0, 1);
++@fragment fn fs(vin: VOut) -&gt; @location(0) vec4f {
++  let allAbove0 = all(vin.baryCoord &gt;= vec3f(0));
++  let allBelow1 = all(vin.baryCoord &lt;= vec3f(1));
++  let inside = allAbove0 &amp;&amp; allBelow1;
++  let red = vec4f(1, 0, 0, 1);
++  let yellow = vec4f(1, 1, 0, 1);
++  return select(yellow, red, inside);
+}
+</pre>
+<p>上記では、最初の点に<code class="notranslate" translate="no">1, 0, 0</code>、2番目の点に<code class="notranslate" translate="no">0, 1, 0</code>、3番目の点に<code class="notranslate" translate="no">0, 0, 1</code>を関連付けています。それらの間を補間すると、どの値も0未満または1を超えることはありません。</p>
+<p>フラグメントシェーダーでは、<code class="notranslate" translate="no">all(vin.baryCoord &gt;= vec3f(0))</code>でそれらの補間された値の3つすべて（x、y、z）が<code class="notranslate" translate="no">&gt;= 0</code>であるかどうかをテストします。また、<code class="notranslate" translate="no">all(vin.baryCoord &lt;= vec3f(1))</code>でそれらがすべて<code class="notranslate" translate="no">&lt;= 1</code>であるかどうかもテストします。最後に、2つを<code class="notranslate" translate="no">&amp;</code>で結合します。これにより、三角形の内側か外側かがわかります。最後に、内側の場合は赤、内側でない場合は黄色を選択します。頂点<em>間</em>を補間しているため、常に内側にあると予想されます。</p>
+<p>試してみるために、結果が見やすくなるように、例を低解像度にしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+-      const width = entry.contentBoxSize[0].inlineSize;
+-      const height = entry.contentBoxSize[0].blockSize;
++      const width = entry.contentBoxSize[0].inlineSize / 16 | 0;
++      const height = entry.contentBoxSize[0].blockSize / 16 | 0;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // 再レンダリング
+      render();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>そして、いくつかのCSSです。</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">canvas {
++  image-rendering: pixelated;
++  image-rendering: crisp-edges;
+  display: block;  /* canvasをブロックのように動作させる */
+  width: 100%;     /* canvasがコンテナを埋めるようにする */
+  height: 100%;
+}
+</pre>
+<p>これを実行すると、次のようになります。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-center-issue.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-center-issue.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>一部のエッジピクセルに黄色が含まれていることがわかります。これは、上記で指摘したように、フラグメントシェーダーに渡される補間されたステージ間変数の値がピクセルの中心を基準にしているためです。その中心は、黄色が表示されている場合に三角形の外側にあります。</p>
+<p>補間サンプルモードを<code class="notranslate" translate="no">'centroid'</code>に切り替えると、この問題が解決されます。<code class="notranslate" translate="no">'centroid'</code>モードでは、GPUはピクセル内の三角形の領域の重心を使用します。</p>
+<div class="webgpu_center">
+  <img src="../resources/multisample-centroid-fix.svg" width="400">
+</div>
+<p>サンプルを取得して補間モードを<code class="notranslate" translate="no">'centroid'</code>に変更すると、</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VOut {
+  @builtin(position) position: vec4f,
+-  @location(0) baryCoord: vec3f,
++  @location(0) @interpolate(perspective, centroid) baryCoord: vec3f,
+};
+</pre>
+<p>GPUは、重心を基準に補間されたステージ間変数を渡し、黄色のピクセルの問題は解決します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multisample-centroid.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multisample-centroid.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<blockquote>
+<p>注：GPUは、ピクセル内の三角形の領域の重心を実際に計算する場合としない場合があります。保証されているのは、ステージ間変数が、ピクセルと交差する三角形の部分の内側のいくつかの領域を基準に補間されることだけです。</p>
+</blockquote>
+<h2 id="三角形内のアンチエイリアシングはどうですか？">三角形内のアンチエイリアシングはどうですか？</h2>
+<p>マルチサンプリングは、通常、三角形のエッジにのみ役立ちます。フラグメントシェーダーを1回しか呼び出していないため、すべてのサンプル位置が三角形の内側にある場合、フラグメントシェーダーの同じ結果がすべてのサンプルに書き込まれるだけです。つまり、結果はマルチサンプリングしていない場合と変わりません。</p>
+<p>上記の例では、単色の赤を描画していたため、明らかに問題はありませんでした。テクスチャからサンプリングしている場合はどうでしょうか。三角形の内側にコントラストの強い色が隣接している可能性があります。各サンプルの色がテクスチャの異なる場所から取得されるようにしたいのではないでしょうか？</p>
+<p>三角形の内側では、<a href="webgpu-textures.html">ミップマップとフィルタリング</a>を使用して適切な色を選択するため、三角形の内側のアンチエイリアシングはそれほど重要ではない場合があります。一方、これは特定のレンダリング手法で問題になる可能性もあり、そのため、アンチエイリアシングには他の解決策があり、サンプルごとの処理を行いたい場合は<code class="notranslate" translate="no">@interpolate(..., sample)</code>を使用できる理由でもあります。</p>
+<h2 id="マルチサンプリングはアンチエイリアシングの唯一の解決策ではありません。">マルチサンプリングはアンチエイリアシングの唯一の解決策ではありません。</h2>
+<p>このページでは2つの解決策について説明しました。（1）より高い解像度のテクスチャに描画し、そのテクスチャをより低い解像度で描画する。（2）マルチサンプリングを使用する。ただし、他にもたくさんあります。<a href="https://vr.arvilab.com/blog/anti-aliasing">それらのいくつかについて説明している記事はこちらです</a>。</p>
+<p>その他のリソース：</p>
+<ul>
+<li><a href="https://therealmjp.github.io/posts/msaa-overview/">MSAAの簡単な概要</a></li>
+<li><a href="https://www.rastergrid.com/blog/gpu-tech/2021/10/multisampling-primer/">マルチサンプリング入門</a></li>
+</ul>
+<!-- この記事の最後にこれを保持してください -->
+<link href="../webgpu-multisampling.css" rel="stylesheet">
+<script type="module" src="../webgpu-multisampling.js"></script>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +522,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +611,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU マルチサンプリング`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

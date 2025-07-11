@@ -430,8 +430,8 @@ uniform 버퍼의 경우 최대 크기는 하한이 64k 입니다.
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: staticStorageBuffer }},
-      { binding: 1, resource: { buffer: changingStorageBuffer }},
+      { binding: 0, resource: staticStorageBuffer},
+      { binding: 1, resource: changingStorageBuffer},
     ],
   });
 </pre>
@@ -615,9 +615,9 @@ struct VSOutput {
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: staticStorageBuffer }},
-      { binding: 1, resource: { buffer: changingStorageBuffer }},
-+      { binding: 2, resource: { buffer: vertexStorageBuffer }},
+      { binding: 0, resource: staticStorageBuffer},
+      { binding: 1, resource: changingStorageBuffer},
++      { binding: 2, resource: vertexStorageBuffer},
     ],
   });
 </pre>

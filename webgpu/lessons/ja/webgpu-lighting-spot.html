@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-lighting-spot.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU - Spot Lighting">
+
+<meta name="description" content="WebGPUでスポットライトを実装する方法">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-spot_ja.jpg">
+
+<meta property="og:title" content="WebGPU - スポットライト">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to implement spot lights in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-spot_ja.jpg">
+<meta property="og:description" content="WebGPUでスポットライトを実装する方法">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-spot.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU - Spot Lighting">
+<meta name="twitter:title" content="WebGPU - スポットライト">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-spot.html">
-<meta name="twitter:description" content="How to implement spot lights in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPUでスポットライトを実装する方法">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-spot_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-spot.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-spot_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-spot.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-spot.html",
+      "inLanguage":"ja",
+      "name":"WebGPU - スポットライト",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-spot.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU - Spot Lighting</title>
+<title>WebGPU - スポットライト</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,335 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU - Spot Lighting</h1>
+    <h1>WebGPU - スポットライト</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-lighting-spot.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、<a href="webgpu-lighting-point.html">点光源に関する記事</a>の続きです。まだ読んでいない場合は、<a href="webgpu-lighting-point.html">そこから始める</a>ことをお勧めします。</p>
+<p>前の記事では、オブジェクトの表面上のすべての点について、光からその表面上の点までの方向を計算する点光源について説明しました。次に、<a href="webgpu-lighting-directional.html">指向性ライティング</a>で行ったのと同じことを行いました。つまり、表面法線（表面が向いている方向）と光の方向のドット積を取りました。これにより、2つの方向が一致する場合は1、したがって完全に照らされ、2つの方向が垂直な場合は0、反対の場合は-1の値が得られました。その値を直接使用して表面の色を乗算し、ライティングを得ました。</p>
+<p>スポットライトは、ごくわずかな変更です。実際、これまでにやったことを創造的に考えれば、独自の解決策を導き出せるかもしれません。</p>
+<p>点光源は、その点からすべての方向に光が進む点と考えることができます。スポットライトを作成するには、その点から方向を選択するだけで済みます。これがスポットライトの方向です。次に、光が進むすべての方向について、その方向と選択したスポットライトの方向のドット積を取ることができます。任意の制限を選択し、その制限内にある場合は点灯し、制限内にない場合は点灯しないようにします。</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram noborder" style="width: 700px; height: 400px;" src="/webgpu/lessons/resources/spot-lighting.html"></iframe>
+</div>
+
+<p></p>
+<p>上の図では、すべての方向に光線が進む光があり、それらには方向に対するドット積が印刷されています。次に、スポットライトの方向である特定の<strong>方向</strong>があります。制限を選択します（上記では度単位です）。制限から<em>ドット制限</em>を計算します。制限のコサインを取るだけです。スポットライトの選択した方向と各光線の方向のドット積がドット制限より大きい場合は、ライティングを行います。それ以外の場合は、ライティングは行いません。</p>
+<p>別の言い方をすれば、制限が20度だとしましょう。それをラジアンに変換し、そこからコサインを取ることで-1から1の値に変換できます。それをドット空間と呼びましょう。つまり、制限値の小さな表を次に示します。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">          制限（度単位）
+ 度 | ラジアン | ドット空間
+ --------+---------+----------
+    0    |   0.0   |    1.0
+    22   |    .38  |     .93
+    45   |    .79  |     .71
+    67   |   1.17  |     .39
+    90   |   1.57  |    0.0
+   180   |   3.14  |   -1.0
+</pre>
+<p>次に、次のように確認できます。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">dotFromDirection = dot(surfaceToLight, -lightDirection)
+if (dotFromDirection &gt;= limitInDotSpace) {
+   // ライティングを行う
+}
+</pre>
+<p>では、やってみましょう。</p>
+<p>まず、<a href="webgpu-lighting-point.html">前の記事</a>のフラグメントシェーダーを変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
+  world: mat4x4f,
+  color: vec4f,
+  lightWorldPosition: vec3f,
+  viewWorldPosition: vec3f,
+  shininess: f32,
++  lightDirection: vec3f,
++  limit: f32,
+};
+
+...
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  // vsOut.normalはステージ間変数であるため、
+  // 補間されるため、単位ベクトルにはなりません。
+  // 正規化すると、再び単位ベクトルになります。
+  let normal = normalize(vsOut.normal);
+
+  let surfaceToLightDirection = normalize(vsOut.surfaceToLight);
+  let surfaceToViewDirection = normalize(vsOut.surfaceToView);
+  let halfVector = normalize(
+    surfaceToLightDirection + surfaceToViewDirection);
+
+
++  var light = 0.0;
++  var specular = 0.0;
++
++  let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
++  if (dotFromDirection &gt; uni.limit) {
+    // 法線と光への方向のドット積を
+    // 取ることで光を計算します。
+-    let light = dot(normal, surfaceToLightDirection);
++    light = dot(normal, surfaceToLightDirection);
+
+    specular = dot(normal, halfVector);
+    specular = select(
+        0.0,                           // 条件がfalseの場合の値
+        pow(specular, uni.shininess),  // 条件がtrueの場合の値
+        specular &gt; 0.0);               // 条件
++  }
+
+  // 色の部分（アルファではない）のみを
+  // 光で乗算しましょう。
+  let color = uni.color.rgb * light + specular;
+  return vec4f(color, uni.color.a);
+}
+</pre>
+<p>もちろん、ユニフォームバッファに新しい値のためのスペースを追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4) * 4;
++  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4 + 4) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kNormalMatrixOffset = 0;
+  const kWorldViewProjectionOffset = 12;
+  const kWorldOffset = 28;
+  const kColorOffset = 44;
+  const kLightWorldPositionOffset = 48;
+  const kViewWorldPositionOffset = 52;
+  const kShininessOffset = 55;
++  const kLightDirectionOffset = 56;
++  const kLimitOffset = 59;
+
+  const normalMatrixValue = uniformValues.subarray(
+      kNormalMatrixOffset, kNormalMatrixOffset + 12);
+  const worldViewProjectionValue = uniformValues.subarray(
+      kWorldViewProjectionOffset, kWorldViewProjectionOffset + 16);
+  const worldValue = uniformValues.subarray(
+      kWorldOffset, kWorldOffset + 16);
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+  const lightWorldPositionValue = uniformValues.subarray(
+      kLightWorldPositionOffset, kLightWorldPositionOffset + 3);
+  const viewWorldPositionValue = uniformValues.subarray(
+      kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
+  const shininessValue = uniformValues.subarray(
+      kShininessOffset, kShininessOffset + 1);
++  const lightDirectionValue = uniformValues.subarray(
++      kLightDirectionOffset, kLightDirectionOffset + 3);
++  const limitValue = uniformValues.subarray(
++      kLimitOffset, kLimitOffset + 1);
+</pre>
+<p>そして、それらを設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    colorValue.set([0.2, 1, 0.2, 1]);  // green
+    lightWorldPositionValue.set([-10, 30, 100]);
+    viewWorldPositionValue.set(eye);
+    shininessValue[0] = settings.shininess;
++    limitValue[0] = Math.cos(settings.limit);
+
+    // ほとんどのスポットライトの例のように平面がないので、
+    // スポットライトをFに向けましょう。
+    {
+        const mat = mat4.aim(
+            lightWorldPositionValue,
+            [
+              target[0] + settings.aimOffsetX,
+              target[1] + settings.aimOffsetY,
+              0,
+            ],
+            up);
+        // 行列からzAxisを取得します
+        // lookAtは-Z軸を見下ろすため、それを否定します
+        lightDirectionValue.set(mat.slice(8, 11));
+    }
+</pre>
+<p>上記では、<a href="webgpu-cameras.html">カメラに関する記事</a>で説明した<code class="notranslate" translate="no">mat4.aim</code>を使用しています。具体的には、Fは<code class="notranslate" translate="no">target</code>です。スポットライトは<code class="notranslate" translate="no">-10, 30, 100</code>にあります。スポットライトを簡単に狙えるように、ターゲットにいくつかのオフセットを追加します。次に、<code class="notranslate" translate="no">z軸</code>（エイムが何かを指す方向）を抜き出すだけです。</p>
+<p>UIコードを追加するだけです。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">  const settings = {
+    rotation: degToRad(0),
+    shininess: 30,
++    limit: degToRad(15),
++    aimOffsetX: -10,
++    aimOffsetY: 10,
+  };
+
+  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
++  const limitOptions = { min: 0, max: 90, minRange: 1, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'rotation', radToDegOptions);
+  gui.add(settings, 'shininess', { min: 1, max: 250 });
++  gui.add(settings, 'limit', limitOptions);
++  gui.add(settings, 'aimOffsetX', -50, 50);
++  gui.add(settings, 'aimOffsetY', -50, 50);
+</pre>
+<p>そして、これがそれです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-spot.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-spot.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>1つの注意点は、シェーダーで<code class="notranslate" translate="no">uni.lightDirection</code>を否定していることです。これは<a href="https://en.wiktionary.org/wiki/six_of_one,_half_a_dozen_of_the_other"><em>六つのうちの一つ、半ダースのもう一つ</em></a>のようなものです。比較している2つの方向が一致するときに同じ方向を向くようにしたいです。つまり、surfaceToLightDirectionをスポットライトの方向の反対と比較する必要があります。</p>
+<p>現在、スポットライトは非常に厳しいです。スポットライトの内側にいるかどうかにかかわらず、物事は真っ黒になります。</p>
+<p>これを修正するには、1つではなく2つの制限、内側の制限と外側の制限を使用できます。内側の制限の内側にいる場合は1.0を使用します。外側の制限の外側にいる場合は0.0を使用します。内側の制限と外側の制限の間にある場合は、1.0と0.0の間を線形補間します。</p>
+<p>これを行う1つの方法は次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
+  world: mat4x4f,
+  color: vec4f,
+  lightWorldPosition: vec3f,
+  viewWorldPosition: vec3f,
+  shininess: f32,
+  lightDirection: vec3f,
+-  limit: f32,
++  innerLimit: f32,
++  outerLimit: f32,
+};
+
+...
+
+-  var light = 0.0;
+-  var specular = 0.0;
+-
+-  let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
+-  if (dotFromDirection &gt; uni.limit) {
+-    // 法線と光への方向のドット積を
+-    // 取ることで光を計算します。
+-    light = dot(normal, surfaceToLightDirection);
+-    specular = dot(normal, halfVector);
+-    specular = select(
+-        0.0,                           // 条件がfalseの場合の値
+-        pow(specular, uni.shininess),  // 条件がtrueの場合の値
+-        specular &gt; 0.0);               // 条件
+-  }
+
+    let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
+    let limitRange = uni.innerLimit - uni.outerLimit;
+    let inLight = saturate((dotFromDirection - uni.outerLimit) / limitRange);
+
+    // 法線と光への方向のドット積を
+    // 取ることで光を計算します。
+    let light = inLight * dot(normal, surfaceToLightDirection);
+
+    var specular = dot(normal, halfVector);
+    specular = inLight * select(
+        0.0,                           // 条件がfalseの場合の値
+        pow(specular, uni.shininess),  // 条件がtrueの場合の値
+        specular &gt; 0.0);               // 条件
+
+</pre>
+<p><code class="notranslate" translate="no">saturate</code>を使用しています。Saturateは値を0と1の間にクランプします。つまり、<code class="notranslate" translate="no">outerLimit</code>の外側にいる場合、<code class="notranslate" translate="no">inLight</code>は0になります。<code class="notranslate" translate="no">innerLimit</code>の内側にいる場合は1になります。そして、これら2つの制限の間では0と1の間になります。次に、光とスペキュラの計算に<code class="notranslate" translate="no">inLight</code>を乗算します。</p>
+<p>そして、ユニフォームバッファの設定を再度更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4 + 4) * 4;
++  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4 + 4 + 4) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kNormalMatrixOffset = 0;
+  const kWorldViewProjectionOffset = 12;
+  const kWorldOffset = 28;
+  const kColorOffset = 44;
+  const kLightWorldPositionOffset = 48;
+  const kViewWorldPositionOffset = 52;
+  const kShininessOffset = 55;
+  const kLightDirectionOffset = 56;
+-  const kLimitOffset = 59;
++  const kInnerLimitOffset = 59;
++  const kOuterLimitOffset = 60;
+
+  const normalMatrixValue = uniformValues.subarray(
+      kNormalMatrixOffset, kNormalMatrixOffset + 12);
+  const worldViewProjectionValue = uniformValues.subarray(
+      kWorldViewProjectionOffset, kWorldViewProjectionOffset + 16);
+  const worldValue = uniformValues.subarray(
+      kWorldOffset, kWorldOffset + 16);
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+  const lightWorldPositionValue = uniformValues.subarray(
+      kLightWorldPositionOffset, kLightWorldPositionOffset + 3);
+  const viewWorldPositionValue = uniformValues.subarray(
+      kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
+  const shininessValue = uniformValues.subarray(
+      kShininessOffset, kShininessOffset + 1);
+  const lightDirectionValue = uniformValues.subarray(
+      kLightDirectionOffset, kLightDirectionOffset + 3);
+-  const limitValue = uniformValues.subarray(
+-      kLimitOffset, kLimitOffset + 1);
++  const innerLimitValue = uniformValues.subarray(
++      kInnerLimitOffset, kInnerLimitOffset + 1);
++  const outerLimitValue = uniformValues.subarray(
++      kOuterLimitOffset, kOuterLimitOffset + 1);
+</pre>
+<p>そして、それらを設定する場所です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
++  const limitOptions = { min: 0, max: 90, minRange: 1, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'rotation', radToDegOptions);
+  gui.add(settings, 'shininess', { min: 1, max: 250 });
+-  gui.add(settings, 'limit', limitOptions);
++  GUI.makeMinMaxPair(gui, settings, 'innerLimit', 'outerLimit', limitOptions);
+  gui.add(settings, 'aimOffsetX', -50, 50);
+  gui.add(settings, 'aimOffsetY', -50, 50);
+
+  ...
+
+  function render() {
+
+    ...
+
+    colorValue.set([0.2, 1, 0.2, 1]);  // green
+    lightWorldPositionValue.set([-10, 30, 100]);
+    viewWorldPositionValue.set(eye);
+    shininessValue[0] = settings.shininess;
+-    limitValue[0] = Math.cos(settings.limit);
++    innerLimitValue[0] = Math.cos(settings.innerLimit);
++   outerLimitValue[0] = Math.cos(settings.outerLimit);
+
+    ...
+</pre>
+<p>そして、それは機能します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-spot-w-linear-falloff.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-spot-w-linear-falloff.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>これで、スポットライトのように見えるものが得られました！</p>
+<p>注意すべき点の1つは、<code class="notranslate" translate="no">innerLimit</code>が<code class="notranslate" translate="no">outerLimit</code>と等しい場合、<code class="notranslate" translate="no">limitRange</code>は0.0になることです。<code class="notranslate" translate="no">limitRange</code>で除算し、ゼロで除算することは悪い/未定義です。ここではシェーダーで何もする必要はありません。JavaScriptで<code class="notranslate" translate="no">innerLimit</code>が<code class="notranslate" translate="no">outerLimit</code>と等しくならないようにするだけで済みます。この場合、GUIがそれをやってくれます。</p>
+<p>WGSLには、これを少し単純化するために使用できる関数もあります。それは<code class="notranslate" translate="no">smoothstep</code>と呼ばれ、0から1の値を返しますが、下限と上限の両方を取り、それらの境界の間で0と1の間を線形補間します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">     smoothstep(lowerBound, upperBound, value)
+</pre>
+<p>では、やってみましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
+-    let limitRange = uni.innerLimit - uni.outerLimit;
+-    let inLight = saturate((dotFromDirection - uni.outerLimit) / limitRange);
++    let inLight = smoothStep(uni.outerLimit, uni.innerLimit, dotFromDirection);
+</pre>
+<p>それも機能します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-spot-w-smoothstep-falloff.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-spot-w-smoothstep-falloff.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>違いは、<code class="notranslate" translate="no">smoothstep</code>が線形補間の代わりに<em>エルミート補間</em>を使用することです。つまり、<code class="notranslate" translate="no">lowerBound</code>と<code class="notranslate" translate="no">upperBound</code>の間では、下の画像の右側のように補間しますが、線形補間は左側の画像のようになります。</p>
+<img class="webgpu_center invertdark" src="../resources/linear-vs-hermite.png">
+<p>違いが重要だと思うかどうかはあなた次第です。</p>
+<p>もう1つ注意すべき点は、<code class="notranslate" translate="no">smoothstep</code>関数は、<code class="notranslate" translate="no">lowerBound</code>が<code class="notranslate" translate="no">upperBound</code>以上の場合に未定義の結果になることです。それらが等しいことは、上記で抱えていたのと同じ問題です。<code class="notranslate" translate="no">lowerBound</code>が<code class="notranslate" translate="no">upperBound</code>より大きい場合に定義されないという追加の問題は新しいですが、スポットライトの目的上、それは決して真実ではありません。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +571,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +660,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU - スポットライト`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

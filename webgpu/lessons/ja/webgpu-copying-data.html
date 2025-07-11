@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-copying-data.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Copying Data">
+
+<meta name="description" content="バッファとテクスチャとの間でデータをコピーする">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_ja.jpg">
+
+<meta property="og:title" content="WebGPU データのコピー">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Copying Data to/from buffers and textures">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_ja.jpg">
+<meta property="og:description" content="バッファとテクスチャとの間でデータをコピーする">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-copying-data.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Copying Data">
+<meta name="twitter:title" content="WebGPU データのコピー">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-copying-data.html">
-<meta name="twitter:description" content="Copying Data to/from buffers and textures">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="バッファとテクスチャとの間でデータをコピーする">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-copying-data.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-copying-data.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-copying-data.html",
+      "inLanguage":"ja",
+      "name":"WebGPU データのコピー",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-copying-data.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Copying Data</title>
+<title>WebGPU データのコピー</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,296 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Copying Data</h1>
+    <h1>WebGPU データのコピー</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-copying-data.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>これまでのほとんどの記事では、バッファにデータを入れるために<code class="notranslate" translate="no">writeBuffer</code>関数を使用し、テクスチャにデータを入れるために<code class="notranslate" translate="no">writeTexture</code>関数を使用してきました。バッファやテクスチャにデータを入れる方法はいくつかあります。</p>
+<h2 id="writebuffer"><code class="notranslate" translate="no">writeBuffer</code></h2>
+<p><code class="notranslate" translate="no">writeBuffer</code>は、JavaScriptの<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a>または<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>からバッファにデータをコピーします。これは、バッファにデータを取り込む最も簡単な方法と言えるでしょう。</p>
+<p><code class="notranslate" translate="no">writeBuffer</code>は次の形式に従います。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeBuffer(
+  destBuffer,  // 書き込み先のバッファ
+  destOffset,  // 書き込みを開始する宛先バッファ内の場所
+  srcData,     // TypedArrayまたはArrayBuffer
+  srcOffset?,  // コピーを開始するsrcData内の**要素**のオフセット
+  size?,       // コピーするsrcDataの**要素**のサイズ
+)
+</pre>
+<p><code class="notranslate" translate="no">srcOffset</code>が渡されない場合は<code class="notranslate" translate="no">0</code>です。<code class="notranslate" translate="no">size</code>が渡されない場合は<code class="notranslate" translate="no">srcData</code>のサイズです。</p>
+<blockquote>
+<p>重要：<code class="notranslate" translate="no">srcOffset</code>と<code class="notranslate" translate="no">size</code>は<code class="notranslate" translate="no">srcData</code>の要素単位です。</p>
+<p>言い換えると、</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeBuffer(
+  someBuffer,
+  someOffset,
+  someFloat32Array,
+  6,
+  7,
+)
+</pre>
+<p>上記のコードは、float32 #6から7つのfloat32のデータをコピーします。別の言い方をすれば、<code class="notranslate" translate="no">someFloat32Array</code>がビューであるArrayBufferの部分から、バイト24から始まる28バイトをコピーします。</p>
+</blockquote>
+<h2 id="writetexture"><code class="notranslate" translate="no">writeTexture</code></h2>
+<p><code class="notranslate" translate="no">writeTexture</code>は、JavaScriptの<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a>または<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>からテクスチャにデータをコピーします。</p>
+<p><code class="notranslate" translate="no">writeTexture</code>には次のシグネチャがあります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.writeTexture(
+  // 宛先の詳細
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // ソースデータ
+  srcData,
+
+  // ソースデータの詳細
+  { offset: 0, bytesPerRow, rowsPerImage },
+
+  // サイズ：
+  [ width, height, depthOrArrayLayers ] または { width, height, depthOrArrayLayers }
+)
+</pre>
+<p>注意点：</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">texture</code>には<code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code>の使用法が必要です。</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">mipLevel</code>、<code class="notranslate" translate="no">origin</code>、<code class="notranslate" translate="no">aspect</code>はすべてデフォルト値を持つため、指定する必要がない場合が多いです。</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">bytesPerRow</code>：これは、データの次の<em>ブロック行</em>に進むために進むバイト数です。</p>
+<p>これは、1つ以上の<em>ブロック行</em>をコピーする場合に必要です。ほとんどの場合、1つ以上の<em>ブロック行</em>をコピーしているため、ほとんどの場合に必要です。</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">rowsPerImage</code>：これは、ある画像の開始から次の画像に進むために進む<em>ブロック行</em>の数です。</p>
+<p>これは、1つ以上のレイヤーをコピーする場合に必要です。つまり、サイズ引数の<code class="notranslate" translate="no">depthOrArrayLayers</code>が1より大きい場合は、この値を指定する必要があります。</p>
+</li>
+</ul>
+<p>コピーは次のように機能すると考えることができます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   // 擬似コード
+   const [x, y, z] = origin ?? [0, 0, 0];
+   const [blockWidth, blockHeight, bytesPerBlock] = 
+      getBlockInfoForTextureFormat(texture.format);
+
+   const blocksAcross = width / blockWidth;
+   const blocksDown = height / blockHeight;
+   const bytesPerBlockRow = blocksAcross * bytesPerBlock;
+
+   for (layer = 0; layer &lt; depthOrArrayLayers; layer) {
+      for (row = 0; row &lt; blocksDown; ++row) {
+        const start = offset + (layer * rowsPerImage + row) * bytesPerRow;
+        copyRowToTexture(
+            texture,               // コピー先のテクスチャ
+            x, y + row, z + layer, // コピー先のテクスチャ内の場所
+            srcDataAsBytes + start,
+            bytesPerBlockRow);
+      }
+   }
+</pre>
+<h3 id="ブロック行"><a id="a-block-rows"></a><strong>ブロック行</strong></h3>
+<p>テクスチャはブロックに編成されています。ほとんどの<em>通常の</em>テクスチャでは、ブロックの幅と高さは両方とも1です。圧縮テクスチャでは、これが変わります。たとえば、フォーマット<code class="notranslate" translate="no">bc1-rgba-unorm</code>のブロック幅は4、ブロック高さは4です。つまり、幅を8、高さを12に設定すると、6つのブロックしかコピーされません。最初の行に2ブロック、2番目の行に2ブロック、3番目の行に2ブロックです。</p>
+<p>圧縮テクスチャの場合、サイズと原点はブロックサイズに合わせる必要があります。</p>
+<blockquote>
+<p>重要：WebGPUでサイズ（<code class="notranslate" translate="no">GPUExtent3D</code>として定義）を受け取る場所はどこでも、1〜3個の数値の配列、または1〜3個のプロパティを持つオブジェクトのいずれかになります。<code class="notranslate" translate="no">height</code>と<code class="notranslate" translate="no">depthOrArrayLayers</code>はデフォルトで1なので、</p>
+<ul>
+<li><code class="notranslate" translate="no">[2]</code> 幅=2、高さ=1、depthOrArrayLayers=1のサイズ</li>
+<li><code class="notranslate" translate="no">[2, 3]</code> 幅=2、高さ=3、depthOrArrayLayers=1のサイズ</li>
+<li><code class="notranslate" translate="no">[2, 3, 4]</code> 幅=2、高さ=3、depthOrArrayLayers=4のサイズ</li>
+<li><code class="notranslate" translate="no">{ width: 2 }</code> 幅=2、高さ=1、depthOrArrayLayers=1のサイズ</li>
+<li><code class="notranslate" translate="no">{ width: 2, height: 3 }</code> 幅=2、高さ=3、depthOrArrayLayers=1のサイズ</li>
+<li><code class="notranslate" translate="no">{ width: 2, height: 3, depthOrArrayLayers: 4 }</code> 幅=2、高さ=3、depthOrArrayLayers=4のサイズ</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>同様に、原点が表示される場所（デフォルトは<code class="notranslate" translate="no">GPUOrigin3D</code>）はどこでも、3つの数値の配列、または<code class="notranslate" translate="no">x</code>、<code class="notranslate" translate="no">y</code>、<code class="notranslate" translate="no">z</code>プロパティを持つオブジェクトのいずれかを持つことができます。それらはすべてデフォルトで0なので、</p>
+<ul>
+<li><code class="notranslate" translate="no">[5]</code> x=5、y=0、z=0の原点</li>
+<li><code class="notranslate" translate="no">[5, 6]</code> x=5、y=6、z=0の原点</li>
+<li><code class="notranslate" translate="no">[5, 6, 7]</code> x=5、y=6、z=7の原点</li>
+<li><code class="notranslate" translate="no">{ x: 5 }</code> x=5、y=0、z=0の原点</li>
+<li><code class="notranslate" translate="no">{ x: 5, y: 6 }</code> x=5、y=6、z=0の原点</li>
+<li><code class="notranslate" translate="no">{ x: 5, y: 6, z: 7 }</code> x=5、y=6、z=7の原点</li>
+</ul>
+</blockquote>
+<ul>
+<li><code class="notranslate" translate="no">aspect</code>は、深度ステンシル形式にデータをコピーする場合にのみ実際に機能します。一度に1つのアスペクト（<code class="notranslate" translate="no">depth-only</code>または<code class="notranslate" translate="no">stencil-only</code>のいずれか）にのみコピーできます。</li>
+</ul>
+<blockquote>
+<p>豆知識：テクスチャには<code class="notranslate" translate="no">width</code>、<code class="notranslate" translate="no">height</code>、<code class="notranslate" translate="no">depthOrArrayLayer</code>プロパティがあり、これは有効な<code class="notranslate" translate="no">GPUExtent3D</code>であることを意味します。つまり、このテクスチャが与えられた場合、</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const texture = device.createTexture({
+  format: 'r8unorm',
+  size: [2, 4],
+  usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_ATTACHMENT,
+});
+</pre>
+<p>これらはすべて機能します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 2x4ピクセルのデータをテクスチャにコピーします
+const bytesPerRow = 2;
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, [2, 4]);
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, [texture.width, texture.height]);
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, {width: 2, height: 4});
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, {width: texture.width, height: texture.height});
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, texture); // !!!
+</pre>
+<p>最後のものは、テクスチャに<code class="notranslate" translate="no">width</code>、<code class="notranslate" translate="no">height</code>、<code class="notranslate" translate="no">depthOrArrayLayers</code>があるため機能します。あまり明確ではないため、そのスタイルは使用していませんが、有効です。</p>
+</blockquote>
+<h2 id="copybuffertobuffer"><code class="notranslate" translate="no">copyBufferToBuffer</code></h2>
+<p><code class="notranslate" translate="no">copyBufferToBuffer</code>は、名前が示すように、あるバッファから別のバッファにデータをコピーします。</p>
+<p>シグネチャ：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyBufferToBuffer(
+  source,       // コピー元のバッファ
+  sourceOffset, // コピーを開始する場所
+  dest,         // コピー先のバッファ
+  destOffset,   // コピーを開始する場所
+  size,         // コピーするバイト数
+)
+</pre>
+<ul>
+<li><code class="notranslate" translate="no">source</code>には<code class="notranslate" translate="no">GPUBufferUsage.COPY_SRC</code>の使用法が必要です。</li>
+<li><code class="notranslate" translate="no">dest</code>には<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>の使用法が必要です。</li>
+<li><code class="notranslate" translate="no">size</code>は4の倍数でなければなりません。</li>
+</ul>
+<h2 id="copybuffertotexture"><code class="notranslate" translate="no">copyBufferToTexture</code></h2>
+<p><code class="notranslate" translate="no">copyBufferToTexture</code>は、名前が示すように、バッファからテクスチャにデータをコピーします。</p>
+<p>シグネチャ：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyBufferToTexture(
+  // ソースバッファの詳細
+  { buffer, offset: 0, bytesPerRow, rowsPerImage },
+
+  // 宛先テクスチャの詳細
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // サイズ：
+  [ width, height, depthOrArrayLayers ] または { width, height, depthOrArrayLayers }
+)
+</pre>
+<p>これは<code class="notranslate" translate="no">writeTexture</code>とほぼ同じパラメータを持っています。最大の違いは、<code class="notranslate" translate="no">bytesPerRow</code>が<strong>256の倍数でなければならない</strong>ことです。</p>
+<ul>
+<li><code class="notranslate" translate="no">texture</code>には<code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code>の使用法が必要です。</li>
+<li><code class="notranslate" translate="no">buffer</code>には<code class="notranslate" translate="no">GPUBufferUsage.COPY_SRC</code>の使用法が必要です。</li>
+</ul>
+<h2 id="copytexturetobuffer"><code class="notranslate" translate="no">copyTextureToBuffer</code></h2>
+<p><code class="notranslate" translate="no">copyTextureToBuffer</code>は、名前が示すように、テクスチャからバッファにデータをコピーします。</p>
+<p>シグネチャ：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyTextureToBuffer(
+  // ソーステクスチャの詳細
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 宛先バッファの詳細
+  { buffer, offset: 0, bytesPerRow, rowsPerImage },
+
+  // サイズ：
+  [ width, height, depthOrArrayLayers ]
+)
+</pre>
+<p>これは<code class="notranslate" translate="no">copyBufferToTexture</code>と同様のパラメータを持っていますが、テクスチャ（現在はソース）とバッファ（現在は宛先）が入れ替わっています。<code class="notranslate" translate="no">copyBufferToTexture</code>と同様に、<code class="notranslate" translate="no">bytesPerRow</code>は<strong>256の倍数でなければなりません</strong>。</p>
+<ul>
+<li><code class="notranslate" translate="no">texture</code>には<code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code>の使用法が必要です。</li>
+<li><code class="notranslate" translate="no">buffer</code>には<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>の使用法が必要です。</li>
+</ul>
+<h2 id="copytexturetotexture"><code class="notranslate" translate="no">copyTextureToTexture</code></h2>
+<p><code class="notranslate" translate="no">copyTextureToTexture</code>は、あるテクスチャの一部を別のテクスチャにコピーします。</p>
+<p>2つのテクスチャは、同じフォーマットであるか、接尾辞<code class="notranslate" translate="no">'-srgb'</code>のみが異なる必要があります。</p>
+<p>シグネチャ：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyTextureToTexture(
+  // ソーステクスチャの詳細
+  src: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 宛先テクスチャの詳細
+  dst: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // サイズ：
+  [ width, height, depthOrArrayLayers ] または { width, height, depthOrArrayLayers }
+);
+</pre>
+<ul>
+<li>src.<code class="notranslate" translate="no">texture</code>には<code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code>の使用法が必要です。</li>
+<li>dst.<code class="notranslate" translate="no">texture</code>には<code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code>の使用法が必要です。</li>
+<li><code class="notranslate" translate="no">width</code>はブロック幅の倍数でなければなりません。</li>
+<li><code class="notranslate" translate="no">height</code>はブロック高さの倍数でなければなりません。</li>
+<li>src.<code class="notranslate" translate="no">origin[0]</code>または<code class="notranslate" translate="no">.x</code>はブロック幅の倍数でなければなりません。</li>
+<li>src.<code class="notranslate" translate="no">origin[1]</code>または<code class="notranslate" translate="no">.y</code>はブロック高さの倍数でなければなりません。</li>
+<li>dst.<code class="notranslate" translate="no">origin[0]</code>または<code class="notranslate" translate="no">.x</code>はブロック幅の倍数でなければなりません。</li>
+<li>dst.<code class="notranslate" translate="no">origin[1]</code>または<code class="notranslate" translate="no">.y</code>はブロック高さの倍数でなければなりません。</li>
+</ul>
+<h2 id="シェーダー">シェーダー</h2>
+<p>シェーダーは、ストレージバッファ、ストレージテクスチャに読み書きでき、間接的にテクスチャにレンダリングできます。これらはすべて、バッファやテクスチャにデータを取り込む方法です。つまり、データを生成したり、コピーしたり、転送したりするシェーダーを作成できます。</p>
+<h2 id="バッファのマッピング">バッファのマッピング</h2>
+<p>バッファをマップできます。バッファをマップするということは、JavaScriptから読み書きできるようにすることです。少なくともWebGPUのバージョン1では、マップ可能なバッファには厳しい制限があります。つまり、マップ可能なバッファは、コピー元またはコピー先の一時的な場所としてのみ使用できます。マップ可能なバッファは、他の種類のバッファ（ユニフォームバッファ、頂点バッファ、インデックスバッファ、ストレージバッファなど）として使用することはできません<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+<p>2つの使用法フラグの組み合わせでマップ可能なバッファを作成できます。</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_READ | GPU_BufferUsage.COPY_DST</code></p>
+<p>これは、上記のコピーコマンドを使用して別のバッファまたはテクスチャからデータをコピーし、それをマップしてJavaScriptで値を読み取ることができるバッファです。</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE | GPU_BufferUsage.COPY_SRC</code></p>
+<p>これは、JavaScriptでマップできるバッファです。JavaScriptからデータを入れ、最後にマップを解除して、上記のコピーコマンドを使用してその内容を別のバッファまたはテクスチャにコピーできます。</p>
+</li>
+</ul>
+<p>バッファのマッピングプロセスは非同期です。<code class="notranslate" translate="no">buffer.mapAsync(mode, offset = 0, size?)</code>を呼び出します。ここで、<code class="notranslate" translate="no">offset</code>と<code class="notranslate" translate="no">size</code>はバイト単位です。<code class="notranslate" translate="no">size</code>が指定されていない場合は、バッファ全体のサイズです。<code class="notranslate" translate="no">mode</code>は<code class="notranslate" translate="no">GPUMapMode.READ</code>または<code class="notranslate" translate="no">GPUMapMode.WRITE</code>のいずれかでなければならず、もちろん、バッファを作成したときに渡した<code class="notranslate" translate="no">MAP_</code>使用法フラグと一致する必要があります。</p>
+<p><code class="notranslate" translate="no">mapAsync</code>は<code class="notranslate" translate="no">Promise</code>を返します。プロミスが解決されると、バッファはマップ可能になります。次に、<code class="notranslate" translate="no">buffer.getMappedRange(offset = 0, size?)</code>を呼び出して、バッファの一部またはすべてを表示できます。ここで、<code class="notranslate" translate="no">offset</code>はマップしたバッファの部分へのバイトオフセットです。<code class="notranslate" translate="no">getMappedRange</code>は<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>を返すため、一般的に、何らかの用途に使用するには、それを使用してTypedArrayを構築します。</p>
+<p>バッファをマッピングする例を次に示します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer = device.createBuffer({
+  size: 1024,
+  usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+});
+
+// バッファ全体をマップします
+await buffer.mapAsync(GPUMapMode.READ);
+
+// バッファ全体を32ビット浮動小数点数の配列として取得します
+const f32 = new Float32Array(buffer.getMappedRange())
+
+...
+
+buffer.unmap();
+</pre>
+<p>注：一度マップされると、<code class="notranslate" translate="no">unmap</code>を呼び出すまでバッファはWebGPUで使用できません。<code class="notranslate" translate="no">unmap</code>が呼び出された瞬間に、バッファはJavaScriptから消えます。つまり、上記の例を考えてみましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const f32 = new Float32Array(buffer.getMappedRange())
+
+f32[0] = 123;
+console.log(f32[0]); // 123を出力します
+
+buffer.unmap();
+
+console.log(f32[0]); // undefinedを出力します
+</pre>
+<p><a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">最初の記事</a>で、ストレージバッファ内の数値を2倍にし、その結果をマップ可能なバッファにコピーして、結果を読み取るためにマップした例をすでに見てきました。</p>
+<p>もう1つの例は、<a href="../webgpu-compute-shaders.md">コンピュートシェーダーの基本</a>に関する記事です。ここでは、さまざまな<code class="notranslate" translate="no">@builtin</code>コンピュートシェーダーの値をストレージバッファに出力しました。次に、それらの結果をマップ可能なバッファにコピーし、結果を読み取るためにマップしました。</p>
+<h2 id="mappedatcreation"><a id="a-mapped-at-creation"></a>mappedAtCreation</h2>
+<p><code class="notranslate" translate="no">mappedAtCreation: true</code>は、バッファを作成するときに追加できるフラグです。この場合、バッファには<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>も<code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE</code>も使用法フラグは必要ありません。</p>
+<p>これは、作成時にバッファにデータを入れるための特別なフラグです。バッファを作成するときに<code class="notranslate" translate="no">mappedAtCreation: true</code>フラグを追加します。バッファは、書き込み用にすでにマップされた状態で作成されます。例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const buffer = device.createBuffer({
+   size: 16,
+   usage: GPUBufferUsage.UNIFORM,
+   mappedAtCreation: true,
+ });
+ const arrayBuffer = buffer.getMappedRange(0, buffer.size);
+ const f32 = new Float32Array(arrayBuffer);
+ f32.set([1, 2, 3, 4]);
+ buffer.unmap();
+</pre>
+<p>または、より簡潔に</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const buffer = device.createBuffer({
+   size: 16,
+   usage: GPUBufferUsage.UNIFORM,
+   mappedAtCreation: true,
+ });
+ new Float32Array(buffer.getMappedRange(0, buffer.size)).set([1, 2, 3, 4]);
+ buffer.unmap();
+</pre>
+<p><code class="notranslate" translate="no">mappedAtCreation: true</code>で作成されたバッファには、自動的にフラグが設定されないことに注意してください。これは、最初に作成するときにバッファにデータを入れるための便宜上のものです。作成時にマップされ、一度マップを解除すると、他のバッファと同様に動作し、指定した使用法に対してのみ機能します。つまり、後でコピーしたい場合は<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>が必要であり、後でマップしたい場合は<code class="notranslate" translate="no">GPUBufferData.MAP_READ</code>または<code class="notranslate" translate="no">GPUBufferData.MAP_WRITE</code>が必要です。</p>
+<h2 id="マップ可能なバッファを効率的に使用する"><a id="a-efficient"></a>マップ可能なバッファを効率的に使用する</h2>
+<p>上記で、バッファのマッピングが非同期であることがわかりました。つまり、<code class="notranslate" translate="no">mapAsync</code>を呼び出してバッファのマッピングを要求してから、マップされて<code class="notranslate" translate="no">getMappedRange</code>を呼び出すことができるようになるまで、不確定な時間がかかります。</p>
+<p>これを回避する一般的な方法は、常にマップされたバッファのセットを保持することです。すでにマップされているため、すぐに使用できます。1つ使用してマップを解除し、バッファを使用するコマンドを送信したらすぐに、再度マップするように要求します。プロミスが解決されると、すでにマップされたバッファのプールに戻します。マップされたバッファが必要で、利用可能なものがない場合は、新しいものを作成してプールに追加します。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>例外は、<code class="notranslate" translate="no">mappedAtCreation: true</code>を設定した場合です。<a href="#a-mapped-at-creation">mappedAtCreation</a>を参照してください。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +532,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +621,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU データのコピー`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

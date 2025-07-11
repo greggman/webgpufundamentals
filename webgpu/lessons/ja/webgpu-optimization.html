@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-optimization.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Speed and Optimization">
+
+<meta name="description" content="WebGPUで高速化する方法">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-optimization_ja.jpg">
+
+<meta property="og:title" content="WebGPUの速度と最適化">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to go faster in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-optimization_ja.jpg">
+<meta property="og:description" content="WebGPUで高速化する方法">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-optimization.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Speed and Optimization">
+<meta name="twitter:title" content="WebGPUの速度と最適化">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-optimization.html">
-<meta name="twitter:description" content="How to go faster in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPUで高速化する方法">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-optimization_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-optimization.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-optimization_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-optimization.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-optimization.html",
+      "inLanguage":"ja",
+      "name":"WebGPUの速度と最適化",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-optimization.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Speed and Optimization</title>
+<title>WebGPUの速度と最適化</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,1737 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Speed and Optimization</h1>
+    <h1>WebGPUの速度と最適化</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-optimization.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>このサイトのほとんどの例は、できるだけ理解しやすいように書かれています。つまり、それらは機能し、正しいですが、WebGPUで何かを行う最も効率的な方法を必ずしも示しているわけではありません。さらに、何をする必要があるかに応じて、無数の最適化の可能性があります。</p>
+<p>この記事では、最も基本的な最適化のいくつかについて説明し、他のいくつかについても説明します。明確にするために、IMO、<strong>通常、ここまでやる必要はありません。WebGPUを使用するネット上のほとんどの例は、数百のものを描画するため、これらの最適化から本当に恩恵を受けることはありません</strong>。それでも、物事を高速化する方法を知っておくことは常に良いことです。</p>
+<p>基本：<strong>行う作業が少なく、WebGPUに依頼する作業が少ないほど、物事は速くなります。</strong></p>
+<p>これまでのほとんどすべての例で、複数の形状を描画する場合、次の手順を実行しました。</p>
+<ul>
+<li>
+<p>初期化時：</p>
+<ul>
+<li>描画したいものごとに
+<ul>
+<li>ユニフォームバッファを作成します</li>
+<li>そのバッファを参照するバインドグループを作成します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>レンダリング時：</p>
+<ul>
+<li>エンコーダーとレンダーパスを開始します</li>
+<li>描画したいものごとに
+<ul>
+<li>このオブジェクトのユニフォーム値で型付き配列を更新します</li>
+<li>このオブジェクトのユニフォームバッファに型付き配列をコピーします</li>
+<li>必要に応じて、パイプライン、頂点、インデックスバッファを設定します</li>
+<li>このオブジェクトのバインドグループをバインドするコマンドをエンコードします</li>
+<li>描画するコマンドをエンコードします</li>
+</ul>
+</li>
+<li>レンダーパスを終了し、エンコーダーを終了し、コマンドバッファを送信します</li>
+</ul>
+</li>
+</ul>
+<p>上記のステップに従って最適化できる例を作成し、それを最適化できるようにしましょう。</p>
+<p>注：これは偽の例です。多数のキューブを描画するだけであり、<a href="../webgpu-storage-buffers.html#a-instancing">ストレージバッファ</a>と<a href="../webgpu-vertex-buffers.html#a-instancing">頂点バッファ</a>に関する記事で説明した<em>インスタンス化</em>を使用して物事を確実に最適化できます。さまざまな種類のオブジェクトを大量に処理することでコードを乱雑にしたくありませんでした。インスタンス化は、プロジェクトが同じモデルを多数使用する場合に最適化するための優れた方法です。植物、木、岩、ゴミなどは、インスタンス化を使用して最適化されることがよくあります。他のモデルの場合、それは間違いなくあまり一般的ではありません。</p>
+<p>たとえば、テーブルには4、6、または8つの椅子があり、それらの椅子を描画するためにインスタンス化を使用する方がおそらく高速ですが、描画する500以上のもののリストで、椅子が唯一の例外である場合、椅子をインスタンス化を使用するように整理するが、インスタンス化を使用する他の状況を見つけられない最適なデータ編成を考え出す努力は、おそらく価値がありません。</p>
+<p>上記の段落の要点は、適切な場合にインスタンス化を使用することです。同じものを数百以上描画する場合は、インスタンス化がおそらく適切です。同じものを少数しか描画しない場合は、それらの少数のものを特別扱いする努力は、おそらく価値がありません。</p>
+<p>いずれにせよ、これが私たちのコードです。一般的に使用してきた初期化コードがあります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter({
+    powerPreference: 'high-performance',
+  });
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+</pre>
+<p>次に、シェーダーモジュールを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    code: `
+      struct Uniforms {
+        normalMatrix: mat3x3f,
+        viewProjection: mat4x4f,
+        world: mat4x4f,
+        color: vec4f,
+        lightWorldPosition: vec3f,
+        viewWorldPosition: vec3f,
+        shininess: f32,
+      };
+
+      struct Vertex {
+        @location(0) position: vec4f,
+        @location(1) normal: vec3f,
+        @location(2) texcoord: vec2f,
+      };
+
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) normal: vec3f,
+        @location(1) surfaceToLight: vec3f,
+        @location(2) surfaceToView: vec3f,
+        @location(3) texcoord: vec2f,
+      };
+
+      @group(0) @binding(0) var diffuseTexture: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var diffuseSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+      @vertex fn vs(vert: Vertex) -&gt; VSOutput {
+        var vsOut: VSOutput;
+        vsOut.position = uni.viewProjection * uni.world * vert.position;
+
+        // 法線を方向付け、フラグメントシェーダーに渡します
+        vsOut.normal = uni.normalMatrix * vert.normal;
+
+        // 表面のワールド位置を計算します
+        let surfaceWorldPosition = (uni.world * vert.position).xyz;
+
+        // 表面から光へのベクトルを計算し、
+        // フラグメントシェーダーに渡します
+        vsOut.surfaceToLight = uni.lightWorldPosition - surfaceWorldPosition;
+
+        // 表面から光へのベクトルを計算し、
+        // フラグメントシェーダーに渡します
+        vsOut.surfaceToView = uni.viewWorldPosition - surfaceWorldPosition;
+
+        // テクスチャ座標をフラグメントシェーダーに渡します
+        vsOut.texcoord = vert.texcoord;
+
+        return vsOut;
+      }
+
+      @fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+        // vsOut.normalはステージ間変数であるため、
+        // 補間されるため、単位ベクトルにはなりません。
+        // 正規化すると、再び単位ベクトルになります。
+        let normal = normalize(vsOut.normal);
+
+        let surfaceToLightDirection = normalize(vsOut.surfaceToLight);
+        let surfaceToViewDirection = normalize(vsOut.surfaceToView);
+        let halfVector = normalize(
+          surfaceToLightDirection + surfaceToViewDirection);
+
+        // 法線と光への方向のドット積を
+        // 取ることで光を計算します。
+        let light = dot(normal, surfaceToLightDirection);
+
+        var specular = dot(normal, halfVector);
+        specular = select(
+            0.0,                           // 条件がfalseの場合の値
+            pow(specular, uni.shininess),  // 条件がtrueの場合の値
+            specular &gt; 0.0);               // 条件
+
+        let diffuse = uni.color * textureSample(diffuseTexture, diffuseSampler, vsOut.texcoord);
+        // 色の部分（アルファではない）のみを
+        // 光で乗算しましょう。
+        let color = diffuse.rgb * light + specular;
+        return vec4f(color, diffuse.a);
+      }
+    `,
+  });
+</pre>
+<p>このシェーダーモジュールは、<a href="../webgpu-lighting-point.html#a-specular">他の場所で説明されているスペキュラハイライト付きの点光源</a>と同様のライティングを使用します。ほとんどの3Dモデルはテクスチャを使用するため、テクスチャを含めるのが最善だと思いました。テクスチャを色で乗算して、各キューブの色を調整できるようにします。そして、ライティングと<a href="webgpu-perspective-projection.html">3Dでのキューブの投影</a>を行うために必要なすべてのユニフォーム値があります。</p>
+<p>キューブのデータと、そのデータをバッファに入れる必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function createBufferWithData(device, data, usage) {
+    const buffer = device.createBuffer({
+      size: data.byteLength,
+      usage: usage | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(buffer, 0, data);
+    return buffer;
+  }
+
+  const positions = new Float32Array([1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1]);
+  const normals   = new Float32Array([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1]);
+  const texcoords = new Float32Array([1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1]);
+  const indices   = new Uint16Array([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23]);
+
+  const positionBuffer = createBufferWithData(device, positions, GPUBufferUsage.VERTEX);
+  const normalBuffer = createBufferWithData(device, normals, GPUBufferUsage.VERTEX);
+  const texcoordBuffer = createBufferWithData(device, texcoords, GPUBufferUsage.VERTEX);
+  const indicesBuffer = createBufferWithData(device, indices, GPUBufferUsage.INDEX);
+  const numVertices = indices.length;
+</pre>
+<p>レンダーパイプラインが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'textured model with point light w/specular highlight',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        // position
+        {
+          arrayStride: 3 * 4, // 3 floats
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},
+          ],
+        },
+        // normal
+        {
+          arrayStride: 3 * 4, // 3 floats
+          attributes: [
+            {shaderLocation: 1, offset: 0, format: 'float32x3'},
+          ],
+        },
+        // uvs
+        {
+          arrayStride: 2 * 4, // 2 floats
+          attributes: [
+            {shaderLocation: 2, offset: 0, format: 'float32x2'},
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+    primitive: {
+      cullMode: 'back',
+    },
+    depthStencil: {
+      depthWriteEnabled: true,
+      depthCompare: 'less',
+      format: 'depth24plus',
+    },
+  });
+</pre>
+<p>上記のパイプラインは、属性ごとに1つのバッファを使用します。1つは位置データ用、1つは法線データ用、1つはテクスチャ座標（UV）用です。裏向きの三角形をカリングし、深度テスト用の深度テクスチャを期待します。これらはすべて、他の記事で説明したものです。</p>
+<p>色と乱数を作成するためのユーティリティをいくつか挿入しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">/** CSSカラー文字列が与えられた場合、0から255までの4つの値の配列を返します */
+const cssColorToRGBA8 = (() =&gt; {
+  const canvas = new OffscreenCanvas(1, 1);
+  const ctx = canvas.getContext('2d', {willReadFrequently: true});
+  return cssColor =&gt; {
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = cssColor;
+    ctx.fillRect(0, 0, 1, 1);
+    return Array.from(ctx.getImageData(0, 0, 1, 1).data);
+  };
+})();
+
+/** CSSカラー文字列が与えられた場合、0から1までの4つの値の配列を返します */
+const cssColorToRGBA = cssColor =&gt; cssColorToRGBA8(cssColor).map(v =&gt; v / 255);
+
+/**
+ * 0から1の範囲の色相、彩度、輝度の値が与えられた場合、
+ * 対応するCSS hsl文字列を返します
+ */
+const hsl = (h, s, l) =&gt; `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
+
+/**
+ * 0から1の範囲の色相、彩度、輝度の値が与えられた場合、
+ * 0から1までの4つの値の配列を返します
+ */
+const hslToRGBA = (h, s, l) =&gt; cssColorToRGBA(hsl(h, s, l));
+
+/**
+ * minとmaxの間の乱数を返します。
+ * minとmaxが指定されていない場合は、0から1を返します。
+ * maxが指定されていない場合は、0からminを返します。
+ */
+function rand(min, max) {
+  if (min === undefined) {
+    max = 1;
+    min = 0;
+  } else if (max === undefined) {
+    max = min;
+    min = 0;
+  }
+  return Math.random() * (max - min) + min;
+}
+
+/** ランダムな配列要素を選択します */
+const randomArrayElement = arr =&gt; arr[Math.random() * arr.length | 0];
+</pre>
+<p>うまくいけば、それらはすべてかなり単純です。</p>
+<p>次に、いくつかのテクスチャとサンプラーを作成しましょう。キャンバスを使用し、絵文字を描画し、<a href="webgpu-importing-textures.html">テクスチャのインポートに関する記事</a>で記述した関数<code class="notranslate" translate="no">createTextureFromSource</code>を使用して、そこからテクスチャを作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const textures = [
+    '😂', '👾', '👍', '👀', '🌞', '🛟',
+  ].map(s =&gt; {
+    const size = 128;
+    const ctx = new OffscreenCanvas(size, size).getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, size, size);
+    ctx.font = `${size * 0.9}px sans-serif`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    const m = ctx.measureText(s);
+    ctx.fillText(
+      s,
+      (size - m.actualBoundingBoxRight + m.actualBoundingBoxLeft) / 2,
+      (size - m.actualBoundingBoxDescent + m.actualBoundingBoxAscent) / 2
+    );
+    return createTextureFromSource(device, ctx.canvas, {mips: true});
+  });
+
+  const sampler = device.createSampler({
+    magFilter: 'linear',
+    minFilter: 'linear',
+    mipmapFilter: 'nearest',
+  });
+</pre>
+<p>マテリアル情報のセットを作成しましょう。他の場所ではこれを行っていませんが、一般的な設定です。Unity、Unreal、Blender、Three.js、Babylon.jsはすべて、<em>マテリアル</em>の概念を持っています。一般的に、マテリアルは、マテリアルの色、光沢、使用するテクスチャなどを保持します。</p>
+<p>20個の「マテリアル」を作成し、各キューブにランダムにマテリアルを選択します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numMaterials = 20;
+  const materials = [];
+  for (let i = 0; i &lt; numMaterials; ++i) {
+    const color = hslToRGBA(rand(), rand(0.5, 0.8), rand(0.5, 0.7));
+    const shininess = rand(10, 120);
+    materials.push({
+      color,
+      shininess,
+      texture: randomArrayElement(textures),
+      sampler,
+    });
+  }
+</pre>
+<p>次に、描画したい各もの（キューブ）のデータを作成します。最大30000をサポートします。これまでと同様に、各オブジェクトにユニフォームバッファと、ユニフォーム値で更新できる型付き配列を作成します。また、各オブジェクトにバインドグループも作成します。そして、各オブジェクトを配置してアニメーション化するために使用できるランダムな値をいくつか選択します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 30000;
+  const objectInfos = [];
+
+  for (let i = 0; i &lt; maxObjects; ++i) {
+    const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4) * 4;
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+    // float32インデックスでのさまざまなユニフォーム値へのオフセット
+    const kNormalMatrixOffset = 0;
+    const kViewProjectionOffset = 12;
+    const kWorldOffset = 28;
+    const kColorOffset = 44;
+    const kLightWorldPositionOffset = 48;
+    const kViewWorldPositionOffset = 52;
+    const kShininessOffset = 55;
+
+    const normalMatrixValue = uniformValues.subarray(
+        kNormalMatrixOffset, kNormalMatrixOffset + 12);
+    const viewProjectionValue = uniformValues.subarray(
+        kViewProjectionOffset, kViewProjectionOffset + 16);
+    const worldValue = uniformValues.subarray(
+        kWorldOffset, kWorldOffset + 16);
+    const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+    const lightWorldPositionValue = uniformValues.subarray(
+        kLightWorldPositionOffset, kLightWorldPositionOffset + 3);
+    const viewWorldPositionValue = uniformValues.subarray(
+        kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
+    const shininessValue = uniformValues.subarray(
+        kShininessOffset, kShininessOffset + 1);
+
+    const material = randomArrayElement(materials);
+
+    const bindGroup = device.createBindGroup({
+      label: 'bind group for object',
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: material.texture.createView() },
+        { binding: 1, resource: material.sampler },
+        { binding: 2, resource: uniformBuffer },
+      ],
+    });
+
+    const axis = vec3.normalize([rand(-1, 1), rand(-1, 1), rand(-1, 1)]);
+    const radius = rand(10, 100);
+    const speed = rand(0.1, 0.4);
+    const rotationSpeed = rand(-1, 1);
+    const scale = rand(2, 10);
+
+    objectInfos.push({
+      bindGroup,
+
+      uniformBuffer,
+      uniformValues,
+
+      normalMatrixValue,
+      worldValue,
+      viewProjectionValue,
+      colorValue,
+      lightWorldPositionValue,
+      viewWorldPositionValue,
+      shininessValue,
+
+      axis,
+      material,
+      radius,
+      speed,
+      rotationSpeed,
+      scale,
+    });
+  }
+</pre>
+<p>レンダリング時にレンダーパスを開始するために更新するレンダーパス記述子を事前に作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: &lt;- レンダリング時に設定されます
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+    depthStencilAttachment: {
+      // view: &lt;- レンダリング時に設定されます
+      depthClearValue: 1.0,
+      depthLoadOp: 'clear',
+      depthStoreOp: 'store',
+    },
+  };
+</pre>
+<p>描画するものの数を調整できるように、簡単なUIが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    numObjects: 1000,
+  };
+
+  const gui = new GUI();
+  gui.add(settings, 'numObjects', { min: 0, max: maxObjects, step: 1});
+</pre>
+<p>これで、レンダーループを記述できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  let depthTexture;
+  let then = 0;
+
+  function render(time) {
+    time *= 0.001;  // 秒に変換します
+    const deltaTime = time - then;
+    then = time;
+
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>レンダーループ内で、レンダーパス記述子を更新します。また、深度テクスチャが存在しない場合、または持っているものがキャンバステクスチャとサイズが異なる場合は、深度テクスチャを作成します。これは、<a href="../webgpu-orthographic-projection.html#a-depth-textures">3Dに関する記事</a>で行いました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // キャンバスコンテキストから現在のテクスチャを取得し、
+    // レンダリングするテクスチャとして設定します。
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+
+    // 深度テクスチャがない場合、またはそのサイズが
+    // キャンバステクスチャと異なる場合は、新しい深度テクスチャを作成します。
+    if (!depthTexture ||
+        depthTexture.width !== canvasTexture.width ||
+        depthTexture.height !== canvasTexture.height) {
+      if (depthTexture) {
+        depthTexture.destroy();
+      }
+      depthTexture = device.createTexture({
+        size: [canvasTexture.width, canvasTexture.height],
+        format: 'depth24plus',
+        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+      });
+    }
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
+</pre>
+<p>コマンドバッファとレンダーパスを開始し、頂点バッファとインデックスバッファを設定します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, positionBuffer);
+    pass.setVertexBuffer(1, normalBuffer);
+    pass.setVertexBuffer(2, texcoordBuffer);
+    pass.setIndexBuffer(indicesBuffer, 'uint16');
+</pre>
+<p>次に、<a href="webgpu-perspective-projection.html">遠近投影に関する記事</a>で説明したように、ビュー射影行列を計算します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const degToRad = d =&gt; d * Math.PI / 180;
+
+  function render(time) {
+    ...
+
++    const aspect = canvas.clientWidth / canvas.clientHeight;
++    const projection = mat4.perspective(
++        degToRad(60),
++        aspect,
++        1,      // zNear
++        2000,   // zFar
++    );
++
++    const eye = [100, 150, 200];
++    const target = [0, 0, 0];
++    const up = [0, 1, 0];
++
++    // ビュー行列を計算します
++    const viewMatrix = mat4.lookAt(eye, target, up);
++
++    // ビュー行列と射影行列を組み合わせます
++    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+</pre>
+<p>これで、すべてのオブジェクトをループして描画できます。それぞれについて、すべてのユニフォーム値を更新し、ユニフォーム値をユニフォームバッファにコピーし、このオブジェクトのバインドグループをバインドし、描画する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    for (let i = 0; i &lt; settings.numObjects; ++i) {
+      const {
+        bindGroup,
+        uniformBuffer,
+        uniformValues,
+        normalMatrixValue,
+        worldValue,
+        viewProjectionValue,
+        colorValue,
+        lightWorldPositionValue,
+        viewWorldPositionValue,
+        shininessValue,
+
+        axis,
+        material,
+        radius,
+        speed,
+        rotationSpeed,
+        scale,
+      } = objectInfos[i];
+
+      // このオブジェクトのユニフォーム値にビュー射影行列をコピーします
+      viewProjectionValue.set(viewProjectionMatrix);
+
+      // ワールド行列を計算します
+      mat4.identity(worldValue);
+      mat4.axisRotate(worldValue, axis, i + time * speed, worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 3.721 + time * speed) * radius], worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 9.721 + time * 0.1) * radius], worldValue);
+      mat4.rotateX(worldValue, time * rotationSpeed + i, worldValue);
+      mat4.scale(worldValue, [scale, scale, scale], worldValue);
+
+      // 逆行列と転置行列をnormalMatrix値に変換します
+      mat3.fromMat4(mat4.transpose(mat4.inverse(worldValue)), normalMatrixValue);
+
+      const {color, shininess} = material;
+
+      // マテリアルの値をコピーします。
+      colorValue.set(color);
+      lightWorldPositionValue.set([-10, 30, 300]);
+      viewWorldPositionValue.set(eye);
+      shininessValue[0] = shininess;
+
+      // ユニフォーム値をユニフォームバッファにアップロードします
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.drawIndexed(numVertices);
+    }
+</pre>
+<blockquote>
+<p>「ワールド行列を計算する」というコードの部分は、あまり一般的ではありません。<a href="webgpu-scene-graphs.html">シーングラフ</a>を持つ方が一般的ですが、それでは例がさらに乱雑になります。アニメーションを示す何かが必要だったので、何かをまとめました。</p>
+</blockquote>
+<p>次に、パスを終了し、コマンドバッファを終了し、送信できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+    pass.end();
++
++    const commandBuffer = encoder.finish();
++    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>あといくつかやることがあります。サイズ変更を追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const canvasToSizeMap = new WeakMap();
+
+  function render(time) {
+    time *= 0.001;  // 秒に変換します
+    const deltaTime = time - then;
+    then = time;
+
++    const {width, height} = canvasToSizeMap.get(canvas) ?? canvas;
++
++    // キャンバスのサイズがすでにそのサイズである場合は、遅くなる可能性があるため、設定しないでください。
++    if (canvas.width !== width || canvas.height !== height) {
++      canvas.width = width;
++      canvas.height = height;
++    }
+
+    // キャンバスコンテキストから現在のテクスチャを取得し、
+    // レンダリングするテクスチャとして設定します。
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+
+    ...
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  +const observer = new ResizeObserver(entries =&gt; {
+  +  entries.forEach(entry =&gt; {
+  +    canvasToSizeMap.set(entry.target, {
+  +      width: Math.max(1, Math.min(entry.contentBoxSize[0].inlineSize, device.limits.maxTextureDimension2D)),
+  +      height: Math.max(1, Math.min(entry.contentBoxSize[0].blockSize, device.limits.maxTextureDimension2D)),
+  +    });
+  +  });
+  +});
+  +observer.observe(canvas);
+</pre>
+<p>タイミングも追加しましょう。<a href="webgpu-timing.html">タイミングに関する記事</a>で作成した<code class="notranslate" translate="no">NonNegativeRollingAverage</code>クラスと<code class="notranslate" translate="no">TimingHelper</code>クラスを使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html を参照してください
+import TimingHelper from './resources/js/timing-helper.js';
+// https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html を参照してください
+import NonNegativeRollingAverage from './resources/js/non-negative-rolling-average.js';
+
+const fpsAverage = new NonNegativeRollingAverage();
+const jsAverage = new NonNegativeRollingAverage();
+const gpuAverage = new NonNegativeRollingAverage();
+const mathAverage = new NonNegativeRollingAverage();
+</pre>
+<p>次に、レンダリングコードの最初から最後までJavaScriptを計時します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    ...
+
++    const startTimeMs = performance.now();
+
+    ...
+
++    const elapsedTimeMs = performance.now() - startTimeMs;
++    jsAverage.addSample(elapsedTimeMs);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>3D数学を行うJavaScriptの部分を計時します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    ...
+
++    let mathElapsedTimeMs = 0;
+
+    for (let i = 0; i &lt; settings.numObjects; ++i) {
+      const {
+        bindGroup,
+        uniformBuffer,
+        uniformValues,
+        normalMatrixValue,
+        worldValue,
+        viewProjectionValue,
+        colorValue,
+        lightWorldPositionValue,
+        viewWorldPositionValue,
+        shininessValue,
+
+        axis,
+        material,
+        radius,
+        speed,
+        rotationSpeed,
+        scale,
+      } = objectInfos[i];
++      const mathTimeStartMs = performance.now();
+
+      // このオブジェクトのユニフォーム値にビュー射影行列をコピーします
+      viewProjectionValue.set(viewProjectionMatrix);
+
+      // ワールド行列を計算します
+      mat4.identity(worldValue);
+      mat4.axisRotate(worldValue, axis, i + time * speed, worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 3.721 + time * speed) * radius], worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 9.721 + time * 0.1) * radius], worldValue);
+      mat4.rotateX(worldValue, time * rotationSpeed + i, worldValue);
+      mat4.scale(worldValue, [scale, scale, scale], worldValue);
+
+      // 逆行列と転置行列をnormalMatrix値に変換します
+      mat3.fromMat4(mat4.transpose(mat4.inverse(worldValue)), normalMatrixValue);
+
+      const {color, shininess} = material;
+      colorValue.set(color);
+      lightWorldPositionValue.set([-10, 30, 300]);
+      viewWorldPositionValue.set(eye);
+      shininessValue[0] = shininess;
+
++      mathElapsedTimeMs += performance.now() - mathTimeStartMs;
+
+      // ユニフォーム値をユニフォームバッファにアップロードします
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.drawIndexed(numVertices);
+    }
+
+    ...
+
+    const elapsedTimeMs = performance.now() - startTimeMs;
+    jsAverage.addSample(elapsedTimeMs);
++    mathAverage.addSample(mathElapsedTimeMs);
+
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p><code class="notranslate" translate="no">requestAnimationFrame</code>コールバック間の時間を計時します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  let depthTexture;
+  let then = 0;
+
+  function render(time) {
+    time *= 0.001;  // 秒に変換します
+    const deltaTime = time - then;
+    then = time;
+
+    ...
+
+    const elapsedTimeMs = performance.now() - startTimeMs;
++    fpsAverage.addSample(1 / deltaTime);
+    jsAverage.addSample(elapsedTimeMs);
+    mathAverage.addSample(mathElapsedTimeMs);
+
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>そして、レンダーパスを計時します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter({
+    powerPreference: 'high-performance',
+  });
+-  const device = await adapter?.requestDevice();
++  const canTimestamp = adapter.features.has('timestamp-query');
++  const device = await adapter?.requestDevice({
++    requiredFeatures: [
++      ...(canTimestamp ? ['timestamp-query'] : []),
++     ],
++  });
+  if (!device) {
+    fail('could not init WebGPU');
+  }
+
++  const timingHelper = new TimingHelper(device);
+
+  ...
+
+  function render(time) {
+    ...
+
+-    const pass = encoder.beginRenderPass(renderPassEncoder);
++    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
+
+    ...
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
++    timingHelper.getResult().then(gpuTime =&gt; {
++      gpuAverage.addSample(gpuTime / 1000);
++    });
+
+    ...
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>そして、タイミングを表示する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  ...
+
+  const timingHelper = new TimingHelper(device);
++  const infoElem = document.querySelector('#info');
+
+  ...
+
+  function render(time) {
+    ...
+
+    timingHelper.getResult().then(gpuTime =&gt; {
+      gpuAverage.addSample(gpuTime / 1000);
+    });
+
+    const elapsedTimeMs = performance.now() - startTimeMs;
+    fpsAverage.addSample(1 / deltaTime);
+    jsAverage.addSample(elapsedTimeMs);
+    mathAverage.addSample(mathElapsedTimeMs);
+
++    infoElem.textContent = `\
++js  : ${jsAverage.get().toFixed(1)}ms
++math: ${mathAverage.get().toFixed(1)}ms
++fps : ${fpsAverage.get().toFixed(0)}
++gpu : ${canTimestamp ? `${(gpuAverage.get() / 1000).toFixed(1)}ms` : 'N/A'}
++`;
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>もう1つ、より良い比較のために。現在抱えている問題は、表示されているすべてのキューブが、すべてのピクセルがレンダリングされるか、少なくともレンダリングする必要があるかどうかがチェックされることです。ピクセルのレンダリングを最適化するのではなく、WebGPU自体の使用を最適化しているため、1x1ピクセルのキャンバスに描画できると便利です。これにより、三角形のラスタライズに費やされる時間のほとんどが効果的に削除され、代わりに数学を行い、WebGPUと通信しているコードの部分のみが残ります。</p>
+<p>したがって、それを行うオプションを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    numObjects: 1000,
++    render: true,
+  };
+
+  const gui = new GUI();
+  gui.add(settings, 'numObjects', { min: 0, max: maxObjects, step: 1});
++  gui.add(settings, 'render');
+
+  let depthTexture;
+  let then = 0;
+  let frameCount = 0;
+
+  function render(time) {
+    time *= 0.001;  // 秒に変換します
+    const deltaTime = time - then;
+    then = time;
+    ++frameCount;
+
+    const startTimeMs = performance.now();
+
+-    const {width, height} = canvasToSizeMap.get(canvas) ?? canvas;
++    const {width, height} = settings.render
++       ? canvasToSizeMap.get(canvas) ?? canvas
++       : { width: 1, height: 1 };
+</pre>
+<p>これで、「レンダリング」のチェックを外すと、レンダリングのほとんどすべてが削除されます。</p>
+<p>そして、これで、最初の「最適化されていない」例ができました。記事の冒頭近くにリストされている手順に従っており、機能します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-optimization-none.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-optimization-none.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>オブジェクトの数を増やして、フレームレートがいつ低下するかを確認してください。私の場合、M1 Macの75Hzモニターでは、フレームレートが低下する前に約8000個のキューブが得られました。</p>
+<h1 id="最適化：作成時にマップ"><a id="a-mapped-on-creation"></a>最適化：作成時にマップ</h1>
+<p>上記の例と、このサイトのほとんどの例では、<code class="notranslate" translate="no">writeBuffer</code>を使用してデータを頂点バッファまたはインデックスバッファにコピーしました。この特定のケースでは、非常にマイナーな最適化として、バッファを作成するときに<code class="notranslate" translate="no">mappedAtCreation: true</code>を渡すことができます。これには2つの利点があります。</p>
+<ol>
+<li>
+<p>新しいバッファにデータを入れるのがわずかに高速になります。</p>
+</li>
+<li>
+<p>バッファの使用法に<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>を追加する必要はありません。</p>
+<p>これは、後で<code class="notranslate" translate="no">writeBuffer</code>またはバッファへのコピー関数のいずれかを使用してデータを変更しないことを前提としています。</p>
+</li>
+</ol>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function createBufferWithData(device, data, usage) {
+    const buffer = device.createBuffer({
+      size: data.byteLength,
+-      usage: usage | GPUBufferUsage.COPY_DST,
++      usage: usage,
++      mappedAtCreation: true,
+    });
+-    device.queue.writeBuffer(buffer, 0, data);
++    const dst = new Uint8Array(buffer.getMappedRange());
++    dst.set(new Uint8Array(data.buffer));
++    buffer.unmap();
+    return buffer;
+  }
+</pre>
+<p>この最適化は作成時にのみ役立つため、レンダリング時のパフォーマンスには影響しないことに注意してください。</p>
+<h1 id="最適化：頂点をパックしてインターリーブする"><a id="a-pack-verts"></a>最適化：頂点をパックしてインターリーブする</h1>
+<p>上記の例では、位置、法線、テクスチャ座標の3つの属性があります。4〜6つの属性を持つのが一般的であり、<a href="webgpu-normal-mapping.html">法線マッピング用の接線</a>と、<a href="webgpu-skinning.html">スキンモデル</a>がある場合は、ウェイトとジョイントを追加します。</p>
+<p>上記の例では、各属性は独自のバッファを使用しています。これは、CPUとGPUの両方で遅くなります。JavaScriptのCPUでは、描画したいモデルごとに各バッファに1回<code class="notranslate" translate="no">setVertexBuffer</code>を呼び出す必要があるため、遅くなります。</p>
+<p>キューブだけでなく、100個のモデルがあったと想像してください。描画するモデルを切り替えるたびに、最大6回<code class="notranslate" translate="no">setVertexBuffer</code>を呼び出す必要があります。モデルごとに100 * 6回の呼び出し= 600回の呼び出しです。</p>
+<p>「作業が少ないほど速くなる」というルールに従って、属性のデータを単一のバッファにマージした場合、モデルごとに1回<code class="notranslate" translate="no">setVertexBuffer</code>を呼び出すだけで済みます。100回の呼び出しです。これは600％高速です！</p>
+<p>GPUでは、メモリ内で一緒にあるものをロードする方が、メモリの異なる場所からロードするよりも通常高速です。したがって、単一のモデルの頂点データを単一のバッファに入れるだけでなく、データをインターリーブする方が良いです。</p>
+<p>その変更を行いましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const positions = new Float32Array([1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1]);
+-  const normals   = new Float32Array([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1]);
+-  const texcoords = new Float32Array([1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1]);
++  const vertexData = new Float32Array([
++  // 位置       法線        テクスチャ座標
++     1,  1, -1,     1,  0,  0,    1, 0,
++     1,  1,  1,     1,  0,  0,    0, 0,
++     1, -1,  1,     1,  0,  0,    0, 1,
++     1, -1, -1,     1,  0,  0,    1, 1,
++    -1,  1,  1,    -1,  0,  0,    1, 0,
++    -1,  1, -1,    -1,  0,  0,    0, 0,
++    -1, -1, -1,    -1,  0,  0,    0, 1,
++    -1, -1,  1,    -1,  0,  0,    1, 1,
++    -1,  1,  1,     0,  1,  0,    1, 0,
++     1,  1,  1,     0,  1,  0,    0, 0,
++     1,  1, -1,     0,  1,  0,    0, 1,
++    -1,  1, -1,     0,  1,  0,    1, 1,
++    -1, -1, -1,     0, -1,  0,    1, 0,
++     1, -1, -1,     0, -1,  0,    0, 0,
++     1, -1,  1,     0, -1,  0,    0, 1,
++    -1, -1,  1,     0, -1,  0,    1, 1,
++     1,  1,  1,     0,  0,  1,    1, 0,
++    -1,  1,  1,     0,  0,  1,    0, 0,
++    -1, -1,  1,     0,  0,  1,    0, 1,
++     1, -1,  1,     0,  0,  1,    1, 1,
++    -1,  1, -1,     0,  0, -1,    1, 0,
++     1,  1, -1,     0,  0, -1,    0, 0,
++     1, -1, -1,     0,  0, -1,    0, 1,
++    -1, -1, -1,     0,  0, -1,    1, 1,
++  ]);
+  const indices   = new Uint16Array([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23]);
+
+-  const positionBuffer = createBufferWithData(device, positions, GPUBufferUsage.VERTEX);
+-  const normalBuffer = createBufferWithData(device, normals, GPUBufferUsage.VERTEX);
+-  const texcoordBuffer = createBufferWithData(device, texcoords, GPUBufferUsage.VERTEX);
++  const vertexBuffer = createBufferWithData(device, vertexData, GPUBufferUsage.VERTEX);
+  const indicesBuffer = createBufferWithData(device, indices, GPUBufferUsage.INDEX);
+  const numVertices = indices.length;
+
+  const pipeline = device.createRenderPipeline({
+    label: 'textured model with point light w/specular highlight',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+-        // position
+-        {
+-          arrayStride: 3 * 4, // 3 floats
+-          attributes: [
+-            {shaderLocation: 0, offset: 0, format: 'float32x3'},
+-          ],
+-        },
+-        // normal
+-        {
+-          arrayStride: 3 * 4, // 3 floats
+-          attributes: [
+-            {shaderLocation: 1, offset: 0, format: 'float32x3'},
+-          ],
+-        },
+-        // uvs
+-        {
+-          arrayStride: 2 * 4, // 2 floats
+-          attributes: [
+-            {shaderLocation: 2, offset: 0, format: 'float32x2'},
+-          ],
+-        },
++        {
++          arrayStride: (3 + 3 + 2) * 4, // 8 floats
++          attributes: [
++            {shaderLocation: 0, offset: 0 * 4, format: 'float32x3'}, // position
++            {shaderLocation: 1, offset: 3 * 4, format: 'float32x3'}, // normal
++            {shaderLocation: 2, offset: 6 * 4, format: 'float32x2'}, // texcoord
++          ],
++        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+    primitive: {
+      cullMode: 'back',
+    },
+    depthStencil: {
+      depthWriteEnabled: true,
+      depthCompare: 'less',
+      format: 'depth24plus',
+    },
+  });
+
+  ...
+-    pass.setVertexBuffer(0, positionBuffer);
+-    pass.setVertexBuffer(1, normalBuffer);
+-    pass.setVertexBuffer(2, texcoordBuffer);
++    pass.setVertexBuffer(0, vertexBuffer);
+</pre>
+<p>上記では、3つの属性すべてのデータを単一のバッファに入れ、レンダーパスを変更して、単一のバッファにインターリーブされたデータを期待するようにしました。</p>
+<p>注：gLTFファイルを読み込んでいる場合は、頂点データが単一のバッファにインターリーブされるように事前に処理するか（最適）、読み込み時にデータをインターリーブするのが良いでしょう。</p>
+<h1 id="最適化：ユニフォームバッファを分割する（共有、マテリアル、モデルごと）">最適化：ユニフォームバッファを分割する（共有、マテリアル、モデルごと）</h1>
+<p>現在の例では、オブジェクトごとに1つのユニフォームバッファがあります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  viewProjection: mat4x4f,
+  world: mat4x4f,
+  color: vec4f,
+  lightWorldPosition: vec3f,
+  viewWorldPosition: vec3f,
+  shininess: f32,
+};
+</pre>
+<p><code class="notranslate" translate="no">viewProjection</code>、<code class="notranslate" translate="no">lightWorldPosition</code>、<code class="notranslate" translate="no">viewWorldPosition</code>などのユニフォーム値の一部は共有できます。</p>
+<p>これらをシェーダーで分割して、2つのユニフォームバッファを使用できます。1つは共有値用、もう1つは<em>オブジェクトごとの値</em>用です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct GlobalUniforms {
+  viewProjection: mat4x4f,
+  lightWorldPosition: vec3f,
+  viewWorldPosition: vec3f,
+};
+struct PerObjectUniforms {
+  normalMatrix: mat3x3f,
+  world: mat4x4f,
+  color: vec4f,
+  shininess: f32,
+};
+</pre>
+<p>この変更により、<code class="notranslate" translate="no">viewProjection</code>、<code class="notranslate" translate="no">lightWorldPosition</code>、<code class="notranslate" translate="no">viewWorldPosition</code>をすべてのユニフォームバッファにコピーする必要がなくなります。また、<code class="notranslate" translate="no">device.queue.writeBuffer</code>でオブジェクトごとにコピーするデータも少なくなります。</p>
+<p>新しいシェーダーは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    code: `
+-      struct Uniforms {
+-        normalMatrix: mat3x3f,
+-        viewProjection: mat4x4f,
+-        world: mat4x4f,
+-        color: vec4f,
+-        lightWorldPosition: vec3f,
+-        viewWorldPosition: vec3f,
+-        shininess: f32,
+-      };
+
++      struct GlobalUniforms {
++        viewProjection: mat4x4f,
++        lightWorldPosition: vec3f,
++        viewWorldPosition: vec3f,
++      };
++      struct PerObjectUniforms {
++        normalMatrix: mat3x3f,
++        world: mat4x4f,
++        color: vec4f,
++        shininess: f32,
++      };
+
+      struct Vertex {
+        @location(0) position: vec4f,
+        @location(1) normal: vec3f,
+        @location(2) texcoord: vec2f,
+      };
+
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) normal: vec3f,
+        @location(1) surfaceToLight: vec3f,
+        @location(2) surfaceToView: vec3f,
+        @location(3) texcoord: vec2f,
+      };
+
+      @group(0) @binding(0) var diffuseTexture: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var diffuseSampler: sampler;
+-      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
++      @group(0) @binding(2) var&lt;uniform&gt; obj: PerObjectUniforms;
++      @group(0) @binding(3) var&lt;uniform&gt; glb: GlobalUniforms;
+
+      @vertex fn vs(vert: Vertex) -&gt; VSOutput {
+        var vsOut: VSOutput;
+-        vsOut.position = uni.viewProjection * uni.world * vert.position;
++        vsOut.position = glb.viewProjection * obj.world * vert.position;
+
+        // 法線を方向付け、フラグメントシェーダーに渡します
+-        vsOut.normal = uni.normalMatrix * vert.normal;
++        vsOut.normal = obj.normalMatrix * vert.normal;
+
+        // 表面のワールド位置を計算します
+-        let surfaceWorldPosition = (uni.world * vert.position).xyz;
++        let surfaceWorldPosition = (obj.world * vert.position).xyz;
+
+        // 表面から光へのベクトルを計算し、
+        // フラグメントシェーダーに渡します
+-        vsOut.surfaceToLight = uni.lightWorldPosition - surfaceWorldPosition;
++        vsOut.surfaceToLight = glb.lightWorldPosition - surfaceWorldPosition;
+
+        // 表面から光へのベクトルを計算し、
+        // フラグメントシェーダーに渡します
+-        vsOut.surfaceToView = uni.viewWorldPosition - surfaceWorldPosition;
++        vsOut.surfaceToView = glb.viewWorldPosition - surfaceWorldPosition;
+
+        // テクスチャ座標をフラグメントシェーダーに渡します
+        vsOut.texcoord = vert.texcoord;
+
+        return vsOut;
+      }
+
+      @fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+        // vsOut.normalはステージ間変数であるため、
+        // 補間されるため、単位ベクトルにはなりません。
+        // 正規化すると、再び単位ベクトルになります。
+        let normal = normalize(vsOut.normal);
+
+        let surfaceToLightDirection = normalize(vsOut.surfaceToLight);
+        let surfaceToViewDirection = normalize(vsOut.surfaceToView);
+        let halfVector = normalize(
+          surfaceToLightDirection + surfaceToViewDirection);
+
+        // 法線と光への方向のドット積を
+        // 取ることで光を計算します。
+        let light = dot(normal, surfaceToLightDirection);
+
+        var specular = dot(normal, halfVector);
+        specular = select(
+            0.0,                           // 条件がfalseの場合の値
+-            pow(specular, uni.shininess),  // 条件がtrueの場合の値
++            pow(specular, obj.shininess),  // 条件がtrueの場合の値
+            specular &gt; 0.0);               // 条件
+
+-        let diffuse = uni.color * textureSample(diffuseTexture, diffuseSampler, vsOut.texcoord);
++        let diffuse = obj.color * textureSample(diffuseTexture, diffuseSampler, vsOut.texcoord);
+        // 色の部分（アルファではない）のみを
+        // 光で乗算しましょう。
+        let color = diffuse.rgb * light + specular;
+        return vec4f(color, diffuse.a);
+      }
+    `,
+  });
+</pre>
+<p>グローバルユニフォーム用に1つのグローバルユニフォームバッファを作成する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const globalUniformBufferSize = (16 + 4 + 4) * 4;
+  const globalUniformBuffer = device.createBuffer({
+    label: 'global uniforms',
+    size: globalUniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const globalUniformValues = new Float32Array(globalUniformBufferSize / 4);
+
+  const kViewProjectionOffset = 0;
+  const kLightWorldPositionOffset = 16;
+  const kViewWorldPositionOffset = 20;
+
+  const viewProjectionValue = globalUniformValues.subarray(
+      kViewProjectionOffset, kViewProjectionOffset + 16);
+  const lightWorldPositionValue = globalUniformValues.subarray(
+      kLightWorldPositionOffset, kLightWorldPositionOffset + 3);
+  const viewWorldPositionValue = globalUniformValues.subarray(
+      kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
+</pre>
+<p>次に、これらのユニフォームをperObjectユニフォームバッファから削除し、グローバルユニフォームバッファを各オブジェクトのバインドグループに追加できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 30000;
+  const objectInfos = [];
+
+  for (let i = 0; i &lt; maxObjects; ++i) {
+-    const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4) * 4;
++    const uniformBufferSize = (12 + 16 + 4 + 4) * 4;
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+    // float32インデックスでのさまざまなユニフォーム値へのオフセット
+    const kNormalMatrixOffset = 0;
+-    const kViewProjectionOffset = 12;
+-    const kWorldOffset = 28;
+-    const kColorOffset = 44;
+-    const kLightWorldPositionOffset = 48;
+-    const kViewWorldPositionOffset = 52;
+-    const kShininessOffset = 55;
++    const kWorldOffset = 12;
++    const kColorOffset = 28;
++    const kShininessOffset = 32;
+
+    const normalMatrixValue = uniformValues.subarray(
+        kNormalMatrixOffset, kNormalMatrixOffset + 12);
+-    const viewProjectionValue = uniformValues.subarray(
+-        kViewProjectionOffset, kViewProjectionOffset + 16);
+    const worldValue = uniformValues.subarray(
+        kWorldOffset, kWorldOffset + 16);
+    const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+-    const lightWorldPositionValue = uniformValues.subarray(
+-        kLightWorldPositionOffset, kLightWorldPositionOffset + 3);
+-    const viewWorldPositionValue = uniformValues.subarray(
+-        kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
+    const shininessValue = uniformValues.subarray(
+        kShininessOffset, kShininessOffset + 1);
+
+    const material = randomArrayElement(materials);
+
+    const bindGroup = device.createBindGroup({
+      label: 'bind group for object',
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: material.texture.createView() },
+        { binding: 1, resource: material.sampler },
+        { binding: 2, resource: uniformBuffer },
++        { binding: 3, resource: globalUniformBuffer },
+      ],
+    });
+
+    const axis = vec3.normalize([rand(-1, 1), rand(-1, 1), rand(-1, 1)]);
+    const radius = rand(10, 100);
+    const speed = rand(0.1, 0.4);
+    const rotationSpeed = rand(-1, 1);
+    const scale = rand(2, 10);
+
+    objectInfos.push({
+      bindGroup,
+
+      uniformBuffer,
+      uniformValues,
+
+      normalMatrixValue,
+      worldValue,
+-      viewProjectionValue,
+      colorValue,
+-      lightWorldPositionValue,
+-      viewWorldPositionValue,
+      shininessValue,
+      material,
+
+      axis,
+      radius,
+      speed,
+      rotationSpeed,
+      scale,
+    });
+  }
+</pre>
+<p>次に、レンダリング時に、グローバルユニフォームバッファを一度だけ、オブジェクトのレンダリングループの外で更新します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(
+        degToRad(60),
+        aspect,
+        1,      // zNear
+        2000,   // zFar
+    );
+
+    const eye = [100, 150, 200];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
+
+    // ビュー行列を計算します
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+    // ビュー行列と射影行列を組み合わせます
+-    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
++    mat4.multiply(projection, viewMatrix, viewProjectionValue);
++
++    lightWorldPositionValue.set([-10, 30, 300]);
++    viewWorldPositionValue.set(eye);
++
++    device.queue.writeBuffer(globalUniformBuffer, 0, globalUniformValues);
+
+    let mathElapsedTimeMs = 0;
+
+    for (let i = 0; i &lt; settings.numObjects; ++i) {
+      const {
+        bindGroup,
+        uniformBuffer,
+        uniformValues,
+        normalMatrixValue,
+        worldValue,
+-        viewProjectionValue,
+        colorValue,
+-        lightWorldPositionValue,
+-        viewWorldPositionValue,
+        shininessValue,
+
+        axis,
+        material,
+        radius,
+        speed,
+        rotationSpeed,
+        scale,
+      } = objectInfos[i];
+      const mathTimeStartMs = performance.now();
+
+-      // このオブジェクトのユニフォーム値にビュー射影行列をコピーします
+-      viewProjectionValue.set(viewProjectionMatrix);
+
+      // ワールド行列を計算します
+      mat4.identity(worldValue);
+      mat4.axisRotate(worldValue, axis, i + time * speed, worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 3.721 + time * speed) * radius], worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 9.721 + time * 0.1) * radius], worldValue);
+      mat4.rotateX(worldValue, time * rotationSpeed + i, worldValue);
+      mat4.scale(worldValue, [scale, scale, scale], worldValue);
+
+      // 逆行列と転置行列をnormalMatrix値に変換します
+      mat3.fromMat4(mat4.transpose(mat4.inverse(worldValue)), normalMatrixValue);
+
+      const {color, shininess} = material;
+      colorValue.set(color);
+-      lightWorldPositionValue.set([-10, 30, 300]);
+-      viewWorldPositionValue.set(eye);
+      shininessValue[0] = shininess;
+
+      mathElapsedTimeMs += performance.now() - mathTimeStartMs;
+
+      // ユニフォーム値をユニフォームバッファにアップロードします
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.drawIndexed(numVertices);
+    }
+
+    pass.end();
+</pre>
+<p>これにより、WebGPUへの呼び出し回数は変更されませんでしたが、実際には1回追加されました。しかし、モデルごとに実行していた作業の多くが削減されました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-optimization-step3-global-vs-per-object-uniforms.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-optimization-step3-global-vs-per-object-uniforms.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>私のマシンでは、その変更により、数学の部分が約16％減少しました。</p>
+<h1 id="最適化：さらに多くのユニフォームを分離する">最適化：さらに多くのユニフォームを分離する</h1>
+<p>3Dライブラリの一般的な構成は、「モデル」（頂点データ）、「マテリアル」（色、光沢、テクスチャ）、「ライト」（使用するライト）、「viewInfo」（ビューおよび射影行列）を持つことです。特に、この例では、<code class="notranslate" translate="no">color</code>と<code class="notranslate" translate="no">shininess</code>は決して変更されないため、フレームごとにユニフォームバッファにコピーし続けるのは無駄です。</p>
+<p>マテリアルごとにユニフォームバッファを作成しましょう。初期化時にマテリアル設定をそれらにコピーし、バインドグループに追加します。</p>
+<p>まず、別のユニフォームバッファを使用するようにシェーダーを変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    code: `
+      struct GlobalUniforms {
+        viewProjection: mat4x4f,
+        lightWorldPosition: vec3f,
+        viewWorldPosition: vec3f,
+      };
+
++      struct MaterialUniforms {
++        color: vec4f,
++        shininess: f32,
++      };
+
+      struct PerObjectUniforms {
+        normalMatrix: mat3x3f,
+        world: mat4x4f,
+-        color: vec4f,
+-        shininess: f32,
+      };
+
+      struct Vertex {
+        @location(0) position: vec4f,
+        @location(1) normal: vec3f,
+        @location(2) texcoord: vec2f,
+      };
+
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) normal: vec3f,
+        @location(1) surfaceToLight: vec3f,
+        @location(2) surfaceToView: vec3f,
+        @location(3) texcoord: vec2f,
+      };
+
+      @group(0) @binding(0) var diffuseTexture: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var diffuseSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; obj: PerObjectUniforms;
+      @group(0) @binding(3) var&lt;uniform&gt; glb: GlobalUniforms;
++      @group(0) @binding(4) var&lt;uniform&gt; material: MaterialUniforms;
+
+      @vertex fn vs(vert: Vertex) -&gt; VSOutput {
+        var vsOut: VSOutput;
+        vsOut.position = glb.viewProjection * obj.world * vert.position;
+
+        // 法線を方向付け、フラグメントシェーダーに渡します
+        vsOut.normal = obj.normalMatrix * vert.normal;
+
+        // 表面のワールド位置を計算します
+        let surfaceWorldPosition = (obj.world * vert.position).xyz;
+
+        // 表面から光へのベクトルを計算し、
+        // フラグメントシェーダーに渡します
+        vsOut.surfaceToLight = glb.lightWorldPosition - surfaceWorldPosition;
+
+        // 表面から光へのベクトルを計算し、
+        // フラグメントシェーダーに渡します
+        vsOut.surfaceToView = glb.viewWorldPosition - surfaceWorldPosition;
+
+        // テクスチャ座標をフラグメントシェーダーに渡します
+        vsOut.texcoord = vert.texcoord;
+
+        return vsOut;
+      }
+
+      @fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+        // vsOut.normalはステージ間変数であるため、
+        // 補間されるため、単位ベクトルにはなりません。
+        // 正規化すると、再び単位ベクトルになります。
+        let normal = normalize(vsOut.normal);
+
+        let surfaceToLightDirection = normalize(vsOut.surfaceToLight);
+        let surfaceToViewDirection = normalize(vsOut.surfaceToView);
+        let halfVector = normalize(
+          surfaceToLightDirection + surfaceToViewDirection);
+
+        // 法線と光への方向のドット積を
+        // 取ることで光を計算します。
+        let light = dot(normal, surfaceToLightDirection);
+
+        var specular = dot(normal, halfVector);
+        specular = select(
+            0.0,                           // 条件がfalseの場合の値
+-            pow(specular, obj.shininess),  // 条件がtrueの場合の値
++            pow(specular, material.shininess),  // 条件がtrueの場合の値
+            specular &gt; 0.0);               // 条件
+
+-        let diffuse = obj.color * textureSample(diffuseTexture, diffuseSampler, vsOut.texcoord);
++        let diffuse = material.color * textureSample(diffuseTexture, diffuseSampler, vsOut.texcoord);
+        // 色の部分（アルファではない）のみを
+        // 光で乗算しましょう。
+        let color = diffuse.rgb * light + specular;
+        return vec4f(color, diffuse.a);
+      }
+    `,
+  });
+</pre>
+<p>次に、マテリアルごとにユニフォームバッファを作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numMaterials = 20;
+  const materials = [];
+  for (let i = 0; i &lt; numMaterials; ++i) {
+    const color = hslToRGBA(rand(), rand(0.5, 0.8), rand(0.5, 0.7));
+    const shininess = rand(10, 120);
+
++    const materialValues = new Float32Array([
++      ...color,
++      shininess,
++      0, 0, 0,  // padding
++    ]);
++    const materialUniformBuffer = createBufferWithData(
++      device,
++      materialValues,
++      GPUBufferUsage.UNIFORM,
++    );
+
+    materials.push({
+-      color,
+-      shininess,
++      materialUniformBuffer,
+      texture: randomArrayElement(textures),
+      sampler,
+    });
+  }
+</pre>
+<p>オブジェクトごとの情報を設定するとき、マテリアル設定を渡す必要はもうありません。代わりに、マテリアルのユニフォームバッファをオブジェクトのバインドグループに追加するだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const maxObjects = 30000;
+  const objectInfos = [];
+
+  for (let i = 0; i &lt; maxObjects; ++i) {
+-    const uniformBufferSize = (12 + 16 + 4 + 4) * 4;
++    const uniformBufferSize = (12 + 16) * 4;
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+    // float32インデックスでのさまざまなユニフォーム値へのオフセット
+    const kNormalMatrixOffset = 0;
+    const kWorldOffset = 12;
+-    const kColorOffset = 28;
+-    const kShininessOffset = 32;
+
+    const normalMatrixValue = uniformValues.subarray(
+        kNormalMatrixOffset, kNormalMatrixOffset + 12);
+    const worldValue = uniformValues.subarray(
+        kWorldOffset, kWorldOffset + 16);
+-    const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+-    const shininessValue = uniformValues.subarray(
+-        kShininessOffset, kShininessOffset + 1);
+
+    const material = randomArrayElement(materials);
+
+    const bindGroup = device.createBindGroup({
+      label: 'bind group for object',
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: material.texture.createView() },
+        { binding: 1, resource: material.sampler },
+        { binding: 2, resource: uniformBuffer },
+        { binding: 3, resource: globalUniformBuffer },
++        { binding: 4, resource: { buffer: material.materialUniformBuffer }},
+      ],
+    });
+
+    const axis = vec3.normalize([rand(-1, 1), rand(-1, 1), rand(-1, 1)]);
+    const radius = rand(10, 100);
+    const speed = rand(0.1, 0.4);
+    const rotationSpeed = rand(-1, 1);
+    const scale = rand(2, 10);
+
+    objectInfos.push({
+      bindGroup,
+
+      uniformBuffer,
+      uniformValues,
+
+      normalMatrixValue,
+      worldValue,
+-      colorValue,
+-      shininessValue,
+
+      axis,
+-      material,
+      radius,
+      speed,
+      rotationSpeed,
+      scale,
+    });
+  }
+</pre>
+<p>また、レンダリング時にこれらのものを処理する必要はもうありません。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    for (let i = 0; i &lt; settings.numObjects; ++i) {
+      const {
+        bindGroup,
+        uniformBuffer,
+        uniformValues,
+        normalMatrixValue,
+        worldValue,
+-        colorValue,
+-        shininessValue,
+
+        axis,
+-        material,
+        radius,
+        speed,
+        rotationSpeed,
+        scale,
+      } = objectInfos[i];
+      const mathTimeStartMs = performance.now();
+
+      // ワールド行列を計算します
+      mat4.identity(worldValue);
+      mat4.axisRotate(worldValue, axis, i + time * speed, worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 3.721 + time * speed) * radius], worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 9.721 + time * 0.1) * radius], worldValue);
+      mat4.rotateX(worldValue, time * rotationSpeed + i, worldValue);
+      mat4.scale(worldValue, [scale, scale, scale], worldValue);
+
+      // 逆行列と転置行列をnormalMatrix値に変換します
+      mat3.fromMat4(mat4.transpose(mat4.inverse(worldValue)), normalMatrixValue);
+
+-      const {color, shininess} = material;
+-      colorValue.set(color);
+-      shininessValue[0] = shininess;
+
+      mathElapsedTimeMs += performance.now() - mathTimeStartMs;
+
+      // ユニフォーム値をユニフォームバッファにアップロードします
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.drawIndexed(numVertices);
+    }
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-optimization-step4-material-uniforms.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-optimization-step4-material-uniforms.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<h1 id="最適化：バッファオフセット付きの1つの大きなユニフォームバッファを使用する">最適化：バッファオフセット付きの1つの大きなユニフォームバッファを使用する</h1>
+<p>現在、各オブジェクトには独自のユニフォームバッファがあります。レンダリング時に、各オブジェクトについて、そのオブジェクトのユニフォーム値で型付き配列を更新し、<code class="notranslate" translate="no">device.queue.writeBuffer</code>を呼び出してその単一のユニフォームバッファの値を更新します。8000個のオブジェクトをレンダリングしている場合、<code class="notranslate" translate="no">device.queue.writeBuffer</code>への呼び出しは8000回になります。</p>
+<p>代わりに、1つの大きなユニフォームバッファを作成できます。次に、各オブジェクトのバインドグループを設定して、大きなバッファの独自の部分を使用するようにできます。レンダリング時に、1つの大きな型付き配列ですべてのオブジェクトのすべての値を更新し、<code class="notranslate" translate="no">device.queue.writeBuffer</code>を1回だけ呼び出すことができます。これにより、高速になるはずです。</p>
+<p>まず、大きなユニフォームバッファと大きな型付き配列を割り当てましょう。ユニフォームバッファのオフセットには、デフォルトで256バイトの最小アライメントがあるため、オブジェクトごとに必要なサイズを256バイトに切り上げます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+/** vをアライメントの倍数に切り上げます */
++const roundUp = (v, alignment) =&gt; Math.ceil(v / alignment) * alignment;
+
+  ...
+
++  const uniformBufferSize = (12 + 16) * 4;
++  const uniformBufferSpace = roundUp(uniformBufferSize, device.limits.minUniformBufferOffsetAlignment);
++  const uniformBuffer = device.createBuffer({
++    label: 'uniforms',
++    size: uniformBufferSpace * maxObjects,
++    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++  });
++  const uniformValues = new Float32Array(uniformBuffer.size / 4);
+</pre>
+<p>これで、オブジェクトごとのビューを変更して、その大きな型付き配列にビューを作成できます。また、バインドグループを設定して、大きなユニフォームバッファの正しい部分を使用するようにすることもできます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  for (let i = 0; i &lt; maxObjects; ++i) {
++    const uniformBufferOffset = i * uniformBufferSpace;
++    const f32Offset = uniformBufferOffset / 4;
+
+    // float32インデックスでのさまざまなユニフォーム値へのオフセット
+    const kNormalMatrixOffset = 0;
+    const kWorldOffset = 12;
+
+-    const normalMatrixValue = uniformValues.subarray(
+-        kNormalMatrixOffset, kNormalMatrixOffset + 12);
+-    const worldValue = uniformValues.subarray(
+-        kWorldOffset, kWorldOffset + 16);
++    const normalMatrixValue = uniformValues.subarray(
++        f32Offset + kNormalMatrixOffset, f32Offset + kNormalMatrixOffset + 12);
++    const worldValue = uniformValues.subarray(
++        f32Offset + kWorldOffset, f32Offset + kWorldOffset + 16);
+
+    const material = randomArrayElement(materials);
+
+    const bindGroup = device.createBindGroup({
+      label: 'bind group for object',
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: material.texture.createView() },
+        { binding: 1, resource: material.sampler },
+-        { binding: 2, resource: uniformBuffer },
++        {
++          binding: 2,
++          resource: {
++            buffer: uniformBuffer,
++            offset: uniformBufferOffset,
++            size: uniformBufferSize,
++          },
++        },
+        { binding: 3, resource: globalUniformBuffer },
+        { binding: 4, resource: { buffer: material.materialUniformBuffer }},
+      ],
+    });
+
+    const axis = vec3.normalize([rand(-1, 1), rand(-1, 1), rand(-1, 1)]);
+    const radius = rand(10, 100);
+    const speed = rand(0.1, 0.4);
+    const rotationSpeed = rand(-1, 1);
+    const scale = rand(2, 10);
+
+    objectInfos.push({
+      bindGroup,
+
+-      uniformBuffer,
+-      uniformValues,
+
+      normalMatrixValue,
+      worldValue,
+
+      axis,
+      radius,
+      speed,
+      rotationSpeed,
+      scale,
+    });
+  }
+</pre>
+<p>レンダリング時に、すべてのオブジェクトの値を更新し、<code class="notranslate" translate="no">device.queue.writeBuffer</code>を1回だけ呼び出します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    for (let i = 0; i &lt; settings.numObjects; ++i) {
+      const {
+        bindGroup,
+-        uniformBuffer,
+-        uniformValues,
+        normalMatrixValue,
+        worldValue,
+
+        axis,
+        radius,
+        speed,
+        rotationSpeed,
+        scale,
+      } = objectInfos[i];
+      const mathTimeStartMs = performance.now();
+
+      // ワールド行列を計算します
+      mat4.identity(worldValue);
+      mat4.axisRotate(worldValue, axis, i + time * speed, worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 3.721 + time * speed) * radius], worldValue);
+      mat4.translate(worldValue, [0, 0, Math.sin(i * 9.721 + time * 0.1) * radius], worldValue);
+      mat4.rotateX(worldValue, time * rotationSpeed + i, worldValue);
+      mat4.scale(worldValue, [scale, scale, scale], worldValue);
+
+      // 逆行列と転置行列をnormalMatrix値に変換します
+      mat3.fromMat4(mat4.transpose(mat4.inverse(worldValue)), normalMatrixValue);
+
+      mathElapsedTimeMs += performance.now() - mathTimeStartMs;
+
+-      // ユニフォーム値をユニフォームバッファにアップロードします
+-      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.drawIndexed(numVertices);
+    }
+
++    // すべてのユニフォーム値をユニフォームバッファにアップロードします
++    if (settings.numObjects) {
++      const size = (settings.numObjects - 1) * uniformBufferSpace + uniformBufferSize;
++      device.queue.writeBuffer( uniformBuffer, 0, uniformValues, 0, size / uniformValues.BYTES_PER_ELEMENT);
++    }
+
+    pass.end();
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-optimization-step5-use-buffer-offsets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-optimization-step5-use-buffer-offsets.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>私のマシンでは、JavaScriptの時間が40％短縮されました！</p>
+<h1 id="最適化：マップされたバッファを使用する">最適化：マップされたバッファを使用する</h1>
+<p><code class="notranslate" translate="no">device.queue.writeBuffer</code>を呼び出すと、WebGPUは型付き配列のデータのコピーを作成します。そのデータをGPUプロセス（セキュリティのためにGPUと通信する別のプロセス）にコピーします。GPUプロセスでは、そのデータがGPUバッファにコピーされます。</p>
+<p>代わりにマップされたバッファを使用することで、これらのコピーの1つをスキップできます。バッファをマップし、ユニフォーム値をそのマップされたバッファに直接更新します。次に、バッファのマップを解除し、<code class="notranslate" translate="no">copyBufferToBuffer</code>コマンドを発行してユニフォームバッファにコピーします。これにより、コピーが1つ節約されます。</p>
+<p>WebGPUのマッピングは非同期に行われるため、バッファをマップして準備ができるのを待つのではなく、すでにマップされているバッファの配列を保持します。各フレームで、すでにマップされているバッファを取得するか、すでにマップされている新しいバッファを作成します。レンダリング後、利用可能になったときにバッファをマップし、すでにマップされているバッファのリストに戻すコールバックを設定します。こうすることで、マップされたバッファを待つ必要がなくなります。</p>
+<p>まず、マップされたバッファの配列と、事前にマップされたバッファを取得するか、新しいバッファを作成する関数を作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const mappedTransferBuffers = [];
+  const getMappedTransferBuffer = () =&gt; {
+    return mappedTransferBuffers.pop() || device.createBuffer({
+      label: 'transfer buffer',
+      size: uniformBufferSpace * maxObjects,
+      usage: GPUBufferUsage.MAP_WRITE | GPUBufferUsage.COPY_SRC,
+      mappedAtCreation: true,
+    });
+  };
+</pre>
+<p>バッファをマッピングすると新しい<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>が返されるため、型付き配列ビューを事前に作成することはできません。したがって、マッピング後に新しい型付き配列ビューを作成する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
++  const kNormalMatrixOffset = 0;
++  const kWorldOffset = 12;
+
+  for (let i = 0; i &lt; maxObjects; ++i) {
+    const uniformBufferOffset = i * uniformBufferSpace;
+-    const f32Offset = uniformBufferOffset / 4;
+-
+-    // float32インデックスでのさまざまなユニフォーム値へのオフセット
+-    const kNormalMatrixOffset = 0;
+-    const kWorldOffset = 12;
+-
+-    const normalMatrixValue = uniformValues.subarray(
+-        f32Offset + kNormalMatrixOffset, f32Offset + kNormalMatrixOffset + 12);
+-    const worldValue = uniformValues.subarray(
+-        f32Offset + kWorldOffset, f32Offset + kWorldOffset + 16);
+-    const material = randomArrayElement(materials);
+
+    const bindGroup = device.createBindGroup({
+      label: 'bind group for object',
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: material.texture.createView() },
+        { binding: 1, resource: material.sampler },
+        { binding: 2, resource: { buffer: uniformBuffer, offset: uniformBufferOffset, size: uniformBufferSize }},
+        { binding: 3, resource: globalUniformBuffer },
+        { binding: 4, resource: { buffer: material.materialUniformBuffer }},
+      ],
+    });
+
+    const axis = vec3.normalize([rand(-1, 1), rand(-1, 1), rand(-1, 1)]);
+    const radius = rand(10, 100);
+    const speed = rand(0.1, 0.4);
+    const rotationSpeed = rand(-1, 1);
+    const scale = rand(2, 10);
+
+    objectInfos.push({
+      bindGroup,
+
+-      normalMatrixValue,
+-      worldValue,
+
+      axis,
+      radius,
+      speed,
+      rotationSpeed,
+      scale,
+    });
+  }
+</pre>
+<p>レンダリング時に、オブジェクトのループを開始する前に、転送バッファをユニフォームバッファにコピーするコマンドをエンコードします。これは、<code class="notranslate" translate="no">copyBufferToBuffer</code>コマンドが<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUCommandEncoder"><code class="notranslate" translate="no">GPUCommandEncoder</code></a>のコマンドであるためです。オブジェクトがレンダリングされる前に実行する必要がありますが、オブジェクトをループ処理するときに、それらをレンダリングするためのレンダーパスコマンドをエンコードしています。以前は、型付き配列を更新した後に<code class="notranslate" translate="no">device.queue.writeBuffer</code>を呼び出しました。もちろん、コマンドでまだ<code class="notranslate" translate="no">submit</code>を呼び出していないため、これは最初に実行されます。ただし、この場合、コピーは実際にはコマンドであるため、描画コマンドの前にエンコードする必要があります。これは、コピーがまだ行われていないため、転送バッファをまだ更新できるため、問題ありません。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+-    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
+-    pass.setPipeline(pipeline);
+-    pass.setVertexBuffer(0, vertexBuffer);
+-    pass.setIndexBuffer(indicesBuffer, 'uint16');
+
+    ...
+
+    let mathElapsedTimeMs = 0;
+
++    const transferBuffer = getMappedTransferBuffer();
++    const uniformValues = new Float32Array(transferBuffer.getMappedRange());
+
++    // 転送バッファからユニフォームバッファにユニフォーム値をコピーします
++    if (settings.numObjects) {
++      // これは、後で発生するコマンドをエンコードしているだけであることを忘れないでください。
++      const size = (settings.numObjects - 1) * uniformBufferSpace + uniformBufferSize;
++      encoder.copyBufferToBuffer(transferBuffer, 0, uniformBuffer, 0, size);
++    }
+
++    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
++    pass.setPipeline(pipeline);
++    pass.setVertexBuffer(0, vertexBuffer);
+</pre>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +1973,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +2062,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPUの速度と最適化`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-limits-and-features.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Optional Features and Limits">
+
+<meta name="description" content="オプション機能">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_ja.jpg">
+
+<meta property="og:title" content="WebGPUのオプション機能と制限">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Optional Features">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_ja.jpg">
+<meta property="og:description" content="オプション機能">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-limits-and-features.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Optional Features and Limits">
+<meta name="twitter:title" content="WebGPUのオプション機能と制限">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-limits-and-features.html">
-<meta name="twitter:description" content="Optional Features">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="オプション機能">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-limits-and-features.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-limits-and-features.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-limits-and-features.html",
+      "inLanguage":"ja",
+      "name":"WebGPUのオプション機能と制限",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-limits-and-features.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Optional Features and Limits</title>
+<title>WebGPUのオプション機能と制限</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,115 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Optional Features and Limits</h1>
+    <h1>WebGPUのオプション機能と制限</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-limits-and-features.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>WebGPUには、多数のオプション機能と制限があります。それらを確認し、要求する方法について説明します。</p>
+<p>アダプターを要求する場合</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+</pre>
+<p>アダプターには、<code class="notranslate" translate="no">adapter.limits</code>に制限のリストと、<code class="notranslate" translate="no">adapter.features</code>に機能名の配列があります。たとえば、</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+console.log(adapter.limits.maxColorAttachments);
+</pre>
+<p>コンソールに<code class="notranslate" translate="no">8</code>と表示される場合があります。これは、アダプターが最大8つのカラーアタッチメントをサポートしていることを意味します。</p>
+<p>これは、デフォルトのアダプターの制限と、最小限必要な制限を含む、すべての制限のリストです。</p>
+<div class="webgpu_center data-table limits" data-diagram="limits"></div>
+<p>最小制限は、WebGPUをサポートするすべてのデバイスで期待できる制限です。</p>
+<p>オプション機能のリストもあります。たとえば、次のように表示できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+console.log(adapter.features);
+</pre>
+<p>これは、<code class="notranslate" translate="no">["texture-compression-astc", "texture-compression-bc"]</code>のようなものを出力し、要求すればそれらの機能が利用可能であることを示します。</p>
+<p>これは、デフォルトのアダプターで利用可能な機能のリストです。</p>
+<div class="webgpu_center data-table features" data-diagram="features"></div>
+<blockquote>
+<p>注：<a href="https://webgpureport.org">webgpureport.org</a>で、システムのすべてのアダプターの機能と制限を確認できます。</p>
+</blockquote>
+<h2 id="制限と機能の要求">制限と機能の要求</h2>
+<p>デフォルトでは、デバイスを要求すると、最小制限（上記の右側の列）が得られ、オプション機能は得られません。最小制限内に収まっていれば、アプリはWebGPUをサポートするすべてのデバイスで実行されることが期待されます。</p>
+<p>しかし、アダプターにリストされている利用可能な制限と機能があれば、<code class="notranslate" translate="no">requestDevice</code>を呼び出すときに、目的の制限を<code class="notranslate" translate="no">requiredLimits</code>として、目的の機能を<code class="notranslate" translate="no">requiredFeatures</code>として渡すことで、それらを要求できます。たとえば、</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const k1Gig = 1024 * 1024 * 1024;
+const adapter = await navigator.gpu?.requestAdapter();
+const device = adapter?.requestDevice({
+  requiredLimits: { maxBufferSize: k1Gig },
+  requiredFeatures: [ 'float32-filterable' ],
+});
+</pre>
+<p>上記では、最大1ギガバイトのバッファを使用できることと、フィルタリング可能なfloat32テクスチャ（たとえば、デフォルトでは<code class="notranslate" translate="no">'nearest'</code>でのみ使用できる<code class="notranslate" translate="no">minFilter</code>が<code class="notranslate" translate="no">'linear'</code>に設定された<code class="notranslate" translate="no">'rgba32float'</code>）を使用できることを要求しています。</p>
+<p>これらの要求のいずれかが満たされない場合、<code class="notranslate" translate="no">requestDevice</code>は失敗します（プロミスを拒否します）。</p>
+<h2 id="すべてを要求しない">すべてを要求しない</h2>
+<p>すべての制限と機能を要求し、必要なものを確認したくなるかもしれません。</p>
+<p>例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function objLikeToObj(src) {
+  const dst = {};
+  for (const key in src) {
+    dst[key] = src[key];
+  }
+  return dst;
+}
+
+//
+// 悪い!!! ?
+//
+async function main() {
+  const adapter = await navigator?.gpu.requestAdapter();
+  const device = await adapter?.requestDevice({
+    requiredLimits: objLikeToObj(adapter.limits),
+    requiredFeatures: adapter.features,
+  });
+  if (!device) {
+    fail('need webgpu');
+    return;
+  }
+
+  const canUse128KUniformsBuffers = device.limits.maxUniformBufferBindingSize &gt;= 128 * 1024;
+  const canStoreToBGRA8Unorm = device.features.has('bgra8unorm-storage');
+  const canIndirectFirstInstance = device.features.has('indirect-first-instance');
+}
+</pre>
+<p>これは、制限と機能を確認するための単純で明確な方法のように思えます<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。このパターンの問題は、誤って制限を超えてしまい、それに気づかない可能性があることです。たとえば、<code class="notranslate" translate="no">'rgba32float'</code>テクスチャを作成し、<code class="notranslate" translate="no">'linear'</code>フィルタリングでフィルタリングしたとします。デスクトップマシンでは、たまたま有効にしていたため、魔法のように機能します。</p>
+<p>ユーザーの携帯電話では、<code class="notranslate" translate="no">'float32-filterable'</code>機能が存在せず、オプション機能であることを認識せずに使用していたため、プログラムが不思議なことに失敗します。</p>
+<p>または、最小の<code class="notranslate" translate="no">maxBufferSize</code>より大きいバッファを割り当ててしまい、制限を超えたことに気づかない可能性があります。出荷すると、多くのユーザーがページを実行できなくなります。</p>
+<h2 id="機能と制限を要求する推奨方法">機能と制限を要求する推奨方法</h2>
+<p>機能と制限を使用する推奨方法は、絶対に必要とするものを決定し、それらの制限のみを要求することです。</p>
+<p>例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const adapter = await navigator?.gpu.requestAdapter();
+
+  const canUse128KUniformsBuffers = adapter?.limits.maxUniformBufferBindingSize &gt;= 128 * 1024;
+  const canStoreToBGRA8Unorm = adapter?.features.has('bgra8unorm-storage');
+  const canIndirectFirstInstance = adapter?.features.has('indirect-first-instance');
+
+  // これらの機能の1つ以上が絶対に必要で、利用できない場合は、ここで失敗します
+  if (!canUse128kUniformBuffers) {
+    alert('申し訳ありませんが、お使いのデバイスは古すぎるか、性能が低い可能性があります');
+    return;
+  }
+
+  // 必要な利用可能な機能と制限を要求します
+  const device = adapter?.requestDevice({
+    requiredFeatures: [
+      ...(canStorageBGRA8Unorm ? ['bgra8unorm'] : []),
+      ...(canIndirectFirstInstance) ? ['indirect-first-instance']),
+    ],
+    requiredLimits: [
+      maxUniformBufferBindingSize: 128 * 1024,
+    ]
+  });
+</pre>
+<p>このようにすると、128kより大きいユニフォームバッファを要求すると、エラーが発生します。同様に、要求しなかった機能を使用しようとすると、エラーが発生します。次に、必要な制限を増やす（したがって、より多くのデバイスで実行を拒否する）か、制限を維持するか、機能や制限が利用可能かどうかに応じてコードを構造化して異なることを行うかを、意識的に決定できます。</p>
+<!-- この記事の最後にこれを保持してください -->
+<link rel="stylesheet" href="../webgpu-limits-and-features.css">
+<script type="module" src="../webgpu-limits-and-features.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>この<code class="notranslate" translate="no">objLikeToObj</code>とは何ですか？なぜ必要なのですか？これは、難解なWeb仕様の問題です。仕様では、<code class="notranslate" translate="no">requiredLimits</code>を<code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code>としてリストしています。Web IDL仕様では、オブジェクトを何かから<code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code>に変換する場合、実際にオブジェクトの<em>独自の</em>プロパティであるプロパティのみをコピーすると記載されています。アダプターの<code class="notranslate" translate="no">limits</code>オブジェクトは<code class="notranslate" translate="no">interface</code>としてリストされています。そこにあるように見えるものはプロパティではなく、オブジェクトのプロトタイプに存在するゲッターであり、実際にはオブジェクトの独自のプロパティではありません。したがって、<code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code>に変換されるときにコピーされないため、自分でコピーする必要があります。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +351,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +440,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPUのオプション機能と制限`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

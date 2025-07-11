@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-points.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Points">
+
+<meta name="description" content="WebGPUでのポイントの描画">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_ja.jpg">
+
+<meta property="og:title" content="WebGPU ポイント">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Drawing Points in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_ja.jpg">
+<meta property="og:description" content="WebGPUでのポイントの描画">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-points.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Points">
+<meta name="twitter:title" content="WebGPU ポイント">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-points.html">
-<meta name="twitter:description" content="Drawing Points in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPUでのポイントの描画">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-points.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-points.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-points.html",
+      "inLanguage":"ja",
+      "name":"WebGPU ポイント",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-points.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Points</title>
+<title>WebGPU ポイント</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,740 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Points</h1>
+    <h1>WebGPU ポイント</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-points.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>WebGPUはポイントへの描画をサポートしています。これを行うには、レンダーパイプラインでプリミティブトポロジを<code class="notranslate" translate="no">'point-list'</code>に設定します。</p>
+<p><a href="webgpu-vertex-buffers.html">頂点バッファに関する記事</a>で紹介したアイデアから始めて、ランダムなポイントを持つ簡単な例を作成しましょう。</p>
+<p>まず、単純な頂点シェーダーとフラグメントシェーダーです。簡単にするために、位置にはクリップ空間座標を使用し、フラグメントシェーダーでは色を黄色にハードコーディングします。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@vertex fn vs(vert: Vertex,) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = vert.position;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 1, 0, 1); // yellow
+}
+</pre>
+<p>次に、パイプラインを作成するときに、トポロジを<code class="notranslate" translate="no">'point-list'</code>に設定します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '1 pixel points',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: 2 * 4, // 2 floats, 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
++    primitive: {
++      topology: 'point-list',
++    },
+  });
+</pre>
+<p>頂点バッファにランダムなクリップ空間ポイントをいくつか入力しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const rand = (min, max) =&gt; min + Math.random() * (max - min);
+
+  const kNumPoints = 100;
+  const vertexData = new Float32Array(kNumPoints * 2);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+    const offset = i * 2;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
+  }
+
+  const vertexBuffer = device.createBuffer({
+    label: 'vertex buffer vertices',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+</pre>
+<p>そして、描画します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.draw(kNumPoints);
+    pass.end();
+</pre>
+<p>そして、100個のランダムな黄色の点が得られます。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>残念ながら、それらはすべて1ピクセルのサイズしかありません。1ピクセルサイズのポイントは、WebGPUがサポートするすべてです。もっと大きなものが必要な場合は、自分で行う必要があります。幸いなことに、それは簡単です。クワッドを作成し、<a href="../webgpu-vertex-buffers.html#a-instancing">インスタンス化</a>を使用するだけです。</p>
+<p>頂点シェーダーにクワッドとサイズ属性を追加しましょう。また、描画しているテクスチャのサイズを渡すためのユニフォームも追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
++  @location(1) size: f32,
+};
+
++struct Uniforms {
++  resolution: vec2f,
++};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
++@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
++    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
++  let points = array(
++    vec2f(-1, -1),
++    vec2f( 1, -1),
++    vec2f(-1,  1),
++    vec2f(-1,  1),
++    vec2f( 1, -1),
++    vec2f( 1,  1),
++  );
+  var vsOut: VSOutput;
++  let pos = points[vNdx];
+-  vsOut.position = vec4f(vert.position, 0, 1);
++  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 1, 0, 1); // yellow
+}
+</pre>
+<p>JavaScriptでは、ポイントごとにサイズ属性を追加し、<code class="notranslate" translate="no">stepMode: 'instance'</code>を設定してインスタンスごとに属性を進めるように設定し、デフォルトの<code class="notranslate" translate="no">'triangle-list'</code>が必要なのでトポロジ設定を削除できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'sizeable points',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: 2 * 4, // 2 floats, 4 bytes each
++          arrayStride: (2 + 1) * 4, // 3 floats, 4 bytes each
++          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
++            {shaderLocation: 1, offset: 8, format: 'float32'},  // size
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+-    primitive: {
+-      topology: 'point-list',
+-    },
+  });
+</pre>
+<p>頂点データにポイントごとにランダムなサイズを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumPoints = 100;
+-  const vertexData = new Float32Array(kNumPoints * 2);
++  const vertexData = new Float32Array(kNumPoints * 3);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+-    const offset = i * 2;
++    const offset = i * 3;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
++    vertexData[offset + 2] = rand(1, 32);
+  }
+</pre>
+<p>解像度を渡すことができるように、ユニフォームバッファが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const uniformValues = new Float32Array(2);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kResolutionOffset = 0;
+  const resolutionValue = uniformValues.subarray(
+      kResolutionOffset, kResolutionOffset + 2);
+</pre>
+<p>そして、ユニフォームバッファをバインドするためのバインドグループが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+    ],
+  });
+</pre>
+<p>次に、レンダリング時に、現在の解像度でユニフォームバッファを更新できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // キャンバスコンテキストから現在のテクスチャを取得し、
+    // レンダリングするテクスチャとして設定します。
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
++    // ユニフォームバッファの解像度を更新します
++    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
++    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>次に、バインドグループを設定し、ポイントごとにインスタンスをレンダリングします。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
++    pass.setBindGroup(0, bindGroup);
+-    pass.draw(kNumPoints);
++    pass.draw(6, kNumPoints);
+    pass.end();
+</pre>
+<p>そして、サイズ変更可能なポイントができました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-size.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-size.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>ポイントにテクスチャを付けたい場合はどうすればよいでしょうか？頂点シェーダーからフラグメントシェーダーにテクスチャ座標を渡すだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) size: f32,
+};
+
+struct Uniforms {
+  resolution: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
++  @location(0) texcoord: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
+  let points = array(
+    vec2f(-1, -1),
+    vec2f( 1, -1),
+    vec2f(-1,  1),
+    vec2f(-1,  1),
+    vec2f( 1, -1),
+    vec2f( 1,  1),
+  );
+  var vsOut: VSOutput;
+  let pos = points[vNdx];
+  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
++  vsOut.texcoord = pos * 0.5 + 0.5;
+  return vsOut;
+}
+</pre>
+<p>そしてもちろん、フラグメントシェーダーでテクスチャを使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+@group(0) @binding(1) var s: sampler;
++@group(0) @binding(2) var t: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+-  return vec4f(1, 1, 0, 1); // yellow
++  return textureSample(t, s, vsOut.texcoord);
+}
+</pre>
+<p><a href="webgpu-importing-textures.html">テクスチャのインポートに関する記事</a>で説明したように、キャンバスを使用して単純なテクスチャを作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const ctx = new OffscreenCanvas(32, 32).getContext('2d');
+  ctx.font = '27px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🥑', 16, 16);
+
+  const texture = device.createTexture({
+    size: [32, 32],
+    format: 'rgba8unorm',
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.COPY_DST |
+           GPUTextureUsage.RENDER_ATTACHMENT,
+  });
+  device.queue.copyExternalImageToTexture(
+    { source: ctx.canvas, flipY: true },
+    { texture, premultipliedAlpha: true },
+    [32, 32],
+  );
+</pre>
+<p>そして、サンプラーが必要であり、それらをバインドグループに追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const sampler = device.createSampler({
+    minFilter: 'linear',
+    magFilter: 'linear',
+  });
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
++      { binding: 1, resource: sampler },
++      { binding: 2, resource: texture.createView() },
+    ],
+  });
+</pre>
+<p><a href="webgpu-transparency.html">透明度</a>を得るために、ブレンドもオンにしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'sizeable points with texture',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (2 + 1) * 4, // 3 floats, 4 bytes each
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+            {shaderLocation: 1, offset: 8, format: 'float32'},  // size
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+-      targets: [{ format: presentationFormat }],
++      targets: [
++        {
++         format: presentationFormat,
++          blend: {
++            color: {
++              srcFactor: 'one',
++              dstFactor: 'one-minus-src-alpha',
++              operation: 'add',
++            },
++            alpha: {
++              srcFactor: 'one',
++              dstFactor: 'one-minus-src-alpha',
++              operation: 'add',
++            },
++          },
++        },
++      ],
+    },
+  });
+</pre>
+<p>そして、テクスチャ付きのポイントができました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-texture.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-texture.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>そして、続けていくことができます。ポイントごとに回転はどうでしょうか？<a href="webgpu-matrix-math.html">行列演算に関する記事</a>で説明した数学を使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) size: f32,
++  @location(2) rotation: f32,
+};
+
+struct Uniforms {
+  resolution: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
+  let points = array(
+    vec2f(-1, -1),
+    vec2f( 1, -1),
+    vec2f(-1,  1),
+    vec2f(-1,  1),
+    vec2f( 1, -1),
+    vec2f( 1,  1),
+  );
+  var vsOut: VSOutput;
+  let pos = points[vNdx];
++  let c = cos(vert.rotation);
++  let s = sin(vert.rotation);
++  let rot = mat2x2f(
++     c, s,
++    -s, c,
++  );
+-  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
++  vsOut.position = vec4f(vert.position + rot * pos * vert.size / uni.resolution, 0, 1);
+  vsOut.texcoord = pos * 0.5 + 0.5;
+  return vsOut;
+      }
+</pre>
+<p>パイプラインに回転属性を追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'sizeable rotatable points with texture',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: (2 + 1) * 4, // 3 floats, 4 bytes each
++          arrayStride: (2 + 1 + 1) * 4, // 4 floats, 4 bytes each
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+            {shaderLocation: 1, offset: 8, format: 'float32'},  // size
++            {shaderLocation: 2, offset: 12, format: 'float32'},  // rotation
+          ],
+        },
+      ],
+    },
+    ...
+</pre>
+<p>頂点データに回転を追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumPoints = 100;
+-  const vertexData = new Float32Array(kNumPoints * 3);
++  const vertexData = new Float32Array(kNumPoints * 4);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+-    const offset = i * 3;
++    const offset = i * 4;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
+*    vertexData[offset + 2] = rand(10, 64);
++    vertexData[offset + 3] = rand(0, Math.PI * 2);
+  }
+
+</pre>
+<p>テクスチャを🥑から👉に変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  ctx.fillText('🥑', 16, 16);
++  ctx.fillText('👉', 16, 16);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-rotation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-rotation.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<h1 id="3dのポイントはどうですか？">3Dのポイントはどうですか？</h1>
+<p>簡単な答えは、<a href="webgpu-perspective-projection.html">頂点の3D数学</a>を行った後、クワッド値を追加するだけです。</p>
+<p>たとえば、<a href="https://www.google.com/search?q=fibonacci+sphere">フィボナッチ球</a>の3D位置を作成するコードは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createFibonacciSphereVertices({
+  numSamples,
+  radius,
+}) {
+  const vertices = [];
+  const increment = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i &lt; numSamples; ++i) {
+    const offset = 2 / numSamples;
+    const y = ((i * offset) - 1) + (offset / 2);
+    const r = Math.sqrt(1 - Math.pow(y, 2));
+    const phi = (i % numSamples) * increment;
+    const x = Math.cos(phi) * r;
+    const z = Math.sin(phi) * r;
+    vertices.push(x * radius, y * radius, z * radius);
+  }
+  return new Float32Array(vertices);
+}
+</pre>
+<p><a href="../webgpu-cameras.js">3D数学に関するシリーズで説明したように</a>、頂点に3D数学を適用してポイントで頂点を描画できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec4f,
+};
+
+struct Uniforms {
+*  matrix: mat4x4f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+) -&gt; VSOutput {
+  var vsOut: VSOutput;
+*  let clipPos = uni.matrix * vert.position;
+  vsOut.position = clipPos;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 0.5, 0.2, 1);  // orange
+}
+</pre>
+<p>パイプラインと頂点バッファは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '3d points with fixed size',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (3) * 4, // 3 floats, 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [
+        {
+         format: presentationFormat,
+        },
+      ],
+    },
+    primitive: {
+      topology: 'point-list',
+    },
+  });
+
+  const vertexData = createFibonacciSphereVertices({
+    radius: 1,
+    numSamples: 1000,
+  });
+  const kNumPoints = vertexData.length / 3;
+
+  const vertexBuffer = device.createBuffer({
+    label: 'vertex buffer vertices',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+</pre>
+<p>そして、行列用のユニフォームバッファとユニフォーム値、およびユニフォームバッファをシェーダーに渡すためのバインドグループです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const uniformValues = new Float32Array(16);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kMatrixOffset = 0;
+  const matrixValue = uniformValues.subarray(
+      kMatrixOffset, kMatrixOffset + 16);
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+    ],
+  });
+</pre>
+<p>そして、射影行列、カメラ、その他の3D数学を使用して描画するコードです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    time *= 0.001;
+
+    // キャンバスコンテキストから現在のテクスチャを取得し、
+    // レンダリングするテクスチャとして設定します。
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
+    // ユニフォームバッファに行列を設定します
+    const fov = 90 * Math.PI / 180;
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(fov, aspect, 0.1, 50);
+    const view = mat4.lookAt(
+      [0, 0, 1.5],  // position
+      [0, 0, 0],    // target
+      [0, 1, 0],    // up
+    );
+    const viewProjection = mat4.multiply(projection, view);
+    mat4.rotateY(viewProjection, time, matrixValue);
+    mat4.rotateX(matrixValue, time * 0.5, matrixValue);
+
+    // ユニフォーム値をGPUにコピーします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setBindGroup(0, bindGroup);
+    pass.draw(kNumPoints);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+</pre>
+<p><code class="notranslate" translate="no">requestAnimationFrame</code>ループにも切り替えました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d-1px.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d-1px.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>見にくいので、上記の手法を適用するには、以前に行ったようにクワッド位置を追加するだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec4f,
+};
+
+struct Uniforms {
+  matrix: mat4x4f,
++  resolution: vec2f,
++  size: f32,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
++    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
++  let points = array(
++    vec2f(-1, -1),
++    vec2f( 1, -1),
++    vec2f(-1,  1),
++    vec2f(-1,  1),
++    vec2f( 1, -1),
++    vec2f( 1,  1),
++  );
+  var vsOut: VSOutput;
++  let pos = points[vNdx];
+  let clipPos = uni.matrix * vert.position;
++  let pointPos = vec4f(pos * uni.size / uni.resolution, 0, 0);
+-  vsOut.position = clipPos;
++  vsOut.position = clipPos + pointPos;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 0.5, 0.2, 1);
+}
+</pre>
+<p>前の例とは異なり、各頂点に異なるサイズは使用しません。代わりに、すべての頂点に単一のサイズを渡します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformValues = new Float32Array(16);
++  const uniformValues = new Float32Array(16 + 2 + 1 + 1);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kMatrixOffset = 0;
++  const kResolutionOffset = 16;
++  const kSizeOffset = 18;
+  const matrixValue = uniformValues.subarray(
+      kMatrixOffset, kMatrixOffset + 16);
++  const resolutionValue = uniformValues.subarray(
++      kResolutionOffset, kResolutionOffset + 2);
++  const sizeValue = uniformValues.subarray(
++      kSizeOffset, kSizeOffset + 1);
+</pre>
+<p>上記のように解像度を設定し、サイズを設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    ...
++    // ユニフォームバッファにサイズを設定します
++    sizeValue[0] = 10;
+
+    const fov = 90 * Math.PI / 180;
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(fov, aspect, 0.1, 50);
+    const view = mat4.lookAt(
+      [0, 0, 1.5],  // position
+      [0, 0, 0],    // target
+      [0, 1, 0],    // up
+    );
+    const viewProjection = mat4.multiply(projection, view);
+    mat4.rotateY(viewProjection, time, matrixValue);
+    mat4.rotateX(matrixValue, time * 0.5, matrixValue);
+
++    // ユニフォームバッファの解像度を更新します
++    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
+
+    // ユニフォーム値をGPUにコピーします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>そして、以前に行ったように、ポイントの描画からインスタンス化されたクワッドの描画に切り替える必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '3d points',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (3) * 4, // 3 floats, 4 bytes each
++          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [
+        {
+         format: presentationFormat,
+        },
+      ],
+    },
+-    primitive: {
+-      topology: 'point-list',
+-    },
+  });
+
+  ...
+
+  function render(time) {
+
+    ...
+
+-    pass.draw(kNumPoints);
++    pass.draw(6, kNumPoints);
+
+    ...
+</pre>
+<p>これにより、3Dのポイントが得られます。カメラからの距離に基づいてスケーリングもされます。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<h2 id="固定サイズの3dポイント"><a id="a-fixed-size-3d-points"></a>固定サイズの3Dポイント</h2>
+<p>ポイントのサイズを固定したい場合はどうすればよいでしょうか？</p>
+<p><a href="webgpu-perspective-projection.html">遠近投影に関する記事</a>から、GPUは頂点シェーダーから返す位置をWで除算することを思い出してください。この除算により、遠くのものが小さく見える遠近感が得られます。したがって、サイズを変更したくないポイントについては、それらをそのWで乗算するだけで、除算された後に本当に欲しかった値になります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    var vsOut: VSOutput;
+    let pos = points[vNdx];
+    let clipPos = uni.matrix * vert.position;
+-    let pointPos = vec4f(pos * uni.size / uni.resolution, 0, 0);
++    let pointPos = vec4f(pos * uni.size / uni.resolution * clipPos.w, 0, 0);
+    vsOut.position = clipPos + pointPos;
+    return vsOut;
+</pre>
+<p>そして、今では同じサイズを維持します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d-fixed-size.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d-fixed-size.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<div class="webgpu_bottombar">
+<h3>なぜWebGPUは1x1ピクセルより大きいポイントをサポートしないのですか？</h3>
+<p>WebGPUは、Vulkan、Metal、DirectX、さらにはOpenGLなどのネイティブGPU APIに基づいています。残念ながら、これらのAPIは、ポイントのレンダリングをサポートすることの意味について互いに同意していません。一部のAPIには、ポイントのサイズにデバイス依存の制限があります。一部のAPIは、中心がクリップスペースの外側にある場合、ポイントをレンダリングしませんが、他のAPIはレンダリングします。一部のAPIでは、この2番目の問題はドライバー次第です。これらすべてが、WebGPUがポータブルなことを行い、1x1サイズのピクセルのみをサポートすることを決定したことを意味します。</p>
+<p>良い点は、上記のように、より大きなポイントを自分で簡単にサポートできることです。上記の解決策は、デバイス間でポータブルであり、ポイントのサイズに制限がなく、デバイス間で一貫してポイントをクリップします。ポイントの中心がクリップスペースの外側にあるかどうかに関係なく、クリップスペースの内側にあるポイントの部分を描画します。</p>
+<p>さらに良いことに、これらの解決策はより柔軟です。たとえば、ポイントの回転は、ネイティブAPIでサポートされているものではありません。独自の解決策を実装することで、より多くの機能を追加して、物事をさらに柔軟にすることができます。</p>
+</div>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +976,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +1065,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU ポイント`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

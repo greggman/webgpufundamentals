@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-scene-graphs.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Scene Graphs">
+
+<meta name="description" content="シーングラフ">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-scene-graphs_ja.jpg">
+
+<meta property="og:title" content="WebGPU シーングラフ">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Scene Graphs">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-scene-graphs_ja.jpg">
+<meta property="og:description" content="シーングラフ">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-scene-graphs.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Scene Graphs">
+<meta name="twitter:title" content="WebGPU シーングラフ">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-scene-graphs.html">
-<meta name="twitter:description" content="Scene Graphs">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="シーングラフ">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-scene-graphs_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-scene-graphs.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-scene-graphs_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-scene-graphs.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-scene-graphs.html",
+      "inLanguage":"ja",
+      "name":"WebGPU シーングラフ",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-scene-graphs.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Scene Graphs</title>
+<title>WebGPU シーングラフ</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,981 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Scene Graphs</h1>
+    <h1>WebGPU シーングラフ</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-scene-graphs.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、3D数学について学ぶことを目的とした一連の記事の9番目です。各記事は前のレッスンを基にしているので、順番に読むと最も理解しやすいかもしれません。</p>
+<ol>
+<li><a href="webgpu-translation.html">平行移動</a></li>
+<li><a href="webgpu-rotation.html">回転</a></li>
+<li><a href="webgpu-scale.html">スケーリング</a></li>
+<li><a href="webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="webgpu-cameras.html">カメラ</a></li>
+<li><a href="webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="webgpu-scene-graphs.html">シーングラフ</a> ⬅ ここです</li>
+</ol>
+<p>前回の記事では、行列スタックについて説明しました。これにより、行列の変更のスタックを構築でき、他のものに対して相対的に物事を配置、方向付け、スケーリングするのに役立ちました。</p>
+<p>シーングラフは、ある意味では同じものですが、コードを使用する代わりに、データを使用します。親と子のグラフを構築し、子は親の行列に基づいて行列を計算します。</p>
+<p>ファイリングキャビネットのシーングラフは次のようになります。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">root
+ &nbsp;+-cabinet0
+ &nbsp;|&nbsp;&nbsp;+-cabinet0-mesh
+ &nbsp;|&nbsp;&nbsp;+-drawer0
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer0-drawer-mesh
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer0-handle-mesh
+ &nbsp;|&nbsp;&nbsp;+-drawer1
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer1-drawer-mesh
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer1-handle-mesh
+ &nbsp;|&nbsp;&nbsp;+-drawer2
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer2-drawer-mesh
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer2-handle-mesh
+ &nbsp;|&nbsp;&nbsp;+-drawer3
+ &nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-drawer3-drawer-mesh
+ &nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-drawer3-handle-mesh
+ &nbsp;+-cabinet1
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-cabinet2
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-cabinet3
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-cabinet4
+ &nbsp;&nbsp;&nbsp;&nbsp;+-cabinet4-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;+-drawer0
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer0-drawer-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer0-handle-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;+-drawer1
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer1-drawer-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer1-handle-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;+-drawer2
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer2-drawer-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-drawer2-handle-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;+-drawer3
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-drawer3-drawer-mesh
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-drawer3-handle-mesh
+</pre>
+<p>シーングラフの利点は、データをグラフのノードとして格納するため、コードで再帰することなく、グラフの任意の部分を簡単に操作できることです。</p>
+<h2 id="前の記事のファイルキャビネットの例をシーングラフを使用するように切り替えましょう。">前の記事のファイルキャビネットの例をシーングラフを使用するように切り替えましょう。</h2>
+<p>最初に必要なのは、シーングラフを表すクラスです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class SceneGraphNode {
+  constructor(name, source) {
+    this.name = name;
+    this.children = [];
+    this.localMatrix = mat4.identity();
+    this.worldMatrix = mat4.identity();
+    this.source = source;
+  }
+
+  addChild(child) {
+    child.setParent(this);
+  }
+
+  removeChild(child) {
+    child.setParent(null);
+  }
+
+  setParent(parent) {
+    // 親から自分を削除します
+    if (this.parent) {
+      const ndx = this.parent.children.indexOf(this);
+      if (ndx &gt;= 0) {
+        this.parent.children.splice(ndx, 1);
+      }
+    }
+
+    // 新しい親に自分を追加します
+    if (parent) {
+      parent.children.push(this);
+    }
+    this.parent = parent;
+  }
+
+  updateWorldMatrix(parentWorldMatrix) {
+    // ソースがある場合は、そのソースからローカル行列を更新します。
+    this.source?.getMatrix(this.localMatrix);
+
+    if (parentWorldMatrix) {
+      // 行列が渡されたので、計算を行います
+      mat4.multiply(parentWorldMatrix, this.localMatrix, this.worldMatrix);
+    } else {
+      // 行列が渡されなかったので、ローカルをワールドにコピーするだけです
+      mat4.copy(this.localMatrix, this.worldMatrix);
+    }
+
+    // すべての子を処理します
+    const worldMatrix = this.worldMatrix;
+    this.children.forEach(function(child) {
+      child.updateWorldMatrix(worldMatrix);
+    });
+  }
+}
+</pre>
+<p>上記の<code class="notranslate" translate="no">SceneGraphNode</code>は非常に単純です。各ノードには<code class="notranslate" translate="no">children</code>の配列があります。子を追加および削除したり、ノードの親を設定したりする関数があります。各ノードには、このノードの位置、向き、スケールを親に対して表す<code class="notranslate" translate="no">localMatrix</code>があります。各ノードには、このノードの位置、向き、スケールを「ワールド」に対して、より具体的にはシーングラフの外部に対して表す<code class="notranslate" translate="no">worldMatrix</code>があります。そして最後に、ノードとそのすべての子の<code class="notranslate" translate="no">worldMatrix</code>を更新する<code class="notranslate" translate="no">updateWorldMatrix</code>があります。各ノードには、<code class="notranslate" translate="no">getMatrix</code>関数を提供するオブジェクトであるオプションの<code class="notranslate" translate="no">source</code>もあります。これを使用して、特定のノードのローカル行列を計算するさまざまな方法を提供できます。</p>
+<p>ソースを提供しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class TRS {
+  constructor({
+    translation = [0, 0, 0],
+    rotation = [0, 0, 0],
+    scale = [1, 1, 1],
+  } = {}) {
+     this.translation = new Float32Array(translation);
+     this.rotation = new Float32Array(rotation);
+     this.scale = new Float32Array(scale);
+  }
+
+  getMatrix(dst) {
+   mat4.translation(this.translation, dst);
+   mat4.rotateX(dst, this.rotation[0], dst);
+   mat4.rotateY(dst, this.rotation[1], dst);
+   mat4.rotateZ(dst, this.rotation[2], dst);
+   mat4.scale(dst, this.scale, dst);
+   return dst;
+ }
+}
+</pre>
+<p><code class="notranslate" translate="no">TRS</code>は、Translation、Rotation、Scaleの略です。これは、シーングラフでローカル行列を計算する一般的な方法です。多くの場合、一部の実装では「translation」の代わりに「position」を使用します。このチュートリアルでは、<code class="notranslate" translate="no">getMatrix</code>で行うことと一致するため、「translation」を使用する方が良いと思いました。</p>
+<p>上記で目立つことの1つは、<code class="notranslate" translate="no">this.translation</code>、<code class="notranslate" translate="no">this.rotation</code>、<code class="notranslate" translate="no">this.scale</code>を<code class="notranslate" translate="no">new Float32Array(value)</code>に設定することです。<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a>の利点は、<code class="notranslate" translate="no">set</code>関数があるため、<code class="notranslate" translate="no">someTRS.translation.set(someNewValue)</code>を実行できることです。</p>
+<p><code class="notranslate" translate="no">getMatrix</code>が、事実上、次を使用して行列を計算することがわかります。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">平行移動 * X回転 * Y回転 * Z回転 * スケール
+</pre>
+<p>回転を適用する順序を変更するオプションがあるのが一般的です。XYZの代わりに、ZYX、YZXなどになる場合があります。<a href="https://google.com/search?quaternion">クォータニオン</a>を使用するのが一般的であり、<a href="https://www.youtube.com/watch?v=Idlv83CxP-8">幾何代数</a>を使用するのがますます一般的になっています。</p>
+<p>いずれにせよ、上記から始めます。</p>
+<p><code class="notranslate" translate="no">SceneGraphNode</code>と<code class="notranslate" translate="no">TRS</code>ソースができたので、シーングラフを構築しましょう。</p>
+<p>まず、<code class="notranslate" translate="no">SceneGraphNode</code>と<code class="notranslate" translate="no">TRS</code>ソースの両方をいくつかの親に追加する関数を作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addTRSSceneGraphNode(
+    name,
+    parent,
+    trs,
+  ) {
+    const node = new SceneGraphNode(name, new TRS(trs));
+    if (parent) {
+      node.setParent(parent);
+    }
+    return node;
+  }
+</pre>
+<p>「メッシュ」を作成する関数を追加しましょう。これを何と呼ぶべきかわかりませんが、描画するもののリストになります。各「描画するもの」は、<code class="notranslate" translate="no">SceneGraphNode</code>、描画したいものの頂点、およびそれを描画する色の組み合わせになります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const meshes = [];
+  function addMesh(node, vertices, color) {
+    const mesh = {
+      node,
+      vertices,
+      color,
+    };
+    meshes.push(mesh);
+    return mesh;
+  }
+</pre>
+<p>さて、キューブしかないので、シーングラフにキューブを追加し、キューブをレンダリングするための「メッシュ」を追加する関数を作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addCubeNode(name, parent, trs, color) {
+    const node = addTRSSceneGraphNode(name, parent, trs);
+    return addMesh(node, cubeVertices, color);
+  }
+</pre>
+<p>これらが設定されたら、ファイリングキャビネットのグラフを構築しましょう。まず、「ルート」ノードを作成します。ルートには「ソース」は必要ありません。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const root = new SceneGraphNode('root');
+</pre>
+<p>次に、キャビネットを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const root = new SceneGraphNode('root');
++  // キャビネットを追加します
++  for (let cabinetNdx = 0; cabinetNdx &lt; kNumCabinets; ++cabinetNdx) {
++    addCabinet(root, cabinetNdx);
++  }
+</pre>
+<p><code class="notranslate" translate="no">addCabinet</code>を書きましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addCabinet(parent, cabinetNdx) {
+    const cabinetName = `cabinet${cabinetNdx}`;
+
+    // キャビネット全体にノードを追加します
+    const cabinet = addTRSSceneGraphNode(
+      cabinetName, parent, {
+         translation: [cabinetNdx * kCabinetSpacing, 0, 0],
+       });
+
+    // キャビネットのキューブを持つノードを追加します
+    const kCabinetSize = [
+      kDrawerSize[kWidth] + 6,
+      kDrawerSpacing * kNumDrawersPerCabinet + 6,
+      kDrawerSize[kDepth] + 4,
+    ];
+    addCubeNode(
+      `${cabinetName}-mesh`, cabinet, {
+        scale: kCabinetSize,
+      }, kCabinetColor);
+
+    // 引き出しを追加します
+    for (let drawerNdx = 0; drawerNdx &lt; kNumDrawersPerCabinet; ++drawerNdx) {
+      addDrawer(cabinet, drawerNdx);
+    }
+  }
+</pre>
+<p>そして、<code class="notranslate" translate="no">addDrawer</code>を書きましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addDrawer(parent, drawerNdx) {
+    const drawerName = `drawer${drawerNdx}`;
+
+    // 引き出し全体にノードを追加します
+    const drawer = addTRSSceneGraphNode(
+      drawerName, parent, {
+        translation: [3, drawerNdx * kDrawerSpacing + 5, 1],
+      });
+    animNodes.push(drawer);
+
+    // 引き出しキューブのキューブを持つノードを追加します。
+    addCubeNode(`${drawerName}-drawer-mesh`, drawer, {
+      scale: kDrawerSize,
+    }, kDrawerColor);
+
+    // ハンドルのキューブを持つノードを追加します
+    addCubeNode(`${drawerName}-handle-mesh`, drawer, {
+      translation: kHandlePosition,
+      scale: kHandleSize,
+    }, kHandleColor);
+  }
+</pre>
+<p>シーングラフができたので、レンダー関数を更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    stack.save();
+-    stack.rotateY(settings.baseRotation);
+-    stack.translate([(kNumCabinets - 0.5) * kCabinetSpacing * -0.5, 0, 0]);
+-    objectNdx = 0;
+-    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawCabinets(ctx, kNumCabinets);
+-    stack.restore();
++    const ctx = { pass, viewProjectionMatrix };
++    root.updateWorldMatrix();
++    for (const mesh of meshes) {
++      drawMesh(ctx, mesh);
++    }
+</pre>
+<p>そして、カメラコードを微調整しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+-    baseRotation: 0,
++    cameraRotation: 0,
+  };
+
+  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+-  gui.add(settings, 'baseRotation', radToDegOptions);
++  gui.add(settings, 'cameraRotation', radToDegOptions);
+
+...
+
+  function render() {
+    ...
+
+-    const eye = [0, 80, 200];
+-    const target = [0, 80, 0];
+-    const up = [0, 1, 0];
+-
+-    // ビュー行列を計算します
+-    const viewMatrix = mat4.lookAt(eye, target, up);
++    // カメラ行列を計算します
++    const cameraMatrix = mat4.identity();
++    mat4.translate(cameraMatrix, [120, 100, 0], cameraMatrix);
++    mat4.rotateY(cameraMatrix, settings.cameraRotation, cameraMatrix);
++    mat4.translate(cameraMatrix, [60, 0, 300], cameraMatrix);
++
++    // ビュー行列を計算します
++    const viewMatrix = mat4.inverse(cameraMatrix);
+
+    // ビュー行列と射影行列を組み合わせます
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+</pre>
+<p>そして、シーングラフを使用して同じファイリングキャビネットが得られます。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<h2 id="guiの追加"><a id="a-gui"></a>GUIの追加</h2>
+<p>シーングラフの主なポイントは、データであるため、操作できることです。グラフを調整および微調整するためのUIを追加しましょう。</p>
+<p>まず、平行移動、回転、スケールのコントロールを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+-    cameraRotation: 0,
++    cameraRotation: degToRad(-45),
++    translation: new Float32Array([0, 0, 0]),
++    rotation: new Float32Array([0, 0, 0]),
++    scale: new Float32Array([1, 1, 1]),
+  };
+
+-  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
++  const radToDegOptions = { min: -90, max: 90, step: 1, converters: GUI.converters.radToDeg };
++  const cameraRadToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+-  gui.add(settings, 'cameraRotation', radToDegOptions);
++  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  const trsFolder = gui.addFolder('orientation');
++  trsFolder.add(settings.translation, '0', -200, 200, 1).name('translation x');
++  trsFolder.add(settings.translation, '1', -200, 200, 1).name('translation y');
++  trsFolder.add(settings.translation, '2', -200, 200, 1).name('translation z');
++  trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x');
++  trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y');
++  trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z');
++  trsFolder.add(settings.scale, '0', 0.1, 100).name('scale x');
++  trsFolder.add(settings.scale, '1', 0.1, 100).name('scale y');
++  trsFolder.add(settings.scale, '2', 0.1, 100).name('scale z');
+</pre>
+<p>次に、現在選択されているシーングラフのノードを更新するコードを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let currentNode;
++  function updateCurrentNodeFromSettings() {
++    const source = currentNode.source;
++    source.translation.set(settings.translation);
++    source.rotation.set(settings.rotation);
++    source.scale.set(settings.scale);
++  }
+</pre>
+<p>そして、平行移動、回転、またはスケールのウィジェットのいずれかが変更されるたびにこれを呼び出しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+  const trsFolder = gui.addFolder('orientation');
++  trsFolder.onChange(updateCurrentNodeFromSettings);
+  ...
+</pre>
+<p>次に、ノードを選択する方法が必要なので、シーングラフをウォークし、各ノードにボタンを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import GUI from '../3rdparty/muigui-0.x.module.js';
++import { addButtonLeftJustified } from './resources/js/gui-helpers.js';
+
+...
+  let currentNode;
+  function updateCurrentNodeFromSettings() {
+    const source = currentNode.source;
+    source.translation.set(settings.translation);
+    source.rotation.set(settings.rotation);
+    source.scale.set(settings.scale);
+  }
+
++  function updateCurrentNodeGUI() {
++    const source = currentNode.source;
++    settings.translation.set(source.translation);
++    settings.rotation.set(source.rotation);
++    settings.scale.set(source.scale);
++    trsFolder.updateDisplay();
++  }
++
++  function setCurrentSceneGraphNode(node) {
++    currentNode = node;
++    trsFolder.name(`orientation: ${node.name}`);
++    updateCurrentNodeGUI();
++  }
++
++  // \u00a0は改行しないスペースです。
++  const threeSpaces = '\u00a0\u00a0\u00a0';
++  const barTwoSpaces = '\u00a0|\u00a0';
++  const plusDash = '\u00a0+-';
++  // GUIにシーングラフノードを追加し、適切な
++  // プレフィックスを追加して、次のように見えるようにします。
++  //
++  // +-root
++  // | +-child
++  // | | +-child
++  // | +-child
++  // +-child
++  function addSceneGraphNodeToGUI(gui, node, last, prefix) {
++    if (node.source instanceof TRS) {
++      const label = `${prefix === undefined ? '' : `${prefix}${plusDash}`}${node.name}`;
++      addButtonLeftJustified(
++        gui, label, () =&gt; setCurrentSceneGraphNode(node));
++    }
++    const childPrefix = prefix === undefined
++      ? ''
++      : `${prefix}${last ? threeSpaces : barTwoSpaces}`;
++    node.children.forEach((child, i) =&gt; {
++      const childLast = i === node.children.length - 1;
++      addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
++    });
++  }
+
+  const gui = new GUI();
+  ...
++  const nodesFolder = gui.addFolder('nodes');
++  addSceneGraphNodeToGUI(nodesFolder, root);
++
++  setCurrentSceneGraphNode(root.children[0]);
+</pre>
+<p>上記では、<code class="notranslate" translate="no">TRS</code>ソースを持つ各ノードにボタンを作成しました。ボタンがクリックされると、<code class="notranslate" translate="no">setCurrentSceneGraphNode</code>が呼び出され、そのボタンのノードが渡されます。<code class="notranslate" translate="no">setCurrentSceneGraphNode</code>はフォルダ名を更新し、次に<code class="notranslate" translate="no">updateCurrentNodeGUI</code>を呼び出して、新しく選択されたノードのデータで<code class="notranslate" translate="no">settings</code>を更新します。</p>
+<p>これは機能しますが、UIが小さなウィンドウには少し乱雑であることがわかったので、いくつかの調整を次に示します。</p>
+<ol>
+<li>
+<p>平行移動、回転、スケールのコントロールを減らします。</p>
+<p>ファイルキャビネットの場合、各ノードで平行移動、回転、スケールの9つの設定のいずれかを設定できますが、本当に重要なのは「平行移動z」だけです。したがって、デフォルトでは平行移動以外のすべてを非表示にしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const settings = {
+   cameraRotation: degToRad(-45),
++   showAllTRS: false,
+   translation: new Float32Array([0, 0, 0]),
+   rotation: new Float32Array([0, 0, 0]),
+   scale: new Float32Array([1, 1, 1]),
+ };
+
+ const gui = new GUI();
+ gui.onChange(render);
+ gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++ gui.add(settings, 'showAllTRS').onChange(showTRS);
+ const trsFolder = gui.addFolder('orientation');
+ trsFolder.onChange(updateCurrentNodeFromSettings);
++ const trsControls = [
+*   trsFolder.add(settings.translation, '0', -200, 200, 1).name('translation x'),
+*   trsFolder.add(settings.translation, '1', -200, 200, 1).name('translation y'),
+*   trsFolder.add(settings.translation, '2', -200, 200, 1).name('translation z'),
+*   trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x'),
+*   trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y'),
+*   trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z'),
+*   trsFolder.add(settings.scale, '0', 0.1, 100).name('scale x'),
+*   trsFolder.add(settings.scale, '1', 0.1, 100).name('scale y'),
+*   trsFolder.add(settings.scale, '2', 0.1, 100).name('scale z'),
++ ];
+const nodesFolder = gui.addFolder('nodes');
+addSceneGraphNodeToGUI(nodesFolder, root);
+
++const alwaysShow = new Set([0, 1, 2]);
++function showTRS(show) {
++  trsControls.forEach((trs, i) =&gt; {
++    trs.show(show || alwaysShow.has(i));
++  });
++}
++showTRS(false);
+</pre>
+<p>このコードは、平行移動、回転、スケールのコントロールを配列に収集し、すべてまたは最初の3つのみを表示します。</p>
+</li>
+<li>
+<p>メッシュを表示しない</p>
+<p>グラフには、各キューブの「-mesh」ノードがあり、キャビネットや引き出しを移動するために実際に移動する必要はないので、デフォルトで非表示にしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // \u00a0は改行しないスペースです。
+  const threeSpaces = '\u00a0\u00a0\u00a0';
+  const barTwoSpaces = '\u00a0|\u00a0';
+  const plusDash = '\u00a0+-';
+  // GUIにシーングラフノードを追加し、適切な
+  // プレフィックスを追加して、次のように見えるようにします。
+  //
+  // +-root
+  // | +-child
+  // | | +-child
+  // | +-child
+  // +-child
+  function addSceneGraphNodeToGUI(gui, node, last, prefix) {
++   const nodes = [];
+    if (node.source instanceof TRS) {
+      const label = `${prefix === undefined ? '' : `${prefix}${plusDash}`}${node.name}`;
+-      addButtonLeftJustified(gui, label, () =&gt; setCurrentSceneGraphNode(node));
++      nodes.push(addButtonLeftJustified(
++        gui, label, () =&gt; setCurrentSceneGraphNode(node)));
+    const childPrefix = prefix === undefined
+      ? ''
+      : `${prefix}${last ? threeSpaces : barTwoSpaces}`;
+-    node.children.forEach((child, i) =&gt; {
++    nodes.push(...node.children.map((child, i) =&gt; {
+*      const childLast = i === node.children.length - 1;
+-      addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
++      return addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
+*    }));
++    return nodes.flat();
+  }
+
+  const settings = {
+    cameraRotation: degToRad(-45),
++    showMeshNodes: false,
+    showAllTRS: false,
+    translation: new Float32Array([0, 0, 0]),
+    rotation: new Float32Array([0, 0, 0]),
+    scale: new Float32Array([1, 1, 1]),
+  };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
+
+   ...
+
+-  const nodesFolder = gui.addFolder('nodes');
+  addSceneGraphNodeToGUI(nodesFolder, root);
++  const nodeButtons = addSceneGraphNodeToGUI(nodesFolder, root);
+
++ function showMeshNodes(show) {
++   for (const child of nodeButtons) {
++     if (child.domElement.textContent.includes('mesh')) {
++       child.show(show);
++     }
++   }
++ }
++ showMeshNodes(false);
+</pre>
+</li>
+</ol>
+<p>「引き出し」を選択し、「平行移動z」を調整してみてください。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets-w-gui.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets-w-gui.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>ご覧のとおり、各ノードにデータがあるため、個々のノードの位置、回転、スケールを簡単に変更できます。</p>
+<h2 id="アニメーション"><a id="a-animate"></a>アニメーション</h2>
+<p>楽しみのために、引き出しをアニメーション化しましょう。</p>
+<p>まず、引き出しノードのリストを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const animNodes = [];
+
+  function addDrawer(parent, drawerNdx) {
+    const drawerName = `drawer${drawerNdx}`;
+
+    // 引き出し全体にノードを追加します
+    const drawer = addTRSSceneGraphNode(
+      drawerName, parent, {
+        translation: [3, drawerNdx * kDrawerSpacing + 5, 1],
+      });
++    animNodes.push(drawer);
+
+    // 引き出しキューブのキューブを持つノードを追加します。
+    addCubeNode(`${drawerName}-drawer-mesh`, drawer, {
+      scale: kDrawerSize,
+    }, kDrawerColor);
+
+    // ハンドルのキューブを持つノードを追加します
+    addCubeNode(`${drawerName}-handle-mesh`, drawer, {
+      translation: kHandlePosition,
+      scale: kHandleSize,
+    }, kHandleColor);
+  }
+</pre>
+<p>次に、時間に基づいて引き出しをアニメーション化するコードを記述しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const lerp = (a, b, t) =&gt; a + (b - a) * t;
+
+  function animate(time) {
+    animNodes.forEach((node, i) =&gt; {
+      const source = node.source;
+      const t = time + i * 1;
+      const l = Math.sin(t) * 0.5 + 0.5;
+      source.translation[2] = lerp(1, kDrawerSize[2] * 0.8, l);
+    });
+  }
+</pre>
+<p>レンダー ループを作成しましょう。まだリクエストされておらず、フレームがまだレンダリングされていない場合にのみ、アニメーション フレームをリクエストするようにします。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // まだリクエストされていない場合はレンダリングをリクエストします。
++  let renderRequestId;
++  function requestRender() {
++    if (!renderRequestId) {
++      renderRequestId = requestAnimationFrame(render);
++    }
++  }
+
+  function render() {
++    renderRequestId = undefined;
+    ...
+
+  }
+</pre>
+<p>そして、<code class="notranslate" translate="no">render</code>を呼び出していた場所を更新して、<code class="notranslate" translate="no">requestRender</code>を呼び出す必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
+-  gui.onChange(render);
++  gui.onChange(requestRender);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+
+  ...
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // 再レンダリング
+-      render();
++      requestRender();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>最後に、アニメーションのオン/オフを切り替えるためのコードを設定しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
++    animate: false,
+    showMeshNodes: false,
+    showAllTRS: false,
+    translation: new Float32Array([0, 0, 0]),
+    rotation: new Float32Array([0, 0, 0]),
+    scale: new Float32Array([1, 1, 1]),
+    cameraRotation: degToRad(-45),
+  };
+
+  const gui = new GUI();
+  gui.onChange(requestRender);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  gui.add(settings, 'animate').onChange(v =&gt; {
++    trsFolder.enable(!v);
++  });
+  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
+
+  ...
+
++  let then;
++  let time = 0;
++  let wasRunning = false;
+  function render() {
+    renderRequestId = undefined;
+
+  ...
+
+-      const isRunning = settings.animate;
++      const isRunning = settings.animate || shots.length;
+      const now = performance.now() * 0.001;
++      const deltaTime = wasRunning ? now - then : 0;
++      then = now;
+
+      if (isRunning) {
+        time += deltaTime;
+      }
++      wasRunning = isRunning;
+
+      if (settings.animate) {
+        animate(time);
+        updateCurrentNodeGUI();
+        requestRender();
+      }
+
++      processShots(now, deltaTime);
+  }
+</pre>
+<p>上記の複雑な点は、アニメーションがチェックされている場合にのみクロックを実行したいということです。したがって、前のフレームで<code class="notranslate" translate="no">wasRunning</code>だったかどうかを確認します。そうでない場合は、<code class="notranslate" translate="no">deltaTime</code>を0に設定します。そうすれば、アニメーション化していなかった時間だけクロックが進むことはありません。</p>
+<p>アニメーション化している場合は、平行移動、回転、スケールのコントロールを無効にします。</p>
+<p>最後に、<code class="notranslate" translate="no">settings.animate</code>が設定されている場合は、別のアニメーションフレームをリクエストします。GUIコードは、変更時にすでに<code class="notranslate" translate="no">requestRender</code>を呼び出すため、レンダリングを開始し、<code class="notranslate" translate="no">settings.animate</code>がtrueであることを確認し、別のフレームをリクエストします。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets-w-animation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets-w-animation.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>「引き出し」を選択し、「平行移動z」を調整してみてください。</p>
+<h2 id="手の作成"><a id="a-hand"></a>手の作成</h2>
+<p>手の新しい例を作成しましょう。簡単にするために、キューブに固執します。</p>
+<p>シーングラフがどのようになるかの図を次に示します。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">oot
+ +-wrist
+    +-palm
+    |  +-thumb
+    |  |  +-thumb-mesh
+    |  |  +-thumb-1
+    |  |     +-thumb-1-mesh
+    |  +-index finger
+    |  |  +-index finger-mesh
+    |  |  +-index finger-1
+    |  |     +-index finger-1-mesh
+    |  |     +-index finger-2
+    |  |        +-index finger-2-mesh
+    |  +-middle finger
+    |  |  +-middle finger-mesh
+    |  |  +-middle finger-1
+    |  |     +-middle finger-1-mesh
+    |  |     +-middle finger-2
+    |  |        +-middle finger-2-mesh
+    |  +-ring finger
+    |  |  +-ring finger-mesh
+    |  |  +-ring finger-1
+    |  |     +-ring finger-1-mesh
+    |  |     +-ring finger-2
+    |  |        +-ring finger-2-mesh
+    |  +-pinky
+    |     +-pinky-mesh
+    |     +-pinky-1
+    |        +-pinky-1-mesh
+    |        +-pinky-2
+    |           +-pinky-2-mesh
+    +-palm-mesh
+</pre>
+<p>まず、キューブの頂点を移動して、XZ平面の上に中央に配置しましょう。これは、シーングラフにさらにノードを追加するか、各「-mesh」ノードに適用することで実行できますが、頂点自体で実行する方がすっきりします。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCubeVertices() {
+  const positions = [
+    // 左
+-    0, 0,  0,
+-    0, 0, -1,
+-    0, 1,  0,
+-    0, 1, -1,
++   -0.5, 0,  0.5,
++   -0.5, 0, -0.5,
++   -0.5, 1,  0.5,
++   -0.5, 1, -0.5,
+
+    // 右
+-    1, 0,  0,
+-    1, 0, -1,
+-    1, 1,  0,
+-    1, 1, -1,
++    0.5, 0,  0.5,
++    0.5, 0, -0.5,
++    0.5, 1,  0.5,
++    0.5, 1, -0.5,
+  ];
+
+  ...
+</pre>
+<p>次に、シーングラフを作成しましょう。ファイルキャビネットのシーングラフを作成に関連するすべてのコードを削除し、これに置き換えます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const kWhite = [1, 1, 1, 1];
++  function addFinger(name, parent, segments, segmentHeight, trs) {
++    const nodes = [];
++    const baseName = name;
++    for (let i = 0; i &lt; segments; ++i) {
++      const node = addTRSSceneGraphNode(name, parent, trs);
++      nodes.push(node);
++      const meshNode = addTRSSceneGraphNode(`${name}-mesh`, node, { scale: [10, segmentHeight, 10] });
++      addMesh(meshNode, cubeVertices, kWhite);
++      parent = node;
++      name = `${baseName}-${i + 1}`;
++      trs = {
++        translation: [0, segmentHeight, 0],
++        rotation: [degToRad(15), 0, 0],
++      };
++    }
++    return nodes;
++  }
+
+  const root = new SceneGraphNode('root');
++  const wrist = addTRSSceneGraphNode('wrist', root);
++  const palm = addTRSSceneGraphNode('palm', wrist, { translation: [0, 100, 0] });
++  const palmMesh = addTRSSceneGraphNode('palm-mesh', wrist, { scale: [100, 100, 10] });
++  addMesh(palmMesh, cubeVertices, kWhite);
++  const rotation = [degToRad(15), 0, 0];
++  const animNodes = [
++    wrist,
++    palm,
++    ...addFinger('thumb',         palm, 2, 20, { translation: [-50, 0, 0], rotation }),
++    ...addFinger('index finger',  palm, 3, 30, { translation: [-25, 0, 0], rotation }),
++    ...addFinger('middle finger', palm, 3, 35, { translation: [ -0, 0, 0], rotation }),
++    ...addFinger('ring finger',   palm, 3, 33, { translation: [ 25, 0, 0], rotation }),
++    ...addFinger('pinky',         palm, 3, 25, { translation: [ 45, 0, 0], rotation }),
++  ];
+</pre>
+<p>手首を作成し、それに手のひらと手のひらメッシュを取り付けます。手のひらに、<code class="notranslate" translate="no">addFinger</code>を使用して5本の指を取り付けます。<code class="notranslate" translate="no">addFinger</code>は、特定の長さの指のセグメントを追加します。</p>
+<blockquote>
+<p>はい、これは人間の手とはまったく異なります😂</p>
+</blockquote>
+<p>ファイルキャビネットの場合、<code class="notranslate" translate="no">translation z</code>のみを気にしましたが、手で最も重要な変換は<code class="notranslate" translate="no">rotation x</code>なので、デフォルトで表示されるコントロールを調整しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const alwaysShow = new Set([0, 1, 2]);
++  const alwaysShow = new Set([0, 1, 3]);
+  function showTRS(show) {
+    trsControls.forEach((trs, i) =&gt; {
+      trs.show(show || alwaysShow.has(i));
+    });
+  }
+  showTRS(false);
+</pre>
+<p>手のアニメーションは、zを平行移動する代わりにxを回転させる必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function animate(time) {
+    animNodes.forEach((node, i) =&gt; {
+      const source = node.source;
+-      const t = time + i * 1;
++      const t = time + i * 0.1;
+      const l = Math.sin(t) * 0.5 + 0.5;
+-      source.translation[2] = lerp(1, kDrawerSize[2] * 0.8, l);
++      source.rotation[0] = lerp(0, Math.PI * 0.25, l);
+    });
+  }
+</pre>
+<p>最後に、カメラをわずかに調整しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // カメラ行列を計算します。
+    const cameraMatrix = mat4.identity();
+-    mat4.translate(cameraMatrix, [120, 100, 0], cameraMatrix);
++    mat4.translate(cameraMatrix, [100, 100, 0], cameraMatrix);
+    mat4.rotateY(cameraMatrix, settings.cameraRotation, cameraMatrix);
+-    mat4.translate(cameraMatrix, [60, 0, 300], cameraMatrix);
++    mat4.translate(cameraMatrix, [100, 0, 300], cameraMatrix);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-hand.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-hand.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>人差し指の1つを選択し、「回転x」を調整してから、「発射！」を押します。または、アニメーション中に「発射！」をクリックします。</p>
+<h2 id="人差し指から発射体を発射しましょう。"><a id="a-shoot"></a>人差し指から発射体を発射しましょう。</h2>
+<p>シーングラフのもう1つの利点は、グラフ内の任意のノードの位置と向きを簡単に要求できることです。</p>
+<p>したがって、人差し指から発射するには、指の先端のノードを知る必要があります。</p>
+<p>多くのシーングラフAPIには、名前でノードを検索する関数があります。私たちのものに追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class SceneGraphNode {
+  constructor(name, source) {
+    this.name = name;
+    this.children = [];
+    this.localMatrix = mat4.identity();
+    this.worldMatrix = mat4.identity();
+    this.source = source;
+  }
+
++  find(name) {
++    if (this.name === name) {
++      return this;
++    }
++    for (const child of this.children) {
++      const found = child.find(name);
++      if (found) {
++        return found;
++      }
++    }
++    return undefined;
++  }
+
+  ...
+}
+</pre>
+<p>これを追加すると、名前で人差し指の最後のセグメントを見つけることができます。そのノードは、人差し指の最後のセグメントの基部、つまり回転する点を表し、先端ではありません。したがって、実際に先端を表す最後の指のセグメントの子として別のノードを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const root = new SceneGraphNode('root');
+  const wrist = addTRSSceneGraphNode('wrist', root);
+  const palm = addTRSSceneGraphNode('palm', wrist, { translation: [0, 100, 0] });
+  const palmMesh = addTRSSceneGraphNode('palm-mesh', wrist, { scale: [100, 100, 10] });
+  addMesh(palmMesh, cubeVertices, kWhite);
+  const rotation = [degToRad(15), 0, 0];
+  const animNodes = [
+    wrist,
+    palm,
+    ...addFinger('thumb',         palm, 2, 20, { translation: [-50, 0, 0], rotation }),
+    ...addFinger('index finger',  palm, 3, 30, { translation: [-25, 0, 0], rotation }),
+    ...addFinger('middle finger', palm, 3, 35, { translation: [ -0, 0, 0], rotation }),
+    ...addFinger('ring finger',   palm, 3, 33, { translation: [ 25, 0, 0], rotation }),
+    ...addFinger('pinky',         palm, 3, 25, { translation: [ 45, 0, 0], rotation }),
+  ];
++  const fingerTip = addTRSSceneGraphNode('finger-tip', root.find('index finger-2'), { translation: [0, 30, 0] });
+</pre>
+<p>次に、発射体が必要です。<a href="webgpu-matrix-stacks.html">前の記事</a>で装飾品用に作成した円錐を使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const cubeVertices = createVertices(createCubeVertices(), 'cube');
++  const shotVertices = createVertices(createConeVertices({
++    radius: 10,
++    height: 20,
++  }), 'shot');
+</pre>
+<p>次に、発射体を発射するコードを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kShotVelocity = 100; // 単位/秒
+  const shots = [];
+  let shotId = 0;
+  function fireShot() {
+    const node = new SceneGraphNode(`shot-${shotId++}`);
+    node.setParent(root);
+    mat4.translate(fingerTip.worldMatrix, [0, 20, 0], node.localMatrix);
+    const mesh = addMesh(node, shotVertices, kWhite);
+    const velocity = vec3.mulScalar(
+      vec3.normalize(vec3.getAxis(fingerTip.worldMatrix, 1)),
+      kShotVelocity);
+    shots.push({
+      node,
+      mesh,
+      velocity,
+      endTime: performance.now() * 0.001 + 5,
+    });
+    requestRender();
+  }
+</pre>
+<p>このコードは、「ショット」を<code class="notranslate" translate="no">shots</code>配列に追加します。これには、<code class="notranslate" translate="no">node</code>、<code class="notranslate" translate="no">mesh</code>、<code class="notranslate" translate="no">velocity</code>、<code class="notranslate" translate="no">endTime</code>が含まれます。</p>
+<p><code class="notranslate" translate="no">node</code>はY軸上で20単位外側に配置されます。これは、円錐の頂点を作成するコードが先端を20単位外側に作成するため、補正する必要があるためです。代わりに円錐の頂点コードを変更することもできますが、これは手間がかかりませんでした😅。このノードに<code class="notranslate" translate="no">TRS</code>ソースを追加していないことに注意してください。ローカル行列を直接更新します。</p>
+<p><code class="notranslate" translate="no">mesh</code>はメッシュの頂点です。ショットが完了したときにレンダリングするもののリストからショットのメッシュを削除できるように、これが必要です。</p>
+<p><code class="notranslate" translate="no">velocity</code>は、ショットを移動する方向と速度です。指が指す軸であるため、発射する方向としてy軸を取得するために<code class="notranslate" translate="no">vec3.getAxis</code>を呼び出します。<a href="webgpu-orthographic-projection.html">3D数学に関する記事</a>で説明したように、y軸は行列の2行目または要素4、5、6なので、<code class="notranslate" translate="no">vec3.getAxis</code>は次のように実装できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
++  // 0 = x, 1 = y, 2 = z;
++  getAxis(m, axis, dst) {
++    dst = dst || new Float32Array(3);
++
++    const offset = axis * 4;
++    dst[0] = m[offset + 0];
++    dst[1] = m[offset + 1];
++    dst[2] = m[offset + 2];
++
++    return dst;
++  },
+  ...
+};
+</pre>
+<p>または、コードはそのy軸を取得し、その方向を正規化し、次に<code class="notranslate" translate="no">vec3.mulScalar</code>を使用して目的の速度にします。</p>
+<p><code class="notranslate" translate="no">vec3.mulScalar</code>を提供する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
+  mulScalar(a, scale, dst) {
+    dst = dst || new Float32Array(3);
+
+    dst[0] = a[0] * scale;
+    dst[1] = a[1] * scale;
+    dst[2] = a[2] * scale;
+
+    return dst;
+  },  ...
+};
+</pre>
+<p>最後に、<code class="notranslate" translate="no">endTime</code>は、ショットを削除するための将来のある時点です。</p>
+<p>これで、発射体を移動するコードを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function processShots(now, deltaTime) {
+    if (shots.length &gt; 0) {
+      requestRender();
+      while (shots.length &amp;&amp; shots[0].endTime &lt;= now) {
+        const shot = shots.shift();
+        shot.node.setParent(null);
+        removeMesh(shot.mesh);
+      }
+      for (const shot of shots) {
+        const v = vec3.mulScalar(shot.velocity, deltaTime);
+        mat4.multiply(mat4.translation(v), shot.node.localMatrix, shot.node.localMatrix);
+      }
+    }
+  }
+</pre>
+<p>そのコードは、ショットの時間が期限切れになったかどうかを確認します。その場合、ショットのノードをシーングラフから削除し、レンダリングするもののリストからメッシュを削除します。</p>
+<p>それ以外の場合は、配列内の各ショットについて、速度をショットの行列に追加し、<code class="notranslate" translate="no">deltaTime</code>でスケーリングしてフレームレートに依存しないようにします。</p>
+<p><code class="notranslate" translate="no">removeMesh</code>を提供する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function removeMesh(mesh) {
+    meshes.splice(meshes.indexOf(mesh), 1);
+  }
+</pre>
+<p>次に、発射するためのボタンと、この処理関数を実際に呼び出すためのコードを追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
+  gui.onChange(requestRender);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+  gui.add(settings, 'animate').onChange(v =&gt; {
+    trsFolder.enable(!v);
+  });
+  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
++  gui.addButton('Fire!', fireShot);
+
+  ...
+
+  function render() {
+    ...
+
+-      const isRunning = settings.animate;
++      const isRunning = settings.animate || shots.length;
+      const now = performance.now() * 0.001;
+      const deltaTime = wasRunning ? now - then : 0;
+      then = now;
+
+      if (isRunning) {
+        time += deltaTime;
+      }
+      wasRunning = isRunning;
+
+      if (settings.animate) {
+        animate(time);
+        updateCurrentNodeGUI();
+        requestRender();
+      }
+
++      processShots(now, deltaTime);
+  }
+</pre>
+<p>ショットがある場合は、実行し続ける必要があります。「発射！」ボタンが押されると、ショットが追加されます。GUIは<code class="notranslate" translate="no">requestRender</code>も呼び出すため、このコードを通過して<code class="notranslate" translate="no">processShots</code>を呼び出します。<code class="notranslate" translate="no">processShots</code>は、ショットがある場合は<code class="notranslate" translate="no">requestRender</code>を呼び出すため、すべてのアニメーションループは、すべてのショットが終了するまで続行されます。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-hand-shoot.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-hand-shoot.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>人差し指の1つを選択し、回転xを調整してから、「発射！」を押します。または、アニメーション中に「発射！」をクリックします。</p>
+<p>この記事で、シーングラフとは何か、そしてその使用方法についてある程度のアイデアが得られたことを願っています。Unity、Blender、Unreal、Maya、3DSMax、Three.jsはすべてシーングラフを持っています。それらはさまざまな形式を取ることができます。一部はメッシュをグラフ自体に入れて不均一にしますが、他はより「純粋」で、それらを分離します。一部には、かなり複雑な「ソース」クラスがあります。シーングラフを持つことは、一般的に3Dエンジンの始まりです。すべての3Dエンジンが持っているわけではありませんが、ほとんどが持っています。</p>
+<p>上記のコードでは、カメラ自体をシーングラフの外に保持しましたが、カメラがグラフ自体の一部であることがより一般的です。これにより、Unity、Unreal、Blenderなどのプログラムで複数のカメラを表示および操作できます。</p>
+<p>グラフ自体に入れることで、カメラをあるノードの子にすることができ、したがって、その親の影響を受けることができます。たとえば、車の運転手の視点からのカメラや、回転する防犯カメラのカメラなどです。</p>
+<p>同様に、シーングラフは、多くの3Dエディターが持つような3Dマニピュレーターの実装に役立ちます。これらは、上記で使用したような別のGUIからではなく、3Dビューでオブジェクトを平行移動、回転、スケーリングできるUI要素です。別の記事で3Dマニピュレーターについて説明できるかもしれません。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +1217,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +1306,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU シーングラフ`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -460,7 +460,7 @@ the color later so we’ll pick one now. Let’s pick a rand clearValue as well 
 +    const bindGroup = device.createBindGroup({
 +      layout: pipeline.getBindGroupLayout(0),
 +      entries: [
-+        { binding: 0, resource: { buffer: uniformBuffer }},
++        { binding: 0, resource: uniformBuffer},
 +      ],
 +    });
 

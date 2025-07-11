@@ -11,8 +11,14 @@
 	categoryMapping: {
 		'basics': "基本",
 		'misc': "その他のトピック",
+		'textures': 'テクスチャ',
+		'techniques': 'テクニック',
+		'3d': '3D',
+		'2d': '2D',
 		'reference': 'リファレンス',
 		'3d-math': '3Dの数学',
+		'lighting': 'ライト',
+		'post-processing': 'ポストプロセッシング',
 		'compute-shaders': 'コンピュートシェーダ',
 	},
 }

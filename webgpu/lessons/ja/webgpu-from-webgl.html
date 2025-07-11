@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-from-webgl.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU from WebGL">
+
+<meta name="description" content="WebGLとWebGPUの使用の比較">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-from-webgl_ja.jpg">
+
+<meta property="og:title" content="WebGLからWebGPUへ">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Comparing using WebGL to WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-from-webgl_ja.jpg">
+<meta property="og:description" content="WebGLとWebGPUの使用の比較">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-from-webgl.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU from WebGL">
+<meta name="twitter:title" content="WebGLからWebGPUへ">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-from-webgl.html">
-<meta name="twitter:description" content="Comparing using WebGL to WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGLとWebGPUの使用の比較">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-from-webgl_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-from-webgl.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-from-webgl_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-from-webgl.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-from-webgl.html",
+      "inLanguage":"ja",
+      "name":"WebGLからWebGPUへ",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-from-webgl.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU from WebGL</title>
+<title>WebGLからWebGPUへ</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,1051 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU from WebGL</h1>
+    <h1>WebGLからWebGPUへ</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-from-webgl.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、すでにWebGLを知っていて、WebGPUを使い始めたい人を対象としています。</p>
+<p>WebGLからWebGPUに来た場合、多くの概念が同じであることに注意する価値があります。WebGLとWebGPUの両方で、GPUで小さな関数を実行できます。WebGLには頂点シェーダーとフラグメントシェーダーがあります。WebGPUには同じものに加えてコンピュートシェーダーがあります。WebGLはシェーディング言語として<a href="https://www.khronos.org/registry/OpenGL/specs/es/3.0/GLSL_ES_Specification_3.00.pdf">GLSL</a>を使用します。WebGPUは<a href="webgpu-wgsl.html">WGSL</a>を使用します。それらは異なる言語ですが、概念はほとんど同じです。</p>
+<p>両方のAPIには、バッファからデータを取得して頂点シェーダーの各反復に供給する方法である属性があります。両方のAPIには、シェーダー関数のすべての反復で共有される値を指定する方法であるユニフォームがあります。両方のAPIには、頂点シェーダーからフラグメントシェーダーにデータを渡し、フラグメントシェーダーを介してラスタライズするときに頂点シェーダーによって計算された値の間を補間する方法であるバリアブルがあります。両方のAPIには、2Dまたは3Dデータを提供してサンプリングする方法（複数のピクセルを単一の値にフィルタリングする）であるテクスチャとサンプラーがあります。両方のAPIには、テクスチャにレンダリングする方法があります。そして、両方には、ピクセルがどのようにブレンドされるか、深度バッファとステンシルバッファがどのように機能するかなど、多数の設定があります。</p>
+<p>最大の違いは、WebGLはステートフルAPIであり、WebGPUはそうではないことです。つまり、WebGLには多数のグローバル状態があります。現在バインドされているテクスチャ、現在バインドされているバッファ、現在のプログラム、ブレンド、深度、ステンシルの設定などです。これらの状態は、<code class="notranslate" translate="no">gl.bindBuffer</code>、<code class="notranslate" translate="no">gl.enable</code>、<code class="notranslate" translate="no">gl.blendFunc</code>などのさまざまなAPI関数を呼び出すことによって設定され、他のものに変更するまで<em>グローバルに</em>設定されたままになります。</p>
+<p>対照的に、WebGPUには<em>グローバル</em>な状態はほとんどありません。代わりに、<em>パイプライン</em>または<em>レンダーパイプライン</em>と<em>レンダーパス</em>の概念があり、これらは一緒になって、WebGLでグローバルだった状態のほとんどを効果的に含んでいます。どのテクスチャ、どの属性、どのバッファ、および他のさまざまな設定です。設定しない設定にはデフォルト値があります。パイプラインを変更することはできません。代わりに、それらを作成し、その後は不変です。異なる設定が必要な場合は、別のパイプラインを作成する必要があります。<em>レンダーパス</em>にはいくつかの状態がありますが、その状態はレンダーパスに対してローカルです。</p>
+<p>2番目に大きな違いは、WebGPUがWebGLよりも<strong>低レベル</strong>であることです。WebGLでは、多くのものが名前で接続されます。たとえば、GLSLでユニフォームを宣言し、その場所を検索します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">loc = gl.getUniformLocation(program, 'nameOfUniform');
+</pre>
+<p>別の例はバリアブルです。頂点シェーダーでは<code class="notranslate" translate="no">varying vec2 v_texcoord</code>または<code class="notranslate" translate="no">out vec2 v_texcoord</code>を使用し、フラグメントシェーダーでは対応するバリアブルを<code class="notranslate" translate="no">v_texcoord</code>という名前で宣言します。これの良い点は、名前を間違えるとエラーが発生することです。</p>
+<p>一方、WebGPUでは、すべてがインデックスまたはバイトオフセットによって完全に接続されます。WebGLのように個々のユニフォームを作成するのではなく、ユニフォームブロック（ユニフォームを宣言する構造体）を宣言します。次に、シェーダーに渡すデータを手動で整理して、その構造体に一致させるのはあなた次第です。注：WebGL2には、ユニフォームブロックとして知られる同じ概念がありますが、WebGL2には名前によるユニフォームの概念もありました。そして、WebGL2ユニフォームブロックの個々のフィールドはバイトオフセットを介して設定する必要がありましたが、（a）WebGL2にそれらのオフセットを問い合わせることができ、（b）ブロックの場所自体を名前で検索することができました。</p>
+<p>一方、WebGPUでは、<strong>すべて</strong>がバイトオフセットまたはインデックス（しばしば*「場所」*と呼ばれる）によるものであり、それらを照会するためのAPIはありません。つまり、それらの場所を同期させ、バイトオフセットを手動で計算するのは完全にあなたの責任です。</p>
+<p>JavaScriptの類推を次に示します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function likeWebGL(inputs) {
+  const {position, texcoords, normal, color} = inputs;
+  ...
+}
+
+function likeWebGPU(inputs) {
+  const [position, texcoords, normal, color] = inputs;
+  ...
+}
+</pre>
+<p>上記の<code class="notranslate" translate="no">likeWebGL</code>の例では、物事は名前で接続されています。次のように<code class="notranslate" translate="no">likeWebGL</code>を呼び出すことができます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const inputs = {};
+inputs.normal = normal;
+inputs.color = color;
+inputs.position = position;
+likeWebGL(inputs);
+</pre>
+<p>またはこのように</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">likeWebGL({color, position, normal});
+</pre>
+<p>名前で接続されているため、パラメータの順序は問題にならないことに注意してください。さらに、関数が<code class="notranslate" translate="no">texcoords</code>なしで実行できると仮定して、パラメータをスキップできます（上記の例では<code class="notranslate" translate="no">texcoords</code>）。</p>
+<p>一方、<code class="notranslate" translate="no">likeWebGPU</code>では</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const inputs = [];
+inputs[0] = position;
+inputs[2] = normal;
+inputs[3] = color;
+likeWebGPU(inputs);
+</pre>
+<p>ここでは、パラメータを配列で渡します。各入力の場所（インデックス）を知る必要があることに注意してください。<code class="notranslate" translate="no">position</code>がインデックス0、<code class="notranslate" translate="no">normal</code>がインデックス2などであることを知る必要があります。内部（WGSL）と外部（JavaScript/WASM）のコードの場所をWebGPUで同期させるのは、完全にあなたの責任です。</p>
+<h3 id="その他の注目すべき違い">その他の注目すべき違い</h3>
+<ul>
+<li>
+<p>キャンバス</p>
+<p>WebGLはキャンバスを管理します。WebGLコンテキストを作成するときにアンチエイリアス、preserveDrawingBuffer、ステンシル、深度、アルファを選択し、その後WebGLはキャンバス自体を管理します。あなたがしなければならないのは、<code class="notranslate" translate="no">canvas.width</code>と<code class="notranslate" translate="no">canvas.height</code>を設定することだけです。</p>
+<p>WebGPUでは、その多くを自分で行う必要があります。深度バッファが必要な場合は、自分で作成します（ステンシルバッファの有無にかかわらず）。アンチエイリアシングが必要な場合は、独自のマルチサンプルテクスチャを作成し、それらをキャンバステクスチャに解決します。</p>
+<p>しかし、そのため、WebGLとは異なり、1つのWebGPUデバイスを使用して複数のキャンバスにレンダリングできます。🎉🤩</p>
+</li>
+<li>
+<p>WebGPUはミップマップを生成しません。</p>
+<p>WebGLでは、テクスチャのレベル0ミップを作成し、<code class="notranslate" translate="no">gl.generateMipmap</code>を呼び出すと、WebGLが他のすべてのミップレベルを生成しました。WebGPUにはそのような関数はありません。テクスチャにミップが必要な場合は、自分で生成する必要があります。</p>
+<p>注：<a href="../webgpu-importing-textures.html#a-generating-mips-on-the-gpu">この記事</a>には、ミップを生成するコードがあります。</p>
+</li>
+<li>
+<p>WebGPUにはサンプラーが必要です。</p>
+<p>WebGL1では、サンプラーは存在しなかったか、別の言い方をすれば、サンプラーはWebGLによって内部的に処理されていました。WebGL2では、サンプラーの使用はオプションでした。WebGPUでは、サンプラーが必要です。</p>
+</li>
+<li>
+<p>バッファとテクスチャはサイズ変更できません。</p>
+<p>WebGLでは、バッファまたはテクスチャを作成し、いつでもそのサイズを変更できました。たとえば、<code class="notranslate" translate="no">gl.bufferData</code>を呼び出すと、バッファが再割り当てされます。<code class="notranslate" translate="no">gl.texImage2D</code>を呼び出すと、テクスチャが再割り当てされます。テクスチャの一般的なパターンは、すぐにレンダリングを開始できる1x1ピクセルのプレースホルダーを作成し、画像を非同期に読み込むことでした。画像の読み込みが完了すると、テクスチャをその場で更新します。</p>
+<p>WebGPUでは、テクスチャとバッファのサイズ、使用法、フォーマットは不変です。内容を変更することはできますが、それ以外のものは変更できません。つまり、上記で述べた例のように、それらを変更していたWebGLのパターンは、新しいリソースを作成するようにリファクタリングする必要があります。</p>
+<p>つまり、代わりに</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 擬似コード
+const tex = createTexture()
+fillTextureWith1x1PixelPlaceholder(tex)
+imageLoad(url).then(img =&gt; updateTextureWithImage(tex, image));
+</pre>
+<p>コードを効果的に次のように変更する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 擬似コード
+let tex = createTexture(size: [1, 1]);
+fillTextureWith1x1PixelPlaceholder(tex)
+imageLoad(url).then(img =&gt; {
+    tex.destroy();  // 古いテクスチャを削除します
+    tex = createTexture(size: [img.width, img.height]);
+    copyImageToTexture(tex, image));
+});
+</pre>
+</li>
+</ul>
+<h2 id="webglとwebgpuを比較してみましょう">WebGLとWebGPUを比較してみましょう</h2>
+<h3 id="シェーダー">シェーダー</h3>
+<p>これは、テクスチャ付きで照らされた三角形を描画するシェーダーです。1つはGLSL、もう1つはWGSLです。</p>
+<div class="webgpu_center compare"><div><div>GLSL</div><pre class="prettyprint showlinemods notranslate notranslate" translate="no">const vSrc = `
+uniform mat4 u_worldViewProjection;
+uniform mat4 u_worldInverseTranspose;
+
+attribute vec4 a_position;
+attribute vec3 a_normal;
+attribute vec2 a_texcoord;
+
+varying vec2 v_texCoord;
+varying vec3 v_normal;
+
+void main() {
+  gl_Position = u_worldViewProjection * a_position;
+  v_texCoord = a_texcoord;
+  v_normal = (u_worldInverseTranspose * vec4(a_normal, 0)).xyz;
+}
+`;
+
+const fSrc = `
+precision highp float;
+
+varying vec2 v_texCoord;
+varying vec3 v_normal;
+
+uniform sampler2D u_diffuse;
+uniform vec3 u_lightDirection;
+
+void main() {
+  vec4 diffuseColor = texture2D(u_diffuse, v_texCoord);
+  vec3 a_normal = normalize(v_normal);
+  float l = dot(a_normal, u_lightDirection) * 0.5 + 0.5;
+  gl_FragColor = vec4(diffuseColor.rgb * l, diffuseColor.a);
+}
+`;
+</pre>
+</div><div>
+<div>WGSL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const shaderSrc = `
+struct VSUniforms {
+  worldViewProjection: mat4x4f,
+  worldInverseTranspose: mat4x4f,
+};
+@group(0) binding(0) var&lt;uniform&gt; vsUniforms: VSUniforms;
+
+struct MyVSInput {
+    @location(0) position: vec4f,
+    @location(1) normal: vec3f,
+    @location(2) texcoord: vec2f,
+};
+
+struct MyVSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) normal: vec3f,
+  @location(1) texcoord: vec2f,
+};
+
+@vertex
+fn myVSMain(v: MyVSInput) -&gt; MyVSOutput {
+  var vsOut: MyVSOutput;
+  vsOut.position = vsUniforms.worldViewProjection * v.position;
+  vsOut.normal = (vsUniforms.worldInverseTranspose * vec4f(v.normal, 0.0)).xyz;
+  vsOut.texcoord = v.texcoord;
+  return vsOut;
+}
+
+struct FSUniforms {
+  lightDirection: vec3f,
+};
+
+@group(0) binding(1) var&lt;uniform&gt; fsUniforms: FSUniforms;
+@group(0) binding(2) var diffuseSampler: sampler;
+@group(0) binding(3) var diffuseTexture: texture_2d&lt;f32&gt;;
+
+@fragment
+fn myFSMain(v: MyVSOutput) -&gt; @location(0) vec4f {
+  var diffuseColor = textureSample(diffuseTexture, diffuseSampler, v.texcoord);
+  var a_normal = normalize(v.normal);
+  var l = dot(a_normal, fsUniforms.lightDirection) * 0.5 + 0.5;
+  return vec4f(diffuseColor.rgb * l, diffuseColor.a);
+}
+`;
+</pre></div></div>
+<p>多くの点で、それらはそれほど違いがないことに注意してください。各関数のコア部分は非常に似ています。GLSLの<code class="notranslate" translate="no">vec4</code>はWGSLの<code class="notranslate" translate="no">vec4f</code>になり、<code class="notranslate" translate="no">mat4</code>は<code class="notranslate" translate="no">mat4x4f</code>になります。他の例には、<code class="notranslate" translate="no">int</code> -&gt; <code class="notranslate" translate="no">i32</code>、<code class="notranslate" translate="no">uint</code> -&gt; <code class="notranslate" translate="no">u32</code>、<code class="notranslate" translate="no">ivec2</code> -&gt; <code class="notranslate" translate="no">vec2i</code>、<code class="notranslate" translate="no">uvec3</code> -&gt; <code class="notranslate" translate="no">vec3u</code>があります。</p>
+<p>GLSLはC/C++に似ています。WGSLはRustに似ています。1つの違いは、GLSLでは型が左側に、WGSLでは右側にあることです。</p>
+<div class="webgpu_center compare"><div><div>GLSL</div><pre class="prettyprint showlinemods notranslate notranslate" translate="no">// vec4型の変数を宣言します
+vec4 v;
+
+// vec3パラメータを受け取るmat4型の関数を宣言します
+mat4 someFunction(vec3 p) { ... }
+
+// 構造体を宣言します
+struct Foo { vec4 field; };
+</pre>
+</div><div>
+<div>WGSL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">// vec4f型の変数を宣言します
+var v: vec4f;
+
+// vec3fパラメータを受け取るmat4x4f型の関数を宣言します
+fn someFunction(p: vec3f) -&gt; mat4x4f { ... }
+
+// 構造体を宣言します
+struct Foo { field: vec4f, };
+</pre></div></div>
+<p>WGSLには、変数の型を指定しない場合、右側の式の型から推測されるという概念がありますが、GLSLでは常に型を指定する必要がありました。つまり、GLSLでは</p>
+<pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">vec4 color = texture(someTexture, someTextureCoord);
+</pre>
+<p>上記では、<code class="notranslate" translate="no">color</code>を<code class="notranslate" translate="no">vec4</code>として宣言する必要がありましたが、WGSLでは次のいずれかを実行できます。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">var color: vec4f = textureSample(someTexture, someSampler, someTextureCoord);
+</pre>
+<p>または</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">var color = textureSample(someTexture, someSampler, someTextureCoord);
+</pre>
+<p>どちらの場合も、<code class="notranslate" translate="no">color</code>は<code class="notranslate" translate="no">vec4f</code>です。</p>
+<p>一方、最大の違いは、すべての<code class="notranslate" translate="no">@???</code>部分です。それぞれが、その特定のデータがどこから来ているかを正確に宣言しています。たとえば、頂点シェーダーのユニフォームとフラグメントシェーダーのユニフォームが<code class="notranslate" translate="no">@group(?) binding(?)</code>を宣言し、それらが衝突しないようにするのはあなた次第であることに注意してください。上記の頂点シェーダーは<code class="notranslate" translate="no">binding(0)</code>を使用し、フラグメントシェーダーは<code class="notranslate" translate="no">binding(1)</code>、<code class="notranslate" translate="no">binding(2)</code>、<code class="notranslate" translate="no">binding(3)</code>を使用します。上記の例では、2つのユニフォームブロックがあります。1つを使用することもできましたが、頂点シェーダーをフラグメントシェーダーからより分離するために2つを使用することにしました。</p>
+<p>WebGLとWebGPUのもう1つの違いは、WebGPUでは同じソースに複数のシェーダーを配置できることです。WebGLでは、シェーダーのエントリポイントは常に<code class="notranslate" translate="no">main</code>と呼ばれていましたが、WebGPUでは、シェーダーを使用するときに呼び出す関数を指定します。</p>
+<p>WebGPUでは、属性は頂点シェーダー関数のパラメータとして宣言されるのに対し、GLSLでは関数の外部でグローバルとして宣言され、GLSLでは場所を選択しないとコンパイラが割り当てますが、WGSLでは場所を指定する必要があることに注意してください。</p>
+<p>バリアブルについては、GLSLではグローバル変数としても宣言されますが、WGSLでは各フィールドの場所を持つ構造体を宣言し、頂点シェーダーをその構造体を返すものとして宣言し、関数自体でその構造体のインスタンスを返します。フラグメントシェーダーでは、これらの入力を受け取るものとして関数を宣言します。</p>
+<p>上記のコードでは、頂点シェーダーの出力とフラグメントシェーダーの入力の両方に同じ構造体を使用していますが、同じ構造体を使用する必要はありません。必要なのは、場所が一致することだけです。たとえば、これは機能します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">*struct MyFSInput {
+*  @location(0) the_normal: vec3f,
+*  @location(1) the_texcoord: vec2f,
+*};
+
+@fragment
+*fn myFSMain(v: MyFSInput) -&gt; @location(0) vec4f
+{
+*  var diffuseColor = textureSample(diffuseTexture, diffuseSampler, v.the_texcoord);
+*  var a_normal = normalize(v.the_normal);
+  var l = dot(a_normal, fsUniforms.lightDirection) * 0.5 + 0.5;
+  return vec4f(diffuseColor.rgb * l, diffuseColor.a);
+}
+</pre>
+<p>これも機能します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@fragment
+fn myFSMain(
+*  @location(1) uv: vec2f,
+*  @location(0) nrm: vec3f,
+) -&gt; @location(0) vec4f
+{
+*  var diffuseColor = textureSample(diffuseTexture, diffuseSampler, uv);
+*  var a_normal = normalize(nrm);
+  var l = dot(a_normal, fsUniforms.lightDirection) * 0.5 + 0.5;
+  return vec4f(diffuseColor.rgb * l, diffuseColor.a);
+}
+</pre>
+<p>繰り返しになりますが、重要なのは場所が一致することであり、名前ではありません。</p>
+<p>もう1つの注意すべき違いは、GLSLの<code class="notranslate" translate="no">gl_Position</code>には、WGSLのユーザー宣言構造体フィールドの特別な場所<code class="notranslate" translate="no">@builtin(position)</code>があることです。同様に、フラグメントシェーダーの出力には場所が与えられます。この場合、<code class="notranslate" translate="no">@location(0)</code>です。これは、WebGL1の<code class="notranslate" translate="no">WEBGL_draw_buffers</code>拡張機能で<code class="notranslate" translate="no">gl_FragData[0]</code>を使用するのと似ています。ここでも、複数のレンダーターゲットなど、単一の値以上を出力したい場合は、頂点シェーダーの出力で行ったように、構造体を宣言して場所を割り当てます。</p>
+<h3 id="apiの取得">APIの取得</h3>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">function main() {
+  const gl = document.querySelector('canvas').getContext('webgl');
+  if (!gl) {
+    fail('need webgl');
+    return;
+  }
+}
+
+main();
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+...
+}
+
+main();
+</pre>
+  </div>
+</div>
+<p>ここで、<code class="notranslate" translate="no">adapter</code>はGPU自体を表し、<code class="notranslate" translate="no">device</code>はそのGPU上のAPIのインスタンスを表します。</p>
+<p>おそらく、ここでの最大の違いは、WebGPUでAPIを取得するのが非同期であることです。</p>
+<h3 id="バッファの作成">バッファの作成</h3>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">function createBuffer(gl, data, type = gl.ARRAY_BUFFER) {
+  const buf = gl.createBuffer();
+  gl.bindBuffer(type, buf);
+  gl.bufferData(type, data, gl.STATIC_DRAW);
+  return buf;
+}
+
+const positions = new Float32Array([1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1]);
+const normals   = new Float32Array([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1]);
+const texcoords = new Float32Array([1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1]);
+const indices   = new Uint16Array([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23]);
+
+const positionBuffer = createBuffer(gl, positions);
+const normalBuffer = createBuffer(gl, normals);
+const texcoordBuffer = createBuffer(gl, texcoords);
+const indicesBuffer = createBuffer(gl, indices, gl.ELEMENT_ARRAY_BUFFER);
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">function createBuffer(device, data, usage) {
+  const buffer = device.createBuffer({
+    size: data.byteLength,
+    usage,
+    mappedAtCreation: true,
+  });
+  const dst = new data.constructor(buffer.getMappedRange());
+  dst.set(data);
+  buffer.unmap();
+  return buffer;
+}
+
+const positions = new Float32Array([1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1]);
+const normals   = new Float32Array([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1]);
+const texcoords = new Float32Array([1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1]);
+const indices   = new Uint16Array([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23]);
+
+const positionBuffer = createBuffer(device, positions, GPUBufferUsage.VERTEX);
+const normalBuffer = createBuffer(device, normals, GPUBufferUsage.VERTEX);
+const texcoordBuffer = createBuffer(device, texcoords, GPUBufferUsage.VERTEX);
+const indicesBuffer = createBuffer(device, indices, GPUBufferUsage.INDEX);
+</pre>
+  </div>
+</div>
+<p>一見すると、これらはそれほど違いがないことがわかります。異なる関数を呼び出しますが、それ以外は非常に似ています。</p>
+<h3 id="テクスチャの作成">テクスチャの作成</h3>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const tex = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D, tex);
+gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,    // level
+    gl.RGBA,
+    2,    // width
+    2,    // height
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    new Uint8Array([
+      255, 255, 128, 255,
+      128, 255, 255, 255,
+      255, 128, 255, 255,
+      255, 128, 128, 255,
+    ]));
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const tex = device.createTexture({
+  size: [2, 2],
+  format: 'rgba8unorm',
+  usage:
+    GPUTextureUsage.TEXTURE_BINDING |
+    GPUTextureUsage.COPY_DST,
+});
+device.queue.writeTexture(
+    { texture: tex },
+    new Uint8Array([
+      255, 255, 128, 255,
+      128, 255, 255, 255,
+      255, 128, 255, 255,
+      255, 128, 128, 255,
+    ]),
+    { bytesPerRow: 8, rowsPerImage: 2 },
+    { width: 2, height: 2 },
+);
+
+const sampler = device.createSampler({
+  magFilter: 'nearest',
+  minFilter: 'nearest',
+});
+</pre>
+  </div>
+</div>
+<p>繰り返しになりますが、それほど違いはありません。1つの違いは、WebGPUには、テクスチャで何をするかによって設定する必要がある使用法フラグがあることです。もう1つは、WebGPUではサンプラーを作成する必要があることです。これはWebGLではオプションです。</p>
+<h3 id="シェーダーのコンパイル">シェーダーのコンパイル</h3>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">function createShader(gl, type, source) {
+  const sh = gl.createShader(type);
+  gl.shaderSource(sh, source);
+  gl.compileShader(sh);
+  if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+    throw new Error(gl.getShaderInfoLog(sh));
+  }
+  return sh;
+}
+
+const vs = createShader(gl, gl.VERTEX_SHADER, vSrc);
+const fs = createShader(gl, gl.FRAGMENT_SHADER, fSrc);
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const shaderModule = device.createShaderModule({code: shaderSrc});
+</pre>
+  </div>
+</div>
+<p>マイナーな違いですが、WebGLとは異なり、一度に複数のシェーダーをコンパイルできます。</p>
+<p>WebGLでは、シェーダーがコンパイルされなかった場合、<code class="notranslate" translate="no">gl.getShaderParameter</code>で<code class="notranslate" translate="no">COMPILE_STATUS</code>を確認し、失敗した場合は<code class="notranslate" translate="no">gl.getShaderInfoLog</code>を呼び出してエラーメッセージを取得するのはあなた次第です。これをしないと、エラーは表示されません。シェーダープログラムを使用しようとすると、後でエラーが発生する可能性があります。</p>
+<p>WebGPUでは、ほとんどの実装はJavaScriptコンソールにエラーを出力します。もちろん、自分でエラーを確認することもできますが、何もしなくても役立つ情報が得られるのは本当に素晴らしいことです。</p>
+<h3 id="プログラムのリンクパイプラインの設定">プログラムのリンク/パイプラインの設定</h3>
+<p>パイプライン、より具体的には「レンダーパイプライン」は、特定の方法で使用される一対のシェーダーを表します。WebGLで発生するいくつかのことは、パイプラインを作成するときにWebGPUで1つのものに結合されます。たとえば、シェーダーのリンク、属性パラメータの設定、描画モード（点、線、三角形）の選択、深度バッファの使用方法の設定などです。</p>
+<p>これがコードです。</p>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">function createProgram(gl, vs, fs) {
+  const prg = gl.createProgram();
+  gl.attachShader(prg, vs);
+  gl.attachShader(prg, fs);
+  gl.linkProgram(prg);
+  if (!gl.getProgramParameter(prg, gl.LINK_STATUS)) {
+    throw new Error(gl.getProgramInfoLog(prg));
+  }
+  return prg;
+}
+
+const program = createProgram(gl, vs, fs);
+
+...
+
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(positionLoc);
+
+gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(normalLoc);
+
+gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(texcoordLoc);
+
+....
+
+gl.enable(gl.DEPTH_TEST);
+gl.enable(gl.CULL_FACE);
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const pipeline = device.createRenderPipeline({
+  layout: 'auto',
+  vertex: {
+    module: shaderModule,
+    buffers: [
+      // position
+      {
+        arrayStride: 3 * 4, // 3 floats, 4 bytes each
+        attributes: [
+          {shaderLocation: 0, offset: 0, format: 'float32x3'},
+        ],
+      },
+      // normals
+      {
+        arrayStride: 3 * 4, // 3 floats, 4 bytes each
+        attributes: [
+          {shaderLocation: 1, offset: 0, format: 'float32x3'},
+        ],
+      },
+      // texcoords
+      {
+        arrayStride: 2 * 4, // 2 floats, 4 bytes each
+        attributes: [
+          {shaderLocation: 2, offset: 0, format: 'float32x2',},
+        ],
+      },
+    ],
+  },
+  fragment: {
+    module: shaderModule,
+    targets: [
+      {format: presentationFormat},
+    ],
+  },
+  primitive: {
+    topology: 'triangle-list',
+    cullMode: 'back',
+  },
+  depthStencil: {
+    depthWriteEnabled: true,
+    depthCompare: 'less',
+    format: 'depth24plus',
+  },
+  ...(canvasInfo.sampleCount &gt; 1 &amp;&amp; {
+      multisample: {
+        count: canvasInfo.sampleCount,
+      },
+  }),
+});
+</pre>
+  </div>
+</div>
+<p>注意すべき点：</p>
+<p>シェーダーのリンクは<code class="notranslate" translate="no">createRenderPipeline</code>を呼び出すときに発生し、実際、<code class="notranslate" translate="no">createRenderPipeline</code>は、設定によってはシェーダーが内部的に調整される可能性があるため、遅い呼び出しです。<code class="notranslate" translate="no">vertex</code>と<code class="notranslate" translate="no">fragment</code>について、シェーダー<code class="notranslate" translate="no">module</code>を指定し、<code class="notranslate" translate="no">entryPoint</code>を介して呼び出す関数を指定することがわかります。次に、WebGPUは、WebGLで2つのシェーダーをプログラムにリンクするとシェーダーが互換性があるかどうかをチェックするのと同じ方法で、それら2つの関数が互いに互換性があることを確認する必要があります。</p>
+<p>WebGLでは、<code class="notranslate" translate="no">gl.vertexAttribPointer</code>を呼び出して、現在の<code class="notranslate" translate="no">ARRAY_BUFFER</code>バッファを属性にアタッチし、そのバッファからデータを取得する方法を指定します。WebGPUでは、パイプラインを作成するときにバッファからデータを取得する方法のみを指定します。後で使用するバッファを指定します。</p>
+<p>上記の例では、<code class="notranslate" translate="no">buffers</code>がオブジェクトの配列であることがわかります。これらのオブジェクトは<a href="https://www.w3.org/TR/webgpu/#dictdef-gpuvertexbufferlayout"><code class="notranslate" translate="no">GPUVertexBufferLayout</code></a>と呼ばれます。各オブジェクト内には属性の配列があります。ここでは、3つの異なるバッファからデータを取得するように設定しています。データを1つのバッファにインターリーブした場合、必要な<a href="https://www.w3.org/TR/webgpu/#dictdef-gpuvertexbufferlayout"><code class="notranslate" translate="no">GPUVertexBufferLayout</code></a>は1つだけですが、その<code class="notranslate" translate="no">attribute</code>配列には3つのエントリがあります。</p>
+<p>また、ここでは、シェーダーで使用したものと<code class="notranslate" translate="no">shaderLocation</code>を一致させる必要があることに注意してください。</p>
+<p>WebGPUでは、ここでプリミティブタイプ、カリングモード、深度設定を設定します。つまり、これらの設定のいずれかが異なるもので何かを描画したい場合、たとえば、三角形でいくつかのジオメトリを描画し、後で線で描画したい場合は、複数のパイプラインを作成する必要があります。同様に、頂点レイアウトが異なる場合も同様です。たとえば、あるモデルでは位置とテクスチャ座標が別々のバッファに分離されており、別のモデルでは同じバッファにあるがオフセットされており、さらに別のモデルではインターリーブされている場合、3つすべてに独自のパイプラインが必要になります。</p>
+<p>最後の部分である<code class="notranslate" translate="no">multisample</code>は、マルチサンプリングされた宛先テクスチャに描画する場合に必要です。WebGLではデフォルトでキャンバスにマルチサンプリングされたテクスチャを使用するため、これをここに入れました。それをエミュレートするには、<code class="notranslate" translate="no">multisample</code>プロパティを追加する必要があります。<code class="notranslate" translate="no">presentationFormat</code>と<code class="notranslate" translate="no">canvasInfo.sampleCount</code>については、以下で説明します。</p>
+<h3 id="ユニフォームの準備">ユニフォームの準備</h3>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const u_lightDirectionLoc = gl.getUniformLocation(program, 'u_lightDirection');
+const u_diffuseLoc = gl.getUniformLocation(program, 'u_diffuse');
+const u_worldInverseTransposeLoc = gl.getUniformLocation(program, 'u_worldInverseTranspose');
+const u_worldViewProjectionLoc = gl.getUniformLocation(program, 'u_worldViewProjection');
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const vUniformBufferSize = 2 * 16 * 4; // 2 mat4s * 16 floats per mat * 4 bytes per float
+const fUniformBufferSize = 3 * 4;      // 1 vec3 * 3 floats per vec3 * 4 bytes per float
+
+const vsUniformBuffer = device.createBuffer({
+  size: vUniformBufferSize,
+  usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+});
+const fsUniformBuffer = device.createBuffer({
+  size: fUniformBufferSize,
+  usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+});
+const vsUniformValues = new Float32Array(2 * 16); // 2 mat4s
+const worldViewProjection = vsUniformValues.subarray(0, 16);
+const worldInverseTranspose = vsUniformValues.subarray(16, 32);
+const fsUniformValues = new Float32Array(3);  // 1 vec3
+const lightDirection = fsUniformValues.subarray(0, 3);
+</pre>
+  </div>
+</div>
+<p>WebGLでは、ユニフォームの場所を検索します。WebGPUでは、ユニフォームの値を保持するバッファを作成します。上記のコードは、ユニフォームの値を保持するより大きなCPU側のTypedArrayにTypedArrayビューを作成します。<code class="notranslate" translate="no">vUniformBufferSize</code>と<code class="notranslate" translate="no">fUniformBufferSize</code>が手動で計算されていることに注意してください。同様に、型付き配列にビューを作成する場合、オフセットとサイズは手動で計算されます。これらの計算を行うのは完全にあなた次第です。WebGLとは異なり、WebGPUはこれらのオフセットとサイズを照会するためのAPIを提供しません。</p>
+<p>注：WebGL2でユニフォームブロックを使用している場合、このプロセスはほぼ同じですが、型付き配列の内容をアップロードするために<code class="notranslate" translate="no">gl.bufferSubData</code>を呼び出す点が異なります。</p>
+<h3 id="描画の準備">描画の準備</h3>
+<p>WebGLでは、この時点で直接描画に進みますが、WebGPUではまだ作業が残っています。</p>
+<p>バインドグループを作成する必要があります。これにより、シェーダーが使用するリソースを指定できます。</p>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">// レンダリング時に発生します
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D, tex);
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">// 初期化時に発生する可能性があります
+const bindGroup = device.createBindGroup({
+  layout: pipeline.getBindGroupLayout(0),
+  entries: [
+    { binding: 0, resource: vsUniformBuffer },
+    { binding: 1, resource: fsUniformBuffer },
+    { binding: 2, resource: sampler },
+    { binding: 3, resource: tex.createView() },
+  ],
+});
+</pre>
+  </div>
+</div>
+<p>繰り返しになりますが、<code class="notranslate" translate="no">binding</code>と<code class="notranslate" translate="no">group</code>はシェーダーで指定したものと一致する必要があることに注意してください。</p>
+<p>WebGPUでは、レンダーパス記述子も作成しますが、WebGLではこれらの設定はステートフルAPI呼び出しを介して設定されるか、自動的に処理されます。</p>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">gl.clearColor(0.5, 0.5, 0.5, 1.0);
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const renderPassDescriptor = {
+  colorAttachments: [
+    {
+      // view: undefined, // 後で割り当てられます
+      // resolveTarget: undefined, // 後で割り当てられます
+      clearValue: [0.5, 0.5, 0.5, 1],
+      loadOp: 'clear',
+      storeOp: 'store',
+    },
+  ],
+  depthStencilAttachment: {
+    // view: undefined,  // 後で割り当てられます
+    depthClearValue: 1,
+    depthLoadOp: 'clear',
+    depthStoreOp: 'store',
+  },
+};
+</pre>
+  </div>
+</div>
+<p>WebGPUの多くの設定は、レンダリングする場所に関連していることに注意してください。WebGLでは、キャンバスにレンダリングする場合、これらすべてが処理されていました。WebGLでフレームバッファにレンダリングする場合、これらの設定は<code class="notranslate" translate="no">gl.framebufferTexture2D</code>や<code class="notranslate" translate="no">gl.framebufferRenderbuffer</code>の呼び出しに相当します。</p>
+<h3 id="ユニフォームの設定">ユニフォームの設定</h3>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">gl.uniform3fv(u_lightDirectionLoc, v3.normalize([1, 8, -10]));
+gl.uniform1i(u_diffuseLoc, 0);
+gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, m4.transpose(m4.inverse(world)));
+gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, m4.multiply(viewProjection, world));
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">m4.transpose(m4.inverse(world), worldInverseTranspose);
+m4.multiply(viewProjection, world, worldViewProjection);
+
+v3.normalize([1, 8, -10], lightDirection);
+
+device.queue.writeBuffer(vsUniformBuffer, 0, vsUniformValues);
+device.queue.writeBuffer(fsUniformBuffer, 0, fsUniformValues);
+</pre>
+  </div>
+</div>
+<p>WebGLの場合、値を計算し、適切な場所で<code class="notranslate" translate="no">gl.uniform???</code>に渡します。</p>
+<p>WebGPUの場合、値を型付き配列に書き込み、それらの型付き配列の内容を対応するGPUバッファにコピーします。</p>
+<p>注：WebGL2でユニフォームブロックを使用している場合、このプロセスはほぼ同じですが、型付き配列の内容をアップロードするために<code class="notranslate" translate="no">gl.bufferSubData</code>を呼び出す点が異なります。</p>
+<h3 id="描画バッファのサイズ変更">描画バッファのサイズ変更</h3>
+<p>記事の冒頭で述べたように、これはWebGLが処理してくれた場所の1つですが、WebGPUでは自分で行う必要があります。</p>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">function resizeCanvasToDisplaySize(canvas) {
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  const needResize = width !== canvas.width || height !== canvas.height;
+  if (needResize) {
+    canvas.width = width;
+    canvas.height = height;
+  }
+  return needResize;
+}
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">// 初期化時に
+const canvas = document.querySelector('canvas');
+const context = canvas.getContext('webgpu');
+
+const presentationFormat = navigator.gpu.getPreferredFormat(adapter);
+context.configure({
+  device,
+  format: presentationFormat,
+});
+
+const canvasInfo = {
+  canvas,
+  presentationFormat,
+  // これらはresizeToDisplaySizeで入力されます
+  renderTarget: undefined,
+  renderTargetView: undefined,
+  depthTexture: undefined,
+  depthTextureView: undefined,
+  sampleCount: 4,  // 1または4にすることができます
+};
+
+// --- レンダリング時に ---
+
+function resizeToDisplaySize(device, canvasInfo) {
+  const {
+    canvas,
+    context,
+    renderTarget,
+    presentationFormat,
+    depthTexture,
+    sampleCount,
+  } = canvasInfo;
+  const width = Math.max(1, Math.min(device.limits.maxTextureDimension2D, canvas.clientWidth));
+  const height = Math.max(1, Math.min(device.limits.maxTextureDimension2D, canvas.clientHeight));
+
+  const needResize = !canvasInfo.renderTarget ||
+                     width !== canvas.width ||
+                     height !== canvas.height;
+  if (needResize) {
+    if (renderTarget) {
+      renderTarget.destroy();
+    }
+    if (depthTexture) {
+      depthTexture.destroy();
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+
+    if (sampleCount &gt; 1) {
+      const newRenderTarget = device.createTexture({
+        size: [canvas.width, canvas.height],
+        format: presentationFormat,
+        sampleCount,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+      });
+      canvasInfo.renderTarget = newRenderTarget;
+      canvasInfo.renderTargetView = newRenderTarget.createView();
+    }
+
+    const newDepthTexture = device.createTexture({
+      size: [canvas.width, canvas.height,
+      format: 'depth24plus',
+      sampleCount,
+      usage: GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+    canvasInfo.depthTexture = newDepthTexture;
+    canvasInfo.depthTextureView = newDepthTexture.createView();
+  }
+  return needResize;
+}
+</pre>
+  </div>
+</div>
+<p>上記のように、やるべきことがたくさんあることがわかります。サイズ変更が必要な場合は、古いテクスチャ（色と深度）を手動で破棄し、新しいものを作成する必要があります。また、WebGLが少なくともキャンバスに対して処理してくれた制限を超えないようにチェックする必要もあります。</p>
+<p>上記では、<code class="notranslate" translate="no">sampleCount</code>プロパティは、事実上、WebGLコンテキストの作成属性の<code class="notranslate" translate="no">antialias</code>プロパティのアナログです。<code class="notranslate" translate="no">sampleCount: 4</code>は、WebGLの<code class="notranslate" translate="no">antialias: true</code>（デフォルト）に相当し、<code class="notranslate" translate="no">sampleCount: 1</code>は、WebGLコンテキストを作成するときの<code class="notranslate" translate="no">antialias: false</code>に相当します。</p>
+<p>上記に示されていないもう1つのこととして、WebGLはメモリ不足にならないように試みます。つまり、16000x16000のキャンバスを要求した場合、WebGLは4096x4096のキャンバスを返す可能性があります。実際に何が返されたかは、<code class="notranslate" translate="no">gl.drawingBufferWidth</code>と<code class="notranslate" translate="no">gl.drawingBufferHeight</code>を見ることで確認できます。</p>
+<p>WebGLがこれを行った理由は、（1）キャンバスを複数のモニターにまたがって引き伸ばすと、サイズがGPUが処理できるよりも大きくなる可能性があるため、（2）システムがメモリ不足で、クラッシュする代わりに、WebGLがより小さな描画バッファを返すためです。</p>
+<p>WebGPUでは、これら2つの状況を確認するのはあなた次第です。上記の状況（1）を確認しています。状況（2）については、メモリ不足を自分で確認する必要があり、WebGPUの他のすべてと同様に、そうすることは非同期です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.pushErrorScope('out-of-memory');
+context.configure({...});
+if (sampleCount &gt; 1) {
+  const newRenderTarget = device.createTexture({...});
+  ...
+}
+
+const newDepthTexture = device.createTexture({...});
+...
+device.popErrorScope().then(error =&gt; {
+  if (error) {
+    // メモリ不足です。より小さいサイズを試しますか？
+  }
+});
+</pre>
+<h3 id="描画">描画</h3>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+...
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D, tex);
+
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(positionLoc);
+
+gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(normalLoc);
+
+gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(texcoordLoc);
+
+...
+
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
+
+gl.drawElements(gl.TRIANGLES, 6 * 6, gl.UNSIGNED_SHORT, 0);
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">if (canvasInfo.sampleCount === 1) {
+    const colorTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view = colorTexture.createView();
+} else {
+  renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTargetView;
+  renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture().createView();
+}
+renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTextureView;
+
+const commandEncoder = device.createCommandEncoder();
+const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
+passEncoder.setPipeline(pipeline);
+passEncoder.setBindGroup(0, bindGroup);
+passEncoder.setVertexBuffer(0, positionBuffer);
+passEncoder.setVertexBuffer(1, normalBuffer);
+passEncoder.setVertexBuffer(2, texcoordBuffer);
+passEncoder.setIndexBuffer(indicesBuffer, 'uint16');
+passEncoder.drawIndexed(indices.length);
+passEncoder.end();
+device.queue.submit([commandEncoder.finish()]);
+</pre>
+  </div>
+</div>
+<p>WebGL属性設定コードをここで繰り返したことに注意してください。WebGLでは、これは初期化時またはレンダリング時に発生する可能性があります。WebGPUでは、初期化時にバッファからデータを取得する方法を設定しますが、レンダリング時に使用する実際のバッファを設定します。</p>
+<p>WebGPUでは、<code class="notranslate" translate="no">resizeToDisplaySize</code>で更新したばかりのテクスチャを使用するようにレンダーパス記述子を更新する必要があります。次に、コマンドエンコーダーを作成し、レンダーパスを開始する必要があります。</p>
+<p>レンダーパス内で、<code class="notranslate" translate="no">gl.useProgram</code>に相当するパイプラインを設定します。次に、サンプラー、テクスチャ、およびユニフォーム用の2つのバッファを提供するバインドグループを設定します。以前に宣言したものと一致するように頂点バッファを設定します。最後に、インデックスバッファを設定し、<code class="notranslate" translate="no">gl.drawElements</code>の呼び出しに相当する<code class="notranslate" translate="no">drawIndexed</code>を呼び出します。</p>
+<p>WebGLに戻ると、<code class="notranslate" translate="no">gl.viewport</code>を呼び出す必要がありました。WebGPUでは、パスエンコーダーはアタッチメントのサイズに一致するビューポートにデフォルト設定されるため、一致しないビューポートが必要でない限り、ビューポートを個別に設定する必要はありません。</p>
+<p>WebGLでは、キャンバスをクリアするために<code class="notranslate" translate="no">gl.clear</code>を呼び出しました。一方、WebGPUでは、レンダーパス記述子を作成するときに以前に設定しました。</p>
+<h2 id="動作例：">動作例：</h2>
+<p>WebGL</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgl-cube.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgl-cube.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>WebGPU</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-cube.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-cube.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>もう1つ注意すべき重要な点は、<code class="notranslate" translate="no">device.queue</code>と呼ばれるものに命令を発行していることです。ユニフォームの値をアップロードするときに<code class="notranslate" translate="no">device.queue.writeBuffer</code>を呼び出し、コマンドエンコーダーを作成して<code class="notranslate" translate="no">device.queue.submit</code>で送信したことに注意してください。これにより、同じコマンドエンコーダー内の描画呼び出し間でバッファを更新できないことがかなり明確になります。複数のものを描画したい場合は、複数のバッファまたは単一のバッファ内の複数の値のセットが必要になります。</p>
+<h1 id="複数のものを描画する">複数のものを描画する</h1>
+<p>複数のものを描画する例を見てみましょう。</p>
+<p>上記のように、複数のものを描画するには、少なくとも最も一般的な方法では、異なるマトリックスのセットを提供できるように、ものごとに異なるユニフォームバッファが必要になります。ユニフォームバッファはバインドグループを介して渡されるため、オブジェクトごとに異なるバインドグループも必要です。</p>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">+  const numObjects = 100;
++  const objectInfos = [];
++
++  for (let i = 0; i &lt; numObjects; ++i) {
++    const across = Math.sqrt(numObjects) | 0;
++    const x = (i % across - (across - 1) / 2) * 3;
++    const y = ((i / across | 0) - (across - 1) / 2) * 3;
++
++    objectInfos.push({
++      translation: [x, y, 0],
++    });
++  }
+</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">  const vUniformBufferSize = 2 * 16 * 4; // 2 mat4s * 16 floats per mat * 4 bytes per float
+  const fUniformBufferSize = 3 * 4;      // 1 vec3 * 3 floats per vec3 * 4 bytes per float
+
+  const fsUniformBuffer = device.createBuffer({
+    size: Math.max(16, fUniformBufferSize),
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const fsUniformValues = new Float32Array(3);  // 1 vec3
+  const lightDirection = fsUniformValues.subarray(0, 3);
+
++  const numObjects = 100;
++  const objectInfos = [];
++
++  for (let i = 0; i &lt; numObjects; ++i) {
+    const vsUniformBuffer = device.createBuffer({
+      size: Math.max(16, vUniformBufferSize),
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    const vsUniformValues = new Float32Array(2 * 16); // 2 mat4s
+    const worldViewProjection = vsUniformValues.subarray(0, 16);
+    const worldInverseTranspose = vsUniformValues.subarray(16, 32);
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: vsUniformBuffer },
+        { binding: 1, resource: fsUniformBuffer },
+        { binding: 2, resource: sampler },
+        { binding: 3, resource: tex.createView() },
+      ],
+    });
+
++    const across = Math.sqrt(numObjects) | 0;
++    const x = (i % across - (across - 1) / 2) * 3;
++    const y = ((i / across | 0) - (across - 1) / 2) * 3;
++
++    objectInfos.push({
++      vsUniformBuffer,  // needed to update the buffer
++      vsUniformValues,  // needed to update the buffer
++      worldViewProjection,  // needed so we can update this object's worldViewProject
++      worldInverseTranspose,  // needed so we can update this object's worldInverseTranspose
++      bindGroup, // needed to render this object
++      translation: [x, y, 0],
++    });
++  }
+</pre>
+  </div>
+</div>
+<p>この例では、<code class="notranslate" translate="no">fsUniforms</code>、そのバッファ、および値を共有していることに注意してください。これには、バインドグループに<code class="notranslate" translate="no">fsUniformBuffer</code>を含めたライティング情報が含まれていますが、1つしかないため、ループの外で定義されています。</p>
+<p>レンダリングでは、共有部分を設定し、各オブジェクトについて、そのユニフォーム値を更新し、それらを対応するユニフォームバッファにコピーし、それを描画するコマンドをエンコードします。</p>
+<div class="webgpu_center compare">
+  <div>
+    <div>WebGL</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">  function render(time) {
+    time *= 0.001;
+    resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    gl.clearColor(0.5, 0.5, 0.5, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    gl.useProgram(program);
+
+*    const projection = mat4.perspective(30 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.5, 100);
+*    const eye = [1, 4, -46];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
+
+    const view = mat4.lookAt(eye, target, up);
+    const viewProjection = mat4.multiply(projection, view);
+
+    gl.uniform3fv(u_lightDirectionLoc, vec3.normalize([1, 8, -10]));
+    gl.uniform1i(u_diffuseLoc, 0);
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(positionLoc);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+    gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(normalLoc);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+    gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(texcoordLoc);
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
+
+*    objectInfos.forEach(({translation}, ndx) =&gt; {
+*      const world = mat4.translation(translation);
+*      mat4.rotateX(world, time * 0.9 + ndx, world);
+*      mat4.rotateY(world, time + ndx, world);
+
+      gl.uniformMatrix4fv(u_worldInverseTransposeLoc, false, mat4.transpose(mat4.inverse(world)));
+      gl.uniformMatrix4fv(u_worldViewProjectionLoc, false, mat4.multiply(viewProjection, world));
+
+      gl.drawElements(gl.TRIANGLES, 6 * 6, gl.UNSIGNED_SHORT, 0);
+*    });
+
+    requestAnimationFrame(render);
+  }</pre>
+  </div>
+  <div>
+    <div>WebGPU</div>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">  function render(time) {
+    time *= 0.001;
+    resizeToDisplaySize(device, canvasInfo);
+
+    if (canvasInfo.sampleCount === 1) {
+        const colorTexture = context.getCurrentTexture();
+        renderPassDescriptor.colorAttachments[0].view = colorTexture.createView();
+    } else {
+      renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTargetView;
+      renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture().createView();
+    }
+    renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTextureView;
+
+    const commandEncoder = device.createCommandEncoder();
+    const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
+
+    // もちろん、これらはオブジェクトごとにすることもできますが、同じオブジェクトを
+    // 何度も描画しているので、一度だけ設定します。
+    passEncoder.setPipeline(pipeline);
+    passEncoder.setVertexBuffer(0, positionBuffer);
+    passEncoder.setVertexBuffer(1, normalBuffer);
+    passEncoder.setVertexBuffer(2, texcoordBuffer);
+    passEncoder.setIndexBuffer(indicesBuffer, 'uint16');
+
+*    const projection = mat4.perspective(30 * Math.PI / 180, canvas.clientWidth / canvas.clientHeight, 0.5, 100);
+*    const eye = [1, 4, -46];
+    const target = [0, 0, 0];
+    const up = [0, 1, 0];
+
+    const view = mat4.lookAt(eye, target, up);
+    const viewProjection = mat4.multiply(projection, view);
+
+    // ライティング情報は共有されているので、これらのユニフォームを一度設定します
+    vec3.normalize([1, 8, -10], lightDirection);
+    device.queue.writeBuffer(fsUniformBuffer, 0, fsUniformValues);
+
++    objectInfos.forEach(({
++      vsUniformBuffer,
++      vsUniformValues,
++      worldViewProjection,
++      worldInverseTranspose,
++      bindGroup,
++      translation,
++    }, ndx) =&gt; {
+      passEncoder.setBindGroup(0, bindGroup);
+
+*      const world = mat4.translation(translation);
+*      mat4.rotateX(world, time * 0.9 + ndx, world);
+*      mat4.rotateY(world, time + ndx, world);
+      mat4.transpose(mat4.inverse(world), worldInverseTranspose);
+      mat4.multiply(viewProjection, world, worldViewProjection);
+
+      device.queue.writeBuffer(vsUniformBuffer, 0, vsUniformValues);
+      passEncoder.drawIndexed(indices.length);
++    });
+    passEncoder.end();
+    device.queue.submit([commandEncoder.finish()]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+</pre>
+  </div>
+</div>
+<p>単一のキューブと大差ありませんが、共有のものをオブジェクトループの外に置くようにコードがわずかに再配置されています。この特定のケースでは、同じキューブを100回描画しているため、頂点バッファやインデックスバッファを更新する必要はありませんが、もちろん、必要に応じてオブジェクトごとに変更することもできます。</p>
+<p>WebGL</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgl-cube-multiple.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgl-cube-multiple.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>WebGPU</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-cube-multiple.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-cube-multiple.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>重要な点は、WebGLとは異なり、オブジェクト固有のユニフォーム（ワールドマトリックスなど）にはユニフォームバッファが必要であり、そのため、オブジェクトごとに一意のバインドグループも必要になる可能性があるということです。</p>
+<h2 id="その他のランダムな違い">その他のランダムな違い</h2>
+<h3 id="zクリップ空間は0から1です">Zクリップ空間は0から1です</h3>
+<p>WebGLでは、Zクリップ空間は-1から+1でした。WebGPUでは、0から1です（ちなみに、これははるかに理にかなっています！）。</p>
+<h3 id="y軸はフレームバッファ、ビューポート座標で下向きです">Y軸はフレームバッファ、ビューポート座標で下向きです</h3>
+<p>これはWebGLとは逆ですが、クリップ空間ではY軸は上向きです（WebGLと同じ）。</p>
+<p>つまり、頂点シェーダーから(-1, -1)を返すと、WebGLとWebGPUの両方で左下隅が参照されます。一方、ビューポートまたはシザーを<code class="notranslate" translate="no">0, 0, 1, 1</code>に設定すると、WebGLでは左下隅が参照されますが、WebGPUでは左上隅が参照されます。</p>
+<h3 id="wgslは、glslのgl_xxx変数にbuiltinを使用します。">WGSLは、GLSLの<code class="notranslate" translate="no">gl_XXX</code>変数に<code class="notranslate" translate="no">@builtin(???)</code>を使用します。</h3>
+<p><code class="notranslate" translate="no">gl_FragCoord</code>は<code class="notranslate" translate="no">@builtin(position) myVarOrField: vec4f</code>であり、WebGLとは異なり、画面の下ではなく上に向かって進むため、0,0は左上隅ですが、WebGLでは0,0は左下隅です。</p>
+<p><code class="notranslate" translate="no">gl_VertexID</code>は<code class="notranslate" translate="no">@builtin(vertex_index) myVarOrField: u32</code>です。</p>
+<p><code class="notranslate" translate="no">gl_InstanceID</code>は<code class="notranslate" translate="no">@builtin(instance_index) myVarOrField: u32</code>です。</p>
+<p><code class="notranslate" translate="no">gl_Position</code>は<code class="notranslate" translate="no">@builtin(position) vec4f</code>であり、頂点シェーダーの戻り値または頂点シェーダーによって返される構造体のフィールドである可能性があります。</p>
+<p>WebGPUでは点が1ピクセルしかないため、<code class="notranslate" translate="no">gl_PointSize</code>と<code class="notranslate" translate="no">gl_PointCoord</code>に相当するものはありません。幸いなことに、<a href="webgpu-points.html">自分で点を描画する</a>のは簡単です。</p>
+<p>他の組み込み変数は<a href="https://www.w3.org/TR/WGSL/#builtin-variables">ここ</a>で確認できます。</p>
+<h3 id="wgslは、幅1ピクセルの線と点のみをサポートします。">WGSLは、幅1ピクセルの線と点のみをサポートします。</h3>
+<p>仕様によると、WebGL2は1ピクセルより大きい線をサポートできましたが、実際にはどの実装もサポートしていませんでした。WebGL2は一般的に1ピクセルより大きい点をサポートしていましたが、（a）多くのGPUは最大サイズ64ピクセルしかサポートしておらず、（b）異なるGPUは点の中心に基づいてクリップしたりしなかったりしました。したがって、WebGPUが1以外のサイズの点をサポートしていないのは、間違いなく良いことです。これにより、ポータブルな点ソリューションを実装せざるを得なくなります。</p>
+<h3 id="webgpuの最適化はwebglとは異なります。">WebGPUの最適化はWebGLとは異なります。</h3>
+<p>WebGLアプリを直接WebGPUに変換すると、実行速度が遅くなる可能性があります。WebGPUの利点を得るには、データの整理方法と描画の最適化方法を変更する必要があります。<a href="webgpu-optimization.html">WebGPUの最適化に関するこの記事</a>でアイデアを参照してください。</p>
+<p>注：<a href="webgpu-optimization.html">最適化に関する記事</a>でWebGLとWebGPUを比較している場合は、比較に使用できる2つのWebGLサンプルを次に示します。</p>
+<ul>
+<li><a href="../../webgl-optimization-none.html">標準のWebGLユニフォームを使用してWebGLで最大30000個のオブジェクトを描画する</a></li>
+<li><a href="../../webgl-optimization-none-uniform-buffers.html">ユニフォームブロックを使用してWebGLで最大30000個のオブジェクトを描画する</a></li>
+<li><a href="../../webgl-optimization-global-material-per-object-uniform-buffers.html">グローバル/マテリアル/オブジェクトごとのユニフォームブロックを使用してWebGLで最大30000個のオブジェクトを描画する</a></li>
+<li><a href="../../webgl-optimization-uniform-buffers-one-large.html">1つの大きなユニフォームバッファを使用してWebGLで最大30000個のオブジェクトを描画する</a></li>
+</ul>
+<p>WebGLとWebGPUのパフォーマンスを比較している場合は、<a href="https://toji.dev/webgpu-best-practices/webgl-performance-comparison">この記事</a>を参照してください。</p>
+<hr>
+<p>すでにWebGLに精通している場合は、この記事が役立つことを願っています。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +1287,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +1376,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGLからWebGPUへ`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-skybox.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU SkyBox">
+
+<meta name="description" content="スカイボックスで空を表示しよう！">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-skybox_ja.jpg">
+
+<meta property="og:title" content="WebGPU スカイボックス">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Show the sky with a skybox!">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-skybox_ja.jpg">
+<meta property="og:description" content="スカイボックスで空を表示しよう！">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-skybox.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU SkyBox">
+<meta name="twitter:title" content="WebGPU スカイボックス">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-skybox.html">
-<meta name="twitter:description" content="Show the sky with a skybox!">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="スカイボックスで空を表示しよう！">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-skybox_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-skybox.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-skybox_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-skybox.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-skybox.html",
+      "inLanguage":"ja",
+      "name":"WebGPU スカイボックス",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-skybox.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU SkyBox</title>
+<title>WebGPU スカイボックス</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,194 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU SkyBox</h1>
+    <h1>WebGPU スカイボックス</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-skybox.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、<a href="webgpu-environment-maps.html">環境マップに関する記事</a>の続きです。</p>
+<p><em>スカイボックス</em>は、すべての方向の空、またはむしろ地平線を含む非常に遠くにあるもののように見えるようにテクスチャが貼られた箱です。部屋に立っていて、各壁に何らかの景色のフルサイズのポスターがあり、天井を覆う空を示すポスターと、地面を示す床用のポスターを追加すると、それがスカイボックスです。</p>
+<p>多くの3Dゲームは、単にキューブを作成し、それを非常に大きくし、空のテクスチャを貼ることでこれを行います。</p>
+<p>これは機能しますが、問題があります。1つの問題は、複数の方向、つまりカメラが向いているあらゆる方向で表示する必要があるキューブがあることです。すべてを遠くに描画したいのですが、キューブの角がクリッピング平面の外に出ないようにしたいです。その問題を複雑にしているのは、パフォーマンス上の理由から、遠くのものより近くのものを描画したいということです。なぜなら、GPUは<a href="webgpu-orthographic.html">深度テクスチャ</a>を使用して、テストに失敗することがわかっているピクセルの描画をスキップできるからです。したがって、理想的には、深度テストをオンにしてスカイボックスを最後に描画する必要がありますが、実際にボックスを使用すると、カメラがさまざまな方向を向くと、ボックスの角が側面よりも遠くなり、問題が発生します。</p>
+<div class="webgpu_center"><img src="../resources/skybox-issues.svg" style="width: 500px"></div>
+<p>上記のように、キューブの最も遠い点が錐台の内側にあることを確認する必要がありますが、そのため、キューブの一部のエッジが、覆いたくないオブジェクトを覆ってしまう可能性があります。</p>
+<p>一般的な解決策は、深度テストをオフにして最初にスカイボックスを描画することですが、そうすると、後でシーン内のもので覆うピクセルを描画しない深度テストによるパフォーマンス上の利点が得られません。</p>
+<p>キューブを使用する代わりに、<a href="webgpu-large-triangle-to-cover-clip-space.html">キャンバス全体を覆う三角形を描画</a>し、<a href="webgpu-cube-maps.html">キューブマップ</a>を使用しましょう。通常、ビュー射影行列を使用して3D空間にジオメトリを射影します。この場合、逆のことを行います。ビュー射影行列の逆行列を使用して逆方向に作業し、描画される各ピクセルに対してカメラが見ている方向を取得します。これにより、キューブマップを調べる方向が得られます。</p>
+<p><a href="webgpu-environment-maps.html">環境マップの例</a>から始めます。これは、すでにキューブマップを読み込み、そのためのミップを生成するためです。ハードコードされた三角形を使用しましょう。これがシェーダーです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  viewDirectionProjectionInverse: mat4x4f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) pos: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+@group(0) @binding(1) var ourSampler: sampler;
+@group(0) @binding(2) var ourTexture: texture_cube&lt;f32&gt;;
+
+@vertex fn vs(@builtin(vertex_index) vNdx: u32) -&gt; VSOutput {
+  let pos = array(
+    vec2f(-1, 3),
+    vec2f(-1,-1),
+    vec2f( 3,-1),
+  );
+  var vsOut: VSOutput;
+  vsOut.position = vec4f(pos[vNdx], 1, 1);
+  vsOut.pos = vsOut.position;
+  return vsOut;
+}
+</pre>
+<p>上記のように、まず、<code class="notranslate" translate="no">vsOut.position</code>を介して<code class="notranslate" translate="no">@builtin(position)</code>を頂点位置に設定し、zを明示的に1に設定して、クワッドが最も遠いz値で描画されるようにします。また、頂点位置をフラグメントシェーダーに渡します。</p>
+<p>フラグメントシェーダーでは、位置を逆ビュー射影行列で乗算し、wで除算して4D空間から3D空間に移動します。これは、頂点シェーダーの<code class="notranslate" translate="no">@builtin(position)</code>で発生するのと同じ除算ですが、ここでは自分で行っています。</p>
+<pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  let t = uni.viewDirectionProjectionInverse * vsOut.pos;
+  return textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(1, 1, -1));
+}
+</pre>
+<p>注：<a href="../webgpu-environment-maps.html#a-flipped">前の記事で説明した理由</a>により、z方向を-1で乗算します。</p>
+<p>パイプラインには、頂点ステージにバッファがありません。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'no attributes',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+    depthStencil: {
+      depthWriteEnabled: true,
+      depthCompare: 'less-equal',
+      format: 'depth24plus',
+    },
+  });
+</pre>
+<p>深度テクスチャを1.0にクリアし、1.0でレンダリングしているため、<code class="notranslate" translate="no">depthCompare</code>を<code class="notranslate" translate="no">less</code>ではなく<code class="notranslate" translate="no">less-equal</code>に設定したことに注意してください。1.0は1.0より小さくないため、これを<code class="notranslate" translate="no">less-equal</code>に変更しないと何もレンダリングされません。</p>
+<p>繰り返しになりますが、ユニフォームバッファを設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // viewDirectionProjectionInverse
+  const uniformBufferSize = (16) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kViewDirectionProjectionInverseOffset = 0;
+
+  const viewDirectionProjectionInverseValue = uniformValues.subarray(
+      kViewDirectionProjectionInverseOffset,
+      kViewDirectionProjectionInverseOffset + 16);
+</pre>
+<p>そして、レンダリング時に設定します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(
+        60 * Math.PI / 180,
+        aspect,
+        0.1,      // zNear
+        10,      // zFar
+    );
+    // 原点から原点を見つめる円を描くカメラ
+    const cameraPosition = [Math.cos(time * .1), 0, Math.sin(time * .1)];
+    const view = mat4.lookAt(
+      cameraPosition,
+      [0, 0, 0],  // target
+      [0, 1, 0],  // up
+    );
+    // 方向のみを気にするので、平行移動を削除します
+    view[12] = 0;
+    view[13] = 0;
+    view[14] = 0;
+
+    const viewProjection = mat4.multiply(projection, view);
+    mat4.inverse(viewProjection, viewDirectionProjectionInverseValue);
+
+    // ユニフォーム値をユニフォームバッファにアップロードします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>上記では、<code class="notranslate" translate="no">cameraPosition</code>を計算する原点を中心にカメラを回転させていることに注意してください。次に、<code class="notranslate" translate="no">view</code>行列を作成した後、カメラがどこにあるかではなく、どの方向を向いているかだけを気にするため、平行移動をゼロにします。</p>
+<p>そこから、射影行列で乗算し、逆行列を取り、行列を設定します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-skybox.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-skybox.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>環境マップされたキューブをこのサンプルに戻しましょう。まず、多数の変数の名前を変更しましょう。</p>
+<p>スカイボックスの例から</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">module -&gt; skyBoxModule
+pipeline -&gt; skyBoxPipeline
+uniformBuffer -&gt; skyBoxUniformBuffer
+uniformValues -&gt; skyBoxUniformValues
+bindGroup -&gt; skyBoxBindGroup
+</pre>
+<p>同様に、環境マップの例から</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">module -&gt; envMapModule
+pipeline -&gt; envMapPipeline
+uniformBuffer -&gt; envMapUniformBuffer
+uniformValues -&gt; envMapUniformValues
+bindGroup -&gt; envMapBindGroup
+</pre>
+<p>これらの名前を変更したら、レンダリングコードを更新するだけです。まず、両方のユニフォーム値を更新します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const aspect = canvas.clientWidth / canvas.clientHeight;
+    mat4.perspective(
+        60 * Math.PI / 180,
+        aspect,
+        0.1,      // zNear
+        10,      // zFar
+        projectionValue,
+    );
+    // 原点から原点を見つめる円を描くカメラ
+    cameraPositionValue.set([Math.cos(time * .1) * 5, 0, Math.sin(time * .1) * 5]);
+    const view = mat4.lookAt(
+      cameraPositionValue,
+      [0, 0, 0],  // target
+      [0, 1, 0],  // up
+    );
+    // ビューの平行移動をゼロにするので、ビューをviewValueにコピーします
+    viewValue.set(view);
+
+    // 方向のみを気にするので、平行移動を削除します
+    view[12] = 0;
+    view[13] = 0;
+    view[14] = 0;
+    const viewProjection = mat4.multiply(projectionValue, view);
+    mat4.inverse(viewProjection, viewDirectionProjectionInverseValue);
+
+    // キューブを回転させます
+    mat4.identity(worldValue);
+    mat4.rotateX(worldValue, time * -0.1, worldValue);
+    mat4.rotateY(worldValue, time * -0.2, worldValue);
+
+    // ユニフォーム値をユニフォームバッファにアップロードします
+    device.queue.writeBuffer(envMapUniformBuffer, 0, envMapUniformValues);
+    device.queue.writeBuffer(skyBoxUniformBuffer, 0, skyBoxUniformValues);
+</pre>
+<p>次に、両方をレンダリングします。環境マップされたキューブを最初に、スカイボックスを2番目にレンダリングして、2番目に描画しても機能することを示します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // キューブを描画します
+    pass.setPipeline(envMapPipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setIndexBuffer(indexBuffer, 'uint16');
+    pass.setBindGroup(0, envMapBindGroup);
+    pass.drawIndexed(numVertices);
+
+    // スカイボックスを描画します
+    pass.setPipeline(skyBoxPipeline);
+    pass.setBindGroup(0, skyBoxBindGroup);
+    pass.draw(3);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-skybox-plus-environment-map.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-skybox-plus-environment-map.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>これらの最後の2つの記事が、キューブマップの使用方法についてある程度のアイデアを与えてくれたことを願っています。たとえば、<a href="webgpu-lighting-spot.html">ライティングの計算</a>のコードを取得し、その結果を環境マップからの結果と組み合わせて、車のボンネットや磨かれた床のようなマテリアルを作成するのが一般的です。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +430,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +519,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU スカイボックス`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

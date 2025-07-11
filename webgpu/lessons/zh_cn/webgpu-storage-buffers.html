@@ -409,8 +409,8 @@ const bindGroup = device.createBindGroup({
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-        { binding: 0, resource: { buffer: staticStorageBuffer } },
-        { binding: 1, resource: { buffer: changingStorageBuffer } },
+        { binding: 0, resource: staticStorageBuffer },
+        { binding: 1, resource: changingStorageBuffer },
     ],
 });
 </pre>
@@ -587,9 +587,9 @@ device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-        { binding: 0, resource: { buffer: staticStorageBuffer } },
-        { binding: 1, resource: { buffer: changingStorageBuffer } },
-        +{ binding: 2, resource: { buffer: vertexStorageBuffer } },
+        { binding: 0, resource: staticStorageBuffer },
+        { binding: 1, resource: changingStorageBuffer },
+        +{ binding: 2, resource: vertexStorageBuffer },
     ],
 });
 </pre>
@@ -696,7 +696,7 @@ device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
           <li><a href="/webgpu/lessons/zh_cn/webgpu-environment-maps.html">Environment maps</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
         </ul>

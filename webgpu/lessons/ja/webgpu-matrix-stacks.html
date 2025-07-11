@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-matrix-stacks.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Matrix Stacks">
+
+<meta name="description" content="行列スタック">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-matrix-stacks_ja.jpg">
+
+<meta property="og:title" content="WebGPU 行列スタック">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Matrix Stacks">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-matrix-stacks_ja.jpg">
+<meta property="og:description" content="行列スタック">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-matrix-stacks.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Matrix Stacks">
+<meta name="twitter:title" content="WebGPU 行列スタック">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-matrix-stacks.html">
-<meta name="twitter:description" content="Matrix Stacks">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="行列スタック">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-matrix-stacks_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-matrix-stacks.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-matrix-stacks_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-matrix-stacks.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-matrix-stacks.html",
+      "inLanguage":"ja",
+      "name":"WebGPU 行列スタック",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-matrix-stacks.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Matrix Stacks</title>
+<title>WebGPU 行列スタック</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,907 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Matrix Stacks</h1>
+    <h1>WebGPU 行列スタック</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-matrix-stacks.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、3D数学について学ぶことを目的とした一連の記事の8番目です。各記事は前のレッスンを基にしているので、順番に読むと最も理解しやすいかもしれません。</p>
+<ol>
+<li><a href="webgpu-translation.html">平行移動</a></li>
+<li><a href="webgpu-rotation.html">回転</a></li>
+<li><a href="webgpu-scale.html">スケーリング</a></li>
+<li><a href="webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="webgpu-cameras.html">カメラ</a></li>
+<li><a href="webgpu-matrix-stacks.html">行列スタック</a> ⬅ ここです</li>
+<li><a href="webgpu-scene-graphs.html">シーングラフ</a></li>
+</ol>
+<p>行列スタックは、その名の通り、行列の<a href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)">スタック</a>です。互いに相対的に物事を配置したり方向付けしたりするのに役立ちます。デモンストレーションとして、ファイルキャビネットのセットを作成しましょう。行列スタックを使用すると、これが簡単になります。</p>
+<p>簡単にするために、<a href="../webgpu-cameras#a-aim-fs">前の記事の最後の例</a>から始めて、キューブから作成します。</p>
+<p>最初に行うことは、描画していたFを単位キューブに交換することです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function createFVertices() {
++function createCubeVertices() {
+*    // 左
+*    0, 0,  0,
+*    0, 0, -1,
+*    0, 1,  0,
+*    0, 1, -1,
+*
+*    // 右
+*    1, 0,  0,
+*    1, 0, -1,
+*    1, 1,  0,
+*    1, 1, -1,
+*  ];
+*
+*  const indices = [
+*     0,  2,  1,    2,  3,  1,   // 左
+*     4,  5,  6,    6,  5,  7,   // 右
+*     0,  4,  2,    2,  4,  6,   // 前
+*     1,  3,  5,    5,  3,  7,   // 後
+*     0,  1,  4,    4,  1,  5,   // 下
+*     2,  6,  3,    3,  6,  7,   // 上
+*  ];
+*
+*  const quadColors = [
+*      200,  70, 120,  // 左列前面
+*       80,  70, 200,  // 左列背面
+*       70, 200, 210,  // 上
+*      160, 160, 220,  // 上の横木右
+*       90, 130, 110,  // 上の横木下
+*      200, 200,  70,  // 上と中間の横木の間
+*  ];
+
+  ...
+</pre>
+<p>上記のデータは、次のようなキューブを作成します。</p>
+<div class="webgpu_center"><img src="../resources/unit-cube.png" class="nobg"></div>
+<p>古いコードは、26個の「objectInfos」を事前に作成していました。各「objectInfo」は、描画したいものごとに1つずつ、ユニフォームバッファとバインドグループのセットでした。代わりに、これらをオンデマンドで作成するようにコードを変更しましょう。そうすれば、好きなだけ多くのものを描画できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const numFs = 5 * 5 + 1;
+  const objectInfos = [];
+-  for (let i = 0; i &lt; numFs; ++i) {
+  function createObjectInfo() {
+    // 行列
+    const uniformBufferSize = (16) * 4;
+    const uniformBuffer = device.createBuffer({
+    
+    ...
+
+-    objectInfos.push({
++    return {
+      uniformBuffer,
+      uniformValues,
+      matrixValue,
+      bindGroup,
+-    });
++    };
+  }
+</pre>
+<p>物事を単純に保つために、すべてに同じ単位キューブを使用しますが、キューブを区別できるように、色を少し変更する方法が必要です。そこで、フラグメントを更新して、ユニフォームバッファを介して色を受け取り、頂点の色をこのユニフォームの色で乗算するようにしましょう。これにより、各キューブの頂点の色をわずかに変更できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
++  color: vec4f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+  @location(1) color: vec4f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = uni.matrix * vert.position;
+  vsOut.color = vert.color;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+-  return vsOut.color;
++  return vsOut.color * uni.color;
+}
+</pre>
+<p>新しい色のためのスペースを追加するために、ユニフォームバッファの作成を更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function createObjectInfo() {
+-    // 行列
+-    const uniformBufferSize = (16) * 4;
++    // 行列と色
++    const uniformBufferSize = (16 + 4) * 4;
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+    // float32インデックスでのさまざまなユニフォーム値へのオフセット
+    const kMatrixOffset = 0;
++    const kColorOffset = 16;
+
+    const matrixValue = uniformValues.subarray(kMatrixOffset, kMatrixOffset + 16);
++    const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+
+    const bindGroup = device.createBindGroup({
+      label: 'bind group for object',
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: uniformBuffer },
+      ],
+    });
+
+    return {
+      uniformBuffer,
+      uniformValues,
++      colorValue,
+      matrixValue,
+      bindGroup,
+    };
+  }
+</pre>
+<p>次に、オブジェクトを「描画」するコードを関数に抽出する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  let depthTexture;
++  let objectNdx = 0;
+
++  function drawObject(ctx, matrix, color) {
++    const { pass, viewProjectionMatrix } = ctx;
++    if (objectNdx === objectInfos.length) {
++      objectInfos.push(createObjectInfo());
++    }
++    const {
++      matrixValue,
++      colorValue,
++      uniformBuffer,
++      uniformValues,
++      bindGroup,
++    } = objectInfos[objectNdx++];
++
++    mat4.multiply(viewProjectionMatrix, matrix, matrixValue);
++    colorValue.set(color);
++
++    // ユニフォーム値をユニフォームバッファにアップロードします
++    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
++
++    pass.setBindGroup(0, bindGroup);
++    pass.draw(numVertices);
++  }
+
+  function render() {
+    ...
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+
+-    // 角度に基づいてターゲットのX、Zを更新します
+-    settings.target[0] = Math.cos(settings.targetAngle) * radius;
+-    settings.target[2] = Math.sin(settings.targetAngle) * radius;
+
+    ...
+
++    objectNdx = 0;
+-    objectInfos.forEach(({
+-      matrixValue,
+-      uniformBuffer,
+-      uniformValues,
+-      bindGroup,
+-    }, i) =&gt; {
+-      const deep = 5;
+-      const across = 5;
+-      if (i &lt; 25) {
+-        // グリッド位置を計算します
+-        const gridX = i % across;
+-        const gridZ = i / across | 0;
+-
+-        // 0から1の位置を計算します
+-        const u = gridX / (across - 1);
+-        const v = gridZ / (deep - 1);
+-
+-        // 中央に配置して広げます
+-        const x = (u - 0.5) * across * 150;
+-        const z = (v - 0.5) * deep * 150;
+-
+-        // このFをその位置からターゲットFに向ける
+-        const aimMatrix = mat4.aim([x, 0, z], settings.target, up);
+-        mat4.multiply(viewProjectionMatrix, aimMatrix, matrixValue);
+-      } else {
+-        mat4.translate(viewProjectionMatrix, settings.target, matrixValue);
+-      }
+-
+-      // ユニフォーム値をユニフォームバッファにアップロードします
+-      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+-
+-      pass.setBindGroup(0, bindGroup);
+-      pass.draw(numVertices);
+-    });
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>新しい「objectInfo」（ユニフォームバッファと型付き配列ビュー）が必要な場合は、<code class="notranslate" translate="no">drawObject</code>関数を追加しました。<code class="notranslate" translate="no">drawObject</code>は、レンダーパスエンコーダーと現在の<code class="notranslate" translate="no">viewProjectionMatrix</code>を持つ<code class="notranslate" translate="no">ctx</code>というコンテキストを受け取ります。また、行列と色も受け取ります。渡された行列を<code class="notranslate" translate="no">viewProjectionMatrix</code>で乗算してこのオブジェクトのユニフォームバッファを埋め、その特定のユニフォームバッファを使用するようにバインドグループを設定し、<code class="notranslate" translate="no">draw</code>を呼び出します。</p>
+<p>次に、それを使用してキューブを描画するコードを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+
+    ...
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+
+    ...
+
+    objectNdx = 0;
++    const ctx = { pass, viewProjectionMatrix };
++    drawObject(ctx, mat4.rotationY(settings.baseRotation), [1, 1, 1, 1]);
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+}
+</pre>
+<p>上記では、y軸を中心に回転する行列と白の色を渡しています。つまり、キューブは頂点の色を変更せずに描画されます。</p>
+<p>GUIとカメラには、もう少し調整が必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const radius = 200;
+  const settings = {
+-    target: [0, 200, 300],
+-    targetAngle: 0,
++    baseRotation: 0,
+  };
+
+  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+-  gui.add(settings.target, '1', -100, 300).name('target height');
+-  gui.add(settings, 'targetAngle', radToDegOptions).name('target angle');
++  gui.add(settings, 'baseRotation', radToDegOptions);
+
+  ...
+
+  function render() {
+    ...
+
+-    const eye = [-500, 300, -500];
+-    const target = [0, -100, 0];
++    const eye = [0, 2, 3];
++    const target = [0, 1, 0];
+    const up = [0, 1, 0];
+
+    // ビュー行列を計算します
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+</pre>
+<p>キューブがあります。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-cube.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-cube.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>キューブをレンダリングできるようになったので、行列スタックを使用してファイルキャビネットのセットを作成しましょう。</p>
+<p>まず、行列スタッククラスを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class MatrixStack {
+  #matrix;
+  #stack;
+
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.#matrix = mat4.identity();
+    this.#stack = [];
+    return this;
+  }
+  save() {
+    this.#stack.push(this.#matrix);
+    this.#matrix = mat4.copy(this.#matrix);
+    return this;
+  }
+  restore() {
+    this.#matrix = this.#stack.pop();
+    return this;
+  }
+  get() {
+    return this.#matrix;
+  }
+  set(matrix) {
+    return this.#matrix.set(matrix);
+  }
+  translate(translation) {
+    mat4.translate(this.#matrix, translation, this.#matrix);
+    return this;
+  }
+  rotateX(angle) {
+    mat4.rotateX(this.#matrix, angle, this.#matrix);
+    return this;
+  }
+  rotateY(angle) {
+    mat4.rotateY(this.#matrix, angle, this.#matrix);
+    return this;
+  }
+  rotateZ(angle) {
+    mat4.rotateZ(this.#matrix, angle, this.#matrix);
+    return this;
+  }
+  scale(scale) {
+    mat4.scale(this.#matrix, scale, this.#matrix);
+    return this;
+  }
+}
+</pre>
+<p>上記のクラスは非常に単純です。行列の配列である<code class="notranslate" translate="no">#stack</code>を保持します。そして、スタックの最上位の行列である<code class="notranslate" translate="no">#matrix</code>を効果的に保持します。</p>
+<p><a href="webgpu-orthograph-projection.html">以前に記述した</a> <code class="notranslate" translate="no">mat4</code>関数を使用して、スタックの最上位の行列を操作する多数のメソッドを追加します。</p>
+<p>注：これはスタックですが、より伝統的な<code class="notranslate" translate="no">push</code>と<code class="notranslate" translate="no">pop</code>の代わりに<code class="notranslate" translate="no">save</code>と<code class="notranslate" translate="no">restore</code>という名前を選択しました。なぜなら、<code class="notranslate" translate="no">save</code>と<code class="notranslate" translate="no">restore</code>は、独自の行列スタックを操作するために使用されるCanvas 2D APIの<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/save">save</a>と<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/restore">restore</a>の関数と一致するためです。</p>
+<p>上記で参照したもので、まだ存在しなかったものの1つは、<code class="notranslate" translate="no">mat4.copy</code>関数なので、それを指定しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat4 = {
++  copy(src, dst) {
++    dst = dst || new Float32Array(16);
++    dst.set(src);
++    return dst;
++  },
+
+  ...
+</pre>
+<p>これで、ハンドル付きのファイリングキャビネットの引き出しを1つ描画しましょう。引き出しは大きなキューブになります。ハンドルは小さなキューブになります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const kHandleColor = [0.5, 0.5, 0.5, 1];
++  const kDrawerColor = [1, 1, 1, 1];
++
++  const kDrawerSize = [40, 30, 50];
++  const kHandleSize = [10, 2, 2];
++
++  const [kWidth, kHeight, kDepth] = [0, 1, 2];
++
++  const kHandlePosition = [
++    (kDrawerSize[kWidth] - kHandleSize[kWidth]) / 2,
++    kDrawerSize[kHeight] * 2 / 3,
++    kHandleSize[kDepth],
++  ];
++
++  function drawDrawer(ctx) {
++    const { stack } = ctx;
++    stack.save();
++      stack.scale(kDrawerSize);
++      drawObject(ctx, stack.get(), kDrawerColor);
++    stack.restore();
++
++    stack.save();
++      stack.translate(kHandlePosition);
++      stack.scale(kHandleSize);
++      drawObject(ctx, stack.get(), kHandleColor);
++    stack.restore();
++  }
++
++  const stack = new MatrixStack();
+
+  ...
+
+  function render() {
+    ...
+
+    // ビュー行列と射影行列を組み合わせます
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
++    stack.save();
++    stack.rotateY(settings.baseRotation);
++    stack.translate([(kDrawerSize[kWidth] * -0.5), 0, 0]);
+    objectNdx = 0;
+-    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawObject(ctx, mat4.rotationY(settings.baseRotation), [1, 1, 1, 1]);
++    const ctx = { stack, viewProjectionMatrix };
++    drawDrawer(ctx);
++    stack.restore();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>上記のコードは、<code class="notranslate" translate="no">MatrixStack</code>を作成し、それを<code class="notranslate" translate="no">drawDrawer</code>に渡されるコンテキスト（ctx）に追加します。これを使用して、行列の計算を支援します。回転行列を直接作成する代わりに、スタック上でそれを行い、次に引き出しの幅の半分を平行移動して中央に配置します。</p>
+<p>スタックを<code class="notranslate" translate="no">drawDrawer</code>に渡します。これは2つのキューブを描画します。1つは<code class="notranslate" translate="no">kDrawerSize</code>のサイズにスケーリングします。もう1つは<code class="notranslate" translate="no">kHandlePosition</code>に配置し、<code class="notranslate" translate="no">kHandleSize</code>のサイズにスケーリングします。行列スタックを使用しているため、両方ともスタックにすでにある回転と平行移動に対して相対的になります。</p>
+<p>引き出しキューブは色<code class="notranslate" translate="no">kDrawerColor</code>（白）で描画されるため、頂点の色は変更されません。ハンドルは色<code class="notranslate" translate="no">kHandleColor</code>（50％灰色）で描画されるため、キューブは暗く描画されます。</p>
+<p>カメラの位置のマイナーな調整：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    const eye = [0, 20, 100];
+-    const target = [0, 20, 0];
++    const eye = [0, 20, 100];
++    const target = [0, 20, 0];
+    const up = [0, 1, 0];
+
+    // ビュー行列を計算します
+    const viewMatrix = mat4.lookAt(eye, target, up);
+</pre>
+<p>ファイリングキャビネットの引き出しができました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-filing-drawer.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-filing-drawer.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>なぜ行列スタックのこのような面倒なことをするのか、と尋ねているかもしれません。4つの引き出しを持つファイリングキャビネットを描画して、その理由を見てみましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kHandleColor = [0.5, 0.5, 0.5, 1];
+  const kDrawerColor = [1, 1, 1, 1];
+  const kCabinetColor = [0.75, 0.75, 0.75, 0.75];
+  const kNumDrawersPerCabinet = 4;
+
+  const kDrawerSize = [40, 30, 50];
+  const kHandleSize = [10, 2, 2];
+
+  const [kWidth, kHeight, kDepth] = [0, 1, 2];
+
+  const kHandlePosition = [
+    (kDrawerSize[kWidth] - kHandleSize[kWidth]) / 2,
+    kDrawerSize[kHeight] * 2 / 3,
+    kHandleSize[kDepth],
+  ];
+
+  const kDrawerSpacing = kDrawerSize[kHeight] + 3;
+
+  function drawDrawer(ctx) {
+    const { stack } = ctx;
+    stack.save();
+      stack.scale(kDrawerSize);
+      drawObject(ctx, stack.get(), kDrawerColor);
+    stack.restore();
+
+    stack.save();
+      stack.translate(kHandlePosition);
+      stack.scale(kHandleSize);
+      drawObject(ctx, stack.get(), kHandleColor);
+    stack.restore();
+  }
+
++  function drawCabinet(ctx, numDrawersPerCabinet) {
++    const { stack } = ctx;
++
++    const kCabinetSize = [
++      kDrawerSize[kWidth] + 6,
++      kDrawerSpacing * numDrawersPerCabinet + 6,
++      kDrawerSize[kDepth] + 4,
++    ];
++
++    stack.save();
++      stack.scale(kCabinetSize);
++      drawObject(ctx, stack.get(), kCabinetColor);
++    stack.restore();
++
++    for (let i = 0; i &lt; numDrawersPerCabinet; ++i) {
++      stack.save();
++        stack.translate([3, i * kDrawerSpacing + 5, 1]);
++        drawDrawer(ctx);
++      stack.restore();
++    }
++  }
+
+  function render() {
+    ...
+-    const eye = [0, 20, 100];
+-    const target = [0, 20, 0];
++    const eye = [0, 80, 200];
++    const target = [0, 80, 0];
+    const up = [0, 1, 0];
+
+    // ビュー行列を計算します
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+    // ビュー行列と射影行列を組み合わせます
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    // ビュー行列と射影行列を組み合わせます
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    stack.save();
+    stack.rotateY(settings.baseRotation);
+    stack.translate([(kDrawerSize[kWidth] * -0.5), 0, 0]);
+    objectNdx = 0;
+    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawDrawer(ctx);
++    drawCabinet(ctx, kNumDrawersPerCabinet);
+    stack.restore();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+</pre>
+<p>上記では、<code class="notranslate" translate="no">drawCabinet</code>は、描画するように依頼したキャビネットの数よりもわずかに高い<code class="notranslate" translate="no">kCabinetSize</code>のサイズのキューブを描画します。</p>
+<p>次に、行列スタックを使用して、各引き出しを正しい位置に、キャビネットキューブのわずかに前に表示するように平行移動します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-filing-cabinet.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-filing-cabinet.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p><code class="notranslate" translate="no">drawDrawer</code>をまったく変更する必要はありませんでした。行列スタックのおかげで、そのまま使用できました。</p>
+<p>続けましょう。複数のキャビネットを描画しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kHandleColor = [0.5, 0.5, 0.5, 1];
+  const kDrawerColor = [1, 1, 1, 1];
+  const kCabinetColor = [0.75, 0.75, 0.75, 0.75];
+  const kNumDrawersPerCabinet = 4;
++  const kNumCabinets = 5;
+
+  const kDrawerSize = [40, 30, 50];
+  const kHandleSize = [10, 2, 2];
+
+  const [kWidth, kHeight, kDepth] = [0, 1, 2];
+
+  const kHandlePosition = [
+    (kDrawerSize[kWidth] - kHandleSize[kWidth]) / 2,
+    kDrawerSize[kHeight] * 2 / 3,
+    kHandleSize[kDepth],
+  ];
+
+  const kDrawerSpacing = kDrawerSize[kHeight] + 3;
++  const kCabinetSpacing = kDrawerSize[kWidth] + 10;
+
+  ...
+
+  function drawCabinet(ctx, numDrawersPerCabinet) {
+    const { stack } = ctx;
+
+    const kCabinetSize = [
+      kDrawerSize[kWidth] + 6,
+      kDrawerSpacing * numDrawersPerCabinet + 6,
+      kDrawerSize[kDepth] + 4,
+    ];
+
+    stack.save();
+      stack.scale(kCabinetSize);
+      drawObject(ctx, stack.get(), kCabinetColor);
+    stack.restore();
+
+    for (let i = 0; i &lt; numDrawersPerCabinet; ++i) {
+      stack.save();
+        stack.translate([3, i * kDrawerSpacing + 5, 1]);
+        drawDrawer(ctx);
+      stack.restore();
+    }
+  }
+
++  function drawCabinets(ctx, numCabinets) {
++    const { stack } = ctx;
++    for (let i = 0; i &lt; numCabinets; ++i) {
++      stack.save();
++        stack.translate([i * kCabinetSpacing, 0, 0]);
++        drawCabinet(ctx, kNumDrawersPerCabinet);
++      stack.restore();
++    }
++  }
+
+  function render() {
+    ...
+    // ビュー行列と射影行列を組み合わせます
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    stack.save();
+    stack.rotateY(settings.baseRotation);
+-    stack.translate([(kDrawerSize[kWidth] * -0.5), 0, 0]);
++    stack.translate([(kNumCabinets - 0.5) * kCabinetSpacing * -0.5, 0, 0]);
+    objectNdx = 0;
+    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawCabinet(ctx, kNumDrawersPerCabinet);
++    drawCabinets(ctx, kNumCabinets);
+    stack.restore();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+</pre>
+<p>これで、<code class="notranslate" translate="no">drawCabinet</code>を使用して、指定した数のキャビネットを描画する<code class="notranslate" translate="no">drawCabinets</code>ができました。</p>
+<p><code class="notranslate" translate="no">render</code>に戻り、キャビネットの幅の半分を平行移動して中央に配置します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-filing-cabinets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-filing-cabinets.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>これが、行列スタックの有用性についてある程度のアイデアを与えてくれることを願っています。これにより、物事を簡単に再利用したり、配置、方向付け、スケーリングしたりできます。</p>
+<h2 id="再帰的な木"><a id="a-recursive-tree"></a>再帰的な木</h2>
+<p>もう1つの例を作成しましょう。キューブから再帰的な木を作成しましょう。これを行うには、木の「枝」を追加する関数が必要です。再帰的にし、<code class="notranslate" translate="no">treeDepth</code>を渡します。深さが0より大きい場合は、再帰的にさらに2つの枝を追加し、1つ低い深さを渡します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const degToRad = d =&gt; d * Math.PI / 180;
+
+  const settings = {
+    baseRotation: 0,
++    scale: 0.9,
++    rotationX: degToRad(20),
++    rotationY: degToRad(10),
+  };
+
+  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
++  const treeRadToDegOptions = { min: 0, max: 90, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
++  gui.add(settings, 'scale', 0.1, 1.2);
++  gui.add(settings, 'rotationX', treeRadToDegOptions);
++  gui.add(settings, 'rotationY', treeRadToDegOptions);
+  gui.add(settings, 'baseRotation', radToDegOptions);
+
++  const kTreeDepth = 6;
++  const [/*kWidth*/, kHeight, /*kDepth*/] = [0, 1, 2];
++  // 1単位のキューブを移動して、原点の上に中心が来るようにします。これにより、スケーリングすると、
++  // xとzで外側に、yで上（原点から）に拡大します。
++  const kBranchPosition = [-0.5, 0, 0.5];
++  const kBranchSize = [20, 150, 20];
++
++  const kWhite = [1, 1, 1, 1];
++
++  function drawBranch(ctx) {
++    const { stack } = ctx;
++    stack
++      .save()
++      .scale(kBranchSize)
++      .translate(kBranchPosition);
++    drawObject(ctx, stack.get(), kWhite);
++    stack.restore();
++  }
++
++  function drawTreeLevel(ctx, offset, treeDepth) {
++    const { stack } = ctx;
++    const s = offset ? settings.scale : 1;
++    const y = offset ? kBranchSize[kHeight] : 0;
++    stack
++      .save()
++      .translate([0, y, 0])
++      .rotateZ(offset * settings.rotationX)
++      .rotateY(Math.abs(offset) * settings.rotationY)
++      .scale([s, s, s]);
++
++    drawBranch(ctx);
++
++    if (treeDepth &gt; 0) {
++      drawTreeLevel(ctx, -1, treeDepth - 1);
++      drawTreeLevel(ctx, +1, treeDepth - 1);
++    }
++
++    stack.restore();
++  }
+
+  function render() {
+    ...
+
+-    const eye = [0, 80, 200];
+-    const target = [0, 80, 0];
++    const eye = [0, 450, 1000];
++    const target = [0, 450, 0];
+    const up = [0, 1, 0];
+
+    // ビュー行列を計算します
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+    // ビュー行列と射影行列を組み合わせます
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    stack.save();
+    stack.rotateY(settings.baseRotation);
+-    stack.translate([(kNumCabinets - 0.5) * kCabinetSpacing * -0.5, 0, 0]);
+    objectNdx = 0;
+    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawCabinets(ctx, kNumCabinets);
++    drawTreeLevel(ctx, 0, kTreeDepth);
+    stack.restore();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+</pre>
+<p><code class="notranslate" translate="no">drawTreeLevel</code>は行列スタックを使用します。まず、<code class="notranslate" translate="no">save</code>を呼び出して現在の行列を保存します。次に、<code class="notranslate" translate="no">translate</code>して枝を現在の枝の端に移動します。<code class="notranslate" translate="no">offset</code>が<code class="notranslate" translate="no">0</code>の場合はルートなので、平行移動は必要ありません。</p>
+<p>次に、<code class="notranslate" translate="no">offset</code>を使用して現在の枝を時計回りまたは反時計回りに<code class="notranslate" translate="no">rotateZ</code>します。行列スタックのため、親の枝に対して相対的に回転します。</p>
+<p>次に、<code class="notranslate" translate="no">offset</code>を再度使用して枝を<code class="notranslate" translate="no">rotateY</code>します。今回は<code class="notranslate" translate="no">offset</code>の絶対値を使用します。違いを確認するために、<code class="notranslate" translate="no">Math.abs</code>を自由に削除してください。</p>
+<p>最後に、枝を<code class="notranslate" translate="no">scale</code>して、ルート（<code class="notranslate" translate="no">offset</code>が<code class="notranslate" translate="no">0</code>の枝）を除いて、各枝を親よりも小さく（または大きく）します。</p>
+<p>次に、<code class="notranslate" translate="no">drawBranch</code>を呼び出します。<code class="notranslate" translate="no">drawBranch</code>は、<code class="notranslate" translate="no">kBranchSize</code>の大きさのキューブを描画します。また、元の単位キューブを平行移動して、キューブが原点の上で中央に配置されるようにします。そうすれば、スケーリングすると、上（+Y軸に沿って）に成長します。</p>
+<p>次に、深さが0より大きい場合は、再帰的に<code class="notranslate" translate="no">drawTreeLevel</code>を呼び出して、さらに2つの枝を追加します。1つはオフセットが<code class="notranslate" translate="no">-1</code>、もう1つは<code class="notranslate" translate="no">+1</code>です。各枝はスタック上の行列で始まるため、親に対して相対的に配置および方向付けされます。</p>
+<p>最後に、スタックを<code class="notranslate" translate="no">restore</code>します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-tree.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-tree.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>「rotationX」を調整すると、枝が扇状に広がるか、まとまるかがわかります。「rotationY」を調整すると、枝がx平面から広がるのがわかります。何が起こっているかを確認するには、「baseRotation」を調整する必要がある場合があります。「scale」を調整すると、各枝が親よりも小さくなったり大きくなったりするのがわかります。</p>
+<p>これが、アルゴリズム的な木ジェネレーターを作成するためのインスピレーションになるかもしれません。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>各枝に飾りを追加しましょう。キューブの代わりに、飾りに円錐を使用しましょう。円錐の頂点を生成するコードは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 先端は原点にあり、底面は下にあります
+function createConeVertices({radius = 1, height = 1, subdivisions = 6} = {}) {
+  const positions = [];
+  const colors = [];
+
+  function addVertex(angle, radius, height, color) {
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    positions.push(c * radius, height, s * radius);
+    colors.push(...color);
+  }
+
+  for (let i = 0; i &lt; subdivisions; ++i) {
+    const angle0 = (i + 0) / subdivisions * Math.PI * 2;
+    const angle1 = (i + 1) / subdivisions * Math.PI * 2;
+
+    const u = (i + 1) / subdivisions;
+    const color = [u * 128 + 127, 0, 0];
+
+    // 側面を追加します
+    addVertex(angle0, 0, 0, color);
+    addVertex(angle1, radius, -height, color);
+    addVertex(angle0, radius, -height, color);
+
+    // 上面を追加します
+    addVertex(angle0, radius, -height, color);
+    addVertex(angle1, radius, -height, color);
+    addVertex(angle0, 0, -height, color);
+  }
+
+  const numVertices = positions.length / 3;
+  const vertexData = new Float32Array(numVertices * 4); // xyz + color
+  const colorData = new Uint8Array(vertexData.buffer);
+
+  for (let i = 0; i &lt; numVertices; ++i) {
+    const position = positions.slice(i * 3, i * 3 + 3);
+    vertexData.set(position, i * 4);
+
+    const color = colors.slice(i * 3, i * 3 + 3);
+    colorData.set(color, i * 16 + 12);
+    colorData[i * 16 + 15] = 255;
+  }
+
+  return {
+    vertexData,
+    numVertices,
+  };
+}
+</pre>
+<p>上記のコードは、円の周りを歩き、各側面に三角形と、上面に対応する三角形を追加します。各面を赤の色合いに設定します。キューブ関数と同様に、<code class="notranslate" translate="no">vertexData</code>と<code class="notranslate" translate="no">numVertices</code>を返します。<a href="webgpu-primitives.html">別の記事</a>でさまざまな幾何学的プリミティブの作成について説明します。</p>
+<p>頂点バッファを作成するコードを関数でラップして、キューブと円錐で2回呼び出せるようにしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const { vertexData, numVertices } = createCubeVertices();
+
++  function createVertices({vertexData, numVertices}, name) {
+*    const vertexBuffer = device.createBuffer({
+-      label: `vertex buffer vertices`,
++      label: `${name}: vertex buffer vertices`,
+      size: vertexData.byteLength,
+      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(vertexBuffer, 0, vertexData);
++    return {
++      vertexBuffer,
++      numVertices,
++    };
+*  }
+
++  const cubeVertices = createVertices(createCubeVertices(), 'cube');
++  const ornamentVertices = createVertices(createConeVertices({
++    radius: 20,
++    height: 60,
++  }), 'ornament');
+</pre>
+<p>次に、<code class="notranslate" translate="no">drawObject</code>関数を更新して、頂点パラメータを受け取るようにしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function drawObject(ctx, matrix, color) {
++  function drawObject(ctx, vertices, matrix, color) {
+    const { pass, viewProjectionMatrix } = ctx;
++    const { vertexBuffer, numVertices } = vertices;
+    if (objectNdx === objectInfos.length) {
+      objectInfos.push(createObjectInfo());
+    }
+    const {
+      matrixValue,
+      colorValue,
+      uniformBuffer,
+      uniformValues,
+      bindGroup,
+    } = objectInfos[objectNdx++];
+
+    mat4.multiply(viewProjectionMatrix, matrix, matrixValue);
+    colorValue.set(color);
+
+    // ユニフォーム値をユニフォームバッファにアップロードします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
++    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setBindGroup(0, bindGroup);
+    pass.draw(numVertices);
+  }
+</pre>
+<p>そして、枝を描画するコードを更新して、キューブの頂点を渡すようにします。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function drawBranch(ctx) {
+    const { stack } = ctx;
+    stack
+      .save()
+      .scale(kBranchSize)
+      .translate(kBranchPosition);
+-    drawObject(ctx, stack.get(), kWhite);
++    drawObject(ctx, cubeVertices, stack.get(), kWhite);
+    stack.restore();
+  }
+</pre>
+<p>そして、頂点バッファを早期に設定する必要はもうありません。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+
+    ...
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+-    pass.setVertexBuffer(0, vertexBuffer);
+
+    ...
+</pre>
+<p>そして、<code class="notranslate" translate="no">drawTreeLevel</code>にコードを追加して、深さがゼロのときに飾りを描画するようにしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function drawTreeLevel(ctx, offset, treeDepth) {
+    const { stack } = ctx;
+    const s = offset ? settings.scale : 1;
+    const y = offset ? kBranchSize[kHeight] : 0;
+    stack
+      .save()
+      .translate([0, y, 0])
+      .rotateZ(offset * settings.rotationX)
+      .rotateY(Math.abs(offset) * settings.rotationY)
+      .scale([s, s, s]);
+
+    drawBranch(ctx);
+
+    if (treeDepth &gt; 0) {
+      drawTreeLevel(ctx, -1, treeDepth - 1);
+      drawTreeLevel(ctx, +1, treeDepth - 1);
+    }
+
++    if (treeDepth === 0 &amp;&amp; offset &gt; 0) {
++      const position = vec3.getTranslation(stack.get());
++      drawObject(ctx, ornamentVertices, mat4.translation(position), kWhite);
++    }
+
+    stack.restore();
+  }
+</pre>
+<p><code class="notranslate" translate="no">vec3.getTranslation</code>という関数を使用していますが、これを提供する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
+  getTranslation(m, dst) {
+    dst = dst || new Float32Array(3);
+
+    dst[0] = m[12];
+    dst[1] = m[13];
+    dst[2] = m[14];
+
+    return dst;
+  },
+};
+</pre>
+<p><code class="notranslate" translate="no">getTranslation</code>は、<a href="webgpu-orthographic-projection.html">3D数学に関する記事</a>で説明したように、行列から現在の平行移動を取得します。</p>
+<p>上記では、飾りを描画するために追加したコードは、<code class="notranslate" translate="no">getTranslation</code>を呼び出して行列スタックの現在の平行移動を取得します。これは、最後の枝の基部になります。枝で方向付けおよびスケーリングされるため、行列スタックから直接飾りを描画することはできません。代わりに、スタックから現在の平行移動を取得し、その平行移動を持つ行列を渡します。平行移動は枝の基部にあるため、1つだけ描画すればよく、そのため、<code class="notranslate" translate="no">offset &gt; 0</code>の場合にのみ描画します。それ以外の場合は、まったく同じ場所に2つの飾りを描画します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-stack-tree-with-ornaments.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-stack-tree-with-ornaments.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>次は、<a href="webgpu-scene-graphs.html">シーングラフ</a>です。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>個々のキューブや円柱から木を生成するのは通常ではありません。再帰と行列スタックの手法は使用されますが、キューブを描画する代わりに、行列を使用して頂点を生成し、木全体の単一のメッシュを構築します。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +1143,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +1232,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 行列スタック`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

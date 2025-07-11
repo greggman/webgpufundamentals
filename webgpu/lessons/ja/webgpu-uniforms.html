@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-uniforms.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Uniforms">
+
+<meta name="description" content="シェーダーへの定数データの受け渡し">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-uniforms_ja.jpg">
+
+<meta property="og:title" content="WebGPU ユニフォーム">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Passing Constant Data to a Shader">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-uniforms_ja.jpg">
+<meta property="og:description" content="シェーダーへの定数データの受け渡し">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-uniforms.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Uniforms">
+<meta name="twitter:title" content="WebGPU ユニフォーム">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-uniforms.html">
-<meta name="twitter:description" content="Passing Constant Data to a Shader">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="シェーダーへの定数データの受け渡し">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-uniforms_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-uniforms.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-uniforms_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-uniforms.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-uniforms.html",
+      "inLanguage":"ja",
+      "name":"WebGPU ユニフォーム",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-uniforms.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Uniforms</title>
+<title>WebGPU ユニフォーム</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,397 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Uniforms</h1>
+    <h1>WebGPU ユニフォーム</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-uniforms.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>前の記事は<a href="webgpu-inter-stage-variables.html">ステージ間変数</a>に関するものでした。この記事はユニフォームに関するものです。</p>
+<p>ユニフォームは、シェーダーのグローバル変数のようなものです。シェーダーを実行する前に値を設定でき、シェーダーの各反復でそれらの値を持ちます。次にGPUにシェーダーを実行するように依頼するときに、別の値に設定できます。</p>
+<p><a href="webgpu-fundamentals.html">最初の記事</a>の三角形の例から始めて、いくつかのユニフォームを使用するように変更します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    label: 'triangle shaders with uniforms',
+    code: `
++      struct OurStruct {
++        color: vec4f,
++        scale: vec2f,
++        offset: vec2f,
++      };
++
++      @group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; @builtin(position) vec4f {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // top center
+          vec2f(-0.5, -0.5),  // bottom left
+          vec2f( 0.5, -0.5)   // bottom right
+        );
+
+-        return vec4f(pos[vertexIndex], 0.0, 1.0);
++        return vec4f(
++          pos[vertexIndex] * ourStruct.scale + ourStruct.offset, 0.0, 1.0);
+      }
+
+      @fragment fn fs() -&gt; @location(0) vec4f {
+-        return vec4f(1, 0, 0, 1);
++        return ourStruct.color;
+      }
+    `,
+  });
+
+  });
+</pre>
+<p>まず、3つのメンバーを持つ構造体を宣言しました。</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">      struct OurStruct {
+        color: vec4f,
+        scale: vec2f,
+        offset: vec2f,
+      };
+</pre>
+<p>次に、その構造体の型のユニフォーム変数を宣言しました。変数は<code class="notranslate" translate="no">ourStruct</code>で、その型は<code class="notranslate" translate="no">OurStruct</code>です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">      @group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+</pre>
+<p>次に、頂点シェーダーから返されるものを変更して、ユニフォームを使用するようにしました。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @vertex fn vs(
+         ...
+      ) ... {
+        ...
+        return vec4f(
+          pos[vertexIndex] * ourStruct.scale + ourStruct.offset, 0.0, 1.0);
+      }
+</pre>
+<p>頂点位置にスケールを乗算し、オフセットを追加していることがわかります。これにより、三角形のサイズを設定し、配置できます。</p>
+<p>また、フラグメントシェーダーを変更して、ユニフォームから色を返すようにしました。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @fragment fn fs() -&gt; @location(0) vec4f {
+        return ourStruct.color;
+      }
+</pre>
+<p>シェーダーをユニフォームを使用するように設定したので、GPU上に値を保持するためのバッファを作成する必要があります。</p>
+<p>これは、ネイティブデータとサイズを扱ったことがない場合、学ぶべきことがたくさんある領域です。これは大きなトピックなので、<a href="webgpu-memory-layout.html">このトピックに関する別の記事があります</a>。メモリ内の構造体のレイアウト方法がわからない場合は、<a href="webgpu-memory-layout.html">記事を読んでください</a>。その後、ここに戻ってきてください。この記事は、<a href="webgpu-memory-layout.html">すでに読んだ</a>ことを前提としています。</p>
+<p><a href="webgpu-memory-layout.html">記事</a>を読んだので、シェーダーの構造体に一致するデータでバッファを埋めることができます。</p>
+<p>まず、バッファを作成し、ユニフォームで使用できるように、またデータをコピーして更新できるように、使用法フラグを割り当てます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const uniformBufferSize =
+    4 * 4 + // colorは4つの32ビット浮動小数点数（各4バイト）です
+    2 * 4 + // scaleは2つの32ビット浮動小数点数（各4バイト）です
+    2 * 4;  // offsetは2つの32ビット浮動小数点数（各4バイト）です
+  const uniformBuffer = device.createBuffer({
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+</pre>
+<p>次に、JavaScriptで値を設定できるように<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a>を作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // JavaScript側でユニフォームの値を保持するための型付き配列を作成します
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+</pre>
+<p>そして、後で変更しない構造体の値の2つを埋めます。オフセットは、<a href="webgpu-memory-layout.html">メモリレイアウトに関する記事</a>で説明した内容を使用して計算されました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kColorOffset = 0;
+  const kScaleOffset = 4;
+  const kOffsetOffset = 6;
+
+  uniformValues.set([0, 1, 0, 1], kColorOffset);        // 色を設定します
+  uniformValues.set([-0.5, -0.25], kOffsetOffset);      // オフセットを設定します
+</pre>
+<p>上記では、色を緑に設定しています。オフセットは、三角形をキャンバスの左1/4、下1/8に移動します。（クリップ空間は-1から1まで、つまり2単位の幅なので、0.25は2の1/8です）。</p>
+<p>次に、<a href="../webgpu-fundamentals.html#a-draw-diagram">最初の記事の図が示すように</a>、シェーダーにバッファについて伝えるには、バインドグループを作成してバッファをバインドする必要があります。シェーダーで設定したのと同じ<code class="notranslate" translate="no">@group(?)</code>と<code class="notranslate" translate="no">@binding(?)</code>を渡す必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+    ],
+  });
+</pre>
+<p>コマンドバッファを送信する前に、<code class="notranslate" translate="no">uniformValues</code>の残りの値を設定し、それらの値をGPU上のバッファにコピーする必要がある場合があります。<code class="notranslate" translate="no">render</code>関数の冒頭でそれを行います。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    // JavaScript側のFloat32Arrayでユニフォーム値を設定します
+    const aspect = canvas.width / canvas.height;
+    uniformValues.set([0.5 / aspect, 0.5], kScaleOffset); // スケールを設定します
+
+    // JavaScriptからGPUに値をコピーします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<blockquote>
+<p>注：<code class="notranslate" translate="no">writeBuffer</code>は、バッファにデータをコピーする1つの方法です。<a href="webgpu-copying-data.html">この記事</a>で説明されている他のいくつかの方法があります。</p>
+</blockquote>
+<p>スケールを半分のサイズに設定し、キャンバスのアスペクトを考慮して、三角形がキャンバスのサイズに関係なく同じ幅と高さの比率を維持するようにしています。</p>
+<p>最後に、描画する前にバインドグループを設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    pass.setPipeline(pipeline);
++    pass.setBindGroup(0, bindGroup);
+    pass.draw(3);  // 頂点シェーダーを3回呼び出します
+    pass.end();
+</pre>
+<p>そして、それで、説明どおりの緑色の三角形が得られます。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-uniforms.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-uniforms.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>この単一の三角形の場合、描画コマンドが実行されるときの状態は次のようになります。</p>
+<div class="webgpu_center"><img src="../resources/webgpu-draw-diagram-triangle-uniform.svg" style="width: 863px;"></div>
+<p>これまで、シェーダーで使用したすべてのデータは、ハードコードされていました（頂点シェーダーの三角形の頂点位置、およびフラグメントシェーダーの色）。シェーダーに値を渡すことができるようになったので、異なるデータで<code class="notranslate" translate="no">draw</code>を複数回呼び出すことができます。</p>
+<p>単一のバッファを更新することで、異なるオフセット、スケール、色で異なる場所に描画できます。ただし、コマンドはコマンドバッファに入れられ、送信するまで実際には実行されないことを覚えておくことが重要です。したがって、これを<strong>行うことはできません</strong>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // BAD!
+    for (let x = -1; x &lt; 1; x += 0.1) {
+      uniformValues.set([x, x], kOffsetOffset);
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+      pass.draw(3);
+    }
+    pass.end();
+
+    // エンコードを終了し、コマンドを送信します
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+</pre>
+<p>なぜなら、上記のように、<code class="notranslate" translate="no">device.queue.xxx</code>関数は「キュー」で発生しますが、<code class="notranslate" translate="no">pass.xxx</code>関数はコマンドバッファにコマンドをエンコードするだけだからです。コマンドバッファで<code class="notranslate" translate="no">submit</code>を実際に呼び出すと、バッファ内の唯一のものは、書き込んだ最後の値になります。</p>
+<p>これを次のように変更できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // BAD! 遅い！
+    for (let x = -1; x &lt; 1; x += 0.1) {
+      uniformValues.set([x, 0], kOffsetOffset);
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      const encoder = device.createCommandEncoder();
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(3);
+      pass.end();
+
+      // エンコードを終了し、コマンドを送信します
+      const commandBuffer = encoder.finish();
+      device.queue.submit([commandBuffer]);
+    }
+</pre>
+<p>上記のコードは、1つのバッファを更新し、1つのコマンドバッファを作成し、1つのものを描画するコマンドを追加し、コマンドバッファを終了して送信します。これは機能しますが、複数の理由で遅くなります。最大の理由は、単一のコマンドバッファでより多くの作業を行うのがベストプラクティスであるためです。</p>
+<p>したがって、代わりに、描画したいものごとに1つのユニフォームバッファを作成できます。そして、バッファはバインドグループを介して間接的に使用されるため、描画したいものごとに1つのバインドグループも必要になります。次に、描画したいすべてのものを単一のコマンドバッファに入れることができます。</p>
+<p>やってみましょう。</p>
+<p>まず、ランダム関数を作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// [minとmax)の間の乱数
+// 1つの引数がある場合は[0からmin)になります
+// 引数がない場合は[0から1)になります
+const rand = (min, max) =&gt; {
+  if (min === undefined) {
+    min = 0;
+    max = 1;
+  } else if (max === undefined) {
+    max = min;
+    min = 0;
+  }
+  return min + Math.random() * (max - min);
+};
+
+</pre>
+<p>そして、多数の個々のものを描画できる多数の色とオフセットを持つバッファを設定しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kColorOffset = 0;
+  const kScaleOffset = 4;
+  const kOffsetOffset = 6;
+
++  const kNumObjects = 100;
++  const objectInfos = [];
++
++  for (let i = 0; i &lt; kNumObjects; ++i) {
++    const uniformBuffer = device.createBuffer({
++      label: `uniforms for obj: ${i}`,
++      size: uniformBufferSize,
++      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++    });
++
++    // JavaScript側でユニフォームの値を保持するための型付き配列を作成します
++    const uniformValues = new Float32Array(uniformBufferSize / 4);
+-  uniformValues.set([0, 1, 0, 1], kColorOffset);        // 色を設定します
+-  uniformValues.set([-0.5, -0.25], kOffsetOffset);      // オフセットを設定します
++    uniformValues.set([rand(), rand(), rand(), 1], kColorOffset);        // 色を設定します
++    uniformValues.set([rand(-0.9, 0.9), rand(-0.9, 0.9)], kOffsetOffset);      // オフセットを設定します
++
++    const bindGroup = device.createBindGroup({
++      label: `bind group for obj: ${i}`,
++      layout: pipeline.getBindGroupLayout(0),
++      entries: [
++        { binding: 0, resource: uniformBuffer },
++      ],
++    });
++
++    objectInfos.push({
++      scale: rand(0.2, 0.5),
++      uniformBuffer,
++      uniformValues,
++      bindGroup,
++    });
++  }
+</pre>
+<p>キャンバスのアスペクトを考慮に入れたいので、まだバッファに値を設定していません。レンダリング時までキャンバスのアスペクトがわからないためです。</p>
+<p>レンダリング時に、すべてのアスペクト調整されたスケールでバッファを更新します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+-    // JavaScript側のFloat32Arrayでユニフォーム値を設定します
+-    const aspect = canvas.width / canvas.height;
+-    uniformValues.set([0.5 / aspect, 0.5], kScaleOffset); // スケールを設定します
+-
+-    // JavaScriptからGPUに値をコピーします
+-    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+    // キャンバスコンテキストから現在のテクスチャを取得し、
+    // レンダリングするテクスチャとして設定します。
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
++    // JavaScript側のFloat32Arrayでユニフォーム値を設定します
++    const aspect = canvas.width / canvas.height;
+
++    for (const {scale, bindGroup, uniformBuffer, uniformValues} of objectInfos) {
++      uniformValues.set([scale / aspect, scale], kScaleOffset); // スケールを設定します
++      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+       pass.setBindGroup(0, bindGroup);
+       pass.draw(3);  // 頂点シェーダーを3回呼び出します
++    }
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>繰り返しになりますが、<code class="notranslate" translate="no">encoder</code>と<code class="notranslate" translate="no">pass</code>オブジェクトはコマンドバッファにコマンドをエンコードしているだけであることを忘れないでください。したがって、<code class="notranslate" translate="no">render</code>関数が終了すると、事実上、この順序でこれらの<em>コマンド</em>を発行したことになります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeBuffer(...) // オブジェクト0のデータでユニフォームバッファ0を更新します
+device.queue.writeBuffer(...) // オブジェクト1のデータでユニフォームバッファ1を更新します
+device.queue.writeBuffer(...) // オブジェクト2のデータでユニフォームバッファ2を更新します
+device.queue.writeBuffer(...) // オブジェクト3のデータでユニフォームバッファ3を更新します
+...
+// それぞれ独自のユニフォームバッファを持つ100個のものを描画するコマンドを実行します。
+device.queue.submit([commandBuffer]);
+</pre>
+<p>これがそれです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-uniforms-multiple.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-uniforms-multiple.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>ここで、もう1つ説明します。シェーダーで複数のユニフォームバッファを参照できます。上記の例では、描画するたびにスケールを更新し、<code class="notranslate" translate="no">writeBuffer</code>を呼び出してそのオブジェクトの<code class="notranslate" translate="no">uniformValues</code>を対応するユニフォームバッファにアップロードします。しかし、スケールのみが更新され、色とオフセットは更新されないため、色とオフセットをアップロードする時間を無駄にしています。</p>
+<p>ユニフォームを、一度設定する必要があるユニフォームと、描画するたびに更新されるユニフォームに分割できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    code: `
+      struct OurStruct {
+        color: vec4f,
+-        scale: vec2f,
+        offset: vec2f,
+      };
+
++      struct OtherStruct {
++        scale: vec2f,
++      };
+
+      @group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
++      @group(0) @binding(1) var&lt;uniform&gt; otherStruct: OtherStruct;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; @builtin(position) vec4f {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // top center
+          vec2f(-0.5, -0.5),  // bottom left
+          vec2f( 0.5, -0.5)   // bottom right
+        );
+
+        return vec4f(
+-          pos[vertexIndex] * ourStruct.scale + ourStruct.offset, 0.0, 1.0);
++          pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+      }
+
+      @fragment fn fs() -&gt; @location(0) vec4f {
+        return ourStruct.color;
+      }
+    `,
+  });
+</pre>
+<p>描画したいものごとに2つのユニフォームバッファが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  // ユニフォーム値用のバッファを作成します
+-  const uniformBufferSize =
+-    4 * 4 + // colorは4つの32ビット浮動小数点数（各4バイト）です
+-    2 * 4 + // scaleは2つの32ビット浮動小数点数（各4バイト）です
+-    2 * 4;  // offsetは2つの32ビット浮動小数点数（各4バイト）です
+-  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+-  const kColorOffset = 0;
+-  const kScaleOffset = 4;
+-  const kOffsetOffset = 6;
++  // ユニフォーム値用の2つのバッファを作成します
++  const staticUniformBufferSize =
++    4 * 4 + // colorは4つの32ビット浮動小数点数（各4バイト）です
++    2 * 4 + // offsetは2つの32ビット浮動小数点数（各4バイト）です
++    2 * 4;  // パディング
++  const uniformBufferSize =
++    2 * 4;  // scaleは2つの32ビット浮動小数点数（各4バイト）です
++
++  // float32インデックスでのさまざまなユニフォーム値へのオフセット
++  const kColorOffset = 0;
++  const kOffsetOffset = 4;
++
++  const kScaleOffset = 0;
+
+  const kNumObjects = 100;
+  const objectInfos = [];
+
+  for (let i = 0; i &lt; kNumObjects; ++i) {
++    const staticUniformBuffer = device.createBuffer({
++      label: `static uniforms for obj: ${i}`,
++      size: staticUniformBufferSize,
++      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++    });
++
++    // これらは一度だけ設定されるので、今すぐ設定します
++    {
+-      const uniformValues = new Float32Array(uniformBufferSize / 4);
++      const uniformValues = new Float32Array(staticUniformBufferSize / 4);
+      uniformValues.set([rand(), rand(), rand(), 1], kColorOffset);        // 色を設定します
+      uniformValues.set([rand(-0.9, 0.9), rand(-0.9, 0.9)], kOffsetOffset);      // オフセットを設定します
+
+      // これらの値をGPUにコピーします
+-      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
++      device.queue.writeBuffer(staticUniformBuffer, 0, uniformValues);
+    }
+
++    // JavaScript側でユニフォームの値を保持するための型付き配列を作成します
++    const uniformValues = new Float32Array(uniformBufferSize / 4);
++    const uniformBuffer = device.createBuffer({
++      label: `changing uniforms for obj: ${i}`,
++      size: uniformBufferSize,
++      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++    });
+
+    const bindGroup = device.createBindGroup({
+      label: `bind group for obj: ${i}`,
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: staticUniformBuffer },
++        { binding: 1, resource: uniformBuffer },
+      ],
+    });
+
+    objectInfos.push({
+      scale: rand(0.2, 0.5),
+      uniformBuffer,
+      uniformValues,
+      bindGroup,
+    });
+  }
+</pre>
+<p>レンダーコードには何も変更はありません。各オブジェクトのバインドグループには、各オブジェクトの両方のユニフォームバッファへの参照が含まれています。以前と同様に、スケールを更新しています。しかし、今では、スケール値を保持するユニフォームバッファを更新するときに<code class="notranslate" translate="no">device.queue.writeBuffer</code>を呼び出すときにスケールのみをアップロードしていますが、以前は各オブジェクトの色+オフセット+スケールをアップロードしていました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-uniforms-split.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-uniforms-split.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>この単純な例では、複数のユニフォームバッファに分割するのはおそらくやり過ぎでしたが、何がいつ変更されるかに基づいて分割するのが一般的です。例としては、共有される行列用の1つのユニフォームバッファがあります。たとえば、<a href="webgpu-cameras.html">射影行列、ビュー行列、カメラ行列</a>です。これらは、描画したいすべてのものに対して同じであることが多いため、1つのバッファを作成し、すべてのオブジェクトが同じユニフォームバッファを使用するようにできます。</p>
+<p>個別に、シェーダーは、<a href="webgpu-cameras.html">ワールド/モデル行列</a>や<a href="webgpu-lighting-directional.html">法線行列</a>など、このオブジェクトに固有のもののみを含む別のユニフォームバッファを参照する場合があります。</p>
+<p>別のユニフォームバッファには、マテリアル設定が含まれている場合があります。これらの設定は、複数のオブジェクトで共有される場合があります。</p>
+<p>3Dの描画について説明するときに、これの多くを行います。</p>
+<p>次は、<a href="webgpu-storage-buffers.html">ストレージバッファ</a>です。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +633,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +722,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU ユニフォーム`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

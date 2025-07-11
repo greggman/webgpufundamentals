@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-wgsl.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,13 +29,20 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="WebGPUシェーディング言語の紹介">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_ja.jpg">
+
 <meta property="og:title" content="WebGPU WGSL">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="An introduction to WebGPU Shading Language">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_ja.jpg">
+<meta property="og:description" content="WebGPUシェーディング言語の紹介">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-wgsl.html">
 
 <meta name="twitter:card" content="summary_large_image">
@@ -44,12 +51,50 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <meta name="twitter:domain" content="webgpufundamentals.org">
 <meta name="twitter:title" content="WebGPU WGSL">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-wgsl.html">
-<meta name="twitter:description" content="An introduction to WebGPU Shading Language">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPUシェーディング言語の紹介">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-wgsl.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-wgsl_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-wgsl.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-wgsl.html",
+      "inLanguage":"ja",
+      "name":"WebGPU WGSL",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-wgsl.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
 <title>WebGPU WGSL</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -186,8 +231,657 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-wgsl.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>WGSLの詳細な概要については、<a href="https://google.github.io/tour-of-wgsl/">WGSLツアー</a>を参照してください。また、<a href="https://www.w3.org/TR/WGSL/">実際のWGSL仕様</a>もありますが、<a href="http://catb.org/jargon/html/L/language-lawyer.html">言語弁護士</a>向けに書かれているため、処理が難しい場合があります😂</p>
+<p>この記事は、すでにプログラミングの方法を知っていることを前提としているため、WGSLの例を見るだけで、何が表示されているかを<em>理解</em>できる可能性が高いです。おそらく簡潔すぎますが、WGSLシェーダープログラムの理解と作成に役立つことを願っています。</p>
+<h2 id="wgslは厳密に型付けされています">WGSLは厳密に型付けされています</h2>
+<p>JavaScriptとは異なり、WGSLでは、すべての変数、構造体フィールド、関数パラメータ、および関数戻り値の型を知る必要があります。typescript、rust、C++、C#、Java、Swift、Kotlinなどを使用したことがある場合は、これに慣れています。</p>
+<h3 id="プレーン型">プレーン型</h3>
+<p>WGSLの<em>プレーン</em>型は次のとおりです。</p>
+<ul>
+<li><code class="notranslate" translate="no">i32</code> 32ビット符号付き整数</li>
+<li><code class="notranslate" translate="no">u32</code> 32ビット符号なし整数</li>
+<li><code class="notranslate" translate="no">f32</code> 32ビット浮動小数点数</li>
+<li><code class="notranslate" translate="no">bool</code> ブール値</li>
+<li><code class="notranslate" translate="no">f16</code> 16ビット浮動小数点数（これは、確認して要求する必要があるオプション機能です）</li>
+</ul>
+<h3 id="変数宣言">変数宣言</h3>
+<p>JavaScriptでは、次のように変数と関数を宣言できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">var a = 1;
+let c = 3;
+function d(e) { return e * 2; }
+</pre>
+<p>WGSLでは、それらの完全な形式は次のようになります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">var a: f32 = 1;
+let c: f32 = 3;
+fn d(e: f32) -&gt; f32 { return e * 2; }
+</pre>
+<p>上記から注意すべき重要な点は、変数宣言に<code class="notranslate" translate="no">: f32</code>のような<code class="notranslate" translate="no">: &lt;type&gt;</code>を追加し、関数宣言に<code class="notranslate" translate="no">-&gt; &lt;type&gt;</code>を追加する必要があることです。</p>
+<h3 id="自動型">自動型</h3>
+<p>WGSLには、変数の<em>ショートカット</em>があります。typescriptと同様に、変数の型を宣言しない場合、右側の式の型に自動的になります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn foo() -&gt; bool { return false; }
+
+var a = 1;     // aはi32です
+let b = 2.0;   // bはf32です
+var c = 3u;    // cはu32です
+var d = foo(); // dはboolです
+</pre>
+<h3 id="型変換">型変換</h3>
+<p>さらに、厳密に型付けされているということは、多くの場合、型を変換する必要があることを意味します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;     // aはi32です
+let b = 2.0;   // bはf32です
+*let c = a + b; // エラー：i32をf32に追加できません
+</pre>
+<p>修正は、一方を他方に変換することです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;     // aはi32です
+let b = 2.0;   // bはf32です
+let c = f32(a) + b; // ok
+</pre>
+<p>しかし、WGSLには「AbstractInt」と「AbstractFloat」と呼ばれるものがあります。これらは、まだ型が決定されていない数値と考えることができます。これらはコンパイル時のみの機能です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = 1;            // aはi32です
+let b = 2.0;          // bはf32です
+*let c = a + b;       // エラー：i32をf32に追加できません
+let d = 1 + 2.0;      // dはf32です
+</pre>
+<h3 id="数値サフィックス">数値サフィックス</h3>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">2i   // i32
+3u   // u32
+4f   // f32
+4.5f // f32
+5h   // f16
+5.6h // f16
+6    // AbstractInt
+7.0  // AbstractFloat
+</pre>
+<h2 id="let、var、constは、wgslとjavascriptで意味が異なります。"><code class="notranslate" translate="no">let</code>、<code class="notranslate" translate="no">var</code>、<code class="notranslate" translate="no">const</code>は、WGSLとJavaScriptで意味が異なります。</h2>
+<p>JavaScriptでは、<code class="notranslate" translate="no">var</code>は関数スコープを持つ変数です。<code class="notranslate" translate="no">let</code>はブロックスコープを持つ変数です。<code class="notranslate" translate="no">const</code>は、ブロックスコープを持つ定数変数（変更不可）です<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+<p>WGSLでは、すべての変数はブロックスコープを持ちます。<code class="notranslate" translate="no">var</code>はストレージを持つ変数であり、したがって変更可能です。<code class="notranslate" translate="no">let</code>は定数値です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn foo() {
+  let a = 1;
+*  a = a + 1;  // エラー：aは定数式です
+  var b = 2;
+  b = b + 1;  // ok
+}
+</pre>
+<p><code class="notranslate" translate="no">const</code>は変数ではなく、コンパイル時の定数です。実行時に発生するものに<code class="notranslate" translate="no">const</code>を使用することはできません。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const one = 1;              // ok
+const two = one * 2;        // ok
+const PI = radians(180.0);  // ok
+
+fn add(a: f32, b: f32) -&gt; f32 {
+*  const result = a + b;   // エラー：constはコンパイル時式でのみ使用できます
+  return result;
+}
+</pre>
+<h2 id="ベクトル型">ベクトル型</h2>
+<p>WGSLには、<code class="notranslate" translate="no">vec2</code>、<code class="notranslate" translate="no">vec3</code>、<code class="notranslate" translate="no">vec4</code>の3つのベクトル型があります。基本的なスタイルは<code class="notranslate" translate="no">vec?&lt;type&gt;</code>なので、<code class="notranslate" translate="no">vec2&lt;i32&gt;</code>（2つのi32のベクトル）、<code class="notranslate" translate="no">vec3&lt;f32&gt;</code>（3つのf32のベクトル）、<code class="notranslate" translate="no">vec4&lt;u32&gt;</code>（4つのu32のベクトル）、<code class="notranslate" translate="no">vec3&lt;bool&gt;</code>（3つのブール値のベクトル）です。</p>
+<p>例：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec2&lt;i32&gt;(1, -2);
+let b = vec3&lt;f32&gt;(3.4, 5.6, 7.8);
+let c = vec4&lt;u32&gt;(9, 10, 11, 12);
+</pre>
+<h3 id="アクセサー">アクセサー</h3>
+<p>さまざまなアクセサーを使用して、ベクトル内の値にアクセスできます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = a.z;   // x、y、z、w経由
+let c = a.b;   // r、g、b、a経由
+let d = a[2];  // 配列要素アクセサー経由
+</pre>
+<p>上記では、<code class="notranslate" translate="no">b</code>、<code class="notranslate" translate="no">c</code>、<code class="notranslate" translate="no">d</code>はすべて同じです。それらはすべて<code class="notranslate" translate="no">a</code>の3番目の要素にアクセスしています。それらはすべて「3」です。</p>
+<h3 id="スウィズル">スウィズル</h3>
+<p>複数の要素にアクセスすることもできます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = a.zx;   // x、y、z、w経由
+let c = a.br;   // r、g、b、a経由
+let d = vec2&lt;f32&gt;(a[2], a[0]);
+</pre>
+<p>上記では、<code class="notranslate" translate="no">b</code>、<code class="notranslate" translate="no">c</code>、<code class="notranslate" translate="no">d</code>はすべて同じです。それらはすべて<code class="notranslate" translate="no">vec2&lt;f32&gt;(3, 1)</code>です。</p>
+<p>要素を繰り返すこともできます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = vec3&lt;f32&gt;(a.z, a.z, a.y);
+let c = a.zzy;
+</pre>
+<p>上記では、<code class="notranslate" translate="no">b</code>と<code class="notranslate" translate="no">c</code>は同じです。どちらも、内容が3、3、2の<code class="notranslate" translate="no">vec3&lt;f32&gt;</code>です。</p>
+<h3 id="ベクトルのショートカット">ベクトルのショートカット</h3>
+<p>基本型にはショートカットがあります。<code class="notranslate" translate="no">&lt;i32&gt;</code>を<code class="notranslate" translate="no">i</code>に、<code class="notranslate" translate="no">&lt;f32&gt;</code>を<code class="notranslate" translate="no">f</code>に、<code class="notranslate" translate="no">&lt;u32&gt;</code>を<code class="notranslate" translate="no">u</code>に、<code class="notranslate" translate="no">&lt;f16&gt;</code>を<code class="notranslate" translate="no">h</code>に変更します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4&lt;f32&gt;(1, 2, 3, 4);
+let b = vec4f(1, 2, 3, 4);
+</pre>
+<p><code class="notranslate" translate="no">a</code>と<code class="notranslate" translate="no">b</code>は同じ型です。</p>
+<h3 id="ベクトル構築">ベクトル構築</h3>
+<p>ベクトルは、より小さな型で構築できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec2f(2, 3);
+let c = vec4f(1, b, 4);
+let d = vec4f(1, a.yz, 4);
+let e = vec4f(a.xyz, 4);
+let f = vec4f(1, a.yzw);
+</pre>
+<p><code class="notranslate" translate="no">a</code>、<code class="notranslate" translate="no">c</code>、<code class="notranslate" translate="no">d</code>、<code class="notranslate" translate="no">e</code>、<code class="notranslate" translate="no">f</code>は同じです。</p>
+<h3 id="ベクトル演算">ベクトル演算</h3>
+<p>ベクトルで数学を行うことができます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec4f(5, 6, 7, 8);
+let c = a + b;  // cはvec4f(6, 8, 10, 12)です
+let d = a * b;  // dはvec4f(5, 12, 21, 32)です
+let e = a - b;  // eはvec4f(-4, -4, -4, -4)です
+</pre>
+<p>多くの関数はベクトルでも機能します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = vec4f(1, 2, 3, 4);
+let b = vec4f(5, 6, 7, 8);
+let c = mix(a, b, 0.5);                   // cはvec4f(3, 4, 5, 6)です
+let d = mix(a, b, vec4f(0, 0.5, 0.5, 1)); // dはvec4f(1, 4, 5, 8)です
+</pre>
+<h2 id="行列">行列</h2>
+<p>WGSLには多数の行列型があります。行列はベクトルの配列です。形式は<code class="notranslate" translate="no">mat&lt;numVectors&gt;x&lt;vectorSize&gt;&lt;&lt;type&gt;&gt;</code>なので、たとえば<code class="notranslate" translate="no">mat3x4&lt;f32&gt;</code>は3つの<code class="notranslate" translate="no">vec4&lt;f32&gt;</code>の配列です。ベクトルと同様に、行列にも同じショートカットがあります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a: mat4x4&lt;f32&gt; = ...
+let b: mat4x4f = ...
+</pre>
+<p><code class="notranslate" translate="no">a</code>と<code class="notranslate" translate="no">b</code>は同じ型です。</p>
+<h3 id="行列ベクトルアクセス">行列ベクトルアクセス</h3>
+<p>配列構文を使用して、行列のベクトルを参照できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = mat4x4f(...);
+let b = a[2];   // bはaの3番目のベクトルのvec4fです
+</pre>
+<p>3D計算で最も一般的な行列型は<code class="notranslate" translate="no">mat4x4f</code>であり、<code class="notranslate" translate="no">vec4f</code>と直接乗算して別の<code class="notranslate" translate="no">vec4f</code>を生成できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = mat4x4f(....);
+let b = vec4f(1, 2, 3, 4);
+let c = a * b;  // cはvec4fであり、a * bの結果です
+</pre>
+<h2 id="配列">配列</h2>
+<p>WGSLの配列は、<code class="notranslate" translate="no">array&lt;type, numElements&gt;</code>構文で宣言されます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let a = array&lt;f32, 5&gt;;   // 5つのf32の配列
+let b = array&lt;vec4f, 6&gt;; // 6つのvec4fの配列
+</pre>
+<p>しかし、<code class="notranslate" translate="no">array</code>コンストラクタもあります。任意の数の引数を受け取り、配列を返します。引数はすべて同じ型でなければなりません。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl;" translate="no">let arrOf3Vec3fsA = array(vec3f(1,2,3), vec3f(4,5,6), vec3f(7,8,9));
+let arrOf3Vec3fsB = array&lt;vec3f, 3&gt;(vec3f(1,2,3), vec3f(4,5,6), vec3f(7,8,9));
+</pre>
+<p>上記では、<code class="notranslate" translate="no">arrOf3Vec3fsA</code>は<code class="notranslate" translate="no">arrOf3Vec3fsB</code>と同じです。</p>
+<p>残念ながら、WGSLのバージョン1の時点では、固定サイズの配列のサイズを取得する方法はありません。</p>
+<h3 id="ランタイムサイズの配列">ランタイムサイズの配列</h3>
+<p>ルートスコープのストレージ宣言にある配列、またはルートスコープ構造体の最後のフィールドとしてある配列は、サイズなしで指定できる唯一の配列です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Stuff {
+  color: vec4f,
+  size: f32,
+  verts: array&lt;vec3f&gt;,
+};
+@group(0) @binding(0) var&lt;storage&gt; foo: array&lt;mat4x4f&gt;;
+@group(0) @binding(1) var&lt;storage&gt; bar: Stuff;
+</pre>
+<p><code class="notranslate" translate="no">foo</code>と<code class="notranslate" translate="no">bar.verts</code>の要素数は、実行時に使用されるバインドグループの設定によって定義されます。WGSLで<code class="notranslate" translate="no">arrayLength</code>を使用してこのサイズを照会できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage&gt; foo: array&lt;mat4x4f&gt;;
+@group(0) @binding(1) var&lt;storage&gt; bar: Stuff;
+
+...
+  let numMatrices = arrayLength(&amp;foo);
+  let numVerts = arrayLength(&amp;bar.verts);
+</pre>
+<h2 id="関数">関数</h2>
+<p>WGSLの関数は、<code class="notranslate" translate="no">fn name(parameters) -&gt; returnType { ..body... }</code>のパターンに従います。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn add(a: f32, b: f32) -&gt; f32 {
+  return a + b;
+}
+</pre>
+<h2 id="エントリポイント">エントリポイント</h2>
+<p>WGSLプログラムにはエントリポイントが必要です。エントリポイントは、<code class="notranslate" translate="no">@vertex</code>、<code class="notranslate" translate="no">@fragment</code>、または<code class="notranslate" translate="no">@compute</code>のいずれかで指定されます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn myFunc(a: f32, b: f32) -&gt; @builtin(position): vec4f {
+  return vec4f(0, 0, 0, 0);
+}
+</pre>
+<h2 id="シェーダーは、エントリポイントがアクセスするもののみを使用します。">シェーダーは、エントリポイントがアクセスするもののみを使用します。</h2>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;uniforms&gt; uni: vec4f;
+
+vec4f fn foo() {
+  return uni;
+}
+
+@vertex fn vs1(): @builtin(position) vec4f {
+  return vec4f(0);
+}
+
+@vertex fn vs2(): @builtin(position) vec4f {
+  return foo();
+}
+</pre>
+<p>上記では、<code class="notranslate" translate="no">uni</code>は<code class="notranslate" translate="no">vs1</code>によってアクセスされないため、パイプラインで<code class="notranslate" translate="no">vs1</code>を使用する場合、必須のバインディングとして表示されません。<code class="notranslate" translate="no">vs2</code>は、<code class="notranslate" translate="no">foo</code>を呼び出すことによって間接的に<code class="notranslate" translate="no">uni</code>を参照するため、パイプラインで<code class="notranslate" translate="no">vs2</code>を使用する場合、必須のバインディングとして表示されます。</p>
+<h2 id="属性">属性</h2>
+<p><em>属性</em>という言葉は、WebGPUで2つの意味を持ちます。1つは、<a href="webgpu-vertex-buffers.html">頂点バッファに関する記事</a>で説明されている<em>頂点属性</em>です。もう1つは、<code class="notranslate" translate="no">@</code>で始まるWGSLの属性です。</p>
+<h3 id="locationnumber"><code class="notranslate" translate="no">@location(number)</code></h3>
+<p><code class="notranslate" translate="no">@location(number)</code>は、シェーダーの入力と出力を定義するために使用されます。</p>
+<h4 id="頂点シェーダーの入力">頂点シェーダーの入力</h4>
+<p>頂点シェーダーの場合、入力は頂点シェーダーのエントリポイント関数の<code class="notranslate" translate="no">@location</code>属性によって定義されます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex vs1(@location(0) foo: f32, @location(1) bar: vec4f) ...
+
+struct Stuff {
+  @location(0) foo: f32,
+  @location(1) bar: vec4f,
+};
+@vertex vs2(s: Stuff) ...
+</pre>
+<p><code class="notranslate" translate="no">vs1</code>と<code class="notranslate" translate="no">vs2</code>の両方が、<a href="webgpu-vertex-buffers.html">頂点バッファ</a>によって供給される必要がある場所0と1の頂点シェーダーへの入力を宣言します。</p>
+<h4 id="ステージ間変数">ステージ間変数</h4>
+<p>ステージ間変数の場合、<code class="notranslate" translate="no">@location</code>属性は、変数がシェーダー間で渡される場所を定義します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VSOut {
+  @builtin(position) pos: vec4f,
+  @location(0) color: vec4f,
+  @location(1) texcoords: vec2f,
+};
+
+struct FSIn {
+  @location(1) uv: vec2f,
+  @location(0) diffuse: vec4f,
+};
+
+@vertex fn foo(...) -&gt; VSOut { ... }
+@fragment fn bar(moo: FSIn) ... 
+</pre>
+<p>上記では、頂点シェーダー<code class="notranslate" translate="no">foo</code>は<code class="notranslate" translate="no">location(0)</code>で<code class="notranslate" translate="no">color</code>を<code class="notranslate" translate="no">vec4f</code>として、<code class="notranslate" translate="no">location(1)</code>で<code class="notranslate" translate="no">texcoords</code>を<code class="notranslate" translate="no">vec2f</code>として渡します。フラグメントシェーダー<code class="notranslate" translate="no">bar</code>は、場所が一致するため、それらを<code class="notranslate" translate="no">uv</code>と<code class="notranslate" translate="no">diffuse</code>として受け取ります。</p>
+<h4 id="フラグメントシェーダーの出力">フラグメントシェーダーの出力</h4>
+<p>フラグメントシェーダーの場合、<code class="notranslate" translate="no">@location</code>は、結果を格納する<code class="notranslate" translate="no">GPURenderPassDescriptor.colorAttachment</code>を指定します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct FSOut {
+  @location(0) albedo: vec4f;
+  @location(1) normal: vec4f;
+}
+@fragment fn bar(...) -&gt; FSOut { ... }
+</pre>
+<h3 id="builtinname"><code class="notranslate" translate="no">@builtin(name)</code></h3>
+<p><code class="notranslate" translate="no">@builtin</code>属性は、特定の変数の値がWebGPUの組み込み機能から取得されることを指定するために使用されます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs1(@builtin(vertex_index) foo: u32, @builtin(instance_index) bar: u32) ... {
+  ...
+}
+</pre>
+<p>上記では、<code class="notranslate" translate="no">foo</code>は組み込みの<code class="notranslate" translate="no">vertex_index</code>から値を取得し、<code class="notranslate" translate="no">bar</code>は組み込みの<code class="notranslate" translate="no">instance_index</code>から値を取得します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Foo {
+  @builtin(vertex_index) vNdx: u32,
+  @builtin(instance_index) iNdx: u32,
+}
+@vertex fn vs1(blap: Foo) ... {
+  ...
+}
+</pre>
+<p>上記では、<code class="notranslate" translate="no">blap.vNdx</code>は組み込みの<code class="notranslate" translate="no">vertex_index</code>から値を取得し、<code class="notranslate" translate="no">blap.iNdx</code>は組み込みの<code class="notranslate" translate="no">instance_index</code>から値を取得します。</p>
+<div class="webgpu_center center data-table">
+<table class="data">
+  <thead>
+    <tr>
+      <th>組み込み名</th>
+      <th>ステージ</th>
+      <th>IO</th>
+      <th>型</th>
+      <th>説明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-vertex_index">vertex_index</dfn> </td>
+      <td>頂点</td>
+      <td>入力</td>
+      <td>u32</td>
+      <td style="width:50%">
+       現在のAPIレベルの描画コマンド内の現在の頂点のインデックス。描画インスタンス化とは無関係です。
+       <p>非インデックス描画の場合、最初の頂点のインデックスは、直接または間接的に提供される描画の<code class="notranslate" translate="no">firstVertex</code>引数と等しくなります。
+         インデックスは、描画インスタンス内の追加の頂点ごとに1ずつインクリメントされます。</p>
+       <p>インデックス描画の場合、インデックスは、頂点のインデックスバッファエントリに、直接または間接的に提供される描画の<code class="notranslate" translate="no">baseVertex</code>引数を加えたものと等しくなります。</p></td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-instance_index">instance_index</dfn> </td>
+      <td>頂点</td>
+      <td>入力</td>
+      <td>u32</td>
+      <td style="width:50%">
+       現在のAPIレベルの描画コマンド内の現在の頂点のインスタンスインデックス。
+       <p>最初のインスタンスのインデックスは、直接または間接的に提供される描画の<code class="notranslate" translate="no">firstInstance</code>引数と等しくなります。
+         インデックスは、描画内の追加のインスタンスごとに1ずつインクリメントされます。</p></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-position">position</dfn> </td>
+      <td>頂点</td>
+      <td>出力</td>
+      <td>vec4&lt;f32&gt;</td>
+      <td style="width:50%">同次座標を使用した現在の頂点の出力位置。
+      同次正規化（<em>x</em>、<em>y</em>、<em>z</em>の各成分が<em>w</em>成分で除算される）の後、位置はWebGPU正規化デバイス座標空間にあります。
+      <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 座標系</a>を参照してください。</td>
+    </tr>
+    <tr>
+      <td>フラグメント</td>
+      <td>入力</td>
+      <td>vec4&lt;f32&gt;</td>
+      <td style="width:50%"><a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#framebuffer" id="ref-for-framebuffer">フレームバッファ</a>空間内の現在のフラグメントのフレームバッファ位置。
+      （<em>x</em>、<em>y</em>、<em>z</em>の成分は、<em>w</em>が1になるようにすでにスケーリングされています。）
+      <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 座標系</a>を参照してください。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-front_facing">front_facing</dfn> </td>
+      <td>フラグメント</td>
+      <td>入力</td>
+      <td>bool</td>
+      <td style="width:50%">現在のフラグメントが<a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#front-facing" id="ref-for-front-facing">前面</a>プリミティブ上にある場合はtrue。
+         それ以外の場合はfalse。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-frag_depth">frag_depth</dfn> </td>
+      <td>フラグメント</td>
+      <td>出力</td>
+      <td>f32</td>
+      <td style="width:50%">ビューポート深度範囲内のフラグメントの更新された深度。
+      <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 座標系</a>を参照してください。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_id">local_invocation_id</dfn> </td>
+      <td>コンピュート</td>
+      <td>入力</td>
+      <td>vec3&lt;u32&gt;</td>
+      <td style="width:50%">現在の呼び出しの<a data-link-type="dfn" href="#local-invocation-id" id="ref-for-local-invocation-id①">ローカル呼び出しID</a>、
+            つまり、<a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid①">ワークグループグリッド</a>内の位置。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_index">local_invocation_index</dfn> </td>
+      <td>コンピュート</td>
+      <td>入力</td>
+      <td>u32</td>
+      <td style="width:50%">現在の呼び出しの<a data-link-type="dfn" href="#local-invocation-index" id="ref-for-local-invocation-index">ローカル呼び出しインデックス</a>、<a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid②">ワークグループグリッド</a>内の呼び出しの位置の線形化されたインデックス。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-global_invocation_id">global_invocation_id</dfn> </td>
+      <td>コンピュート</td>
+      <td>入力</td>
+      <td>vec3&lt;u32&gt;</td>
+      <td style="width:50%">現在の呼び出しの<a data-link-type="dfn" href="#global-invocation-id" id="ref-for-global-invocation-id">グローバル呼び出しID</a>、
+          つまり、<a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">コンピュートシェーダーグリッド</a>内の位置。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-workgroup_id">workgroup_id</dfn> </td>
+      <td>コンピュート</td>
+      <td>入力</td>
+      <td>vec3&lt;u32&gt;</td>
+      <td style="width:50%">現在の呼び出しの<a data-link-type="dfn" href="#workgroup-id" id="ref-for-workgroup-id">ワークグループID</a>、
+          つまり、<a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">コンピュートシェーダーグリッド</a>内のワークグループの位置。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-num_workgroups">num_workgroups</dfn> </td>
+      <td>コンピュート</td>
+      <td>入力</td>
+      <td>vec3&lt;u32&gt;</td>
+      <td style="width:50%"><a data-link-type="dfn" href="#dispatch-size" id="ref-for-dispatch-size">ディスパッチサイズ</a>、<code class="notranslate" translate="no">vec&lt;u32&gt;(group_count_x, group_count_y, group_count_z)</code>、APIによって<a href="https://www.w3.org/TR/webgpu/#compute-pass-encoder-dispatch">ディスパッチ</a>されたコンピュートシェーダーの。</td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_index">sample_index</dfn> </td>
+      <td>フラグメント</td>
+      <td>入力</td>
+      <td>u32</td>
+      <td style="width:50%">現在のフラグメントのサンプルインデックス。
+         値は少なくとも0で、最大で<code class="notranslate" translate="no">sampleCount</code>-1です。ここで、<code class="notranslate" translate="no">sampleCount</code>は、GPUレンダーパイプラインに指定されたMSAAサンプル<code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-count" id="ref-for-dom-gpumultisamplestate-count">count</a></code>です。<br><a href="https://www.w3.org/TR/webgpu/#gpurenderpipeline"><cite>WebGPU</cite> § 10.3 GPURenderPipeline</a>を参照してください。</td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_mask">sample_mask</dfn> </td>
+      <td>フラグメント</td>
+      <td>入力</td>
+      <td>u32</td>
+      <td style="width:50%">現在のフラグメントのサンプルカバレッジマスク。
+         このフラグメント内のどのサンプルがレンダリングされるプリミティブでカバーされているかを示すビットマスクが含まれています。<br><a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 サンプルマスキング</a>を参照してください。</td>
+    </tr>
+    <tr>
+      <td>フラグメント</td>
+      <td>出力</td>
+      <td>u32</td>
+      <td style="width:50%">現在のフラグメントのサンプルカバレッジマスク制御。
+         この変数に書き込まれた最後の値が<a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#shader-output-mask" id="ref-for-shader-output-mask">シェーダー出力マスク</a>になります。
+         書き込まれた値のゼロビットにより、カラーアタッチメントの対応するサンプルが破棄されます。<br><a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 サンプルマスキング</a>を参照してください。</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<h2 id="フロー制御">フロー制御</h2>
+<p>ほとんどのコンピュータ言語と同様に、WGSLにはフロー制御ステートメントがあります。</p>
+<h3 id="for">for</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; i++) { ... }
+</pre>
+<h3 id="if">if</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    if (i &lt; 5) {
+      ...
+    } else if (i &gt; 7) {
+      ..
+    } else {
+      ...
+    }
+</pre>
+<h3 id="while">while</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var j = 0;
+  while (j &lt; 5) {
+    ...
+    j++;
+  }
+</pre>
+<h3 id="loop">loop</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    if (k &gt;= 5) {
+      break;
+    }
+  }
+</pre>
+<h3 id="break">break</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    if (k &gt;= 5) {
+      break;
+    }
+  }
+</pre>
+<h3 id="break-if">break if</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var k = 0;
+  loop {
+    k++;
+    break if (k &gt;= 5);
+  }
+</pre>
+<h3 id="continue">continue</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; ++i) {
+    if (i % 2 == 1) {
+      continue;
+    }
+    ...
+  }
+</pre>
+<h3 id="continuing">continuing</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var i = 0; i &lt; 10; ++i) {
+    if (i % 2 == 1) {
+      continue;
+    }
+    ...
+
+    continuing {
+      // continueはここに行きます
+      ...
+    }
+  }
+</pre>
+<h3 id="discard">discard</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">   if (v &lt; 0.5) {
+     discard;
+   }
+</pre>
+<p><code class="notranslate" translate="no">discard</code>はシェーダーを終了します。フラグメントシェーダーでのみ使用できます。</p>
+<h3 id="switch">switch</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">var a : i32;
+let x : i32 = generateValue();
+switch x {
+  case 0: {      // コロンはオプションです
+    a = 1;
+  }
+  default {      // デフォルトは最後に表示する必要はありません
+    a = 2;
+  }
+  case 1, 2, {   // 複数のセレクター値を使用できます
+    a = 3;
+  }
+  case 3, {      // 末尾のカンマはオプションです
+    a = 4;
+  }
+  case 4 {
+    a = 5;
+  }
+}
+</pre>
+<p><code class="notranslate" translate="no">switch</code>は<code class="notranslate" translate="no">u32</code>または<code class="notranslate" translate="no">i32</code>でのみ機能し、ケースは定数でなければなりません。</p>
+<h2 id="演算子">演算子</h2>
+<div class="webgpu_center center data-table">
+<table class="data">
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>演算子</th>
+      <th>結合性</th>
+      <th>バインディング</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>括弧付き</td>
+      <td><code class="notranslate" translate="no">(...)</code></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>プライマリ</td>
+      <td><code class="notranslate" translate="no">a()</code>, <code class="notranslate" translate="no">a[]</code>, <code class="notranslate" translate="no">a.b</code></td>
+      <td>左から右</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>単項</td>
+      <td><code class="notranslate" translate="no">-a</code>, <code class="notranslate" translate="no">!a</code>, <code class="notranslate" translate="no">~a</code>, <code class="notranslate" translate="no">*a</code>, <code class="notranslate" translate="no">&amp;a</code></td>
+      <td>右から左</td>
+      <td>上記すべて</td>
+    </tr>
+    <tr>
+      <td>乗法</td>
+      <td><code class="notranslate" translate="no">a * b</code>, <code class="notranslate" translate="no">a / b</code>, <code class="notranslate" translate="no">a % b</code></td>
+      <td>左から右</td>
+      <td>上記すべて</td>
+    </tr>
+    <tr>
+      <td>加法</td>
+      <td><code class="notranslate" translate="no">a + b</code>, <code class="notranslate" translate="no">a - b</code></td>
+      <td>左から右</td>
+      <td>上記すべて</td>
+    </tr>
+    <tr>
+      <td>シフト</td>
+      <td><code class="notranslate" translate="no">a &lt;&lt; b</code>, <code class="notranslate" translate="no">a &gt;&gt; b</code></td>
+      <td>括弧が必要</td>
+      <td>単項</td>
+    </tr>
+    <tr>
+      <td>関係</td>
+      <td><code class="notranslate" translate="no">a &lt; b</code>, <code class="notranslate" translate="no">a &gt; b</code>, <code class="notranslate" translate="no">a &lt;= b</code>, <code class="notranslate" translate="no">a &gt;= b</code>, <code class="notranslate" translate="no">a == b</code>, <code class="notranslate" translate="no">a != b</code></td>
+      <td>括弧が必要</td>
+      <td>上記すべて</td>
+    </tr>
+    <tr>
+      <td>バイナリAND</td>
+      <td><code class="notranslate" translate="no">a &amp; b</code></td>
+      <td>左から右</td>
+      <td>単項</td>
+    </tr>
+    <tr>
+      <td>バイナリXOR</td>
+      <td><code class="notranslate" translate="no">a ^ b</code></td>
+      <td>左から右</td>
+      <td>単項</td>
+    </tr>
+    <tr>
+      <td>バイナリOR</td>
+      <td><code class="notranslate" translate="no">a | b</code></td>
+      <td>左から右</td>
+      <td>単項</td>
+    </tr>
+    <tr>
+      <td>短絡AND</td>
+      <td><code class="notranslate" translate="no">a &amp;&amp; b</code></td>
+      <td>左から右</td>
+      <td>関係</td>
+    </tr>
+    <tr>
+      <td>短絡OR</td>
+      <td><code class="notranslate" translate="no">a || b</code></td>
+      <td>左から右</td>
+      <td>関係</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h2 id="組み込み関数">組み込み関数</h2>
+<p><a href="webgpu-wgsl-function-reference.html">WGSL関数リファレンス</a>を参照してください。</p>
+<h2 id="他の言語との違い">他の言語との違い</h2>
+<h3 id="if、while、switch、break-if式には括弧は必要ありません。"><code class="notranslate" translate="no">if</code>、<code class="notranslate" translate="no">while</code>、<code class="notranslate" translate="no">switch</code>、<code class="notranslate" translate="no">break-if</code>式には括弧は必要ありません。</h3>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">if a &lt; 5 {
+  doTheThing();
+}
+</pre>
+<h3 id="三項演算子なし">三項演算子なし</h3>
+<p>多くの言語には、三項演算子<code class="notranslate" translate="no">condition ? trueExpression : falseExpression</code>があります。WGSLにはありません。WGSLには<code class="notranslate" translate="no">select</code>があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let a = select(falseExpression, trueExpression, condition);
+</pre>
+<h3 id="と--は式ではなく、ステートメントです。"><code class="notranslate" translate="no">++</code>と<code class="notranslate" translate="no">--</code>は式ではなく、ステートメントです。</h3>
+<p>多くの言語には、<em>前置インクリメント</em>と<em>後置インクリメント</em>演算子があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// JavaScript
+let a = 5;
+let b = a++;  // b = 5, a = 6  (後置インクリメント)
+let c = ++a;  // c = 7, a = 7  (前置インクリメント)
+</pre>
+<p>WGSLにはどちらもありません。インクリメントおよびデクリメントステートメントのみがあります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">// WGSL
+var a = 5;
+a++;          // は現在6です
+*++a;          // エラー：前置インクリメントのようなものはありません
+*let b = a++;  // エラー：a++は式ではなく、ステートメントです
+</pre>
+<h2 id="、-は式ではなく、代入ステートメントです。"><code class="notranslate" translate="no">+=</code>、<code class="notranslate" translate="no">-=</code>は式ではなく、代入ステートメントです。</h2>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// JavaScript
+let a = 5;
+a += 2;          // a = 7
+let b = a += 2;  // a = 9, b = 9
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">// WGSL
+let a = 5;
+a += 2;           // aは7です
+*let b = a += 2;  // エラー：a += 2は式ではありません
+</pre>
+<h2 id="スウィズルは左側に表示できません。">スウィズルは左側に表示できません。</h2>
+<p>一部の言語ではそうですが、WGSLではそうではありません。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">var color = vec4f(0.25, 0.5, 0.75, 1);
+*color.rgb = color.bgr; // エラー
+color = vec4(color.bgr, color.a);  // OK
+</pre>
+<p>注：この機能を追加する提案があります。</p>
+<h2 id="_への偽の代入"><code class="notranslate" translate="no">_</code>への偽の代入</h2>
+<p><code class="notranslate" translate="no">_</code>は、何かを使用済みのように見せるが、実際には使用しないように代入できる特別な変数です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;uniforms&gt; uni1: vec4f;
+@group(0) @binding(0) var&lt;uniforms&gt; uni2: mat4x4f;
+
+@vertex fn vs1(): @builtin(position) vec4f {
+  return vec4f(0);
+}
+
+@vertex fn vs2(): @builtin(position) vec4f {
+  _ = uni1;
+  _ = uni2;
+  return vec4f(0);
+}
+</pre>
+<p>上記では、<code class="notranslate" translate="no">uni1</code>も<code class="notranslate" translate="no">uni2</code>も<code class="notranslate" translate="no">vs1</code>によってアクセスされないため、パイプラインで<code class="notranslate" translate="no">vs1</code>を使用する場合、必須のバインディングとして表示されません。<code class="notranslate" translate="no">vs2</code>は<code class="notranslate" translate="no">uni1</code>と<code class="notranslate" translate="no">uni2</code>の両方を参照するため、パイプラインで<code class="notranslate" translate="no">vs2</code>を使用する場合、両方とも必須のバインディングとして表示されます。</p>
+<p class="copyright" data-fill-with="copyright">  <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>JavaScriptの変数は、<code class="notranslate" translate="no">undefined</code>、<code class="notranslate" translate="no">null</code>、<code class="notranslate" translate="no">boolean</code>、<code class="notranslate" translate="no">number</code>、<code class="notranslate" translate="no">string</code>、<code class="notranslate" translate="no">reference-to-object</code>の基本型を保持します。プログラミングに慣れていない人にとって、<code class="notranslate" translate="no">const o = {name: 'foo'}; o.name = 'bar';</code>が機能するのは、<code class="notranslate" translate="no">o</code>が<code class="notranslate" translate="no">const</code>として宣言されているため、混乱する可能性があります。重要なのは、<code class="notranslate" translate="no">o</code>が定数であるということです。これは、オブジェクトへの定数参照です。<code class="notranslate" translate="no">o</code>が参照するオブジェクトを変更することはできません。オブジェクト自体を変更することはできます。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +897,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +986,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU WGSL`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

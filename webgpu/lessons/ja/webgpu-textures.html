@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-textures.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Textures">
+
+<meta name="description" content="テクスチャの使用方法">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures_ja.jpg">
+
+<meta property="og:title" content="WebGPU テクスチャ">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use Textures">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures_ja.jpg">
+<meta property="og:description" content="テクスチャの使用方法">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-textures.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Textures">
+<meta name="twitter:title" content="WebGPU テクスチャ">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-textures.html">
-<meta name="twitter:description" content="How to use Textures">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="テクスチャの使用方法">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-textures.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-textures.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-textures.html",
+      "inLanguage":"ja",
+      "name":"WebGPU テクスチャ",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-textures.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Textures</title>
+<title>WebGPU テクスチャ</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,1003 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Textures</h1>
+    <h1>WebGPU テクスチャ</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-textures.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事では、テクスチャの基本について説明します。前の記事では、シェーダーにデータを渡す他の主要な方法について説明しました。それらは、<a href="webgpu-inter-stage-variables.html">ステージ間変数</a>、<a href="webgpu-uniforms.html">ユニフォーム</a>、<a href="webgpu-storage-buffers.html">ストレージバッファ</a>、および<a href="../webgpu-vertex-buffers">頂点バッファ</a>でした。シェーダーにデータを渡す最後の主要な方法は、テクスチャです。</p>
+<p>テクスチャは、ほとんどの場合、2D画像を表します。2D画像は、色の値の2D配列にすぎないので、なぜ2D配列にテクスチャが必要なのか疑問に思うかもしれません。ストレージバッファを2D配列として使用することもできます。テクスチャを特別なものにしているのは、<em>サンプラー</em>と呼ばれる特別なハードウェアでアクセスできることです。サンプラーは、テクスチャ内の最大16個の異なる値を読み取り、多くの一般的なユースケースで役立つ方法でそれらをブレンドできます。</p>
+<p>一例として、元のサイズよりも大きい2D画像を描画したいとします。</p>
+<div class="webgpu_center">
+  <div>
+    <div><img class="pixel-perfect" src="../resources/kiana.png" style="max-width: 100%; width: 128px; height: 128px; image-rendering: pixelated; image-rendering: crisp-edges;"></div>
+    <div style="text-align: center;">オリジナル</div>
+  </div>
+</div>
+<p>元の画像から単一のピクセルを取得して、より大きな画像の各ピクセルを作成するだけの場合、以下の最初の例のようになります。代わりに、より大きな画像の特定のピクセルについて、元の画像から複数のピクセルを考慮すると、以下の2番目の画像のような結果が得られ、うまくいけばピクセル化が少なく表示されます。</p>
+<div class="webgpu_center compare">
+  <div>
+    <div><img class="pixel-perfect" src="../resources/kiana.png" style="max-width: 100%; width: 512px; height: 512px; image-rendering: pixelated; image-rendering: crisp-edges;"></div>
+    <div>フィルタリングなし</div>
+  </div>
+  <div>
+    <div><img class="pixel-perfect" src="../resources/kiana.png" style="max-width: 100%; width: 512px; height: 512px;"></div>
+    <div>フィルタリングあり</div>
+  </div>
+</div>
+<p>テクスチャから個々のピクセルを取得するWGSL関数があり、そのためのユースケースがありますが、それらの関数は、ストレージバッファで同じことができるため、それほど興味深いものではありません。テクスチャの興味深いWGSL関数は、複数のピクセルをフィルタリングしてブレンドするものです。</p>
+<p>これらのWGSL関数は、データを表すテクスチャ、テクスチャからデータを取得する方法を表すサンプラー、およびテクスチャから値を取得する場所を指定するテクスチャ座標を受け取ります。</p>
+<p>サンプリングされたテクスチャのテクスチャ座標は、テクスチャの実際のサイズに関係なく、テクスチャ全体で0.0から1.0まで上下に移動します。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<div class="webgpu_center"><img src="../resources/texture-coordinates-diagram.svg" style="width: 500px;"></div>
+<p><a href="webgpu-inter-stage-variables.html">ステージ間変数に関する記事</a>のサンプルの1つを取り上げ、テクスチャ付きのクワッド（2つの三角形）を描画するように変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurVertexShaderOutput {
+  @builtin(position) position: vec4f,
+-  @location(0) color: vec4f,
++  @location(0) texcoord: vec2f,
+};
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+-  let pos = array(
+-    vec2f( 0.0,  0.5),  // top center
+-    vec2f(-0.5, -0.5),  // bottom left
+-    vec2f( 0.5, -0.5)   // bottom right
+-  );
+-  var color = array&lt;vec4f, 3&gt;(
+-    vec4f(1, 0, 0, 1), // red
+-    vec4f(0, 1, 0, 1), // green
+-    vec4f(0, 0, 1, 1), // blue
+-  );
++  let pos = array(
++    // 1st triangle
++    vec2f( 0.0,  0.0),  // center
++    vec2f( 1.0,  0.0),  // right, center
++    vec2f( 0.0,  1.0),  // center, top
++
++    // 2nd triangle
++    vec2f( 0.0,  1.0),  // center, top
++    vec2f( 1.0,  0.0),  // right, center
++    vec2f( 1.0,  1.0),  // right, top
++  );
+
+  var vsOutput: OurVertexShaderOutput;
+-  vsOutput.position = vec4f(pos[vertexIndex], 0.0, 1.0);
+-  vsOutput.color = color[vertexIndex];
++  let xy = pos[vertexIndex];
++  vsOutput.position = vec4f(xy, 0.0, 1.0);
++  vsOutput.texcoord = xy;
+  return vsOutput;
+}
+
++@group(0) @binding(0) var ourSampler: sampler;
++@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+-  return fsInput.color;
++  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+}
+</pre>
+<p>上記では、中央揃えの三角形を描画する3つの頂点から、キャンバスの右上隅にクワッドを描画する6つの頂点に変更しました。</p>
+<p><code class="notranslate" translate="no">OutVertexShaderOutput</code>を変更して、テクスチャ座標をフラグメントシェーダーに渡すことができるように<code class="notranslate" translate="no">texcoord</code>（<code class="notranslate" translate="no">vec2f</code>）を渡すようにしました。頂点シェーダーを変更して、ハードコードされた位置の配列から取得したクリップ空間の位置と同じように<code class="notranslate" translate="no">vsOutput.texcoord</code>を設定するようにしました。<code class="notranslate" translate="no">vsOutput.texcoord</code>は、フラグメントシェーダーに渡されるときに、各三角形の3つの頂点の間で補間されます。</p>
+<p>次に、サンプラーとテクスチャを宣言し、それらをフラグメントシェーダーで参照しました。関数<code class="notranslate" translate="no">textureSample</code>は、テクスチャを<em>サンプリング</em>します。最初のパラメータはサンプリングするテクスチャです。2番目のパラメータは、テクスチャをサンプリングする方法を指定するサンプラーです。3番目は、サンプリングする場所のテクスチャ座標です。</p>
+<blockquote>
+<p>注：位置の値をテクスチャ座標として渡すことは一般的ではありませんが、この特定の単位クワッド（幅1単位、高さ1単位のクワッド）の場合、必要なテクスチャ座標が位置と一致することがたまたまあります。このようにすると、例が小さく、単純になります。<a href="webgpu-vertex-buffers.html">頂点バッファ</a>を介してテクスチャ座標を提供するのがはるかに一般的です。</p>
+</blockquote>
+<p>次に、テクスチャデータを作成する必要があります。5x7テクセルの<code class="notranslate" translate="no">F</code>を作成します<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kTextureWidth = 5;
+  const kTextureHeight = 7;
+  const _ = [255,   0,   0, 255];  // 赤
+  const y = [255, 255,   0, 255];  // 黄
+  const b = [  0,   0, 255, 255];  // 青
+  const textureData = new Uint8Array([
+    b, _, _, _, _,
+    _, y, y, y, _,
+    _, y, _, _, _,
+    _, y, y, _, _,
+    _, y, _, _, _,
+    _, y, _, _, _,
+    _, _, _, _, _,
+  ].flat());
+</pre>
+<p>うまくいけば、そこに<code class="notranslate" translate="no">F</code>と、左上隅（最初の値）に青いテクセルが表示されるはずです。</p>
+<p><code class="notranslate" translate="no">rgba8unorm</code>テクスチャを作成します。<code class="notranslate" translate="no">rgba8unorm</code>は、テクスチャに赤、緑、青、アルファの値があることを意味します。各値は8ビットの符号なしで、テクスチャで使用されるときに正規化されます。<code class="notranslate" translate="no">unorm</code>は<code class="notranslate" translate="no">unsigned normalized</code>の略で、値が（0から255）の符号なしバイトから（0.0から1.0）の浮動小数点値に変換されることを意味する派手な言い方です。</p>
+<p>つまり、テクスチャに入力した値が<code class="notranslate" translate="no">[64, 128, 192, 255]</code>の場合、シェーダーの値は<code class="notranslate" translate="no">[64 / 255, 128 / 255, 192 / 255, 255 / 255]</code>、つまり<code class="notranslate" translate="no">[0.25, 0.50, 0.75, 1.00]</code>になります。</p>
+<p>データができたので、テクスチャを作成する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = device.createTexture({
+    size: [kTextureWidth, kTextureHeight],
+    format: 'rgba8unorm',
+    usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+  });
+</pre>
+<p><code class="notranslate" translate="no">device.createTexture</code>の場合、<code class="notranslate" translate="no">size</code>パラメータはかなり明白なはずです。形式は上記のように<code class="notranslate" translate="no">rgba8unorm</code>です。<code class="notranslate" translate="no">usage</code>については、<code class="notranslate" translate="no">GPUTextureUsage.TEXTURE_BINDING</code>は、このテクスチャをバインドグループにバインドできるようにしたいことを意味し<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>、<code class="notranslate" translate="no">COPY_DST</code>は、それにデータをコピーできるようにしたいことを意味します。</p>
+<p>次に、まさにそれを行い、データをそれにコピーする必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  device.queue.writeTexture(
+      { texture },
+      textureData,
+      { bytesPerRow: kTextureWidth * 4 },
+      { width: kTextureWidth, height: kTextureHeight },
+  );
+</pre>
+<p><code class="notranslate" translate="no">device.queue.writeTexture</code>の場合、最初のパラメータは更新したいテクスチャです。2番目はそれにコピーしたいデータです。3番目は、テクスチャにコピーするときにそのデータを読み取る方法を定義します。<code class="notranslate" translate="no">bytesPerRow</code>は、ソースデータの1行から次の行に進むために取得するバイト数を指定します。最後に、最後のパラメータはコピーのサイズを指定します。</p>
+<p>サンプラーも作成する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const sampler = device.createSampler();
+</pre>
+<p>テクスチャとサンプラーの両方を、シェーダーに入力した<code class="notranslate" translate="no">@binding(?)</code>と一致するバインディングを持つバインドグループに追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: texture.createView() },
+    ],
+  });
+</pre>
+<p>レンダリングを更新するには、バインドグループを指定し、2つの三角形で構成されるクワッドをレンダリングするために6つの頂点をレンダリングする必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
++    pass.setBindGroup(0, bindGroup);
+-    pass.draw(3);  // 頂点シェーダーを3回呼び出します
++    pass.draw(6);  // 頂点シェーダーを6回呼び出します
+    pass.end();
+</pre>
+<p>そして、それを実行すると、次のようになります。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p><strong>なぜFは逆さまなのですか？</strong></p>
+<p>もう一度テクスチャ座標の図を参照すると、テクスチャ座標0,0がテクスチャの最初のテクセルを参照していることがわかります。クワッドのキャンバスの中心の位置は0,0であり、その値をテクスチャ座標として使用するため、図が示すように、0,0のテクスチャ座標は最初の青いテクセルを参照しています。</p>
+<p>これを修正するには、2つの一般的な解決策があります。</p>
+<ol>
+<li>
+<p>テクスチャ座標を反転させる</p>
+<p>この例では、頂点シェーダーでテクスチャ座標を変更できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-  vsOutput.texcoord = xy;
++  vsOutput.texcoord = vec2f(xy.x, 1.0 - xy.y);
+</pre>
+<p>またはフラグメントシェーダー</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
++  let texcoord = vec2f(fsInput.texcoord.x, 1.0 - fsInput.texcoord.y);
++  return textureSample(ourTexture, ourSampler, texcoord);
+</pre>
+<p>もちろん、<a href="webgpu-vertex-buffers.html">頂点バッファ</a>または<a href="webgpu-storage-buffers.html">ストレージバッファ</a>を介してテクスチャ座標を提供している場合は、理想的にはソースでそれらを反転させます。</p>
+</li>
+<li>
+<p>テクスチャデータを反転させる</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const textureData = new Uint8Array([
+-   b, _, _, _, _,
+-   _, y, y, y, _,
+-   _, y, _, _, _,
+-   _, y, y, _, _,
+-   _, y, _, _, _,
+-   _, y, _, _, _,
+-   _, _, _, _, _,
++   _, _, _, _, _,
++   _, y, _, _, _,
++   _, y, _, _, _,
++   _, y, y, _, _,
++   _, y, _, _, _,
++   _, y, y, y, _,
++   b, _, _, _, _,
+ ].flat());
+</pre>
+<p>データを反転させると、以前は上部にあったものが下部になり、元の画像の左下のピクセルがテクスチャの最初のデータになり、テクスチャ座標0,0が参照するものになります。これが、テクスチャ座標が下部の0から上部の1に進むと見なされることが多い理由です。</p>
+<div class="webgpu_center"><img src="../resources/texture-coordinates-y-flipped.svg" style="width: 500px;"></div>
+<p>データの反転は非常に一般的であるため、画像、ビデオ、キャンバスからテクスチャを読み込むときに、データを反転させるオプションさえあります。</p>
+</li>
+</ol>
+<h2 id="magfilter"><a id="a-mag-filter"></a>magFilter</h2>
+<p>上記の例では、デフォルト設定のサンプラーを使用しています。5x7テクスチャを元の5x7テクセルよりも大きく描画しているため、サンプラーは<code class="notranslate" translate="no">magFilter</code>と呼ばれるもの、つまりテクスチャを拡大するときに使用されるフィルターを使用します。これを<code class="notranslate" translate="no">nearest</code>から<code class="notranslate" translate="no">linear</code>に変更すると、4つのピクセル間で線形補間されます。</p>
+<p><a id="a-linear-interpolation"></a></p>
+<div class="webgpu_center center diagram"><div data-diagram="linear-interpolation" style="display: inline-block; width: 600px;"></div></div>
+<p>テクスチャ座標はしばしば「UV」（ユーブイと発音）と呼ばれるため、上の図では<code class="notranslate" translate="no">uv</code>はテクスチャ座標です。特定のuvに対して、最も近い4つのピクセルが選択されます。<code class="notranslate" translate="no">t1</code>は、選択された左上のピクセルの中心と、その右側のピクセルの中心との間の水平距離であり、0は水平方向に左のピクセルの中心にあり、1は水平方向に右の選択されたピクセルの中心にあることを意味します。<code class="notranslate" translate="no">t2</code>も同様ですが、垂直方向です。</p>
+<p><code class="notranslate" translate="no">t1</code>は、上の2つのピクセルを*「混合」*して中間色を生成するために使用されます。<em>mix</em>は2つの値を線形補間するため、<code class="notranslate" translate="no">t1</code>が0の場合、最初の色のみが得られます。<code class="notranslate" translate="no">t1</code> = 1の場合、2番目の色のみが得られます。0と1の間の値は、比例した混合を生成します。たとえば、0.3は、最初の色の70％と2番目の色の30％になります。同様に、下の2つのピクセルに対して2番目の中間色が計算されます。最後に、<code class="notranslate" translate="no">t2</code>を使用して、2つの中間色を最終的な色に混合します。</p>
+<p>もう1つ注意すべき点は、図の下部にさらに2つのサンプラー設定、<code class="notranslate" translate="no">addressModeU</code>と<code class="notranslate" translate="no">addressModeV</code>があることです。これらを<code class="notranslate" translate="no">repeat</code>または<code class="notranslate" translate="no">clamp-to-edge</code>に設定できます<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>。<code class="notranslate" translate="no">repeat</code>に設定すると、テクスチャ座標がテクスチャの端から半テクセル以内にある場合、テクスチャの反対側のピクセルとブレンドされます。<code class="notranslate" translate="no">clamp-to-edge</code>に設定すると、返す色を計算する目的で、テクスチャ座標がクランプされ、各端の最後の半テクセルに入ることができなくなります。これにより、その範囲外のテクスチャ座標に対してエッジの色が表示される効果があります。</p>
+<p>これらのすべてのオプションでクワッドを描画するように例を更新しましょう。</p>
+<p>まず、設定の組み合わせごとにサンプラーを作成します。また、そのサンプラーを使用するバインドグループも作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const bindGroups = [];
++  for (let i = 0; i &lt; 8; ++i) {
+-   const sampler = device.createSampler();
++   const sampler = device.createSampler({
++      addressModeU: (i &amp; 1) ? 'repeat' : 'clamp-to-edge',
++      addressModeV: (i &amp; 2) ? 'repeat' : 'clamp-to-edge',
++      magFilter: (i &amp; 4) ? 'linear' : 'nearest',
++    });
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: sampler },
+        { binding: 1, resource: texture.createView() },
+      ],
+    });
++    bindGroups.push(bindGroup);
++  }
+</pre>
+<p>いくつかの設定を作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    addressModeU: 'repeat',
+    addressModeV: 'repeat',
+    magFilter: 'linear',
+  };
+</pre>
+<p>そして、レンダリング時に、設定を見て、使用するバインドグループを決定します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
++    const ndx = (settings.addressModeU === 'repeat' ? 1 : 0) +
++                (settings.addressModeV === 'repeat' ? 2 : 0) +
++                (settings.magFilter === 'linear' ? 4 : 0);
++    const bindGroup = bindGroups[ndx];
+   ...
+</pre>
+<p>次に、設定を変更できるUIを提供し、設定が変更されたときに再レンダリングする必要があります。「muigui」というライブラリを使用していますが、現時点では<a href="https://github.com/dataarts/dat.gui">dat.GUI</a>と同様のAPIを持っています。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import GUI from '../3rdparty/muigui-0.x.module.js';
+
+...
+
+  const settings = {
+    addressModeU: 'repeat',
+    addressModeV: 'repeat',
+    magFilter: 'linear',
+  };
+
+  const addressOptions = ['repeat', 'clamp-to-edge'];
+  const filterOptions = ['nearest', 'linear'];
+
+  const gui = new GUI();
+  gui.onChange(render);
+  Object.assign(gui.domElement.style, {right: '', left: '15px'});
+  gui.add(settings, 'addressModeU', addressOptions);
+  gui.add(settings, 'addressModeV', addressOptions);
+  gui.add(settings, 'magFilter', filterOptions);
+</pre>
+<p>上記のコードは<code class="notranslate" translate="no">settings</code>を宣言し、それらを設定するためのUIを作成し、変更されたときに<code class="notranslate" translate="no">render</code>を呼び出します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-linear.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-linear.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>フラグメントシェーダーは補間されたテクスチャ座標を受け取るため、シェーダーがそれらの座標で<code class="notranslate" translate="no">textureSample</code>を呼び出すと、レンダリングされる各ピクセルに色を提供するように求められるため、異なるブレンドされた色が得られます。アドレスモードを「repeat」に設定すると、WebGPUがテクスチャの反対側のテクセルから「サンプリング」していることがわかります。</p>
+<h2 id="minfilter"><a id="a-min-filter"></a>minFilter</h2>
+<p>また、<code class="notranslate" translate="no">minFilter</code>という設定もあり、テクスチャがそのサイズよりも小さく描画されるときに<code class="notranslate" translate="no">magFilter</code>と同様の計算を行います。<code class="notranslate" translate="no">linear</code>に設定すると、4つのピクセルを選択し、上記と同様の数学に従ってそれらをブレンドします。</p>
+<p>問題は、より大きなテクスチャから4つのブレンドされたピクセルを選択して、たとえば1ピクセルをレンダリングすると、色が変化し、ちらつきが発生することです。</p>
+<p>問題を確認できるように、やってみましょう。</p>
+<p>まず、キャンバスを低解像度にしましょう。これを行うには、ブラウザがキャンバス自体に同じ<code class="notranslate" translate="no">magFilter: 'linear'</code>効果を適用しないようにCSSを更新する必要があります。次のようにCSSを設定することでこれを行うことができます。</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">canvas {
+  display: block;  /* canvasをブロックのように動作させる */
+  width: 100%;     /* canvasがコンテナを埋めるようにする */
+  height: 100%;
++  image-rendering: pixelated;
++  image-rendering: crisp-edges;
+}
+</pre>
+<p>次に、<a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>コールバックでキャンバスの解像度を下げましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+-      const width = entry.contentBoxSize[0].inlineSize;
+-      const height = entry.contentBoxSize[0].blockSize;
++      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
++      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // 再レンダリング
+      render();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>クワッドを移動およびスケーリングするので、<a href="webgpu-uniforms.html">ユニフォームに関する記事</a>の最初の例で行ったように、ユニフォームバッファを追加します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurVertexShaderOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
++struct Uniforms {
++  scale: vec2f,
++  offset: vec2f,
++};
++
++@group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+  let pos = array(
+    // 1番目の三角形
+    vec2f( 0.0,  0.0),  // 中央
+    vec2f( 1.0,  0.0),  // 右、中央
+    vec2f( 0.0,  1.0),  // 中央、上
+
+    // 2番目の三角形
+    vec2f( 0.0,  1.0),  // 中央、上
+    vec2f( 1.0,  0.0),  // 右、中央
+    vec2f( 1.0,  1.0),  // 右、上
+  );
+
+  var vsOutput: OurVertexShaderOutput;
+  let xy = pos[vertexIndex];
+-  vsOutput.position = vec4f(xy, 0.0, 1.0);
++  vsOutput.position = vec4f(xy * uni.scale + uni.offset, 0.0, 1.0);
+  vsOutput.texcoord = xy;
+  return vsOutput;
+}
+
+@group(0) @binding(0) var ourSampler: sampler;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+}
+</pre>
+<p>ユニフォームができたので、ユニフォームバッファを作成し、バインドグループに追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // ユニフォーム値用のバッファを作成します
++  const uniformBufferSize =
++    2 * 4 + // scaleは2つの32ビット浮動小数点数（各4バイト）です
++    2 * 4;  // offsetは2つの32ビット浮動小数点数（各4バイト）です
++  const uniformBuffer = device.createBuffer({
++    label: 'uniforms for quad',
++    size: uniformBufferSize,
++    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++  });
++
++  // JavaScript側でユニフォームの値を保持するための型付き配列を作成します
++  const uniformValues = new Float32Array(uniformBufferSize / 4);
++
++  // float32インデックスでのさまざまなユニフォーム値へのオフセット
++  const kScaleOffset = 0;
++  const kOffsetOffset = 2;
+
+  const bindGroups = [];
+  for (let i = 0; i &lt; 8; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: (i &amp; 1) ? 'repeat' : 'clamp-to-edge',
+      addressModeV: (i &amp; 2) ? 'repeat' : 'clamp-to-edge',
+      magFilter: (i &amp; 4) ? 'linear' : 'nearest',
+    });
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: sampler },
+        { binding: 1, resource: texture.createView() },
++        { binding: 2, resource: uniformBuffer },
+      ],
+    });
+    bindGroups.push(bindGroup);
+  }
+</pre>
+<p>そして、ユニフォームの値を設定し、GPUにアップロードするコードが必要です。これをアニメーション化するので、<code class="notranslate" translate="no">requestAnimationFrame</code>を使用して継続的にレンダリングするようにコードを変更します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    time *= 0.001;
+    const ndx = (settings.addressModeU === 'repeat' ? 1 : 0) +
+                (settings.addressModeV === 'repeat' ? 2 : 0) +
+                (settings.magFilter === 'linear' ? 4 : 0);
+    const bindGroup = bindGroups[ndx];
+
++    // 0から1のクリップ空間クワッドを描画するスケールを計算します
++    // キャンバスの2x2ピクセル。
++    const scaleX = 4 / canvas.width;
++    const scaleY = 4 / canvas.height;
++
++    uniformValues.set([scaleX, scaleY], kScaleOffset); // スケールを設定します
++    uniformValues.set([Math.sin(time * 0.25) * 0.8, -0.8], kOffsetOffset); // オフセットを設定します
++
++    // JavaScriptからGPUに値をコピーします
++    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+    ...
+
++    requestAnimationFrame(render);
+  }
++  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
+      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+-      // 再レンダリング
+-      render();
+    }
+  });
+  observer.observe(canvas);
+}
+</pre>
+<p>上記のコードは、キャンバスの2x2ピクセルのサイズのクワッドを描画するようにスケールを設定します。また、<code class="notranslate" translate="no">Math.sin</code>を使用してオフセットを-0.8から+0.8に設定し、クワッドがキャンバスをゆっくりと往復するようにします。</p>
+<p>最後に、設定と組み合わせに<code class="notranslate" translate="no">minFilter</code>を追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroups = [];
+  for (let i = 0; i &lt; 16; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: (i &amp; 1) ? 'repeat' : 'clamp-to-edge',
+      addressModeV: (i &amp; 2) ? 'repeat' : 'clamp-to-edge',
+      magFilter: (i &amp; 4) ? 'linear' : 'nearest',
++      minFilter: (i &amp; 8) ? 'linear' : 'nearest',
+    });
+
+...
+
+  const settings = {
+    addressModeU: 'repeat',
+    addressModeV: 'repeat',
+    magFilter: 'linear',
++    minFilter: 'linear',
+  };
+
+  const addressOptions = ['repeat', 'clamp-to-edge'];
+  const filterOptions = ['nearest', 'linear'];
+
+  const gui = new GUI();
+-  gui.onChange(render);
+  Object.assign(gui.domElement.style, {right: '', left: '15px'});
+  gui.add(settings, 'addressModeU', addressOptions);
+  gui.add(settings, 'addressModeV', addressOptions);
+  gui.add(settings, 'magFilter', filterOptions);
++  gui.add(settings, 'minFilter', filterOptions);
+
+  function render(time) {
+    time *= 0.001;
+    const ndx = (settings.addressModeU === 'repeat' ? 1 : 0) +
+                (settings.addressModeV === 'repeat' ? 2 : 0) +
+-                (settings.magFilter === 'linear' ? 4 : 0);
++                (settings.magFilter === 'linear' ? 4 : 0) +
++                (settings.minFilter === 'linear' ? 8 : 0);
+</pre>
+<p><code class="notranslate" translate="no">requestAnimationFrame</code>（しばしば「rAF」と呼ばれ、このスタイルのレンダリングループはしばしば「rAFループ」と呼ばれます）を使用して常にレンダリングしているため、設定が変更されたときに<code class="notranslate" translate="no">render</code>を呼び出す必要はもうありません。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-minfilter.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-minfilter.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>クワッドがちらつき、色が変化していることがわかります。<code class="notranslate" translate="no">minFilter</code>が<code class="notranslate" translate="no">nearest</code>に設定されている場合、クワッドの2x2ピクセルごとに、テクスチャから1ピクセルを選択します。<code class="notranslate" translate="no">linear</code>に設定すると、上記で説明したバイリニアフィルタリングを行いますが、それでもちらつきます。</p>
+<p>1つの理由は、クワッドは実数で配置されますが、ピクセルは整数であるためです。テクスチャ座標は実数から補間されるか、むしろ実数から計算されます。</p>
+<p><a id="a-pixel-to-texcoords"></a></p>
+<div class="webgpu_center center diagram">
+  <div class="fit-container">
+    <div class="text-align: center">ドラッグして移動</div>
+    <div class="fit-container" data-diagram="pixel-to-texcoords" style="display: inline-block; width: 600px;"></div>
+  </div>
+</div>
+<p>上の図では、<span style="color: red;">赤</span>の長方形は、頂点シェーダーから返す値に基づいてGPUに描画するように依頼したクワッドを表します。GPUが描画するとき、どのピクセルの中心がクワッド（2つの三角形）の内側にあるかを計算します。次に、描画されるピクセルの中心が元の点のどこにあるかに基づいて、フラグメントシェーダーに渡す補間されたステージ間変数の値を計算します。フラグメントシェーダーでは、そのテクスチャ座標をWGSL <code class="notranslate" translate="no">textureSample</code>関数に渡し、前の図が示したようにサンプリングされた色を取得します。うまくいけば、色がちらつく理由がわかるでしょう。描画されるピクセルに対して計算されるUV座標に応じて、異なる色にブレンドされることがわかります。</p>
+<p>テクスチャは、この問題に対する解決策を提供します。それはミップマッピングと呼ばれます。「ミップマップ」は「マルチイメージピラミッドマップ」の略だと思います（間違っているかもしれませんが）。</p>
+<p>テクスチャを取得し、各次元で半分のサイズの小さなテクスチャを作成し、切り捨てます。次に、最初の元のテクスチャからブレンドされた色で小さなテクスチャを埋めます。1x1テクスチャになるまでこれを繰り返します。この例では、5x7テクセルのテクスチャがあります。各次元で2で除算し、切り捨てると、2x3テクセルのテクスチャが得られます。それを取得して繰り返し、1x1テクセルのテクスチャになります。</p>
+<div class="webgpu_center center diagram"><div data-diagram="mips" style="display: inline-block;"></div></div>
+<p>ミップマップが与えられると、元のテクスチャサイズよりも小さいものを描画するときに、GPUに小さなミップレベルを選択するように依頼できます。これは、「事前にブレンド」されており、スケーリングされたときにテクスチャの色がどうなるかをよりよく表しているため、見栄えが良くなります。</p>
+<p>あるミップから次のミップにピクセルをブレンドするための最良のアルゴリズムは、研究のトピックであり、意見の問題でもあります。最初のアイデアとして、バイリニアフィルタリング（上記で実証）によって前のミップから各ミップを生成するコードを次に示します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const lerp = (a, b, t) =&gt; a + (b - a) * t;
+const mix = (a, b, t) =&gt; a.map((v, i) =&gt; lerp(v, b[i], t));
+const bilinearFilter = (tl, tr, bl, br, t1, t2) =&gt; {
+  const t = mix(tl, tr, t1);
+  const b = mix(bl, br, t1);
+  return mix(t, b, t2);
+};
+
+const createNextMipLevelRgba8Unorm = ({data: src, width: srcWidth, height: srcHeight}) =&gt; {
+  // 次のミップのサイズを計算します
+  const dstWidth = Math.max(1, srcWidth / 2 | 0);
+  const dstHeight = Math.max(1, srcHeight / 2 | 0);
+  const dst = new Uint8Array(dstWidth * dstHeight * 4);
+
+  const getSrcPixel = (x, y) =&gt; {
+    const offset = (y * srcWidth + x) * 4;
+    return src.subarray(offset, offset + 4);
+  };
+
+  for (let y = 0; y &lt; dstHeight; ++y) {
+    for (let x = 0; x &lt; dstWidth; ++x) {
+      // 宛先テクセルの中心のテクスチャ座標を計算します
+      const u = (x + 0.5) / dstWidth;
+      const v = (y + 0.5) / dstHeight;
+
+      // ソースで同じテクスチャ座標を計算します - 0.5ピクセル
+      const au = (u * srcWidth - 0.5);
+      const av = (v * srcHeight - 0.5);
+
+      // ソースの左上のテクセル座標（テクスチャ座標ではない）を計算します
+      const tx = au | 0;
+      const ty = av | 0;
+
+      // ピクセル間の混合量を計算します
+      const t1 = au % 1;
+      const t2 = av % 1;
+
+      // 4つのピクセルを取得します
+      const tl = getSrcPixel(tx, ty);
+      const tr = getSrcPixel(tx + 1, ty);
+      const bl = getSrcPixel(tx, ty + 1);
+      const br = getSrcPixel(tx + 1, ty + 1);
+
+      // 「サンプリングされた」結果を宛先にコピーします。
+      const dstOffset = (y * dstWidth + x) * 4;
+      dst.set(bilinearFilter(tl, tr, bl, br, t1, t2), dstOffset);
+    }
+  }
+  return { data: dst, width: dstWidth, height: dstHeight };
+};
+
+const generateMips = (src, srcWidth) =&gt; {
+  const srcHeight = src.length / 4 / srcWidth;
+
+  // 最初のミップレベル（ベースレベル）を設定します
+  let mip = { data: src, width: srcWidth, height: srcHeight, };
+  const mips = [mip];
+
+  while (mip.width &gt; 1 || mip.height &gt; 1) {
+    mip = createNextMipLevelRgba8Unorm(mip);
+    mips.push(mip);
+  }
+  return mips;
+};
+</pre>
+<p><a href="webgpu-importing-textures.html">別の記事</a>で、GPUでこれを行う方法について説明します。今のところ、上記のコードを使用してミップマップを生成できます。</p>
+<p>上記の関数にテクスチャデータを渡し、ミップレベルデータの配列を返します。次に、すべてのミップレベルを持つテクスチャを作成できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const mips = generateMips(textureData, kTextureWidth);
+
+  const texture = device.createTexture({
+    label: 'yellow F on red',
++    size: [mips[0].width, mips[0].height],
++    mipLevelCount: mips.length,
+    format: 'rgba8unorm',
+    usage:
+      GPUTextureUsage.TEXTURE_BINDING |
+      GPUTextureUsage.COPY_DST,
+  });
+  mips.forEach(({data, width, height}, mipLevel) =&gt; {
+    device.queue.writeTexture(
+-      { texture },
+-      textureData,
+-      { bytesPerRow: kTextureWidth * 4 },
+-      { width: kTextureWidth, height: kTextureHeight },
++      { texture, mipLevel },
++      data,
++      { bytesPerRow: width * 4 },
++      { width, height },
+    );
+  });
+</pre>
+<p><code class="notranslate" translate="no">mipLevelCount</code>をミップレベルの数に渡すことに注意してください。WebGPUは、各レベルで正しいサイズのミップレベルを作成します。次に、<code class="notranslate" translate="no">mipLevel</code>を指定して、各レベルにデータをコピーします。</p>
+<p>クワッドをさまざまなサイズで描画できるように、スケール設定も追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    addressModeU: 'repeat',
+    addressModeV: 'repeat',
+    magFilter: 'linear',
+    minFilter: 'linear',
++    scale: 1,
+  };
+
+  ...
+
+  const gui = new GUI();
+  Object.assign(gui.domElement.style, {right: '', left: '15px'});
+  gui.add(settings, 'addressModeU', addressOptions);
+  gui.add(settings, 'addressModeV', addressOptions);
+  gui.add(settings, 'magFilter', filterOptions);
+  gui.add(settings, 'minFilter', filterOptions);
++  gui.add(settings, 'scale', 0.5, 6);
+
+  function render(time) {
+
+    ...
+
+-    const scaleX = 4 / canvas.width;
+-    const scaleY = 4 / canvas.height;
++    const scaleX = 4 / canvas.width * settings.scale;
++    const scaleY = 4 / canvas.height * settings.scale;
+
+</pre>
+<p>そして、GPUが描画する最小のミップを選択し、ちらつきがなくなりました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-mipmap.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-mipmap.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>スケールを調整すると、大きくなるにつれて、使用されるミップレベルが変化することがわかります。スケール2.4とスケール2.5の間にはかなり厳しい遷移があり、GPUはミップレベル0（最大のミップレベル）とミップレベル1（中間のサイズ）を切り替えます。それについてどうすればよいでしょうか？</p>
+<h2 id="mipmapfilter"><a id="a-mipmap-filter"></a>mipmapFilter</h2>
+<p><code class="notranslate" translate="no">magFilter</code>と<code class="notranslate" translate="no">minFilter</code>があり、どちらも<code class="notranslate" translate="no">nearest</code>または<code class="notranslate" translate="no">linear</code>に設定できるのと同様に、<code class="notranslate" translate="no">mipmapFilter</code>設定もあり、これも<code class="notranslate" translate="no">nearest</code>または<code class="notranslate" translate="no">linear</code>に設定できます。</p>
+<p>これにより、ミップレベル間でブレンドするかどうかを選択します。<code class="notranslate" translate="no">mipmapFilter: 'linear'</code>では、2つのミップレベルから色がサンプリングされ、前の設定に基づいて最近傍または線形フィルタリングのいずれかを使用して、それらの2つの色が再び同様の方法で<code class="notranslate" translate="no">mix</code>されます。</p>
+<p>これは、3Dで物を描画するときに最もよく発生します。3Dで描画する方法は<a href="webgpu-perspective.html">他の記事</a>で説明されているので、ここでは説明しませんが、<code class="notranslate" translate="no">mipmapFilter</code>がどのように機能するかをよりよく確認できるように、前の例を3Dを表示するように変更します。</p>
+<p>まず、いくつかのテクスチャを作成しましょう。16x16のテクスチャを1つ作成します。これにより、<code class="notranslate" translate="no">mipmapFilter</code>の効果がよりよくわかると思います。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const createBlendedMipmap = () =&gt; {
+    const w = [255, 255, 255, 255];
+    const r = [255,   0,   0, 255];
+    const b = [  0,  28, 116, 255];
+    const y = [255, 231,   0, 255];
+    const g = [ 58, 181,  75, 255];
+    const a = [ 38, 123, 167, 255];
+    const data = new Uint8Array([
+      w, r, r, r, r, r, r, a, a, r, r, r, r, r, r, w,
+      w, w, r, r, r, r, r, a, a, r, r, r, r, r, w, w,
+      w, w, w, r, r, r, r, a, a, r, r, r, r, w, w, w,
+      w, w, w, w, r, r, r, a, a, r, r, r, w, w, w, w,
+      w, w, w, w, w, r, r, a, a, r, r, w, w, w, w, w,
+      w, w, w, w, w, w, r, a, a, r, w, w, w, w, w, w,
+      w, w, w, w, w, w, w, a, a, w, w, w, w, w, w, w,
+      b, b, b, b, b, b, b, b, a, y, y, y, y, y, y, y,
+      b, b, b, b, b, b, b, g, y, y, y, y, y, y, y, y,
+      w, w, w, w, w, w, w, g, g, w, w, w, w, w, w, w,
+      w, w, w, w, w, w, r, g, g, r, w, w, w, w, w, w,
+      w, w, w, w, w, r, r, g, g, r, r, w, w, w, w, w,
+      w, w, w, w, r, r, r, g, g, r, r, r, w, w, w, w,
+      w, w, w, r, r, r, r, g, g, r, r, r, r, w, w, w,
+      w, w, r, r, r, r, r, g, g, r, r, r, r, r, w, w,
+      w, r, r, r, r, r, r, g, g, r, r, r, r, r, r, w,
+    ].flat());
+    return generateMips(data, 16);
+  };
+</pre>
+<p>これにより、これらのミップレベルが生成されます。</p>
+<div class="webgpu_center center diagram"><div data-diagram="blended-mips" style="display: inline-block;"></div></div>
+<p>各ミップレベルに任意のデータを入れることができるので、何が起こっているかを確認するもう1つの良い方法は、各ミップレベルを異なる色にすることです。キャンバス2D APIを使用してミップレベルを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const createCheckedMipmap = () =&gt; {
+    const ctx = document.createElement('canvas').getContext('2d', {willReadFrequently: true});
+    const levels = [
+      { size: 64, color: 'rgb(128,0,255)', },
+      { size: 32, color: 'rgb(0,255,0)', },
+      { size: 16, color: 'rgb(255,0,0)', },
+      { size:  8, color: 'rgb(255,255,0)', },
+      { size:  4, color: 'rgb(0,0,255)', },
+      { size:  2, color: 'rgb(0,255,255)', },
+      { size:  1, color: 'rgb(255,0,255)', },
+    ];
+    return levels.map(({size, color}, i) =&gt; {
+      ctx.canvas.width = size;
+      ctx.canvas.height = size;
+      ctx.fillStyle = i &amp; 1 ? '#000' : '#fff';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, size / 2, size / 2);
+      ctx.fillRect(size / 2, size / 2, size / 2, size / 2);
+      return ctx.getImageData(0, 0, size, size);
+    });
+  };
+</pre>
+<p>このコードは、これらのミップレベルを生成します。</p>
+<div class="webgpu_center center diagram"><div data-diagram="checkered-mips" style="display: inline-block;"></div></div>
+<p>データを作成したので、テクスチャを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const createTextureWithMips = (mips, label) =&gt; {
+    const texture = device.createTexture({
+-      label: 'yellow F on red',
++      label,
+      size: [mips[0].width, mips[0].height],
+      mipLevelCount: mips.length,
+      format: 'rgba8unorm',
+      usage:
+        GPUTextureUsage.TEXTURE_BINDING |
+        GPUTextureUsage.COPY_DST,
+    });
+    mips.forEach(({data, width, height}, mipLevel) =&gt; {
+      device.queue.writeTexture(
+          { texture, mipLevel },
+          data,
+          { bytesPerRow: width * 4 },
+          { width, height },
+      );
+    });
+    return texture;
++  };
+
++  const textures = [
++    createTextureWithMips(createBlendedMipmap(), 'blended'),
++    createTextureWithMips(createCheckedMipmap(), 'checker'),
++  ];
+</pre>
+<p>8つの場所に遠くに伸びるクワッドを描画します。<a href="webgpu-cameras.html">3Dに関する一連の記事</a>で説明したように、行列演算を使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">struct OurVertexShaderOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
+struct Uniforms {
+-  scale: vec2f,
+-  offset: vec2f,
++  matrix: mat4x4f,
+};
+
+@group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+  let pos = array(
+    // 1番目の三角形
+    vec2f( 0.0,  0.0),  // 中央
+    vec2f( 1.0,  0.0),  // 右、中央
+    vec2f( 0.0,  1.0),  // 中央、上
+
+    // 2番目の三角形
+    vec2f( 0.0,  1.0),  // 中央、上
+    vec2f( 1.0,  0.0),  // 右、中央
+    vec2f( 1.0,  1.0),  // 右、上
+  );
+
+  var vsOutput: OurVertexShaderOutput;
+  let xy = pos[vertexIndex];
+-  vsOutput.position = vec4f(xy * uni.scale + uni.offset, 0.0, 1.0);
++  vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+  vsOutput.texcoord = xy * vec2f(1, 50);
+  return vsOut;
+}
+
+@group(0) @binding(0) var ourSampler: sampler;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+}
+</pre>
+<p>8つの平面のそれぞれは、<code class="notranslate" translate="no">minFilter</code>、<code class="notranslate" translate="no">magFilter</code>、<code class="notranslate" translate="no">mipmapFilter</code>の異なる組み合わせを使用します。つまり、それぞれに、その特定のフィルターの組み合わせを持つサンプラーを含む異なるバインドグループが必要です。さらに、2つのテクスチャがあります。テクスチャもバインドグループの一部であるため、オブジェクトごとに2つのバインドグループが必要になります。1つは各テクスチャ用です。次に、レンダリング時にどちらを使用するかを選択できます。8つの場所に平面を描画するには、<a href="webgpu-uniforms.html">ユニフォームに関する記事</a>で説明したように、場所ごとに1つのユニフォームバッファも必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kMatrixOffset = 0;
+
+  const objectInfos = [];
+  for (let i = 0; i &lt; 8; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: 'repeat',
+      addressModeV: 'repeat',
+      magFilter: (i &amp; 1) ? 'linear' : 'nearest',
+      minFilter: (i &amp; 2) ? 'linear' : 'nearest',
+      mipmapFilter: (i &amp; 4) ? 'linear' : 'nearest',
+    });
+
+    // ユニフォーム値用のバッファを作成します
+    const uniformBufferSize =
+      16 * 4; // 行列は16個の32ビット浮動小数点数（各4バイト）です
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms for quad',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    // JavaScript側でユニフォームの値を保持するための型付き配列を作成します
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+    const matrix = uniformValues.subarray(kMatrixOffset, 16);
+
+    const bindGroups = textures.map(texture =&gt;
+      device.createBindGroup({
+        layout: pipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: sampler },
+          { binding: 1, resource: texture.createView() },
+          { binding: 2, resource: uniformBuffer },
+        ],
+      }));
+
+    // このオブジェクトをレンダリングするために必要なデータを保存します。
+    objectInfos.push({
+      bindGroups,
+      matrix,
+      uniformValues,
+      uniformBuffer,
+    });
+  }
+</pre>
+<p>レンダリング時に、<a href="webgpu-cameras.html">ビュー射影行列を計算します</a>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    const fov = 60 * Math.PI / 180;  // 60度（ラジアン）
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const zNear  = 1;
+    const zFar   = 2000;
+    const projectionMatrix = mat4.perspective(fov, aspect, zNear, zFar);
+
+    const cameraPosition = [0, 0, 2];
+    const up = [0, 1, 0];
+    const target = [0, 0, 0];
+    const cameraMatrix = mat4.lookAt(cameraPosition, target, up);
+    const viewMatrix = mat4.inverse(cameraMatrix);
+    const viewProjectionMatrix = mat4.multiply(projectionMatrix, viewMatrix);
+
+    ...
+</pre>
+<p>次に、各平面について、表示したいテクスチャに基づいてバインドグループを選択し、その平面を配置するための一意の行列を計算します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  let texNdx = 0;
+
+  function render() {
+    ...
+
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
+    objectInfos.forEach(({bindGroups, matrix, uniformBuffer, uniformValues}, i) =&gt; {
+      const bindGroup = bindGroups[texNdx];
+
+      const xSpacing = 1.2;
+      const ySpacing = 0.7;
+      const zDepth = 50;
+
+      const x = i % 4 - 1.5;
+      const y = i &lt; 4 ? 1 : -1;
+
+      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+      mat4.rotateX(matrix, 0.5 * Math.PI, matrix);
+      mat4.scale(matrix, [1, zDepth * 2, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+
+      // JavaScriptからGPUに値をコピーします
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // 頂点シェーダーを6回呼び出します
+    });
+
+    pass.end();
+</pre>
+<p>既存のUIコードを削除し、rAFループから<a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>コールバックでのレンダリングに切り替え、解像度を低くするのをやめました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function render(time) {
+-    time *= 0.001;
++  function render() {
+
+    ...
+
+-    requestAnimationFrame(render);
+  }
+-  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+-      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
+-      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
++      const width = entry.contentBoxSize[0].inlineSize;
++      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
++      render();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>低解像度ではなくなったので、ブラウザがキャンバス自体をフィルタリングするのを防いでいたCSSを削除できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">canvas {
+  display: block;  /* canvasをブロックのように動作させる */
+  width: 100%;     /* canvasがコンテナを埋めるようにする */
+  height: 100%;
+-  image-rendering: pixelated;
+-  image-rendering: crisp-edges;
+}
+</pre>
+<p>そして、キャンバスをクリックすると、描画するテクスチャが切り替わり、再レンダリングされるようにできます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  canvas.addEventListener('click', () =&gt; {
+    texNdx = (texNdx + 1) % textures.length;
+    render();
+  });
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-mipmapfilter.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-mipmapfilter.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>うまくいけば、左上のすべてのフィルタリングが<code class="notranslate" translate="no">nearest</code>に設定されているものから、右下のすべてのフィルタリングが<code class="notranslate" translate="no">linear</code>に設定されているものへの進行を見ることができます。特に、この例では<code class="notranslate" translate="no">mipmapFilter</code>を追加したため、画像をクリックして、すべてのミップレベルが異なる色であるチェックされたテクスチャを表示すると、上部のすべての平面で<code class="notranslate" translate="no">mipmapFilter</code>が<code class="notranslate" translate="no">nearest</code>に設定されているため、あるミップレベルから次のミップレベルに切り替わる点が急であることがわかります。下部では、各平面で<code class="notranslate" translate="no">mipmapFilter</code>が<code class="notranslate" translate="no">linear</code>に設定されているため、ミップレベル間でブレンドが行われます。</p>
+<p>なぜ常にすべてのフィルタリングを<code class="notranslate" translate="no">linear</code>に設定しないのか疑問に思うかもしれません。明白な理由はスタイルです。ピクセル化された画像を作成しようとしている場合は、もちろんフィルタリングはしたくないでしょう。もう1つの理由は速度です。すべてのフィルタリングがnearestに設定されている場合、テクスチャから1ピクセルを読み取る方が、すべてのフィルタリングがlinearに設定されている場合にテクスチャから8ピクセルを読み取るよりも高速です。</p>
+<p>TBD: 繰り返し</p>
+<p>TBD: 異方性フィルタリング</p>
+<h2 id="テクスチャタイプとテクスチャビュー">テクスチャタイプとテクスチャビュー</h2>
+<p>これまで、2Dテクスチャのみを使用してきました。テクスチャには3つのタイプがあります。</p>
+<ul>
+<li>「1d」</li>
+<li>「2d」</li>
+<li>「3d」</li>
+</ul>
+<p>ある意味では、「2d」テクスチャは深さが1の「3d」テクスチャと見なすことができ、「1d」テクスチャは高さが1の「2d」テクスチャと見なすことができます。2つの実際の違いは、テクスチャの最大許容寸法が制限されていることです。制限は、テクスチャのタイプ「1d」、「2d」、「3d」ごとに異なります。キャンバスのサイズを設定するときに、「2d」の制限を使用しました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+</pre>
+<p>もう1つは速度です。少なくとも3Dテクスチャと2Dテクスチャの場合、すべてのサンプラーフィルターが<code class="notranslate" translate="no">linear</code>に設定されている場合、3Dテクスチャをサンプリングするには16個のテクセルを調べてそれらをすべてブレンドする必要があります。2Dテクスチャをサンプリングするには8個のテクセルしか必要ありません。1Dテクスチャは4個しか必要ない可能性がありますが、GPUが実際に1Dテクスチャを最適化しているかどうかはわかりません。</p>
+<h3 id="テクスチャビュー">テクスチャビュー</h3>
+<p>テクスチャビューには6つのタイプがあります。</p>
+<ul>
+<li>「1d」</li>
+<li>「2d」</li>
+<li>「2d-array」</li>
+<li>「3d」</li>
+<li>「cube」</li>
+<li>「cube-array」</li>
+</ul>
+<p>「1d」テクスチャは「1d」ビューしか持てません。「3d」テクスチャは「3d」ビューしか持てません。「2d」テクスチャは「2d-array」ビューを持つことができます。「2d」テクスチャに6つのレイヤーがある場合、「cube」ビューを持つことができます。6の倍数のレイヤーがある場合、「cube-array」ビューを持つことができます。<code class="notranslate" translate="no">someTexture.createView</code>を呼び出すときに、テクスチャをどのように表示するかを選択できます。テクスチャビューはデフォルトでその次元と同じですが、<code class="notranslate" translate="no">someTexture.createView</code>に異なる次元を渡すことができます。</p>
+<p><a href="webgpu-3dluts.html">トーンマッピング/3dLUTに関する記事</a>で「3d」テクスチャについて説明します。</p>
+<p>「キューブ」テクスチャは、キューブの6つの面を表すテクスチャです。キューブテクスチャは、スカイボックスを描画したり、反射や環境マップに使用されたりすることがよくあります。<a href="webgpu-cube-maps.html">キューブマップに関する記事</a>で説明します。</p>
+<p>「2d-array」は、2Dテクスチャの配列です。シェーダーで配列のどのテクスチャにアクセスするかを選択できます。これらは、地形レンダリングなどで一般的に使用されます。</p>
+<p>「cube-array」は、キューブテクスチャの配列です。</p>
+<p>各タイプのテクスチャには、WGSLに対応する独自のタイプがあります。</p>
+<div class="webgpu_center data-table" style="max-width: 500px;">
+  <style>
+    .texture-type {
+      text-align: left;
+      font-size: large;
+      line-height: 1.5em;
+    }
+    .texture-type td:nth-child(1) {
+      white-space: nowrap;
+    }
+  </style>
+  <table class="texture-type">
+   <thead>
+    <tr>
+     <th>タイプ</th>
+     <th>WGSLタイプ</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr><td>"1d"</td><td><code class="notranslate" translate="no">texture_1d</code>または<code class="notranslate" translate="no">texture_storage_1d</code></td></tr>
+    <tr><td>"2d"</td><td><code class="notranslate" translate="no">texture_2d</code>または<code class="notranslate" translate="no">texture_storage_2d</code>または<code class="notranslate" translate="no">texture_multisampled_2d</code>、および特定の状況での特別なケースとして<code class="notranslate" translate="no">texture_depth_2d</code>と<code class="notranslate" translate="no">texture_depth_multisampled_2d</code></td></tr>
+    <tr><td>"2d-array"</td><td><code class="notranslate" translate="no">texture_2d_array</code>または<code class="notranslate" translate="no">texture_storage_2d_array</code>、および場合によっては<code class="notranslate" translate="no">texture_depth_2d_array</code></td></tr>
+    <tr><td>"3d"</td><td><code class="notranslate" translate="no">texture_3d</code>または<code class="notranslate" translate="no">texture_storage_3d</code></td></tr>
+    <tr><td>"cube"</td><td><code class="notranslate" translate="no">texture_cube</code>、および場合によっては<code class="notranslate" translate="no">texture_depth_cube</code></td></tr>
+    <tr><td>"cube-array"</td><td><code class="notranslate" translate="no">texture_cube_array</code>、および場合によっては<code class="notranslate" translate="no">texture_depth_cube_array</code></td></tr>
+   </tbody>
+  </table>
+</div>
+<p>これらの一部については実際の使用で説明しますが、テクスチャを作成するとき（<code class="notranslate" translate="no">device.createTexture</code>を呼び出すとき）、「1d」、「2d」、「3d」のオプションしかなく、デフォルトは「2d」なので、まだ次元を指定する必要がないことは少し混乱する可能性があります。</p>
+<h2 id="テクスチャ形式">テクスチャ形式</h2>
+<p>今のところ、これがテクスチャの基本です。テクスチャは大きなトピックであり、他にもたくさん説明することがあります。</p>
+<p>この記事では<code class="notranslate" translate="no">rgba8unorm</code>テクスチャを使用してきましたが、さまざまなテクスチャ形式がたくさんあります。</p>
+<p>これは「色」の形式ですが、もちろん、それらに色を保存する必要はありません。</p>
+<div class="webgpu_center data-table"><div data-diagram="color-texture-formats"></div></div>
+<p>「rg16float」のような形式を読むには、最初の文字はテクスチャでサポートされているチャネルなので、「rg16float」は「rg」または赤と緑（2チャネル）をサポートします。数値16は、それらのチャネルがそれぞれ16ビットであることを意味します。末尾の単語は、チャネル内のデータの種類です。「float」は浮動小数点データです。</p>
+<p>「unorm」は符号なし正規化データ（0から1）であり、テクスチャ内のデータが0からNまでであることを意味します。Nはそのビット数の最大整数値です。その整数範囲は、（0から1）の浮動小数点範囲として解釈されます。つまり、8unormテクスチャの場合、8ビット（したがって0から255までの値）が（0から1）の値として解釈されます。</p>
+<p>「snorm」は符号付き正規化データ（-1から+1）なので、データの範囲は、ビット数で表される最も負の整数から最も正の整数までです。たとえば、8snormは8ビットです。符号付き整数として、最小数は-128、最大数は+127になります。その範囲は（-1から+1）に変換されます。</p>
+<p>「sint」は符号付き整数です。「uint」は符号なし整数です。複数の文字と数字の組み合わせがある場合は、各チャネルのビット数を指定しています。たとえば、「rg11b10ufloat」は「rg11」なので、赤と緑がそれぞれ11ビットです。「b10」なので、青が10ビットで、すべて符号なし浮動小数点数です。</p>
+<ul>
+<li>
+<p><strong>レンダリング可能</strong></p>
+<p>Trueは、それにレンダリングできることを意味します（その使用法を<code class="notranslate" translate="no">GPUTextureUsage.RENDER_ATTACHMENT</code>に設定します）。</p>
+</li>
+<li>
+<p><strong>マルチサンプル</strong></p>
+<p><a href="webgpu-multisampling.html">マルチサンプリング</a>できます。</p>
+</li>
+<li>
+<p><strong>ストレージ</strong></p>
+<p><a href="webgpu-storage-textures.html">ストレージテクスチャ</a>として書き込むことができます。</p>
+</li>
+<li>
+<p><strong>サンプラータイプ</strong></p>
+<p>これは、WGSLで宣言する必要があるテクスチャのタイプと、サンプラーをバインドグループにバインドする方法に影響します。上記では<code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>を使用しましたが、たとえば、<code class="notranslate" translate="no">sint</code>はWGSLで<code class="notranslate" translate="no">texture_2d&lt;i32&gt;</code>を必要とし、<code class="notranslate" translate="no">uint</code>は<code class="notranslate" translate="no">texture_2d&lt;u32&gt;</code>を必要とします。</p>
+<p>サンプラータイプの列で、<code class="notranslate" translate="no">unfilterable-float</code>は、サンプラーがその形式に対して<code class="notranslate" translate="no">nearest</code>しか使用できないことを意味し、<code class="notranslate" translate="no">'auto'</code>レイアウトを使用してきたため、これまでに行ったことのないバインドグループレイアウトを手動で作成する必要がある場合があることを意味します。これは主に、デスクトップGPUは通常32ビット浮動小数点テクスチャをフィルタリングできますが、少なくとも2023年の時点では、ほとんどのモバイルデバイスはできないためです。アダプターが<code class="notranslate" translate="no">float32-filterable</code><a href="webgpu-limits-and-features.html">機能</a>をサポートし、デバイスを要求するときに有効にすると、<code class="notranslate" translate="no">r32float</code>、<code class="notranslate" translate="no">rg32float</code>、<code class="notranslate" translate="no">rgba32float</code>の形式が<code class="notranslate" translate="no">unfilterable-float</code>から<code class="notranslate" translate="no">float</code>に切り替わり、これらのテクスチャ形式は他の変更なしで機能します。</p>
+</li>
+</ul>
+<p><a id="a-depth-stencil-formats"></a>そして、深度とステンシルの形式は次のとおりです。</p>
+<div class="webgpu_center data-table"><div data-diagram="depth-stencil-texture-formats"></div></div>
+<ul>
+<li>
+<p><strong>機能</strong></p>
+<p>この<a href="webgpu-limits-and-features.html"><em>オプション</em>機能</a>がこの形式を使用するために必要であることを意味します。</p>
+</li>
+<li>
+<p><strong>コピー元</strong></p>
+<p><code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code>を指定できるかどうか</p>
+</li>
+<li>
+<p><strong>コピー先</strong></p>
+<p><code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code>を指定できるかどうか</p>
+</li>
+</ul>
+<p><a href="webgpu-orthographic-projection.html">3Dに関するシリーズの記事</a>と<a href="webgpu-shadow-maps.html">シャドウマップに関する記事</a>で深度テクスチャを使用します。</p>
+<p>圧縮されたテクスチャ形式もたくさんありますが、これについては別の記事で説明します。</p>
+<p>次に、<a href="webgpu-importing-textures.html">外部テクスチャのインポート</a>について説明します。</p>
+<!-- この記事の最後にこれを保持してください -->
+<script type="module" src="/3rdparty/pixel-perfect.js"></script>
+<script type="module" src="../webgpu-textures.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>テクスチャ座標が上（0 = 下、1 = 上）または下（0 = 上、1 = 下）に進むかどうかは、視点の問題です。重要なのは、テクスチャ座標0,0がテクスチャの最初のデータを参照することです。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>テクセルは「テクスチャ要素」の略で、ピクセルは「ピクチャ要素」の略です。私にとって、テクセルとピクセルは基本的に同義ですが、テクスチャについて議論するときに<em>テクセル</em>という言葉を好む人もいます。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>テクスチャのもう1つの一般的な用途は、レンダリングしたいテクスチャに使用される<code class="notranslate" translate="no">GPUTextureUsage.RENDER_ATTACHMENT</code>です。例として、<code class="notranslate" translate="no">context.getCurrentTexture()</code>から取得するキャンバステクスチャは、デフォルトでその使用法が<code class="notranslate" translate="no">GPUTextureUsage.RENDER_ATTACHMENT</code>に設定されています。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>もう1つのアドレスモード、「ミラーリピート」もあります。テクスチャが「🟥🟩🟦」の場合、リピートは「🟥🟩🟦🟥🟩🟦🟥🟩🟦🟥🟩🟦」になり、ミラーリピートは「🟥🟩🟦🟦🟩🟥🟥🟩🟦🟦🟩🟥」になります。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +1239,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +1328,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU テクスチャ`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

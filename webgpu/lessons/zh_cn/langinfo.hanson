@@ -27,5 +27,6 @@
     'reference': '参考',
     'lighting': '光照',
     'compute-shaders': '计算着色器',
+    'post-processing': '后处理',
   },
 }

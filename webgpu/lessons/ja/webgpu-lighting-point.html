@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-lighting-point.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU - Point Lighting">
+
+<meta name="description" content="WebGPUで点光源を実装する方法">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-point_ja.jpg">
+
+<meta property="og:title" content="WebGPU - 点光源">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to implement point lighting in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-point_ja.jpg">
+<meta property="og:description" content="WebGPUで点光源を実装する方法">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-point.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU - Point Lighting">
+<meta name="twitter:title" content="WebGPU - 点光源">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-point.html">
-<meta name="twitter:description" content="How to implement point lighting in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPUで点光源を実装する方法">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-point_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-point.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-lighting-point_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-point.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-point.html",
+      "inLanguage":"ja",
+      "name":"WebGPU - 点光源",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-lighting-point.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU - Point Lighting</title>
+<title>WebGPU - 点光源</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,432 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU - Point Lighting</h1>
+    <h1>WebGPU - 点光源</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-lighting-point.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、<a href="webgpu-lighting-directional.html">WebGPU指向性ライティング</a>の続きです。まだ読んでいない場合は、<a href="webgpu-lighting-directional.html">そこから始める</a>ことをお勧めします。</p>
+<p>前の記事では、光が普遍的に同じ方向から来る指向性ライティングについて説明しました。レンダリングする前にその方向を設定しました。</p>
+<p>光の方向を設定する代わりに、光の3D空間内の点を選択し、その点からモデルの表面上の各可視点までの方向をシェーダーで計算したらどうなるでしょうか？これにより、点光源が得られます。</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram noborder" style="width: 700px; height: 400px;" src="/webgpu/lessons/resources/point-lighting.html"></iframe>
+</div>
+
+<p></p>
+<p>上の表面を回転させると、表面上の各点が異なる<em>表面から光への</em>ベクトルを持っていることがわかります。表面法線と個々の表面から光へのベクトルのドット積を取得すると、表面上の各点で異なる値が得られます。</p>
+<p>では、やってみましょう。</p>
+<p>まず、光の位置が必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
+  color: vec4f,
+-  lightDirection: vec3f,
++  lightPosition: vec3f,
+};
+</pre>
+<p>そして、表面のワールド位置を計算する方法が必要です。そのためには、位置をワールド行列で乗算できますので…</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
++  world: mat4x4f,
+  color: vec4f,
+  lightDirection: vec3f,
+  lightPosition: vec3f,
+};
+
+....
+
+  // 表面のワールド位置を計算します
+  let surfaceWorldPosition = (u_world * vert.position).xyz;
+
+
+</pre>
+<p>そして、表面から光へのベクトルを計算できます。これは、以前にあった光の方向と似ていますが、今回は表面上のすべての位置から光のワールド位置点まで計算しています。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  struct VSOutput {
+    @builtin(position) position: vec4f,
+    @location(0) normal: vec3f,
+    @location(1) surfaceToLight: vec3f,
+  };
+
+  ...
+
+    // 表面から光へのベクトルを計算し、
+    // フラグメントシェーダーに渡します
+    vsOut.surfaceToLight = uni.lightPosition - surfaceWorldPosition;
+</pre>
+<p>文脈の中で、すべてを次に示します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
+*  world: mat4x4f,
+  color: vec4f,
+*  lightPosition: vec3f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+  @location(1) normal: vec3f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) normal: vec3f,
+*  @location(1) surfaceToLight: vec3f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = uni.worldViewProjection * vert.position;
+
+  // 法線を方向付け、フラグメントシェーダーに渡します
+  vsOut.normal = uni.normalMatrix * vert.normal;
+
+*  // 表面のワールド位置を計算します
+*  let surfaceWorldPosition = (uni.world * vert.position).xyz;
+*
+*  // 表面から光へのベクトルを計算し、
+*  // フラグメントシェーダーに渡します
+*  vsOut.surfaceToLight = uni.lightPosition - surfaceWorldPosition;
+
+  return vsOut;
+}
+</pre>
+<p>次に、フラグメントシェーダーで、表面から光へのベクトルを正規化する必要があります。これは単位ベクトルではないためです。頂点シェーダーで正規化することもできますが、<em>ステージ間変数</em>であるため、位置間で線形補間され、完全な単位ベクトルにはなりません。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  // vsOut.normalはステージ間変数であるため、
+  // 補間されるため、単位ベクトルにはなりません。
+  // 正規化すると、再び単位ベクトルになります。
+  let normal = normalize(vsOut.normal);
+
++  let surfaceToLightDirection = normalize(vsOut.surfaceToLight);
+
+  // 法線と光の逆方向のドット積を
+-  // 取ることで光を計算します。
+-  let light = dot(normal, -uni.lightDirection);
++  // 法線と光への方向のドット積を取ることで光を計算します。
++  let light = dot(normal, surfaceToLightDirection);
+
+  // 色の部分（アルファではない）のみを
+  // 光で乗算しましょう。
+  let color = uni.color.rgb * light;
+  return vec4f(color, uni.color.a);
+}
+</pre>
+<p>次に、ユニフォームバッファ、オフセット、ビューを更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformBufferSize = (12 + 16 + 4 + 4) * 4;
++  const uniformBufferSize = (12 + 16 + 16 + 4 + 4) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kNormalMatrixOffset = 0;
+  const kWorldViewProjectionOffset = 12;
+-  const kColorOffset = 28;
+-  const kLightDirectionOffset = 32;
++  const kWorldOffset = 28;
++  const kColorOffset = 44;
++  const kLightPositionOffset = 48;
+
+  const normalMatrixValue = uniformValues.subarray(
+      kNormalMatrixOffset, kNormalMatrixOffset + 12);
+  const worldViewProjectionValue = uniformValues.subarray(
+      kWorldViewProjectionOffset, kWorldViewProjectionOffset + 16);
++  const worldValue = uniformValues.subarray(
++      kWorldOffset, kWorldOffset + 16);
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+-  const lightDirectionValue =
+-      uniformValues.subarray(kLightDirectionOffset, kLightDirectionOffset + 3);
++  const lightPositionValue =
++      uniformValues.subarray(kLightPositionOffset, kLightPositionOffset + 3);
+</pre>
+<p>そして、それらを設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const eye = [100, 150, 200];
+    const target = [0, 35, 0];
+    const up = [0, 1, 0];
+
+    // ビュー行列を計算します
+    const viewMatrix = mat4.lookAt(eye, target, up);
+
+    // ビュー行列と射影行列を組み合わせます
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    // ワールド行列を計算します
+-    const world = mat4.rotationY(settings.rotation);
++    const world = mat4.rotationY(settings.rotation, worldValue);
+
+    // ビュー射影行列とワールド行列を組み合わせます
+    mat4.multiply(viewProjectionMatrix, world, worldViewProjectionValue);
+
+    // 逆行列と転置行列をworldInverseTranspose値に変換します
+    mat3.fromMat4(mat4.transpose(mat4.inverse(world)), normalMatrixValue);
+
+    colorValue.set([0.2, 1, 0.2, 1]);  // green
+=    lightDirectionValue.set(vec3.normalize([-0.5, -0.7, -1]));
++    lightPositionValue.set([-10, 30, 100]);
+
+    // ユニフォーム値をユニフォームバッファにアップロードします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+</pre>
+<p>そして、これがそれです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-point.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-point.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<h1 id="スペキュラハイライト"><a id="a-specular"></a>スペキュラハイライト</h1>
+<p>点ができたので、スペキュラハイライトと呼ばれるものを追加できます。</p>
+<p>現実世界のオブジェクトを見ると、少しでも光沢がある場合、光が直接あなたに反射すると、ほとんど鏡のようになります。</p>
+<img class="webgpu_center" src="../resources/specular-highlights.jpg">
+<p>光が目に反射するかどうかを計算することで、その効果をシミュレートできます。ここでも、<em>ドット積</em>が役立ちます。</p>
+<p>何をチェックする必要がありますか？まあ、考えてみましょう。光は表面に当たったのと同じ角度で反射するので、表面から光への方向が表面から目への方向の正確な反射である場合、それは光を目に反射するのに最適な角度です。</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram noborder" style="width: 700px; height: 400px;" src="/webgpu/lessons/resources/surface-reflection.html"></iframe>
+</div>
+
+<p></p>
+<p>モデルの表面から光への方向がわかっていれば（先ほど行ったのでわかっています）、表面からビュー/目/カメラへの方向がわかっていれば、それら2つのベクトルを足して正規化して、それらの間の中間にあるベクトルである<code class="notranslate" translate="no">halfVector</code>を取得できます。ハーフベクトルと表面法線が一致する場合、それは光をビュー/目/カメラに反射するのに最適な角度です。そして、それらが一致するかどうかをどうやって判断できますか？以前に行ったように、<em>ドット積</em>を取ります。1 = 一致、同じ方向、0 = 垂直、-1 = 反対。</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram noborder" style="width: 700px; height: 400px;" src="/webgpu/lessons/resources/specular-lighting.html"></iframe>
+</div>
+
+<p></p>
+<p>したがって、まず、ビュー/カメラ/目の位置を渡し、表面からビューへのベクトルを計算し、それをフラグメントシェーダーに渡す必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
+  world: mat4x4f,
+  color: vec4f,
+  lightPosition: vec3f,
++  viewWorldPosition: vec3f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+  @location(1) normal: vec3f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) normal: vec3f,
+  @location(1) surfaceToLight: vec3f,
++  @location(2) surfaceToView: vec3f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = uni.worldViewProjection * vert.position;
+
+  // 法線を方向付け、フラグメントシェーダーに渡します
+  vsOut.normal = uni.normalMatrix * vert.normal;
+
+  // 表面のワールド位置を計算します
+  let surfaceWorldPosition = (uni.world * vert.position).xyz;
+
+  // 表面から光へのベクトルを計算し、
+  // フラグメントシェーダーに渡します
+  vsOut.surfaceToLight = uni.lightPosition - surfaceWorldPosition;
+
++  // 表面から光へのベクトルを計算し、
++  // フラグメントシェーダーに渡します
++  vsOut.surfaceToView = uni.viewWorldPosition - surfaceWorldPosition;
+
+  return vsOut;
+}
+</pre>
+<p>次に、フラグメントシェーダーで、表面からビューへのベクトルと表面から光へのベクトルの間の<code class="notranslate" translate="no">halfVector</code>を計算する必要があります。次に、<code class="notranslate" translate="no">halfVector</code>と法線のドット積を取って、光がビューに反射しているかどうかを調べることができます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  // vsOut.normalはステージ間変数であるため、
+  // 補間されるため、単位ベクトルにはなりません。
+  // 正規化すると、再び単位ベクトルになります。
+  let normal = normalize(vsOut.normal);
+
+  let surfaceToLightDirection = normalize(vsOut.surfaceToLight);
+
+  // 法線と光への方向のドット積を
+  // 取ることで光を計算します。
+  let light = dot(normal, surfaceToLightDirection);
+
++  let surfaceToViewDirection = normalize(vsOut.surfaceToView);
++  let halfVector = normalize(
++    surfaceToLightDirection + surfaceToViewDirection);
++  let specular = dot(normal, halfVector);
+
+  // 色の部分（アルファではない）のみを
+  // 光で乗算しましょう。
+-  let color = uni.color.rgb * light;
++  let color = uni.color.rgb * light + specular;
+  return vec4f(color, uni.color.a);
+}
+</pre>
+<p>繰り返しになりますが、ユニフォームバッファにviewWorldPosition用のスペースを追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformBufferSize = (12 + 16 + 16 + 4 + 4) * 4;
++  const uniformBufferSize = (12 + 16 + 16 + 4 + 4 + 4) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kNormalMatrixOffset = 0;
+  const kWorldViewProjectionOffset = 12;
+  const kWorldOffset = 28;
+  const kColorOffset = 44;
+  const kLightPositionOffset = 48;
++  const kViewWorldPositionOffset = 52;
+
+  const normalMatrixValue = uniformValues.subarray(
+      kNormalMatrixOffset, kNormalMatrixOffset + 12);
+  const worldViewProjectionValue = uniformValues.subarray(
+      kWorldViewProjectionOffset, kWorldViewProjectionOffset + 16);
+  const worldValue = uniformValues.subarray(
+      kWorldOffset, kWorldOffset + 16);
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+  const lightPositionValue = uniformValues.subarray(
+      kLightPositionOffset, kLightPositionOffset + 3);
++  const viewWorldPositionValue = uniformValues.subarray(
++      kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
+</pre>
+<p>そして、それを設定します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const eye = [100, 150, 200];
+    const target = [0, 35, 0];
+    const up = [0, 1, 0];
+
+    ...
+
+    viewWorldPositionValue.set(eye);
+</pre>
+<p>そして、これがそれです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-point-w-specular.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-point-w-specular.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p><strong>なんて明るいんだ！</strong></p>
+<p>ドット積の結果をべき乗することで、明るさを修正できます。これにより、スペキュラハイライトが線形フォールオフから指数フォールオフに圧縮されます。</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram noborder" style="width: 400px; height: 400px;" src="/webgpu/lessons/resources/power-graph.html"></iframe>
+</div>
+
+<p></p>
+<p>赤い線がグラフの上部に近いほど、スペキュラ加算は明るくなります。べき乗を上げると、明るくなる範囲が右に圧縮されます。</p>
+<p>それを<code class="notranslate" translate="no">shininess</code>と呼び、シェーダーに追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  normalMatrix: mat3x3f,
+  worldViewProjection: mat4x4f,
+  world: mat4x4f,
+  color: vec4f,
+  lightWorldPosition: vec3f,
+  viewWorldPosition: vec3f,
++  shininess: f32,
+};
+
+...
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+
+  ...
+
+-  let specular = dot(normal, halfVector);
++  var specular = dot(normal, halfVector);
++  specular = select(
++      0.0,                           // 条件がfalseの場合の値
++      pow(specular, uni.shininess),  // 条件がtrueの場合の値
++      specular &gt; 0.0);               // 条件
+</pre>
+<p>ドット積は負になる可能性があります。負の数をべき乗すると、WebGPUでは未定義（またはNaN？）になり、これは悪いことです。したがって、ドット積が負の場合は、スペキュラを0.0のままにします。</p>
+<p>もちろん、<code class="notranslate" translate="no">shininess</code>を設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNormalMatrixOffset = 0;
+  const kWorldViewProjectionOffset = 12;
+  const kWorldOffset = 28;
+  const kColorOffset = 44;
+  const kLightWorldPositionOffset = 48;
+  const kViewWorldPositionOffset = 52;
++  const kShininessOffset = 55;
+
+  const normalMatrixValue = uniformValues.subarray(
+      kNormalMatrixOffset, kNormalMatrixOffset + 12);
+  const worldViewProjectionValue = uniformValues.subarray(
+      kWorldViewProjectionOffset, kWorldViewProjectionOffset + 16);
+  const worldValue = uniformValues.subarray(
+      kWorldOffset, kWorldOffset + 16);
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+  const lightWorldPositionValue = uniformValues.subarray(
+      kLightWorldPositionOffset, kLightWorldPositionOffset + 3);
+  const viewWorldPositionValue = uniformValues.subarray(
+      kViewWorldPositionOffset, kViewWorldPositionOffset + 3);
++  const shininessValue = uniformValues.subarray(
++      kShininessOffset, kShininessOffset + 1);
+
+...
+
+  const settings = {
+    rotation: degToRad(0),
++    shininess: 30,
+  };
+
+  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'rotation', radToDegOptions);
++  gui.add(settings, 'shininess', { min: 1, max: 250 });
+
+...
+
+  function render() {
+
+   ...
+
++    shininessValue[0] = settings.shininess;
+
+</pre>
+<p>そして、これがそれです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-lighting-point-w-specular-power.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-lighting-point-w-specular-power.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>次は<a href="webgpu-lighting-spot.html">スポットライト</a>です。</p>
+<div class="webgpu_bottombar">
+<h3>なぜ`pow(negative, power)`は未定義なのですか？</h3>
+<p>これはどういう意味ですか？</p>
+<div class="webgpu_center"><pre class="glocal-center-content">pow(5, 2)</pre></div>
+<p>まあ、次のように見ることができます。</p>
+<div class="webgpu_center"><pre class="glocal-center-content">5 * 5 = 25</pre></div>
+<p>では、これはどうですか？</p>
+<div class="webgpu_center"><pre class="glocal-center-content">pow(5, 3)</pre></div>
+<p>まあ、それは次のように見ることができます。</p>
+<div class="webgpu_center"><pre class="glocal-center-content">5 * 5 * 5 = 125</pre></div>
+<p>さて、これはどうですか？</p>
+<div class="webgpu_center"><pre class="glocal-center-content">pow(-5, 2)</pre></div>
+<p>まあ、それは次のようになります。</p>
+<div class="webgpu_center"><pre class="glocal-center-content">-5 * -5 = 25</pre></div>
+<p>そして</p>
+<div class="webgpu_center"><pre class="glocal-center-content">pow(-5, 3)</pre></div>
+<p>まあ、それは次のように見ることができます。</p>
+<div class="webgpu_center"><pre class="glocal-center-content">-5 * -5 * -5 = -125</pre></div>
+<p>ご存知のように、負の数を負の数で乗算すると正になります。もう一度負の数で乗算すると負になります。</p>
+<p>では、これはどういう意味ですか？</p>
+<div class="webgpu_center"><pre class="glocal-center-content">pow(-5, 2.5)</pre></div>
+<p>その結果が正か負かをどのように判断しますか？それは<a href="https://betterexplained.com/articles/a-visual-intuitive-guide-to-imaginary-numbers/">虚数</a>の世界です。</p>
+</div>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +668,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +757,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU - 点光源`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

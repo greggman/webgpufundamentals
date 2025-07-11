@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-perspective-projection.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Perspective Projection">
+
+<meta name="description" content="透視投影 - 遠くのものは小さく">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-perspective-projection_ja.jpg">
+
+<meta property="og:title" content="WebGPU 透視投影">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Perspective Projection - smaller in the distance">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-perspective-projection_ja.jpg">
+<meta property="og:description" content="透視投影 - 遠くのものは小さく">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-perspective-projection.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Perspective Projection">
+<meta name="twitter:title" content="WebGPU 透視投影">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-perspective-projection.html">
-<meta name="twitter:description" content="Perspective Projection - smaller in the distance">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="透視投影 - 遠くのものは小さく">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-perspective-projection_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-perspective-projection.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-perspective-projection_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-perspective-projection.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-perspective-projection.html",
+      "inLanguage":"ja",
+      "name":"WebGPU 透視投影",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-perspective-projection.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Perspective Projection</title>
+<title>WebGPU 透視投影</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,512 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Perspective Projection</h1>
+    <h1>WebGPU 透視投影</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-perspective-projection.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、3D数学について学ぶことを目的とした一連の記事の6番目です。各記事は前のレッスンを基にしているので、順番に読むと最も理解しやすいかもしれません。</p>
+<ol>
+<li><a href="webgpu-translation.html">平行移動</a></li>
+<li><a href="webgpu-rotation.html">回転</a></li>
+<li><a href="webgpu-scale.html">スケーリング</a></li>
+<li><a href="webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="webgpu-perspective-projection.html">透視投影</a> ⬅ ここです</li>
+<li><a href="webgpu-cameras.html">カメラ</a></li>
+<li><a href="webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="webgpu-scene-graphs.html">シーングラフ</a></li>
+</ol>
+<p>前回の投稿では、3Dを行う方法について説明しましたが、その3Dには遠近感がありませんでした。それは「正射影」ビューと呼ばれるものを使用していましたが、それには用途がありますが、一般的に人々が「3D」と言うときに望むものではありません。</p>
+<p>代わりに、遠近感を追加する必要があります。遠近感とは何でしょうか？基本的には、遠くにあるものが小さく見えるという特徴です。</p>
+<img class="webgpu_center noinvertdark" style="width: 800px" src="../resources/perspective-example.svg">
+<p>上の例を見ると、遠くにあるものが小さく描かれていることがわかります。現在のサンプルを考えると、遠くにあるものが小さく見えるようにする簡単な方法の1つは、クリップ空間のXとYをZで割ることです。</p>
+<p>このように考えてみてください：(10, 15)から(20,15)までの線がある場合、それは10単位の長さです。現在のサンプルでは、10ピクセルの長さで描画されます。しかし、Zで割ると、たとえばZが1の場合、</p>
+<div class="webgpu_center">
+<pre class="webgpu_math">10 / 1 = 10
+20 / 1 = 20
+abs(10-20) = 10
+</pre>
+</div>
+<p>10ピクセルの長さになります。Zが2の場合、</p>
+<div class="webgpu_center">
+<pre class="webgpu_math">10 / 2 = 5
+20 / 2 = 10
+abs(5 - 10) = 5
+</pre>
+</div>
+<p>5ピクセルの長さになります。Z = 3の場合、</p>
+<div class="webgpu_center">
+<pre class="webgpu_math">10 / 3 = 3.333
+20 / 3 = 6.666
+abs(3.333 - 6.666) = 3.333
+</pre>
+</div>
+<p>Zが大きくなるにつれて、小さくなるにつれて、最終的には小さく描画され、したがって、より遠くに見えることがわかります。クリップ空間で除算すると、Zがより小さい数値（0から+1）になるため、より良い結果が得られる可能性があります。除算する前にZに乗算するfudgeFactorを追加すると、特定の距離に対して物がどれだけ小さくなるかを調整できます。</p>
+<p>試してみましょう。まず、頂点シェーダーを変更して、「fudgeFactor」で乗算した後にZで除算するようにします。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
++  fudgeFactor: f32,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+  @location(1) color: vec4f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+-  vsOut.position = uni.matrix * vert.position;
++  let position = uni.matrix * vert.position;
++
++  let zToDivideBy = 1.0 + position.z * uni.fudgeFactor;
++
++  vsOut.position = vec4f(
++      position.xy / zToDivideBy,
++      position.zw);
+
+  vsOut.color = vert.color;
+  return vsOut;
+}
+</pre>
+<p>注：1を追加することで、<code class="notranslate" translate="no">fudgeFactor</code>を0に設定し、1に等しい<code class="notranslate" translate="no">zToDivideBy</code>を取得できます。これにより、Zで除算しない場合と比較できます。なぜなら、1で除算しても何も起こらないからです。</p>
+<p>また、fudgeFactorを設定できるようにコードを更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  // 行列
+-  const uniformBufferSize = (16) * 4;
++  // 行列、fudgeFactor、パディング
++  const uniformBufferSize = (16 + 1 + 3) * 4;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kMatrixOffset = 0;
++  const kFudgeFactorOffset = 16;
+
+  const matrixValue = uniformValues.subarray(kMatrixOffset, kMatrixOffset + 16);
++  const fudgeFactorValue = uniformValues.subarray(kFudgeFactorOffset, kFudgeFactorOffset + 1);
+
+...
+
+  const settings = {
+    translation: [canvas.clientWidth / 2 - 200, canvas.clientHeight / 2 - 75, -1000],
+    rotation: [degToRad(40), degToRad(25), degToRad(325)],
+    scale: [3, 3, 3],
++    fudgeFactor: 0.5,
+  };
+
+...
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings.translation, '0', 0, 1000).name('translation.x');
+  gui.add(settings.translation, '1', 0, 1000).name('translation.y');
+  gui.add(settings.translation, '2', -1000, 1000).name('translation.z');
+  gui.add(settings.rotation, '0', radToDegOptions).name('rotation.x');
+  gui.add(settings.rotation, '1', radToDegOptions).name('rotation.y');
+  gui.add(settings.rotation, '2', radToDegOptions).name('rotation.z');
+  gui.add(settings.scale, '0', -5, 5).name('scale.x');
+  gui.add(settings.scale, '1', -5, 5).name('scale.y');
+  gui.add(settings.scale, '2', -5, 5).name('scale.z');
++  gui.add(settings, 'fudgeFactor', 0, 50);
+
+...
+
+  function render() {
+
+    ...
+
+    mat4.ortho(
+        0,                   // left
+        canvas.clientWidth,  // right
+        canvas.clientHeight, // bottom
+        0,                   // top
+        1200,                // near
+        -1000,               // far
+        matrixValue,         // dst
+    );
+    mat4.translate(matrixValue, settings.translation, matrixValue);
+    mat4.rotateX(matrixValue, settings.rotation[0], matrixValue);
+    mat4.rotateY(matrixValue, settings.rotation[1], matrixValue);
+    mat4.rotateZ(matrixValue, settings.rotation[2], matrixValue);
+    mat4.scale(matrixValue, settings.scale, matrixValue);
+
++    fudgeFactorValue[0] = settings.fudgeFactor;
+</pre>
+<p>また、結果が見やすくなるように<code class="notranslate" translate="no">settings</code>を調整しました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+-    translation: [45, 100, 0],
++    translation: [canvas.clientWidth / 2 - 200, canvas.clientHeight / 2 - 75, -1000],
+    rotation: [degToRad(40), degToRad(25), degToRad(325)],
+-    scale: [1, 1, 1],
++    scale: [3, 3, 3],
+    fudgeFactor: 10,
+  };
+</pre>
+<p>そして、これが結果です。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-perspective-projection-step-1-fudge-factor.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-perspective-projection-step-1-fudge-factor.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>明確でない場合は、「fudgeFactor」スライダーを10.0から0.0にドラッグして、Zで除算するコードを追加する前の様子を確認してください。</p>
+<img class="webgpu_center" src="../resources/orthographic-vs-perspective.png">
+<div class="webgpu_center">正射影と透視投影</div>
+<p>WebGPUは、頂点シェーダーの<code class="notranslate" translate="no">@builtin(position)</code>に割り当てたx、y、z、wの値を取得し、それをwで自動的に除算することがわかりました。</p>
+<p>これを非常に簡単に証明するには、シェーダーを変更し、自分で除算を行う代わりに、<code class="notranslate" translate="no">zToDivideBy</code>を<code class="notranslate" translate="no">vsOut.position.w</code>に入れます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  let position = uni.matrix * vert.position;
+
+  let zToDivideBy = 1.0 + position.z * uni.fudgeFactor;
+
+-  vsOut.position = vec4f(
+-      position.xy / zToDivideBy,
+-      position.zw);
++  vsOut.position = vec4f(position.xyz, zToDivideBy);
+
+  vsOut.color = vert.color;
+  return vsOut;
+}
+</pre>
+<p>そして、それがまったく同じであることがわかります。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-perspective-projection-step-2-gpu-divide-by-w.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-perspective-projection-step-2-gpu-divide-by-w.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>WebGPUが自動的にWで除算するという事実はなぜ便利なのでしょうか？なぜなら、今では、さらに多くの行列の魔法を使用して、zをwにコピーするための別の行列を使用するだけで済むからです。</p>
+<p>このような行列</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">1  0  0  0
+0  1  0  0
+0  0  1  0
+0  0  1  0
+</pre></div>
+<p>zをwにコピーします。これらの各行を次のように見ることができます。</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">x_out = x_in * 1 +
+        y_in * 0 +
+        z_in * 0 +
+        w_in * 0 ;
+ 
+y_out = x_in * 0 +
+        y_in * 1 +
+        z_in * 0 +
+        w_in * 0 ;
+ 
+z_out = x_in * 0 +
+        y_in * 0 +
+        z_in * 1 +
+        w_in * 0 ;
+ 
+w_out = x_in * 0 +
+        y_in * 0 +
+        z_in * 1 +
+        w_in * 0 ;
+</pre></div>
+<p>単純化すると、次のようになります。</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">x_out = x_in;
+y_out = y_in;
+z_out = z_in;
+w_out = z_in;
+</pre></div>
+<p><code class="notranslate" translate="no">w_in</code>が常に1.0であることがわかっているので、この行列で以前にあったプラス1を追加できます。</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">1  0  0  0
+0  1  0  0
+0  0  1  0
+0  0  1  1
+</pre></div>
+<p>これにより、Wの計算が次のように変更されます。</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">w_out = x_in * 0 +
+        y_in * 0 +
+        z_in * 1 +
+        w_in * 1 ;
+</pre></div>
+<p>そして、<code class="notranslate" translate="no">w_in</code> = 1.0であることがわかっているので、実際には</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">w_out = z_in + 1;
+</pre></div>
+<p>最後に、行列がこれである場合、fudgeFactorを元に戻すことができます。</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">1  0  0            0
+0  1  0            0
+0  0  1            0
+0  0  fudgeFactor  1
+</pre></div>
+<p>つまり</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">w_out = x_in * 0 +
+        y_in * 0 +
+        z_in * fudgeFactor +
+        w_in * 1 ;
+</pre></div>
+<p>そして、単純化すると、次のようになります。</p>
+<div class="webgpu_math_center"><pre class="webgpu_math">w_out = z_in * fudgeFactor + 1;
+</pre></div>
+<p>では、プログラムを再度変更して、行列のみを使用するようにしましょう。</p>
+<p>まず、頂点シェーダーを元に戻して、再び単純にしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
+-  fudgeFactor: f32,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+  @location(1) color: vec4f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+-  let position = uni.matrix * vert.position;
+-
+-  let zToDivideBy = 1.0 + position.z * uni.fudgeFactor;
+-
+-  vsOut.position = vec4f(
+-      position.xy / zToDivideBy,
+-      position.zw);
+  vsOut position = uni.matrix * vert.position;
+  vsOut.color = vert.color;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vsOut.color;
+}
+</pre>
+<p>次に、Z→W行列を作成する関数を作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeZToWMatrix(fudgeFactor) {
+  return [
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, fudgeFactor,
+    0, 0, 0, 1,
+  ];
+}
+</pre>
+<p>そして、それを使用するようにコードを変更します。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">-    mat4.ortho(
++    const projection = mat4.ortho(
+        0,                   // left
+        canvas.clientWidth,  // right
+        canvas.clientHeight, // bottom
+        0,                   // top
+        1200,                // near
+        -1000,               // far
+-        matrixValue,         // dst
+    );
++    mat4.multiply(makeZToWMatrix(settings.fudgeFactor), projection, matrixValue);
+    mat4.translate(matrixValue, settings.translation, matrixValue);
+    mat4.rotateX(matrixValue, settings.rotation[0], matrixValue);
+    mat4.rotateY(matrixValue, settings.rotation[1], matrixValue);
+    mat4.rotateZ(matrixValue, settings.rotation[2], matrixValue);
+    mat4.scale(matrixValue, settings.scale, matrixValue);
+</pre>
+<p>そして、繰り返しになりますが、まったく同じであることに注意してください。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-perspective-projection-step-3-perspective-z-to-w.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-perspective-projection-step-3-perspective-z-to-w.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>これらすべては、基本的に、Zで除算すると遠近感が得られ、WebGPUがこのZによる除算を便利に行ってくれることを示すためだけのものでした。</p>
+<p>しかし、まだいくつかの問題があります。たとえば、Zを-1100あたりに設定すると、下のアニメーションのようなものが表示されます。</p>
+<div class="webgpu_center"><div data-diagram="z-clipping" style="height: 400px;"></div></div>
+<p>どうしたのでしょうか？なぜFが早く消えるのでしょうか？WebGPUがXとYを+1から-1にクリップするのと同じように、Zもクリップします。XとYとは異なり、Zは0から+1にクリップします。ここで見ているのは、クリップ空間でZ &lt; 0です。</p>
+<div class="webgpu_center" style="width: 500px; height: 400px;"><div data-diagram="f-frustum-diagram"></div></div>
+<p>Wによる除算が適用されると、行列演算+Wによる除算は<em>錐台</em>を定義します。錐台の前面はZ = 0、背面はZ = 1です。その外側にあるものはすべてクリップされます。</p>
+<blockquote>
+<h2>錐台</h2>
+<p><i>名詞</i>:</p>
+<ol><li>円錐または角錐の上部が底面に平行な平面で切り取られたもの</li></ol>
+</blockquote>
+<p>それを修正するための数学について詳しく説明することもできますが、2D射影を行ったのと同じ方法で<a href="https://stackoverflow.com/a/28301213/128511">導出できます</a>。Zを取得し、ある量（平行移動）を加え、ある量をスケーリングする必要があり、目的の範囲を-1から+1に再マッピングできます。</p>
+<p>クールなのは、これらすべてのステップを1つの行列で実行できることです。さらに良いことに、<code class="notranslate" translate="no">fudgeFactor</code>の代わりに、<code class="notranslate" translate="no">fieldOfView</code>を決定し、それを実現するための適切な値を計算します。</p>
+<p>行列を作成する関数は次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat4 = {
+  ...
+  perspective(fieldOfViewYInRadians, aspect, zNear, zFar, dst) {
+    dst = dst || new Float32Array(16);
+
+    const f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians);
+    const rangeInv = 1 / (zNear - zFar);
+
+    dst[0] = f / aspect;
+    dst[1] = 0;
+    dst[2] = 0;
+    dst[3] = 0;
+
+    dst[4] = 0;
+    dst[5] = f;
+    dst[6] = 0;
+    dst[7] = 0;
+
+    dst[8] = 0;
+    dst[9] = 0;
+    dst[10] = zFar * rangeInv;
+    dst[11] = -1;
+
+    dst[12] = 0;
+    dst[13] = 0;
+    dst[14] = zNear * zFar * rangeInv;
+    dst[15] = 0;
+
+    return dst;
+  }
+</pre>
+<p>この行列は、すべての変換を自動的に行います。単位をクリップ空間に調整し、角度で視野を選択できるように数学を行い、Zクリッピング空間を選択できるようにします。原点（0、0、0）に<em>目</em>または<em>カメラ</em>があり、<code class="notranslate" translate="no">zNear</code>と<code class="notranslate" translate="no">fieldOfView</code>が与えられると、<code class="notranslate" translate="no">zNear</code>にあるものが<code class="notranslate" translate="no">Z = 0</code>になり、<code class="notranslate" translate="no">zNear</code>にあるものが中心の上下に<code class="notranslate" translate="no">fieldOfView</code>の半分であるものがそれぞれ<code class="notranslate" translate="no">Y = -1</code>と<code class="notranslate" translate="no">Y = 1</code>になるように計算します。渡された<code class="notranslate" translate="no">aspect</code>で乗算するだけでXに使用するものを計算します。通常、これを表示領域の<code class="notranslate" translate="no">width / height</code>に設定します。最後に、zFarにあるものが<code class="notranslate" translate="no">Z = 1</code>になるようにZで物をどれだけスケーリングするかを計算します。</p>
+<p>これは、動作中の行列の図です。</p>
+<div class="webgpu_center" style="width: 500px; height: 800px;"><div data-diagram="frustum-diagram"></div></div>
+<p>行列は、錐台内の空間を取得し、それをクリップ空間に変換します。<code class="notranslate" translate="no">zNear</code>は、物が前面でクリップされる場所を定義し、<code class="notranslate" translate="no">zFar</code>は、物が背面でクリップされる場所を定義します。<code class="notranslate" translate="no">zNear</code>を23に設定すると、回転するキューブの前面がクリップされるのがわかります。<code class="notranslate" translate="no">zFar</code>を24に設定すると、キューブの背面がクリップされるのがわかります。</p>
+<p>この関数を例で使用しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    fieldOfView: degToRad(100),
+    translation: [canvas.clientWidth / 2 - 200, canvas.clientHeight / 2 - 75, -1000],
+    rotation: [degToRad(40), degToRad(25), degToRad(325)],
+    scale: [3, 3, 3],
+-    fudgeFactor: 10,
+  };
+
+  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'fieldOfView', {min: 1, max: 179, converters: GUI.converters.radToDeg});
+-  gui.add(settings.translation, '0', 0, 1000).name('translation.x');
+-  gui.add(settings.translation, '1', 0, 1000).name('translation.y');
+-  gui.add(settings.translation, '2', -1400, 1000).name('translation.z');
++  gui.add(settings.translation, '0', -1000, 1000).name('translation.x');
++  gui.add(settings.translation, '1', -1000, 1000).name('translation.y');
++  gui.add(settings.translation, '2', -1400, -100).name('translation.z');
+  gui.add(settings.rotation, '0', radToDegOptions).name('rotation.x');
+  gui.add(settings.rotation, '1', radToDegOptions).name('rotation.y');
+  gui.add(settings.rotation, '2', radToDegOptions).name('rotation.z');
+-  gui.add(settings.scale, '0', -5, 5).name('scale.x');
+-  gui.add(settings.scale, '1', -5, 5).name('scale.y');
+-  gui.add(settings.scale, '2', -5, 5).name('scale.z');
+
+  ...
+
+  function render() {
+    ....
+
+-    const projection = mat4.ortho(
+-        0,                   // left
+-        canvas.clientWidth,  // right
+-        canvas.clientHeight, // bottom
+-        0,                   // top
+-        1200,                // near
+-        -1000,               // far
+-    );
+-    mat4.multiply(makeZToWMatrix(settings.fudgeFactor), projection, matrixValue);
++    const aspect = canvas.clientWidth / canvas.clientHeight;
++    mat4.perspective(
++        settings.fieldOfView,
++        aspect,
++        1,      // zNear
++        2000,   // zFar
++        matrixValue,
++    );
+    mat4.translate(matrixValue, settings.translation, matrixValue);
+    mat4.rotateX(matrixValue, settings.rotation[0], matrixValue);
+    mat4.rotateY(matrixValue, settings.rotation[1], matrixValue);
+    mat4.rotateZ(matrixValue, settings.rotation[2], matrixValue);
+    mat4.scale(matrixValue, settings.scale, matrixValue);
+</pre>
+<p>まだ1つ問題があります。この射影行列は、0,0,0にビューアがあり、負のZ方向を見ていて、正のYが上であると仮定しています。これまでの行列は、異なる方法で物事を行ってきました。高さ150単位、幅100単位、厚さ30単位のFを、ある-Z位置に配置する必要があり、錐台の内側に収まるように十分に離れている必要があります。上記で定義した錐台は、<code class="notranslate" translate="no">zNear</code> = 1で、オブジェクトが1単位離れている場合、上から下まで約2.4単位しか表示されないため、Fは画面の98％オフになります。</p>
+<p>いくつかの数値をいじってみたところ、これらの設定になりました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    fieldOfView: degToRad(100),
+-    translation: [canvas.clientWidth / 2 - 200, canvas.clientHeight / 2 - 75, -1000],
+-    rotation: [degToRad(40), degToRad(25), degToRad(325)],
+-    scale: [3, 3, 3],
++    translation: [-65, 0, -120],
++    rotation: [degToRad(220), degToRad(25), degToRad(325)],
++    scale: [1, 1, 1],
+  };
+</pre>
+<p>そして、ついでに、UI設定をより適切なものに調整しましょう。また、UIを少しすっきりさせるためにスケールを削除しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'fieldOfView', {min: 1, max: 179, converters: GUI.converters.radToDeg});
+-  gui.add(settings.translation, '0', 0, 1000).name('translation.x');
+-  gui.add(settings.translation, '1', 0, 1000).name('translation.y');
+-  gui.add(settings.translation, '2', -1400, 1000).name('translation.z');
++  gui.add(settings.translation, '0', -1000, 1000).name('translation.x');
++  gui.add(settings.translation, '1', -1000, 1000).name('translation.y');
++  gui.add(settings.translation, '2', -1400, -100).name('translation.z');
+  gui.add(settings.rotation, '0', radToDegOptions).name('rotation.x');
+  gui.add(settings.rotation, '1', radToDegOptions).name('rotation.y');
+  gui.add(settings.rotation, '2', radToDegOptions).name('rotation.z');
+-  gui.add(settings.scale, '0', -5, 5).name('scale.x');
+-  gui.add(settings.scale, '1', -5, 5).name('scale.y');
+-  gui.add(settings.scale, '2', -5, 5).name('scale.z');
+</pre>
+<p>「ピクセル空間」ではなくなったので、グリッドも削除しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">:root {
+  --bg-color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #000;
+  }
+}
+canvas {
+  display: block;  /* canvasをブロックのように動作させる */
+  width: 100%;     /* canvasがコンテナを埋めるようにする */
+  height: 100%;
+}
+</pre>
+<p>そして、これがそれです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-perspective-projection-step-4-perspective.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-perspective-projection-step-4-perspective.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>シェーダーで1つの行列乗算に戻り、視野とZ空間の両方を選択できるようになりました。</p>
+<p>次は、<a href="webgpu-cameras.html">カメラ</a>です。</p>
+<div class="webgpu_bottombar">
+<h3>なぜFをZで-120も移動させたのですか？</h3>
+<p>
+他のサンプルでは、Fは(45, 100, 0)にありましたが、最後のサンプルでは(-65, 0, -120)に移動しました。なぜそんなに遠くに移動する必要があったのでしょうか？
+</p>
+<p>
+その理由は、この最後のサンプルまで、`mat4.projection`関数がピクセルからクリップ空間への射影を作成していたためです。つまり、表示していた領域はピクセルを表していました。「ピクセル」を使用することは、カメラから特定の距離にあるピクセルのみを表すため、3Dではあまり意味がありません。
+</p>
+<p>
+つまり、新しい透視投影行列では、Fを平行移動0,0,0、回転0,0,0で描画しようとすると、次のようになります。
+</p>
+<div class="webgpu_center"><img src="../resources/f-big-and-wrong-side.svg" style="width: 500px;"></div>
+<p>
+Fの左上前面の角は原点にあります。透視投影行列は負のZ方向を見ていますが、Fは正のZで構築されています。透視投影行列は正のYが上ですが、Fは正のZが下で構築されています。
+</p>
+<p>
+新しい射影は、青い錐台の内側にあるものしか見えません。-zNear = 1で、視野が100度の場合、Z = -1では錐台の高さはわずか2.38単位、幅は2.38 * アスペクト単位です。Z = -2000（-zFar）では、高さは4767単位です。Fは150単位の大きさで、ビューは`zNear`にあるときに2.38単位しか見えないため、すべてを見るには原点からさらに離す必要があります。
+</p>
+<p>
+Zで-120単位移動すると、Fが錐台の内側に移動します。また、右側が上になるように回転させました。
+</p>
+<div class="webgpu_center"><img src="../resources/f-right-side.svg" style="width: 500px;"><div>縮尺どおりではありません</div></div>
+</div>
+<!-- この記事の最後にこれを保持してください -->
+<script type="module" src="../webgpu-perspective-projection.js"></script>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +748,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +837,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 透視投影`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

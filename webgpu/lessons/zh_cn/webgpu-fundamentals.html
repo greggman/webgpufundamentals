@@ -674,7 +674,7 @@ const resultBuffer = device.createBuffer({
 const bindGroup = device.createBindGroup({
     label: 'bindGroup for work buffer',
     layout: pipeline.getBindGroupLayout(0),
-    entries: [{ binding: 0, resource: { buffer: workBuffer } }],
+    entries: [{ binding: 0, resource: workBuffer }],
 });
 </pre>
 <p>我们从管道中获取 bindGroup 的布局。然后设置 bindGroup 的<code class="notranslate" translate="no">entries</code>。<code class="notranslate" translate="no">pipeline.getBindGroupLayout(0)</code> 中的 0 对应着着色器中的 <code class="notranslate" translate="no">@group(0)</code>。<code class="notranslate" translate="no">{binding：0 ...</code> <code class="notranslate" translate="no">entry</code>对应着着色器中的 <code class="notranslate" translate="no">@group(0) @binding(0)</code>。</p>
@@ -923,7 +923,7 @@ function main(device) {
           <li><a href="/webgpu/lessons/zh_cn/webgpu-environment-maps.html">Environment maps</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
         </ul>

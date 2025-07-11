@@ -942,11 +942,11 @@ code above.</p>
 <p>These were briefly mentioned in <a href="webgpu-inter-stage-variables.html#a-interpolate">the article on inter-stage variables</a>.</p>
 </li>
 <li>
-<h2 id="interpolateflat-and-interpolateflat-first-are-not-supported"><code class="notranslate" translate="no">@interpolate(flat)</code> and <code class="notranslate" translate="no">@interpolate(flat, first)</code> are not supported</h2>
+<h2 id="interpolateflat-and-interpolateflat-first-are-not-supported"><a id="flat"></a> <code class="notranslate" translate="no">@interpolate(flat)</code> and <code class="notranslate" translate="no">@interpolate(flat, first)</code> are not supported</h2>
 <p>In compatibility mode you must use <code class="notranslate" translate="no">@interpolate(flat, either)</code> when you want
 flat interpolation. <code class="notranslate" translate="no">either</code> means the value passed to the fragment shader
 could be the value from either the first or last vertex of the triangle or line
-being drawn.</p>
+being drawn. It’s up to the implementation.</p>
 <p>It is common for this not to matter. The most common use cases for passing something
 with flat interpolation from the vertex shader to the fragment shader are usually
 per model, per material, or per instance types of values. For example the mipmap

@@ -319,9 +319,9 @@ struct VSOutput {
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: staticStorageBuffer }},
-      { binding: 1, resource: { buffer: changingStorageBuffer }},
--      { binding: 2, resource: { buffer: vertexStorageBuffer }},
+      { binding: 0, resource: staticStorageBuffer},
+      { binding: 1, resource: changingStorageBuffer},
+-      { binding: 2, resource: vertexStorageBuffer},
     ],
   });
 </pre>
@@ -478,12 +478,7 @@ struct VSOutput {
   });
 </pre>
 <p>上面我们在 pipeline 描述的缓冲区数组中新添加了 2 项，因此现在有 3 个缓冲区，这意味着我们告诉 WebGPU 我们将在 3 个缓冲区中提供数据。</p>
-<p>对于 2 个新条目，我们将 <code class="notranslate" translate="no">stepMode</code> 设置为 <code class="notranslate" translate="no">instance</code>。这意味着该属性在每个实例中只会前进一次到下一个值。默认值为 <code class="notranslate" translate="no">stepMode: 'vertex'</code> 即每个顶点递进一次（每个实例重新开始）。</p>
-<p>Above we added 2 entries to the <code class="notranslate" translate="no">buffers</code> array on our pipeline description so now there are 3 buffer entries, meaning
-we’re telling WebGPU we’ll supply the data in 3 buffers.</p>
-<p>For our 2 new entires we set the <code class="notranslate" translate="no">stepMode</code> to <code class="notranslate" translate="no">instance</code>. This means this attribute
-will only advance to next value once per instance. The default is <code class="notranslate" translate="no">stepMode: 'vertex'</code>
-which advances once per vertex (and starts over for each instance).</p>
+<p>对于 2 个新条目，我们将 <code class="notranslate" translate="no">stepMode</code> 设置为 <code class="notranslate" translate="no">instance</code>。这意味着该属性在每个实例中只会前进一次到下一个值。默认值为 <code class="notranslate" translate="no">stepMode: 'vertex'</code>， 即每个顶点递进一次（并且在每个实例重新开始）。</p>
 <p>我们有两个缓冲区。其中一个只保存<code class="notranslate" translate="no">scale</code>，为其设置<code class="notranslate" translate="no">attribute</code>非常简单。就像第一个缓冲区保存<code class="notranslate" translate="no">position</code>一样，每个顶点有 2 个 32 位浮点数。</p>
 <p>另一个缓冲区保存<code class="notranslate" translate="no">color</code>和<code class="notranslate" translate="no">offset</code>，它们将在数据中这样交错排列</p>
 <div class="webgpu_center"><img src="../resources/vertex-buffer-f32x4-f32x2.svg" style="width: 1024px;"></div>
@@ -522,8 +517,8 @@ which advances once per vertex (and starts over for each instance).</p>
 -    label: 'bind group for objects',
 -    layout: pipeline.getBindGroupLayout(0),
 -    entries: [
--      { binding: 0, resource: { buffer: staticStorageBuffer }},
--      { binding: 1, resource: { buffer: changingStorageBuffer }},
+-      { binding: 0, resource: staticStorageBuffer},
+-      { binding: 1, resource: changingStorageBuffer},
 -    ],
 -  });
 </pre>
@@ -852,10 +847,7 @@ struct VSOutput {
 </pre>
 <p>每个实例数据的布局如下</p>
 <div class="webgpu_center"><img src="../resources/vertex-buffer-u8x4-f32x2.svg" style="width: 1024px;"></div>
-<p>然后，我们需要更改管道，将数据提取为 8 位无符号值，并将其归一化为 0 ↔ 1，更新偏移量，并将步长更新为新大小。
-We then need to change the pipeline to pull out the data as 8bit unsigned
-values and to normalize them back to 0 ↔ 1, update the offsets, and update the stride to its
-new size.</p>
+<p>然后，我们需要更改管道，将数据提取为 8 位无符号值，并将其归一化为 0 ↔ 1，更新偏移量，并将步长更新为新大小。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
     label: 'per vertex color',
     layout: 'auto',
@@ -1147,7 +1139,7 @@ pass.setVertexBuffer(2, changingVertexBuffer);
           <li><a href="/webgpu/lessons/zh_cn/webgpu-environment-maps.html">Environment maps</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
         </ul>

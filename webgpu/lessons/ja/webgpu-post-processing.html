@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-post-processing.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Post Processing - Basic CRT Effect">
+
+<meta name="description" content="ポストプロセッシング">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_ja.jpg">
+
+<meta property="og:title" content="WebGPU ポストプロセッシング - 基本的なCRTエフェクト">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Post Processing">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_ja.jpg">
+<meta property="og:description" content="ポストプロセッシング">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-post-processing.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Post Processing - Basic CRT Effect">
+<meta name="twitter:title" content="WebGPU ポストプロセッシング - 基本的なCRTエフェクト">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-post-processing.html">
-<meta name="twitter:description" content="Post Processing">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="ポストプロセッシング">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-post-processing.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-post-processing.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-post-processing.html",
+      "inLanguage":"ja",
+      "name":"WebGPU ポストプロセッシング - 基本的なCRTエフェクト",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-post-processing.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Post Processing - Basic CRT Effect</title>
+<title>WebGPU ポストプロセッシング - 基本的なCRTエフェクト</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,617 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Post Processing - Basic CRT Effect</h1>
+    <h1>WebGPU ポストプロセッシング - 基本的なCRTエフェクト</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-post-processing.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>ポストプロセッシングとは、「オリジナル」の画像を作成した後に何らかの処理を行うことを意味します。ポストプロセッシングは、写真、ビデオ、2Dシーン、3Dシーンに適用できます。一般的には、画像があり、その画像に何らかのエフェクトを適用することを意味します。たとえば、Instagramでフィルターを選択するなどです。</p>
+<p>このサイトのほとんどすべての例では、キャンバステクスチャにレンダリングしています。ポストプロセッシングを行うには、代わりに別のテクスチャにレンダリングします。次に、何らかの画像処理エフェクトを適用しながら、そのテクスチャをキャンバスにレンダリングします。</p>
+<p>簡単な例として、1980年代のテレビのように見えるように、スキャンラインとCRT RGB要素を使用して画像を後処理してみましょう。</p>
+<div class="webgpu_center"><img class="nobg" src="../resources/gemini-generated-1980s-tv-1024.png" style="width: 700px"></div>
+<p>そのためには、<a href="webgpu-timing.html">タイミングに関する記事</a>の冒頭のアニメーションの例を取り上げましょう。最初に行うことは、別のテクスチャにレンダリングし、そのテクスチャをキャンバスにレンダリングすることです。</p>
+<p>これは、<a href="webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a>を描画し、クリップ空間に収まる三角形の部分をカバーするテクスチャを描画できるように正しいUV座標を渡すシェーダーです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+        return vec4f(color);
+      }
+    `,
+  })
+</pre>
+<p>これは非常に単純で、<a href="webgpu-importing-textures.html">テクスチャ付き画像の利用に関する記事</a>でミップマップを生成するために使用したシェーダーと似ています。唯一の大きな違いは、元のシェーダーがクリップ空間をカバーするために2つの三角形を使用するのに対し、これは<a href="webgpu-large-triangle-to-cover-clip-space.html">1つの大きな三角形</a>を使用することです。</p>
+<p>次に、これらのシェーダーを使用するには、パイプラインが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessPipeline = device.createRenderPipeline({
+    layout: 'auto',
+    vertex: { module: postProcessModule },
+    fragment: {
+      module: postProcessModule,
+      targets: [ { format: presentationFormat }],
+    },
+  });
+</pre>
+<p>このパイプラインはキャンバスにレンダリングするため、ターゲット形式を以前に検索した<code class="notranslate" translate="no">presentationFormat</code>として設定する必要があります。</p>
+<p>サンプラーとrenderPassDescriptorが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessSampler = device.createSampler({
+    minFilter: 'linear',
+    magFilter: 'linear',
+  });
+
+  const postProcessRenderPassDescriptor = {
+    label: 'post process render pass',
+    colorAttachments: [
+      { loadOp: 'clear', storeOp: 'store' },
+    ],
+  };
+</pre>
+<p>次に、元のrenderPassをキャンバスにレンダリングする代わりに、別のテクスチャにレンダリングする必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let renderTarget;
++
++  function setupPostProcess(canvasTexture) {
++    if (renderTarget?.width === canvasTexture.width &amp;&amp;
++        renderTarget?.height === canvasTexture.height) {
++      return;
++    }
++
++    renderTarget?.destroy();
++    renderTarget = device.createTexture({
++      size: canvasTexture,
++      format: 'rgba8unorm',
++      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
++    });
++    const renderTargetView = renderTarget.createView();
++    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
++  }
+
+  let then = 0;
+  function render(now) {
+    now *= 0.001;  // convert to seconds
+    const deltaTime = now - then;
+    then = now;
+
+-    // Get the current texture from the canvas context and
+-    // set it as the texture to render to.
+-    renderPassDescriptor.colorAttachments[0].view =
+-        context.getCurrentTexture().createView();
++    const canvasTexture = context.getCurrentTexture();
++    setupPostProcess(canvasTexture);
+
+    ...
+</pre>
+<p>上記では、現在の<code class="notranslate" translate="no">canvasTexture</code>を<code class="notranslate" translate="no">setupPostProcess</code>に渡します。これにより、「renderTarget」テクスチャのサイズがキャンバスのサイズと同じかどうかがチェックされます。そうでない場合は、同じサイズの新しいテクスチャが作成されます。</p>
+<p>次に、元の<code class="notranslate" translate="no">renderPassDescriptor</code>のカラーアタッチメントをこのrenderTargetテクスチャに設定します。</p>
+<p>古いパイプラインはこのテクスチャにレンダリングするため、このテクスチャの形式に合わせて更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'per vertex color',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        ...
+      ],
+    },
+    fragment: {
+      module,
+-      targets: [{ format: presentationFormat }],
++      targets: [{ format: 'rgba8unorm' }],
+    },
+  });
+</pre>
+<p>これらの変更だけでも、元のシーンをこのレンダーターゲットテクスチャにレンダリングし始めますが、キャンバスに何かを描画しないと何も表示されないため、それを行いましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+
+  ...
+
+
+  let then = 0;
+  function render(now) {
+    now *= 0.001;  // convert to seconds
+    const deltaTime = now - then;
+    then = now;
+
+    const canvasTexture = context.getCurrentTexture();
+    setupPostProcess(canvasTexture);
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+    ...
+
+    pass.draw(numVertices, settings.numObjects);
+
+    pass.end();
+
++    postProcess(encoder, renderTarget, canvasTexture);
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>もう1つだけ調整しましょう。オブジェクト数の設定はポストプロセッシングとは関係ないので、削除しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+-    numObjects: 100,
++    numObjects: 200,
+  };
+
+  const gui = new GUI();
+-  gui.add(settings, 'numObjects', 0, kNumObjects, 1);
+</pre>
+<p><code class="notranslate" translate="no">settings.numObjects</code>を完全に削除することもできましたが、いくつかの異なる場所で編集が必要になるため、今のところはそのままにしておきます。画像を埋めるために、数を200に設定します。</p>
+<p>これを実行しても、元のものと目に見える違いはありません。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-01.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-01.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>違いは、レンダーターゲットテクスチャにレンダリングし、そのテクスチャをキャンバスにレンダリングしていることです。これで、いくつかのエフェクトを適用し始めることができます。</p>
+<p>古いCRTの最も明白な効果は、古いCRTには目に見えるスキャンラインがあることです。これは、画像が磁石を使用して画面全体に水平線のパターンでビームを向けることによって投影されたためです。</p>
+<p>正弦波を使用して明暗のパターンを生成し、絶対値を取るだけで、同様の効果を得ることができます。</p>
+<div class="webgpu_center">
+  <div style="width: 100%;"><img class="ddnobg" src="../resources/sinewave-40.svg"></div>
+  <div lass="caption">sin(x)</div>
+</div>
+<div class="webgpu_center">
+   <div style="width: 100%;"><img class="ddnobg" src="../resources/abs-sinewave-40.svg"></div>
+   <div class="caption">abs(sin(x))</div>
+</div>
+<div class="webgpu_center">
+   <div style="width: 100%;"><div data-diagram="sine" style="aspect-ratio: 981 / 50; width: 100%;"></div></div>
+   <div class="caption">abs(sin(x))をグレースケールカラーとして</div>
+</div>
+<p>これをコードに追加しましょう。まず、この正弦波を適用するようにシェーダーを編集しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
++      struct Uniforms {
++        effectAmount: f32,
++        bandMult: f32,
++      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
++      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
++        let banding = abs(sin(fsInput.position.y * uni.bandMult));
++        let effect = mix(1.0, banding, uni.effectAmount);
+
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+-        return vec4f(color);
++        return vec4f(color.rgb * effect, color.a);
+      }
+    `,
+  });
+</pre>
+<p>正弦波は、書き込まれるピクセルのy座標である<code class="notranslate" translate="no">fsInput.position.y</code>に基づいています。つまり、0から始まる各スキャンラインに対して、0.5、1.5、2.5、3.5などになります。<code class="notranslate" translate="no">bendMult</code>を使用すると、バンドのサイズを調整でき、<code class="notranslate" translate="no">effectAmount</code>を使用すると、エフェクトをオン/オフにして、エフェクトとエフェクトなしを比較できます。</p>
+<p>新しいシェーダーを使用するには、ユニフォームバッファを更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessUniformBuffer = device.createBuffer({
+    size: 8,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+</pre>
+<p>バインドグループに追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    postProcessBindGroup = device.createBindGroup({
+      layout: postProcessPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: renderTargetView },
+        { binding: 1, resource: postProcessSampler },
++        { binding: 2, resource: postProcessUniformBuffer },
+      ],
+    });
+</pre>
+<p>そして、いくつかの設定を追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    numObjects: 200,
++    affectAmount: 1,
++    bandMult: 1,
+  };
+
+  const gui = new GUI();
++  gui.add(settings, 'affectAmount', 0, 1);
++  gui.add(settings, 'bandMult', 0.01, 2.0);
+</pre>
+<p>そして、これらの設定をユニフォームバッファにアップロードする必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
++    device.queue.writeBuffer(
++      postProcessUniformBuffer,
++      0,
++      new Float32Array([
++        settings.affectAmount,
++        settings.bandMult,
++      ]),
++    );
+
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+</pre>
+<p>そして、CRTのようなスキャンライン効果が得られます。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-02.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-02.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>CRTは、LCDと同様に、画像を赤、緑、青の領域に分割します。CRTでは、これらの領域は今日のほとんどのLCDよりも一般的に大きかったため、これが目立つことがありました。その効果を近似するために何かを追加しましょう。</p>
+<p>まず、シェーダーを変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">  const postProcessModule = device.createShaderModule({
+    code: `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
++        cellMult: f32,
++        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+        let banding = abs(sin(fsInput.position.y * uni.bandMult));
+
++        let cellNdx = u32(fsInput.position.x * uni.cellMult) % 3;
++        var cellColor = vec3f(0);
++        cellColor[cellNdx] = 1;
++        let cMult = cellColors[cellNdx] + uni.cellBright;
+
+-        let effect = mix(1.0, banding, uni.effectAmount);
++        let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+        return vec4f(color.rgb * effect, 1);
+      }
+    `,
+  });
+</pre>
+<p>上記では、書き込まれるピクセルのx座標である<code class="notranslate" translate="no">fsInput.position.x</code>を使用しています。<code class="notranslate" translate="no">cellMult</code>で乗算することで、セルサイズを選択できます。整数に変換し、3で割った余りを求めます。これにより、0、1、または2の数値が得られ、これを使用して<code class="notranslate" translate="no">cellColor</code>の赤、緑、または青のチャネルを1に設定します。</p>
+<p>調整として<code class="notranslate" translate="no">cellBright</code>を追加し、古いバンディングと新しいエフェクトの両方を乗算します。<code class="notranslate" translate="no">effect</code>は<code class="notranslate" translate="no">f32</code>から<code class="notranslate" translate="no">vec3f</code>に変更されたため、各チャネルに独立して影響を与えることができます。</p>
+<p>JavaScriptに戻り、ユニフォームバッファのサイズを調整する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessUniformBuffer = device.createBuffer({
+-    size: 8,
++    size: 16,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+</pre>
+<p>そして、GUIにいくつかの設定を追加します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    numObjects: 200,
+    affectAmount: 1,
+    bandMult: 1,
++    cellMult: 0.5,
++    cellBright: 1,
+  };
+
+  const gui = new GUI();
+  gui.add(settings, 'affectAmount', 0, 1);
+  gui.add(settings, 'bandMult', 0.01, 2.0);
++  gui.add(settings, 'cellMult', 0, 1);
++  gui.add(settings, 'cellBright', 0, 2);
+</pre>
+<p>そして、新しい設定をアップロードします。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
+    device.queue.writeBuffer(
+      postProcessUniformBuffer,
+      0,
+      new Float32Array([
+        settings.affectAmount,
+        settings.bandMult,
++        settings.cellMult,
++        settings.cellBright,
+      ]),
+    );
+
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+</pre>
+<p>そして、CRTカラー要素のようなエフェクトが得られます。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>上記のエフェクトは、CRTがどのように機能するかを完全に表現することを意図したものではありません。むしろ、CRTのように見えることを示唆し、うまくいけば理解しやすいことを意図していました。Web上でより凝ったテクニックを見つけることができます。</p>
+<h2 id="コンピュートシェーダーの使用"><a id="compute"></a>コンピュートシェーダーの使用</h2>
+<p>このためにコンピュートシェーダーを使用できるか、そして、おそらくもっと重要なことに、使用すべきかというトピックが浮上します。まず、「できるか」について説明しましょう。</p>
+<p><a href="webgpu-storage-textures.html">ストレージテクスチャに関する記事</a>で、コンピュートシェーダーを使用してテクスチャにレンダリングすることについて説明しました。</p>
+<p>コードをコンピュートシェーダーを使用するように変換するには、キャンバステクスチャに<code class="notranslate" translate="no">STORAGE_BINDING</code>の使用法を追加する必要があります。これは、<a href="webgpu-storage-textures.html">前述の記事</a>から、それをサポートするテクスチャ形式を確認して選択する必要があることを意味します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
++  const hasBGRA8UnormStorage = adapter?.features.has('bgra8unorm-storage');
+-  const device = await adapter?.requestDevice();
++  const device = await adapter?.requestDevice({
++    requiredFeatures: [
++      ...(hasBGRA8UnormStorage ? ['bgra8unorm-storage'] : []),
++    ],
++  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+-  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
++  const presentationFormat = hasBGRA8UnormStorage
++    ? navigator.gpu.getPreferredCanvasFormat()
++    : 'rgab8unorm';
+  context.configure({
+    device,
+    format: presentationFormat,
++    usage: GPUTextureUsage.RENDER_ATTACHMENT |
++           GPUTextureUsage.TEXTURE_BINDING |
++           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p>シェーダーをストレージテクスチャに書き込むように切り替える必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: `
+-      struct VSOutput {
+-        @builtin(position) position: vec4f,
+-        @location(0) texcoord: vec2f,
+-      };
+-
+-      @vertex fn vs(
+-        @builtin(vertex_index) vertexIndex : u32,
+-      ) -&gt; VSOutput {
+-        var pos = array(
+-          vec2f(-1.0, -1.0),
+-          vec2f(-1.0,  3.0),
+-          vec2f( 3.0, -1.0),
+-        );
+-
+-        var vsOutput: VSOutput;
+-        let xy = pos[vertexIndex];
+-        vsOutput.position = vec4f(xy, 0.0, 1.0);
+-        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+-        return vsOutput;
+-      }
+
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
+        cellMult: f32,
+        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
++      @group(1) @binding(0) var outTexture: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+-      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+-        let banding = abs(sin(fsInput.position.y * uni.bandMult));
+-
+-        let cellNdx = u32(fsInput.position.x * uni.cellMult) % 3;
++      @compute @workgroup_size(1) fn cs(@builtin(global_invocation_id) gid: vec3u) {
++        let outSize = textureDimensions(outTexture);
++        let banding = abs(sin(f32(gid.y) * uni.bandMult));
++
++        let cellNdx = u32(f32(gid.x) * uni.cellMult) % 3;
+        var cellColor = vec3f(0);
+        cellColor[cellNdx] = 1.0;
+        let cMult = cellColor + uni.cellBright;
+
+        let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+-        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+-        return vec4f(color.rgb * effect, color.a);
++        let uv = (vec2f(gid.xy) + 0.5) / vec2f(outSize);
++        let color = textureSampleLevel(postTexture2d, postSampler, uv, 0);
++        textureStore(outTexture, gid.xy, vec4f(color.rgb * effect, color.a));
+      }
+    `,
+  });
+</pre>
+<p>上記では、頂点シェーダーと関連部分を削除しました。また、書き込まれるピクセルの座標であった<code class="notranslate" translate="no">fsInput.position</code>もなくなりました。代わりに、コンピュートシェーダーの個々の呼び出しの<code class="notranslate" translate="no">global_invocation_id</code>である<code class="notranslate" translate="no">gid</code>があります。これをテクスチャ座標として使用します。これは<code class="notranslate" translate="no">vec3u</code>なので、あちこちでキャストする必要があります。また、<code class="notranslate" translate="no">fsInput.texcoord</code>もなくなりましたが、<code class="notranslate" translate="no">(vec2f(gid.xy) + 0.5) / vec2f(outSize)</code>で同等のものを取得できます。</p>
+<p>レンダーパスの使用をやめ、代わりにポストプロセッシングにコンピュートパスを使用する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessPipeline = device.createRenderPipeline({
+    layout: 'auto',
+-    vertex: { module: postProcessModule },
+-    fragment: {
+-      module: postProcessModule,
+-      targets: [ { format: presentationFormat }],
+-    },
++    compute: { module: postProcessModule },
+  });
+
+  function postProcess(encoder, srcTexture, dstTexture) {
+    device.queue.writeBuffer(
+      postProcessUniformBuffer,
+      0,
+      new Float32Array([
+        settings.affectAmount,
+        settings.bandMult,
+        settings.cellMult,
+        settings.cellBright,
+      ]),
+    );
+
++    const outBindGroup = device.createBindGroup({
++      layout: postProcessPipeline.getBindGroupLayout(1),
++      entries: [
++        { binding: 0, resource: dstTexture.createView() },
++      ],
++    });
+
+-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+-    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
++    const pass = encoder.beginComputePass();
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+-    pass.draw(3);
++    pass.dispatchWorkgroups(dstTexture.width, dstTexture.height);
+    pass.end();
+  }
+</pre>
+<p>それは機能します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03-compute.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03-compute.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>残念ながら、GPUによっては遅いです！<a href="webgpu-compute-shaders-historgram.html">コンピュートシェーダーの最適化に関する記事</a>で、その理由の一部について説明しました。ワークグループサイズ1を使用すると簡単になりますが、遅くなります。</p>
+<p>より大きなワークグループサイズを使用するように更新できます。これには、範囲外の場合はテクスチャへの書き込みをスキップする必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const workgroupSize = [16, 16];
+  const postProcessModule = device.createShaderModule({
+    code: `
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
+        cellMult: f32,
+        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+      @group(1) @binding(0) var outTexture: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+-      @compute @workgroup_size(1) fn cs(@builtin(global_invocation_id) gid: vec3u) {
++      @compute @workgroup_size(${workgroupSize}) fn cs(@builtin(global_invocation_id) gid: vec3u) {
+        let outSize = textureDimensions(outTexture);
++        if (gid.x &gt;= outSize.x || gid.y &gt;= outSize.y) {
++          return;
++        }
+        let banding = abs(sin(f32(gid.y) * uni.bandMult));
+
+        let cellNdx = u32(f32(gid.x) * uni.cellMult) % 3;
+        var cellColor = vec3f(0);
+        cellColor[cellNdx] = 1.0;
+        let cMult = cellColor + uni.cellBright;
+
+        let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+        let uv = (vec2f(gid.xy) + 0.5) / vec2f(outSize);
+        let color = textureSampleLevel(postTexture2d, postSampler, uv, 0);
+        textureStore(outTexture, gid.xy, vec4f(color.rgb * effect, color.a));
+      }
+    `,
+  });
+</pre>
+<p>そして、より少ないワークグループをディスパッチする必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const pass = encoder.beginComputePass();
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.setBindGroup(1, outBindGroup);
+-    pass.dispatchWorkgroups(dstTexture.width, dstTexture.height);
++    pass.dispatchWorkgroups(
++      Math.ceil(dstTexture.width / workgroupSize[0]),
++      Math.ceil(dstTexture.height / workgroupSize[1]),
++    );
+    pass.end();
+</pre>
+<p>これは機能します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03-compute-workgroups.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03-compute-workgroups.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>これははるかに高速です！しかし、残念ながら、一部のGPUでは、レンダーパスを使用するよりもまだ遅いです。</p>
+<div class="webgpu_center data-table">
+  <table>
+    <thead>
+      <tr><th>GPU</th><th>コンピュートパス時間と<br>レンダーパス時間<br>（高いほど悪い）</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>M1 Mac                 </td><td>1x</td></tr>
+      <tr><td>AMD Radeon Pro 5300M   </td><td>1x</td></tr>
+      <tr><td>AMD Radeon Pro WX 32000</td><td>1.3x</td></tr>
+      <tr><td>Intel UHD Graphics 630 </td><td>1.7x</td></tr>
+      <tr><td>NVidia 2070 Super      </td><td>2x</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>それを高速化する方法については、この記事では大きすぎるトピックです。<a href="webgpu-compute-shaders-historgram.html">コンピュートシェーダーの最適化に関する記事</a>を参照すると、同じルールが適用されます。残念ながら、この例にはどれもあまり関係ありません。実行しようとしているポストプロセッシングが共有ワークグループメモリから恩恵を受ける可能性がある場合は、コンピュートシェーダーを使用することが有益かもしれません。アクセスパターンも、GPUが多くのキャッシュミスを取得しないようにするために重要かもしれません。さらに別の方法は、<a href="webgpu-subgroups.html">サブグループ</a>を利用することです。</p>
+<p>今のところ、さまざまな手法を試して、そのタイミングを確認することをお勧めします。または、実装しているアルゴリズムがワークグループやサブグループの共有データから本当に恩恵を受けることができる場合を除き、レンダーパスに固執します。GPUは、コンピュートシェーダーを実行するよりもはるかに長くテクスチャにレンダリングしてきたため、そのプロセスの多くのことが高度に最適化されています。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +853,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +942,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU ポストプロセッシング - 基本的なCRTエフェクト`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

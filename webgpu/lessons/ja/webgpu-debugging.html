@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-debugging.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Debugging and Errors">
+
+<meta name="description" content="WebGPUのデバッグのヒント">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-debugging_ja.jpg">
+
+<meta property="og:title" content="WebGPUのデバッグとエラー">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Tips for debugging WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-debugging_ja.jpg">
+<meta property="og:description" content="WebGPUのデバッグのヒント">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-debugging.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Debugging and Errors">
+<meta name="twitter:title" content="WebGPUのデバッグとエラー">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-debugging.html">
-<meta name="twitter:description" content="Tips for debugging WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPUのデバッグのヒント">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-debugging_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-debugging.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-debugging_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-debugging.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-debugging.html",
+      "inLanguage":"ja",
+      "name":"WebGPUのデバッグとエラー",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-debugging.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Debugging and Errors</title>
+<title>WebGPUのデバッグとエラー</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,398 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Debugging and Errors</h1>
+    <h1>WebGPUのデバッグとエラー</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-debugging.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>WebGPUのデバッグとエラー処理に関するいくつかのヒントです。</p>
+<h2 id="javascriptコンソールを開いてwebgpuエラーを確認する">JavaScriptコンソールを開いてWebGPUエラーを確認する</h2>
+<p>ほとんどのブラウザにはJavaScriptコンソールがあります。開いたままにしておいてください。WebGPUは通常、そこにエラーを出力します。</p>
+<h2 id="未捕捉のエラーをログに記録することを検討する">未捕捉のエラーをログに記録することを検討する</h2>
+<p>未捕捉のWebGPUエラーをキャッチするイベントを設定し、自分でログに記録できます。たとえば、</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const device = await adapter.requestDevice();
+device.addEventListener('uncapturederror', event =&gt; alert(event.error.message));
+</pre>
+<p>個人的には、通常<code class="notranslate" translate="no">alert</code>は使用しませんが、メッセージをログに記録したり、要素に入れたり、何らかの方法で表示したりできます。これは、上記のJavaScriptコンソールを開くというアドバイスを忘れがちで、エラーが表示されないことが多いため、便利だと思います。😅</p>
+<p>WebGPU自体が発行するエラーはJavaScriptコンソールに送られますが、キャプチャしたエラーは指定した場所に送られます。</p>
+<h2 id="webgpuがエラーを報告するのを助ける">WebGPUがエラーを報告するのを助ける</h2>
+<p>WebGPUのエラーは非同期に報告されます。これは、WebGPUを高速かつ効率的に保つためです。しかし、これは、WebGPUを助けない限り、期待したときに、またはまったくエラーが発生しない可能性があることを意味します。</p>
+<p>これは、上記のアドバイスを使用したコードで、未捕捉のエラーを表示するイベントを追加しています。次に、エラーが発生するはずのシェーダーモジュールをコンパイルします。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+
+  device.addEventListener('uncapturederror', event =&gt; {
+    log(event.error.message);
+  });
+
+  device.createShaderModule({
+    code: `
+      this shader won't compile
+    `,
+  });
+
+  log('--done--');
+}
+</pre>
+<p>以下のライブサンプルでは、少なくともChrome 129では、おそらくエラーは発生しません。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-help-webgpu-report-errors.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-help-webgpu-report-errors.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>その理由は、この場合、WebGPUのChromeは、特定の関数を呼び出すまで特定のエラーを処理しないためです。そのような関数の1つが<code class="notranslate" translate="no">submit</code>です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+
+  device.addEventListener('uncapturederror', event =&gt; {
+    log(event.error.message);
+  });
+
+  device.createShaderModule({
+    code: `
+      this shader won't compile
+    `,
+  });
+
++  // WebGPUをポンプする
++  device.queue.submit([]);
+
+  log('--done--');
+}
+</pre>
+<p>これでエラーが表示されるはずです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-help-webgpu-report-errors-fixed.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-help-webgpu-report-errors-fixed.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>この問題は、<code class="notranslate" translate="no">submit</code>を呼び出さない場合は、まだWebGPUを実際には使用していないため、めったに発生しません。しかし、技術サポートの質問やバグレポートのために最小限の完全な検証可能な例を作成しようとしている場合や、コードをステップ実行していて、エラーを引き起こすはずの行を通過したのに、まだエラーが表示されていない場合など、特別な状況で発生する可能性があります。</p>
+<p>注：エラーをJavaScriptコンソールにも表示したくない場合は、<code class="notranslate" translate="no">event.preventDefault()</code>を呼び出すことができます。</p>
+<h2 id="手動でエラーをキャッチする">手動でエラーをキャッチする</h2>
+<p>上記では、「未捕捉のエラー」のメッセージを表示しましたが、これは「捕捉されたエラー」というものがあることを意味します。エラーを捕捉するには、一対の関数があります。<code class="notranslate" translate="no">device.pushErrorScope</code>と<code class="notranslate" translate="no">device.popErrorScope</code>です。</p>
+<p>エラースコープをプッシュします。コマンドを送信し、エラースコープをポップして、プッシュしたときとポップしたときの間にエラーがあったかどうかを確認します。</p>
+<p>例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+
+  device.addEventListener('uncapturederror', event =&gt; {
+*    log('uncaptured error:', event.error.message);
+  });
+
++  device.pushErrorScope('validation');
+  device.createShaderModule({
+    code: `
+      this shader won't compile
+    `,
+  });
++  const error = await device.popErrorScope();
++  if (error) {
++    log('captured error:', error.message);
++  }
+
++  device.createShaderModule({
++    code: `
++      also, this shader won't compile
++    `,
++  });
+
+  device.queue.submit([]);
+
+  log('--done--');
+</pre>
+<p><code class="notranslate" translate="no">device.pushErrorScope</code>は、3つのフィルターのいずれかを取ります。</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">'validation'</code></p>
+<p>APIの誤った使用に関連するエラー</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">'out-of-memory'</code></p>
+<p>メモリを割り当てすぎようとしたことに関連するエラー</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">'internal'</code></p>
+<p>何も間違っていないのにドライバーが文句を言ったエラー。たとえば、シェーダーが複雑すぎる場合に発生する可能性があります。</p>
+</li>
+</ul>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-push-pop-error-scope.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-push-pop-error-scope.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p><code class="notranslate" translate="no">popErrorScope</code>は、エラーがあった場合はエラーまたはnullを含むプロミスを返します。上記では<code class="notranslate" translate="no">await</code>を使用してプロミスを待機しましたが、これによりプログラムが停止します。次のように<code class="notranslate" translate="no">then</code>を使用する方が一般的です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  device.pushErrorScope('validation');
+  device.createShaderModule({
+    code: `
+      this shader won't compile
+    `,
+  });
++  device.popErrorScope().then(error =&gt; {
++    if (error) {
++      log('captured error:', error.message);
++    }
++  });
+</pre>
+<p>こうすることで、プログラムは一時停止せず、エラーがあったかどうかについてGPUが応答するのを待ちます。</p>
+<h2 id="さまざまな種類のエラー">さまざまな種類のエラー</h2>
+<p>WebGPUの一部のエラーは、関数を呼び出すときにチェックされます。その他は後でチェックされます。WebGPUはタイムラインを指定します。そのうちの2つは「コンテンツタイムライン」と「デバイスタイムライン」です。「コンテンツタイムライン」はJavaScript自体と同じタイムラインです。デバイスタイムラインは別個であり、通常は別のプロセスで実行されます。さらに他のエラーは、JavaScript自体のルールによってチェックされます。</p>
+<ul>
+<li>
+<p>JavaScriptエラーの例：間違った型を渡す</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeBuffer(someTexture, ...);
+</pre>
+<p>上記のコードは、<code class="notranslate" translate="no">writeBuffer</code>の最初の引数が<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBuffer"><code class="notranslate" translate="no">GPUBuffer</code></a>でなければならないため、すぐにエラーになります。これはJavaScript自体が強制します。</p>
+</li>
+<li>
+<p>「コンテンツタイムライン」エラーの例</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.createTexture({
+  size: [],
+  format: 'rgba8unorm',
+  usage: GPUTextureUsage.TEXTURE_BINDING,
+});
+</pre>
+<p>上記で提供されている<code class="notranslate" translate="no">size</code>はエラーであり、少なくとも1つの要素が必要です。</p>
+</li>
+<li>
+<p>デバイスエラーの例</p>
+<p>ページの冒頭の例はデバイスエラーです。デバイスエラーは、<code class="notranslate" translate="no">pushErrorScope</code>、<code class="notranslate" translate="no">popErrorScope</code>、および未捕捉のエラーイベントが処理するものです。</p>
+</li>
+</ul>
+<p>エラーが発生する場所は<a href="https://www.w3.org/TR/webgpu/">仕様</a>に詳述されていますが、JavaScriptエラーとコンテンツタイムラインエラーはすぐに発生して例外をスローするのに対し、デバイスタイムラインエラーは非同期に発生することを知っておくことが重要です。</p>
+<h2 id="wgslエラー">WGSLエラー</h2>
+<p>シェーダーモジュールのコンパイルでエラーが発生した場合は、<code class="notranslate" translate="no">getComplicationInfo</code>を呼び出すことで、より詳細な情報を要求できます。</p>
+<p>例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  device.pushErrorScope('validation');
+  const code = `
+      // この関数は
+      // 存在しない
+      // 関数を呼び出します。
+
+      fn foo() -&gt; vec3f {
+        return someFunction(1, 2);
+      }
+    `;
+  const module = device.createShaderModule({ code });
+  device.popErrorScope().then(async error =&gt; {
+    if (error) {
+      const info = await module.getCompilationInfo();
+
+      // コードを行に分割します
+      const lines = code.split('\n');
+
+      // メッセージを行番号の逆順で並べ替えます
+      // これにより、メッセージを挿入しても
+      // 行番号に影響しません。
+      const msgs = [...info.messages].sort((a, b) =&gt; b.lineNum - a.lineNum);
+
+      // エラーメッセージを行の間に挿入します
+      for (const msg of msgs) {
+        lines.splice(msg.lineNum, 0,
+          `${''.padEnd(msg.linePos - 1)}${''.padEnd(msg.length, '^')}`,
+          msg.message,
+        );
+      }
+
+      log(lines.join('\n'));
+    }
+  });
+</pre>
+<p>上記のコードは、エラーメッセージを完全なシェーダーコードに効果的にインターリーブします。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-get-compilation-info.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-get-compilation-info.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p><code class="notranslate" translate="no">getCompilationInfo</code>は、<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUCompilationMessage"><code class="notranslate" translate="no">GPUCompilationMessage</code></a>の配列を含むオブジェクトを返します。各メッセージには次のフィールドがあります。</p>
+<ul>
+<li><code class="notranslate" translate="no">message</code>: 文字列のエラーメッセージ</li>
+<li><code class="notranslate" translate="no">type</code>: <code class="notranslate" translate="no">'error'</code>、<code class="notranslate" translate="no">'warning'</code>、または<code class="notranslate" translate="no">'info'</code></li>
+<li><code class="notranslate" translate="no">lineNum</code>: エラーの行番号、1から始まる</li>
+<li><code class="notranslate" translate="no">linePos</code>: エラーの行内の位置、1から始まる</li>
+<li><code class="notranslate" translate="no">offset</code>: エラーの文字列内の位置、0から始まる。（これは事実上、linePos、lineNumと同じ情報です）</li>
+<li><code class="notranslate" translate="no">length</code>: ハイライトする長さ</li>
+</ul>
+<h2 id="webgpu-dev-extension">WebGPU-Dev-Extension</h2>
+<p><a href="https://github.com/greggman/webgpu-dev-extension">WebGPU-Dev-Extension</a>は、デバッグに役立つ機能を提供します。</p>
+<p>できることのいくつか：</p>
+<ul>
+<li>
+<p>エラーが発生した場所のスタックトレースを表示します。</p>
+<p>上記で示したように、WebGPUのエラーは非同期に発生します。最初の例では、<code class="notranslate" translate="no">uncapturederror</code>イベントを使用してWebGPUエラーが発生したことを確認しましたが、そのエラーがJavaScriptのどこで発生したかについての情報はありませんでした。</p>
+<p>webgpu-dev-extensionは、エラーを生成するすべてのWebGPU関数の周りに<code class="notranslate" translate="no">pushErrorScope</code>と<code class="notranslate" translate="no">popErrorScope</code>への呼び出しを追加しようとすることで、この情報を提供します。内部では、スタックトレースを保持する<code class="notranslate" translate="no">Error</code>オブジェクトを作成します。エラーが発生した場合、その<code class="notranslate" translate="no">Error</code>オブジェクトを出力でき、エラーが最初に生成された場所のエラースタックが表示されます。</p>
+</li>
+<li>
+<p>コマンドエンコーダーのエラーを表示します。</p>
+<p>WebGPUでは、<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUCommandEncoder"><code class="notranslate" translate="no">GPUCommandEncoder</code></a>、<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPURenderPassEncoder"><code class="notranslate" translate="no">GPURenderPassEncoder</code></a>、<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUComputePassEncoder"><code class="notranslate" translate="no">GPUComputePassEncoder</code></a>、<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPURenderBundleEncoder"><code class="notranslate" translate="no">GPURenderBundleEncoder</code></a>などのコマンドエンコーダーは、デバイスタイムラインエラーを生成しません。代わりに、エラーは<code class="notranslate" translate="no">encoder.finish</code>を呼び出すまで保存されます。</p>
+<p>例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const encoder = device.createCommandEncoder();
+const pass = encoder.beginRenderPass(renderPassDesc);
+pass.setPipeline(somePipeline);
+pass.setBindGroup(0, someBindGroupIncompatibleWithSomePipeline); // おっと！
+pass.setVertexBuffer(0, positionBuffer);
+pass.setVertexBuffer(1, normalBuffer);
+pass.setIndexBuffer(indexBuffer, 'uint16');
+pass.drawIndexed(4);
+pass.end();
+const cb = encoder.finish();  // 上記のエラーはここで生成されます
+</pre>
+<p>ここでの問題は、せいぜい、グループ0にバインドされたバインドグループがパイプラインと互換性がないというエラーメッセージが表示されるだけで、エラーが発生した行がわからないことです。このような小さな例では、かなり明白なはずですが、大きなアプリでは、エラーの原因となった特定の行を追跡するのが難しい場合があります。</p>
+<p>webgpu-dev-extensionは、エラーの原因となった行でエラーをスローしようとすることができます。</p>
+</li>
+<li>
+<p>WGSLエラーを完全なシェーダーソースとインターリーブして表示します。</p>
+<p>上記の例のように、webgpu-dev-extensionには、単なる簡潔なエラーメッセージ（デフォルト）ではなく、ソースWGSLとインターリーブされたエラーを表示するオプションがあります。</p>
+</li>
+</ul>
+<h2 id="webgpu-inspector">WebGPU-Inspector</h2>
+<p><a href="https://github.com/brendan-duncan/webgpu_inspector">WebGPU-Inspector</a>は、すべてのWebGPUコマンドをキャプチャしようとし、バッファ、テクスチャ、呼び出しを検査し、一般的にWebGPUコードで何が起こっているかを確認できるようにします。</p>
+<div class="webgpu_center"><img src="https://github.com/brendan-duncan/webgpu_inspector/raw/main/docs/images/frame_capture_commands.png"></div>
+<h2 id="シェーダーのデバッグのヒント">シェーダーのデバッグのヒント</h2>
+<h3 id="単純化する：">単純化する：</h3>
+<p>できるだけ多くを切り取って、シェーダーを動作状態にします。動作したら、少しずつ元に戻します。</p>
+<h3 id="単色を表示する">単色を表示する</h3>
+<p>レンダーパスの場合、私がよく行う最初のことは、単色を表示することです。</p>
+<p>これは、<a href="webgpu-lighitng-spot.html">スポットライトに関する記事</a>の最後のシェーダーです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  // vsOut.normalはステージ間変数であるため、
+  // 補間されるため、単位ベクトルにはなりません。
+  // 正規化すると、再び単位ベクトルになります。
+  let normal = normalize(vsOut.normal);
+
+  let surfaceToLightDirection = normalize(vsOut.surfaceToLight);
+  let surfaceToViewDirection = normalize(vsOut.surfaceToView);
+  let halfVector = normalize(
+    surfaceToLightDirection + surfaceToViewDirection);
+
+  let dotFromDirection = dot(surfaceToLightDirection, -uni.lightDirection);
+  let inLight = smoothstep(uni.outerLimit, uni.innerLimit, dotFromDirection);
+
+  // 法線と光への方向のドット積を
+  // 取ることで光を計算します。
+  let light = inLight * dot(normal, surfaceToLightDirection);
+
+  var specular = dot(normal, halfVector);
+  specular = inLight * select(
+      0.0,                           // 条件がfalseの場合の値
+      pow(specular, uni.shininess),  // 条件がtrueの場合の値
+      specular &gt; 0.0);               // 条件
+
+  // 色の部分（アルファではない）のみを
+  // 光で乗算しましょう。
+  let color = uni.color.rgb * light + specular;
+  return vec4f(color, uni.color.a);
+}
+</pre>
+<p>この例は、スポットライトで照らされた小さな部分を持つ緑色のFをレンダリングすることになっています。バグのあるバージョンを次に示します。デバッグしましょう。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-spot-light-01.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-spot-light-01.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>実行しましたが、画面に何も表示されず、WebGPUエラーもありませんでした。私が最初に行うことは、単色の赤を返すように変更することです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let color = uni.color.rgb * light + specular;
+-  return vec4f(color, uni.color.a);
++  //return vec4f(color, uni.color.a);
++  return vec4f(1, 0, 0, 1);  // 単色の赤
+</pre>
+<p>赤いFが表示された場合は、Fを構成する三角形を描画するのに十分な頂点シェーダーが正しかったことが明らかなので、フラグメントシェーダーを調べ始める必要があります。赤いFが表示されない場合は、頂点シェーダーを調べ始める必要があります。</p>
+<p>試してみます：</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-spot-light-02.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-spot-light-02.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>赤いFが表示されます。では、法線を視覚化してみましょう。そのためには、フラグメントシェーダーの末尾を次のように変更します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let color = uni.color.rgb * light + specular;
+  //return vec4f(color, uni.color.a);
+-   return vec4f(1, 0, 0, 1);  // 単色の赤
++   //return vec4f(1, 0, 0, 1);  // 単色の赤
++   return vec4f(vsOut.normal * 0.5 + 0.5, 1);  // 法線
+</pre>
+<p>法線は-1.0から+1.0までですが、色は0.0から1.0までなので、0.5を掛けて0.5を足すことで、法線を色で視覚化できるものに変換します。</p>
+<p>試してみます：</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-spot-light-03.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-spot-light-03.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>うーん、これは正しくありません。すべての法線が0,0,0であるように見えます。明らかに、フラグメントシェーダーの法線に何か問題があります。これらの法線は、<code class="notranslate" translate="no">normalMatrix</code>で乗算された後、頂点シェーダーから来ています。<code class="notranslate" translate="no">normalMatrix</code>で乗算せずに、法線を直接渡してみましょう。Fが表示されれば、バグは<code class="notranslate" translate="no">normalMatrix</code>にあることがわかります。Fが表示されない場合は、頂点シェーダーに供給されるデータにバグがあります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  // 法線を方向付け、フラグメントシェーダーに渡します
+-  vsOut.normal = uni.normalMatrix * vert.normal;
++  //vsOut.normal = uni.normalMatrix * vert.normal;
++  vsOut.normal = vert.normal;
+</pre>
+<p>実行すると：</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-spot-light-04.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-spot-light-04.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>その方がそれらしく見えます。どうやら<code class="notranslate" translate="no">normalMatrix</code>に何か問題があるようです。</p>
+<p>コードを確認すると、コメントアウトされていたため、行列がすべてゼロになっていました。誰かが何かを確認していて、コメントアウトを解除するのを忘れたに違いありません。😅</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // 逆行列と転置行列をworldInverseTranspose値に変換します
+-    //mat3.fromMat4(mat4.transpose(mat4.inverse(world)), normalMatrixValue);
++    mat3.fromMat4(mat4.transpose(mat4.inverse(world)), normalMatrixValue);
+</pre>
+<p>コメントアウトを解除しましょう。次に、頂点シェーダーを元の状態に戻しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  // 法線を方向付け、フラグメントシェーダーに渡します
+-  //vsOut.normal = uni.normalMatrix * vert.normal;
+-  vsOut.normal = vert.normal;
++  vsOut.normal = uni.normalMatrix * vert.normal;
+</pre>
+<p>これにより、次のようになります。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-spot-light-05.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-spot-light-05.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>Fを回転させると、色が変化し、法線が<code class="notranslate" translate="no">normalMatrix</code>によって再方向付けされていることがわかります。回転しても色が変わらない上のものと比較してください。</p>
+<p>これで、最終的にフラグメントシェーダーを復元できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let color = uni.color.rgb * light + specular;
+-  //return vec4f(color, uni.color.a);
+-  //return vec4f(1, 0, 0, 1);  // 単色の赤
+-  return vec4f(vsOut.normal * 0.5 + 0.5, 1);  // 法線
++  return vec4f(color, uni.color.a);
+</pre>
+<p>そして、意図したとおりに機能しています。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-debugging-spot-light-06.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-debugging-spot-light-06.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>データを視覚化する方法を見つけることは、それをチェックする良い方法です。たとえば、<a href="webpgu-textures.html">テクスチャ座標</a>をチェックするには、次のようにします。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">   return vec4f(fract(textureCoord), 0, 1);
+</pre>
+<p>テクスチャ座標は通常0.0から1.0までですが、テクスチャを繰り返している場合はそれより高くなる可能性があるため、<code class="notranslate" translate="no">fract</code>がそれをカバーします。</p>
+<p>テクスチャ座標がどのように見えるかを示すために、テクスチャ座標を視覚化したオブジェクトをいくつか示します。</p>
+<div class="webgpu_center">
+   <div data-diagram="texcoords" style="width: 1024px; height: 400px;"></div>
+   <div class="caption">視覚化されたテクスチャ座標</div>
+</div>
+<p>テクスチャ座標は、通常、ある表面上で滑らかです。</p>
+<p>バグのある同じテクスチャ座標を視覚化したものを次に示します。</p>
+<div class="webgpu_center">
+   <div data-diagram="texcoords-bad" style="width: 1024px; height: 400px;"></div>
+   <div class="caption">不正なテクスチャ座標</div>
+</div>
+<p>それらはもはや滑らかではないので、何かがおかしい可能性があります。</p>
+<p>上記と同じ手順に従うと、頂点シェーダーに入力されるデータが不正であると結論付けることができます。そして実際、この例では、頂点データを<code class="notranslate" translate="no">float32x3</code>値としてアップロードしていますが、レンダーパイプライン記述子で誤って<code class="notranslate" translate="no">float16x2</code>として指定しています。</p>
+<!-- この記事の最後にこれを保持してください -->
+<link href="../webgpu-debugging.css" rel="stylesheet">
+<script type="module" src="../webgpu-debugging.js"></script>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +634,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +723,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPUのデバッグとエラー`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -590,7 +590,7 @@ async function main() {
     label: 'shared bind group',
     layout: pipeline.getBindGroupLayout(1),
     entries: [
-      { binding: 0, resource: { buffer: sharedUniformBuffer }},
+      { binding: 0, resource: sharedUniformBuffer},
     ],
   });
 
@@ -626,7 +626,7 @@ async function main() {
       label: `bind group for object ${i}`,
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: uniformBuffer},
       ],
     });
 

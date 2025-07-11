@@ -261,10 +261,12 @@ you to creatively use those basics to solve your problem.</p>
 <p>WebGPU is an extremely low-level API. While you can make some small examples,
 for many apps it will likely require a large amount of code and some serious
 organization of data. As an example, <a href="https://threejs.org">three.js</a> which
-supports WebGPU consists of ~600k minified JavaScript, and that’s just its
+supports WebGPU consists of <a href="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.178.0/three.webgpu.js">~550k bytes of minified JavaScript</a>, and that’s just its
 base library. That does not include loaders, controls, post-processing, and
-many other features. Similarly, <a href="https://github.com/tensorflow/tfjs/tree/master/tfjs-backend-webgpu">TensorFlow with WebGPU backend</a>
-is ~500k of minified JavaScript.</p>
+many other features. Similarly, there’s <a href="https://www.tensorflow.org/">TensorFlow</a>,
+which <a href="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@4.22.0/dist/tf-core.min.js">core</a>
+plus <a href="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgpu@4.22.0/dist/tf-backend-webgpu.min.js">the WebGPU backend</a>
+is ~600k bytes of minified JavaScript and also does not include support for all of the various tensorflow optional features.</p>
 <p>The point being, if you just want to get something on the screen you’re far
 better off choosing a library that provides the large amount of code you’re
 going to have to write when doing it yourself.</p>
@@ -536,9 +538,9 @@ the remaining 2 values.</p>
 <p>Note that for drawing something in 2D we usually only need the x and y values
 for position. The z value is used for depth testing and will come up in
 <a href="webgpu-orthographic-projection.html">the article on orthographic projection</a>.
-The z value is used for perspective divide and will come up in
+The w value is used for perspective divide and will come up in
 <a href="webgpu-perspective-projection.html">the article on perspective projection</a>.
-For now, setting them to z to 0.0 and w to 1.0 is what we need to draw
+For now, setting z to 0.0 and w to 1.0 is what we need to draw
 the triangle.</p>
 <p>The shader module also declares a function called <code class="notranslate" translate="no">fs</code> that is declared with
 <code class="notranslate" translate="no">@fragment</code> attribute making it a fragment shader function.</p>
@@ -880,7 +882,7 @@ create a bindGroup.</p>
     label: 'bindGroup for work buffer',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: workBuffer } },
+      { binding: 0, resource: workBuffer },
     ],
   });
 </pre>

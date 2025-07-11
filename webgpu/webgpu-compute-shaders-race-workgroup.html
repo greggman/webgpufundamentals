@@ -72,8 +72,8 @@ async function main() {
   const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: globalBuffer }},
-      { binding: 1, resource: { buffer: dataBuffer }},
+      { binding: 0, resource: globalBuffer},
+      { binding: 1, resource: dataBuffer},
     ],
   });
 

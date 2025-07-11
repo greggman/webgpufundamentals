@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-multiple-canvases.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Multiple Canvases">
+
+<meta name="description" content="複数のキャンバス">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multiple-canvases_ja.jpg">
+
+<meta property="og:title" content="WebGPU 複数のキャンバス">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Multiple Canvases">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multiple-canvases_ja.jpg">
+<meta property="og:description" content="複数のキャンバス">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multiple-canvases.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Multiple Canvases">
+<meta name="twitter:title" content="WebGPU 複数のキャンバス">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multiple-canvases.html">
-<meta name="twitter:description" content="Multiple Canvases">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="複数のキャンバス">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multiple-canvases_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multiple-canvases.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multiple-canvases_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multiple-canvases.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multiple-canvases.html",
+      "inLanguage":"ja",
+      "name":"WebGPU 複数のキャンバス",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-multiple-canvases.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Multiple Canvases</title>
+<title>WebGPU 複数のキャンバス</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,499 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Multiple Canvases</h1>
+    <h1>WebGPU 複数のキャンバス</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-multiple-canvases.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>WebGPUで複数のキャンバスに描画するのは非常に簡単です。<a href="webgpu-fundamentals.html">基礎に関する記事</a>では、キャンバスを検索し、<code class="notranslate" translate="no">getContext</code>を呼び出してコンテキストを構成しました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // キャンバスからWebGPUコンテキストを取得し、構成します
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+</pre>
+<p>キャンバスに描画するために、そのコンテキストを使用してキャンバスのテクスチャを取得し、そのテクスチャをレンダーパスの最初の<code class="notranslate" translate="no">colorAttachment</code>として設定しました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+*        // view: &lt;- レンダリング時に設定されます
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };  
+
+  function render() {
+    // キャンバスコンテキストから現在のテクスチャを取得し、
+    // レンダリングするテクスチャとして設定します。
+*    renderPassDescriptor.colorAttachments[0].view =
+*        context.getCurrentTexture().createView();
+
+    // コマンドをエンコードし始めるためのコマンドエンコーダーを作成します
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+
+    // レンダリング固有のコマンドをエンコードするためのレンダーパスエンコーダーを作成します
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+</pre>
+<p>別のキャンバスに描画するには、そのキャンバスに対して同じ手順に従うだけです。</p>
+<ol>
+<li>キャンバスを検索します（または作成します）。</li>
+<li>「webgpu」コンテキストを取得します。</li>
+<li>コンテキストを構成します。</li>
+<li>そのキャンバスにレンダリングしたい場合は、<code class="notranslate" translate="no">context.getCurrentTexture</code>を呼び出し、そのテクスチャをレンダーパスの<code class="notranslate" translate="no">colorAttachment</code>として使用します。</li>
+</ol>
+<p>最初の例を取り上げ、3つのキャンバスにレンダリングしましょう。</p>
+<p>まず、さらに2つのキャンバスを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">  &lt;body&gt;
+    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;canvas&gt;&lt;/canvas&gt;
+  &lt;/body&gt;
+</pre>
+<p>次に、コンテキストを取得し、すべてのキャンバスを構成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 各キャンバスのWebGPUコンテキストを取得し、構成します
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  const infos = [];
+  for (const canvas of document.querySelectorAll('canvas')) {
+    const context = canvas.getContext('webgpu');
+    context.configure({
+      device,
+      format: presentationFormat,
+    });
+    infos.push({ context });
+  }
+</pre>
+<p>そして最後に、それらすべてにレンダリングしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+*    // コマンドをエンコードし始めるためのコマンドエンコーダーを作成します
+*    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+
++    for (const {context} of infos) {
+      // キャンバスコンテキストから現在のテクスチャを取得し、
+      // レンダリングするテクスチャとして設定します。
+      renderPassDescriptor.colorAttachments[0].view =
+          context.getCurrentTexture().createView();
+
+      // レンダリング固有のコマンドをエンコードするためのレンダーパスエンコーダーを作成します
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
+      pass.draw(3);  // 頂点シェーダーを3回呼び出します。
+      pass.end();
++    }
+
+*    const commandBuffer = encoder.finish();
+*    device.queue.submit([commandBuffer]);
+  }
+
+  render();
+</pre>
+<p>変更点は、（1）コマンドエンコーダーを作成する場所で、3つのキャンバスすべてをレンダリングするために共有できるようにしたこと、（2）コンテキストをループ処理したことです。</p>
+<p>そして、3つのキャンバスにレンダリングしました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multiple-canvases.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multiple-canvases.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>注：単一のコマンドエンコーダーを作成することは厳密には必要ありませんが、わずかに効率的です。</p>
+<p>では、他に何が残っているでしょうか？</p>
+<h2 id="多数のキャンバスの最適化">多数のキャンバスの最適化</h2>
+<p>回転する製品を表示したいとしましょう。これを簡単にするために、ハードコードされた三角形に固執しますが、<a href="webgpu-matrix-math.html">行列演算に関する記事で説明したように</a>行列を渡すことで回転するようにしましょう。また、それぞれがわずかに異なるように見えるように色を渡しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+  struct Uniforms {
++    matrix: mat4x4f,
++    color: vec4f,
++  };
++
++  @group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+  @vertex fn vs(
+    @builtin(vertex_index) vertexIndex : u32
+  ) -&gt; @builtin(position) vec4f {
+    let pos = array(
+      vec2f( 0.0,  0.5),  // top center
+      vec2f(-0.5, -0.5),  // bottom left
+      vec2f( 0.5, -0.5)   // bottom right
+    );
+
+-    return vec4f(pos[vertexIndex], 0.0, 1.0);
++    return uni.matrix * vec4f(pos[vertexIndex], 0.0, 1.0);
+  }
+
+  @fragment fn fs() -&gt; @location(0) vec4f {
+-    return vec4f(1, 0, 0, 1);
++    return uni.color;
+  }
+</pre>
+<p>それぞれに<a href="webgpu-uniforms.html">ユニフォームバッファ</a>と、バインドグループと関連するものが必要です。</p>
+<p>200個のキャンバスを作成し、WebGPU用に構成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const infos = [];
+  const numProducts = 200;
+  for (let i = 0; i &lt; numProducts; ++i) {
+    // これを作成します
+    // &lt;div class="product size?"&gt;
+    //   &lt;canvas&gt;&lt;/canvas&gt;
+    //   &lt;div&gt;Product#: ?&lt;/div&gt;
+    // &lt;/div&gt;
+    const canvas = document.createElement('canvas');
+
+    const container = document.createElement('div');
+    container.className = `product size${i % 4}`;
+
+    const description = document.createElement('div');
+    description.textContent = `product#: ${i + 1}`;
+
+    container.appendChild(canvas);
+    container.appendChild(description);
+    document.body.appendChild(container);
+
+    // WebGPUコンテキストを取得して構成します。
+    const context = canvas.getContext('webgpu');
+    context.configure({
+      device,
+      format: presentationFormat,
+    });
+
+    infos.push({
+      context,
+    });
+  }
+</pre>
+<p>これに伴うCSSが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  .product {
+    display: inline-block;
+    padding: 1em;
+    background: #888;
+    margin: 1em;
+  }
+  .size0&gt;canvas {
+    width: 200px;
+    height: 200px;
+  }
+  .size1&gt;canvas {
+    width: 250px;
+    height: 200px;
+  }
+  .size2&gt;canvas {
+    width: 300px;
+    height: 200px;
+  }
+  .size3&gt;canvas {
+    width: 100px;
+    height: 200px;
+  }
+</pre>
+<p>4つのサイズは、物事を正しく行っていることを確認するためだけです。すべて同じサイズにした場合、間違いを隠してしまう可能性があります。</p>
+<p>それぞれにユニフォームバッファとバインドグループが必要です。後で色を変更しないので、今すぐ1つ選択します。ランダムなclearValueも選択しましょう（なぜですか？🤷‍♂️）。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function randomColor() {
++    return [Math.random(), Math.random(), Math.random(), 1];
++  }
+
+  const infos = [];
+  const numProducts = 200;
+  for (let i = 0; i &lt; numProducts; ++i) {
+    ...
+
++    // ユニフォーム用のユニフォームバッファと型配列ビューを作成します。
++    const uniformValues = new Float32Array(16 + 4);
++    const uniformBuffer = device.createBuffer({
++      size: uniformValues.byteLength,
++      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++    });
++    const kMatrixOffset = 0;
++    const kColorOffset = 16;
++    const matrixValue = uniformValues.subarray(
++        kMatrixOffset, kMatrixOffset + 16);
++    const colorValue = uniformValues.subarray(
++        kColorOffset, kColorOffset + 4);
++    colorValue.set(randomColor());
++
++    // このユニフォームのバインドグループを作成します
++    const bindGroup = device.createBindGroup({
++      layout: pipeline.getBindGroupLayout(0),
++      entries: [
++        { binding: 0, resource: uniformBuffer },
++      ],
++    });
+
+    infos.push({
+      context,
++      clearValue: randomColor(),
++      matrixValue,
++      uniformValues,
++      uniformBuffer,
++      bindGroup,
+    });
+
+</pre>
+<p><a href="../webgpu-fundamentals.html#a-resizing">各キャンバスのサイズを変更する</a>ために<a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>も追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const resizeObserver = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+    }
+  });
+
+  ...
+
+  const infos = [];
+  const numProducts = 200;
+  for (let i = 0; i &lt; numProducts; ++i) {
+    // これを作成します
+    // &lt;div class="product size?"&gt;
+    //   &lt;canvas&gt;&lt;/canvas&gt;
+    //   &lt;div&gt;Product#: ?&lt;/div&gt;
+    // &lt;/div&gt;
+    const canvas = document.createElement('canvas');
+    resizeObserver.observe(canvas);
+
+    ...
+</pre>
+<p>レンダリング時に、<code class="notranslate" translate="no">requestAnimationFrame</code>（rAF）ループを使用してアニメーション化します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function render(time) {
++    time *= 0.001; // 秒に変換します
+
+    ...
+
++    requestAnimationFrame(render);
+  }
+
+-  render();
++  requestAnimationFrame(render);
+</pre>
+<p>そして、各キャンバスの行列を更新し、新しい値をユニフォームバッファにアップロードし、バインドグループを設定する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    time *= 0.001; // 秒に変換します
+
+    // コマンドをエンコードし始めるためのコマンドエンコーダーを作成します
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+
+    for (const {
+      context,
+      uniformBuffer,
+      uniformValues,
+      matrixValue,
+      bindGroup,
+      clearValue,
+    } of infos) {
+      // キャンバスコンテキストから現在のテクスチャを取得し、
+      // レンダリングするテクスチャとして設定します。
+      renderPassDescriptor.colorAttachments[0].view =
+          context.getCurrentTexture().createView();
++      renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
++
++      const { canvas } = context;
++      const aspect = canvas.clientWidth / canvas.clientHeight;
++      mat4.ortho(-aspect, aspect, -1, 1, -1, 1, matrixValue);
++      mat4.rotateZ(matrixValue, time * 0.1, matrixValue);
++
++      // ユニフォーム値をアップロードします。
++      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      // レンダリング固有のコマンドをエンコードするためのレンダーパスエンコーダーを作成します
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
++      pass.setBindGroup(0, bindGroup);
+      pass.draw(3);  // 頂点シェーダーを3回呼び出します。
+      pass.end();
+    }
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+</pre>
+<p>さらにいくつか追加しましょう。その理由は後で説明します。</p>
+<p>全体を停止および開始する方法を追加しましょう。まず、ボタンを追加します。</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">  &lt;body&gt;
++    &lt;button type="button" id="stop"&gt;停止/開始&lt;/button&gt;
+  &lt;/body&gt;
+</pre>
+<p>そして、そのためのCSSです。</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">  #stop {
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin: 0.5em;
+    z-index: 1;
+  }
+</pre>
+<p>次に、アニメーションを開始および停止するようにコードを変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let requestId;
+  function render(time) {
+    ...
+
+-    requestAnimationFrame(render);
++    requestId = requestAnimationFrame(render);
+  }
+
+-  requestAnimationFrame(render);
+
++  function toggleAnimation() {
++    if (requestId) {
++      cancelAnimationFrame(requestId);
++      requestId = undefined;
++    } else {
++      requestId = requestAnimationFrame(render);
++    }
++  }
++
++  toggleAnimation();
++  document.querySelector('#stop')
++      .addEventListener('click', toggleAnimation);
+
+</pre>
+<p>これは機能しますが、一時停止してから後で再開すると、すべてのオブジェクトがジャンプします。これは、レンダリングを停止しても、<code class="notranslate" translate="no">time</code>値はページが読み込まれてからの時間であり、回転の計算に使用されるためです。</p>
+<p>したがって、アニメーション化しているときにのみ進む独自の時間を保持することで、これを修正しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let time = 0;
++  let then = 0;
+  let requestId;
+-  function render(time) {
+-    time *= 0.001
++  function render(now) {
++    now *= 0.001; // 秒に変換します
++    const deltaTime = now - then;
++    time += deltaTime;
++    then = now;
+
+  ...
+
+    requestId = requestAnimationFrame(render);
+  }
+
+  function toggleAnimation() {
+    if (requestId) {
+      cancelAnimationFrame(requestId);
+      requestId = undefined;
+    } else {
+      requestId = requestAnimationFrame(render);
++      then = performance.now() * 0.001;
+    }
+  }
+</pre>
+<p>そして、200個のキャンバスができました。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multiple-canvases-x200.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multiple-canvases-x200.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>この例は重いことに気づくかもしれません！問題は、表示されているのはごくわずかであるにもかかわらず、200個のキャンバスすべてをレンダリングしていることです。キャンバスごとに1つの三角形だけでなく、詳細な製品モデルを描画していたら、はるかに悪化していたでしょう。これが、停止/開始ボタンを追加した理由です。例が実行されている場合、このページは重すぎる可能性があるため、続行する前に停止することをお勧めします。</p>
+<blockquote>
+<p>注：このサイトでは、例自体が表示されている場合にのみ、例をレンダリングおよびアニメーション化しようとします。</p>
+</blockquote>
+<p>この問題を解決する1つの方法は、<a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a>を使用することです。</p>
+<h2 id="intersectionobserverの使用"><a id="a-intersection-observer"></a> <a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a>の使用</h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a>は、この種の状況のために特別に設計されました。<a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a>は、その名のとおり、交差を監視します。デフォルトでは、要素とブラウザウィンドウの交差を監視します。これを使用して、実際に表示されているキャンバスのセットを保持し、それらのキャンバスのみをレンダリングできます。</p>
+<p>コードは次のとおりです。</p>
+<p>まず、<a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a>を作成します。<a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>と同様に、監視対象の要素がウィンドウと交差し始めたり停止したりしたときに呼び出される関数を受け取ります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const visibleCanvasSet = new Set();
+  const intersectionObserver = new IntersectionObserver((entries) =&gt; {
+    for (const { target, isIntersecting } of entries) {
+      if (isIntersecting) {
+        visibleCanvasSet.add(target);
+      } else {
+        visibleCanvasSet.delete(target);
+      }
+    }
+  });
+</pre>
+<p>上記のように、エントリの配列でコールバックを呼び出します。各エントリは、交差しているかどうかを示します。これを使用して、表示されているキャンバスの<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set"><code class="notranslate" translate="no">Set</code></a>を保持します。</p>
+<p>各キャンバスを監視するように指示する必要があります。また、キャンバスからそのキャンバスの情報にアクセスする方法も必要です。この場合、それはコンテキスト、ユニフォームバッファ、バインドグループなどです。キャンバスからその情報にアクセスするには、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"><code class="notranslate" translate="no">Map</code></a>を使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const infos = [];
++  const canvasToInfoMap = new Map();
+  const numProducts = 200;
+  for (let i = 0; i &lt; numProducts; ++i) {
+    // これを作成します
+    // &lt;div class="product size?"&gt;
+    //   &lt;canvas&gt;&lt;/canvas&gt;
+    //   &lt;div&gt;Product#: ?&lt;/div&gt;
+    // &lt;/div&gt;
+    const canvas = document.createElement('canvas');
+    resizeObserver.observe(canvas);
++    intersectionObserver.observe(canvas);
+
+    ...
+
+-    infos.push({
++    canvasToInfoMap.set(canvas, {
+      context,
+      clearValue: randomColor(),
+      matrixValue,
+      uniformValues,
+      uniformBuffer,
+      bindGroup,
+      rotation: Math.random() * Math.PI * 2,
+    });
+  }
+</pre>
+<p>レンダー関数では、表示されているキャンバスのみをレンダリングできます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(now) {
+    ...
+
+    // コマンドをエンコードし始めるためのコマンドエンコーダーを作成します
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+
+-    for (const {
++    visibleCanvasSet.forEach(canvas =&gt; {
+*      const {
+*       context,
+*       uniformBuffer,
+*       uniformValues,
+*       matrixValue,
+*       bindGroup,
+*       clearValue,
+*       rotation,
+-    } of infos) {
++      } = canvasToInfoMap.get(canvas);
+
+      // キャンバスコンテキストから現在のテクスチャを取得し、
+      // レンダリングするテクスチャとして設定します。
+      renderPassDescriptor.colorAttachments[0].view =
+          context.getCurrentTexture().createView();
+      renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
+
+-      const { canvas } = context;
+      const aspect = canvas.clientWidth / canvas.clientHeight;
+      mat4.ortho(-aspect, aspect, -1, 1, -1, 1, matrixValue);
+      mat4.rotateZ(matrixValue, time * 0.1 + rotation, matrixValue);
+
+      // ユニフォーム値をアップロードします。
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      // レンダリング固有のコマンドをエンコードするためのレンダーパスエンコーダーを作成します
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(3);  // 頂点シェーダーを3回呼び出します。
+      pass.end();
+-    }
++    };
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestId = requestAnimationFrame(render);
+  }
+</pre>
+<p>そして、これで、実際に表示されているキャンバスのみを描画しています。これにより、うまくいけばはるかに軽くなるはずです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multiple-canvases-x200-optimized.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multiple-canvases-x200-optimized.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a>は、すべてのケースをカバーするわけではないでしょう。各キャンバスに非常に重いものを描画している場合は、ユーザーが選択したキャンバスのみをアニメーション化したい場合があります。いずれにせよ、うまくいけば、ツールボックスにさらに1つのツールが追加されました。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +735,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +824,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 複数のキャンバス`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

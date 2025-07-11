@@ -767,7 +767,7 @@ WebGPU를 위해서는 GPU에 상주하는 버퍼를 만들고 데이터를 그 
     label: 'bindGroup for work buffer',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: workBuffer } },
+      { binding: 0, resource: workBuffer },
     ],
   });
 </pre>

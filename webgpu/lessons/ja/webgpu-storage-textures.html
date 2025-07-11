@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-storage-textures.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Storage Textures">
+
+<meta name="description" content="ストレージテクスチャの使用方法">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_ja.jpg">
+
+<meta property="og:title" content="WebGPU ストレージテクスチャ">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use Storage Textures">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_ja.jpg">
+<meta property="og:description" content="ストレージテクスチャの使用方法">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-storage-textures.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Storage Textures">
+<meta name="twitter:title" content="WebGPU ストレージテクスチャ">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-storage-textures.html">
-<meta name="twitter:description" content="How to use Storage Textures">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="ストレージテクスチャの使用方法">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-storage-textures.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-storage-textures.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-storage-textures.html",
+      "inLanguage":"ja",
+      "name":"WebGPU ストレージテクスチャ",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-storage-textures.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Storage Textures</title>
+<title>WebGPU ストレージテクスチャ</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,217 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Storage Textures</h1>
+    <h1>WebGPU ストレージテクスチャ</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-storage-textures.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>ストレージテクスチャは、直接書き込みまたは「保存」できる<a href="webgpu-textures.html">テクスチャ</a>です。通常、頂点シェーダーで三角形を指定し、GPUが間接的にテクスチャを更新しますが、ストレージテクスチャを使用すると、好きな場所に直接テクスチャに書き込むことができます。</p>
+<p>ストレージテクスチャは特別な種類のテクスチャではなく、<code class="notranslate" translate="no">createTexture</code>で作成する他のテクスチャと同様のテクスチャです。<code class="notranslate" translate="no">STORAGE_BINDING</code>使用法フラグを追加すると、必要な他の使用法フラグに加えて、テクスチャをストレージテクスチャとして使用でき、その後、テクスチャをストレージテクスチャとして使用することもできます。</p>
+<p>ある意味で、ストレージテクスチャは、2D配列として使用するストレージバッファのようなものです。たとえば、ストレージバッファを作成し、次のようにコードで参照できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0)
+  var&lt;storage&gt; buf: array&lt;f32&gt;;
+
+...
+fn loadValueFromBuffer(pos: vec2u) -&gt; f32 {
+  return buffer[pos.y * width + pos.x];
+}
+
+fn storeValueToBuffer(pos: vec2u, v: f32) {
+  buffer[pos.y * width + pos.x] = v;
+}
+
+...
+  let pos = vec2u(2, 3);
+  var v = loadValueFromBuffer(pos);
+  storeValueToBuffer(pos, v * 2.0);
+
+</pre>
+<p>ストレージテクスチャに対して</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">@group(0) @binding(0)
+  var tex: texture_storage_2d&lt;r32float, read_write&gt;;
+
+...
+
+   let pos = vec2u(2, 3);
+   let mipLevel = 0;
+   var v = textureLoad(tex, pos, mipLevel);
+   textureStore(tex, pos, mipLevel, v * 2);
+
+</pre>
+<p>したがって、それらが同等であるように見える場合、手動でストレージバッファを使用する場合とストレージテクスチャを使用する場合の違いは何でしょうか？</p>
+<ul>
+<li>
+<p>ストレージテクスチャは依然としてテクスチャです。</p>
+<p>1つのシェーダーでストレージテクスチャとして使用し、別のシェーダーで通常のテクスチャ（サンプラー、ミップマッピングなど）として使用できます。</p>
+</li>
+<li>
+<p>ストレージテクスチャにはフォーマット解釈がありますが、ストレージバッファにはありません。</p>
+<p>例：</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">@group(0) @binding(0) var tex: texture_storage_2d&lt;rgba8unorm, read&gt;;
+@group(0) @binding(1) var buf: array&lt;f32&gt;;
+
+   ...
+    let t = textureLoad(tex, pos, 0);
+    let b = buffer[pos.y * bufferWidth + pos.x];
+</pre>
+<p>上記では、<code class="notranslate" translate="no">textureLoad</code>を呼び出すと、テクスチャは<code class="notranslate" translate="no">rgba8unorm</code>テクスチャであり、4バイトがロードされ、自動的に0から1の間の4つの浮動小数点値に変換され、<code class="notranslate" translate="no">vec4f</code>として返されます。</p>
+<p>バッファの場合、4バイトが単一の<code class="notranslate" translate="no">f32</code>値としてロードされます。バッファを<code class="notranslate" translate="no">array&lt;u32&gt;</code>に変更し、値をロードし、手動で4バイト値に分割し、それらを自分で浮動小数点数に変換することもできますが、それが望むものであれば、ストレージテクスチャで無料で入手できます。</p>
+</li>
+<li>
+<p>ストレージテクスチャには次元があります。</p>
+<p>バッファの場合、唯一の次元はその長さ、またはむしろ、そのバインディングの長さです<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。上記では、バッファを2D配列として使用した場合、2D座標から1Dバッファインデックスに変換するために<code class="notranslate" translate="no">width</code>が必要でした。<code class="notranslate" translate="no">width</code>の値をハードコーディングするか、何らかの方法で渡す必要があります<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。テクスチャを使用すると、<code class="notranslate" translate="no">textureDimensions</code>を呼び出してテクスチャの次元を取得できます。</p>
+</li>
+</ul>
+<p>とはいえ、ストレージテクスチャには制限があります。</p>
+<ul>
+<li>
+<p>特定のフォーマットのみが<code class="notranslate" translate="no">read_write</code>可能です。</p>
+<p>これらは<code class="notranslate" translate="no">r32float</code>、<code class="notranslate" translate="no">r32sint</code>、<code class="notranslate" translate="no">r32uint</code>です。</p>
+<p>他のサポートされているフォーマットは、単一のシェーダー内で<code class="notranslate" translate="no">read</code>または<code class="notranslate" translate="no">write</code>のみ可能です。</p>
+</li>
+<li>
+<p>特定のフォーマットのみがストレージテクスチャとして使用できます。</p>
+<p>多数のテクスチャフォーマットがありますが、ストレージテクスチャとして使用できるのは特定のフォーマットのみです。</p>
+<ul>
+<li><code class="notranslate" translate="no">rgba8(unorm/snorm/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rgba16(float/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rg32(float/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rgba32(float/sint/uint)</code></li>
+</ul>
+<p>欠落していることに気づく1つのフォーマットは<code class="notranslate" translate="no">bgra8unorm</code>です。これについては以下で説明します。</p>
+</li>
+<li>
+<p>ストレージテクスチャはサンプラーを使用できません。</p>
+<p>テクスチャを通常の<code class="notranslate" translate="no">TEXTURE_BINDING</code>として使用する場合、<code class="notranslate" translate="no">textureSample</code>のような関数を呼び出すことができます。これは、ミップレベル全体で最大16個のテクセルをロードし、それらをブレンドします。テクスチャを<code class="notranslate" translate="no">STORAGE_BINDING</code>として使用する場合、一度に1つのテクセルをロードおよび保存する<code class="notranslate" translate="no">textureLoad</code>および/または<code class="notranslate" translate="no">textureStore</code>のみを呼び出すことができます。</p>
+</li>
+</ul>
+<h2 id="ストレージテクスチャとしてのキャンバス">ストレージテクスチャとしてのキャンバス</h2>
+<p>キャンバステクスチャをストレージテクスチャとして使用できます。そのためには、ストレージテクスチャとして使用できるテクスチャを提供するようにコンテキストを構成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
+  context.configure({
+    device,
+    format: presentationFormat,
++    usage: GPUTextureUsage.TEXTURE_BINDING |
++           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p><code class="notranslate" translate="no">TEXTURE_BINDING</code>は、ブラウザ自体がテクスチャをページにレンダリングできるようにするために必要です。<code class="notranslate" translate="no">STORAGE_BINDING</code>を使用すると、キャンバスのテクスチャをストレージテクスチャとして使用できます。このサイトのほとんどの例のように、レンダーパスを介してテクスチャにレンダリングしたい場合は、<code class="notranslate" translate="no">RENDER_ATTACHMENT</code>の使用法も追加します。</p>
+<p>ただし、ここには複雑な問題があります。<a href="webgpu-fundamentals.html">最初の記事</a>で説明したように、通常、<code class="notranslate" translate="no">navigator.gpu.getPreferredCanvasFormat</code>を呼び出して、優先キャンバス形式を取得します。<code class="notranslate" translate="no">getPreferredCanvasFormat</code>は、ユーザーのシステムでよりパフォーマンスの高い形式に応じて、<code class="notranslate" translate="no">rgba8unorm</code>または<code class="notranslate" translate="no">bgra8unorm</code>のいずれかを返します。</p>
+<p>しかし、上記のように、デフォルトでは、<code class="notranslate" translate="no">bgra8unorm</code>テクスチャをストレージテクスチャとして使用することはできません。</p>
+<p>幸いなことに、<code class="notranslate" translate="no">'bgra8unorm-storage'</code>という<a href="webgpu-limits-and-features.html">機能</a>があります。その機能を有効にすると、<code class="notranslate" translate="no">bgra8unorm</code>テクスチャをストレージテクスチャとして使用できるようになります。一般的に、優先キャンバス形式として<code class="notranslate" translate="no">bgra8unorm</code>を報告するプラットフォームでは利用可能である<em>はず</em>ですが、利用できない可能性も多少あります。したがって、<code class="notranslate" translate="no">'bgra8unorm-storage'</code><em>機能</em>が存在するかどうかを確認する必要があります。存在する場合は、デバイスにそれを要求し、優先キャンバス形式を使用します。そうでない場合は、キャンバス形式として<code class="notranslate" translate="no">rgba8unorm</code>を選択します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const adapter = await navigator.gpu?.requestAdapter();
+-  const device = await adapter?.requestDevice();
++  const hasBGRA8UnormStorage = adapter.features.has('bgra8unorm-storage');
++  const device = await adapter?.requestDevice({
++    requiredFeatures: hasBGRA8UnormStorage
++      ? ['bgra8unorm-storage']
++      : [],
++  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+-  const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
++  const presentationFormat = hasBGRA8UnormStorage
++     ? navigator.gpu.getPreferredCanvasFormat()
++     : 'rgba8unorm';
+  context.configure({
+    device,
+    format: presentationFormat,
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p>これで、キャンバステクスチャをストレージテクスチャとして使用できます。テクスチャに同心円を描画する簡単なコンピュートシェーダーを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    label: 'circles in storage texture',
+    code: `
+      @group(0) @binding(0)
+      var tex: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+      @compute @workgroup_size(1) fn cs(
+        @builtin(global_invocation_id) id : vec3u
+      )  {
+        let size = textureDimensions(tex);
+        let center = vec2f(size) / 2.0;
+
+        // the pixel we're going to write to
+        let pos = id.xy;
+
+        // The distance from the center of the texture
+        let dist = distance(vec2f(pos), center);
+
+        // Compute stripes based on the distance
+        let stripe = dist / 32.0 % 2.0;
+        let red = vec4f(1, 0, 0, 1);
+        let cyan = vec4f(0, 1, 1, 1);
+        let color = select(red, cyan, stripe &lt; 1.0);
+
+        // Write the color to the texture
+        textureStore(tex, pos, color);
+      }
+    `,
+  });
+</pre>
+<p>ストレージテクスチャを<code class="notranslate" translate="no">write</code>としてマークし、シェーダー自体で特定のテクスチャ形式を指定する必要があったことに注意してください。<code class="notranslate" translate="no">TEXTURE_BINDING</code>とは異なり、<code class="notranslate" translate="no">STORAGE_BINDING</code>はテクスチャの正確な形式を知る必要があります。</p>
+<p>設定は、<a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">最初の記事で記述したコンピュートシェーダー</a>に似ています。シェーダーモジュールを作成した後、それを使用するコンピュートパイプラインを設定します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createComputePipeline({
+    label: 'circles in storage texture',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+</pre>
+<p>レンダリングするには、キャンバスの現在のテクスチャを取得し、テクスチャをシェーダーに渡すことができるようにバインドグループを作成し、パイプラインの設定、バインドグループのバインド、ワークグループのディスパッチという通常のことを行います。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    const texture = context.getCurrentTexture();
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: texture.createView() },
+      ],
+    });
+
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+    const pass = encoder.beginComputePass();
+    pass.setPipeline(pipeline);
+    pass.setBindGroup(0, bindGroup);
+    pass.dispatchWorkgroups(texture.width, texture.height);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>そして、これがそれです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-storage-texture-canvas.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-storage-texture-canvas.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>通常のテクスチャを使用しても何も変わりませんが、テクスチャを作成するために<code class="notranslate" translate="no">getCurrentTexture</code>の代わりに<code class="notranslate" translate="no">createTexture</code>を呼び出し、必要な他の使用法フラグとともに<code class="notranslate" translate="no">STORAGE_BINDING</code>を渡します。</p>
+<h2 id="速度とデータ競合">速度とデータ競合</h2>
+<p>上記では、ピクセルごとに1つのワークグループをディスパッチしました。これは無駄であり、GPUははるかに高速に実行できます。最適な作業量のためにシェーダーを最適化すると、例が複雑になります。ポイントは、ストレージテクスチャの使用を実証することであり、可能な限り高速なシェーダーではありません。<a href="webgpu-compute-shaders-histogram.html">画像ヒストグラムの計算に関する記事</a>で、コンピュートシェーダーを最適化するいくつかの方法について読むことができます。</p>
+<p>同様に、ストレージテクスチャのどこにでも書き込むことができるため、<a href="webgpu-compute-shaders.html">コンピュートシェーダーに関する他の記事</a>で説明したような競合状態に注意する必要があります。呼び出しが実行される順序は保証されていません。競合を回避したり、<code class="notranslate" translate="no">textureBarriers</code>やその他のものを挿入して、2つ以上の呼び出しが互いの邪魔をしないようにするのはあなた次第です。</p>
+<h2 id="例">例</h2>
+<p><a href="https://compute.toys">compute.toys</a>は、ストレージテクスチャに直接書き込む例がたくさんあるウェブサイトです。<strong>警告</strong>：<a href="https://compute.toys">compute.toys</a>の例から学ぶべきことはたくさんありますが、必ずしもベストプラクティスではありません。Compute toysは、コンピュートシェーダーのみで興味深いものを作成することに関するものです。コンピュートシェーダーのみで創造的な何かを行う方法を見つけ出すのは楽しいパズルですが、他の方法が10倍、100倍、または1000倍高速になる可能性があることに注意してください。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>バインドグループを作成し、バッファを指定する場合、オプションでオフセットと長さを指定できます。シェーダーでは、配列の長さはバッファの長さではなく、バインディングの長さから計算されます。オフセットを指定しない場合、デフォルトは0になり、長さはバッファ全体のサイズになります。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>バッファの幅は、<a href="webgpu-uniforms.html">ユニフォーム</a>、別の<a href="webgpu-storage-buffers.html">ストレージバッファ</a>、または同じバッファの最初の値として渡すことができます。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +453,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +542,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU ストレージテクスチャ`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

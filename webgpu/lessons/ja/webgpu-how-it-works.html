@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-how-it-works.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU How It Works">
+
+<meta name="description" content="WebGPUの仕組み">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_ja.jpg">
+
+<meta property="og:title" content="WebGPUの仕組み">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How WebGPU works">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_ja.jpg">
+<meta property="og:description" content="WebGPUの仕組み">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-how-it-works.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU How It Works">
+<meta name="twitter:title" content="WebGPUの仕組み">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-how-it-works.html">
-<meta name="twitter:description" content="How WebGPU works">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPUの仕組み">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-how-it-works.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-how-it-works.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-how-it-works.html",
+      "inLanguage":"ja",
+      "name":"WebGPUの仕組み",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-how-it-works.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU How It Works</title>
+<title>WebGPUの仕組み</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,339 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU How It Works</h1>
+    <h1>WebGPUの仕組み</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-how-it-works.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>GPUが頂点シェーダーとフラグメントシェーダーで行うことと似たものをJavaScriptで実装することで、WebGPUを説明しようとします。これにより、実際に何が起こっているのか直感的に理解できることを願っています。</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a>に精通している場合は、目を凝らすと、これら2種類のシェーダー関数がどのように機能するかについてある程度のアイデアを得ることができます。<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a>では、値を変換する関数を提供します。</p>
+<p>例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const shader = v =&gt; v * 2;  // 入力を2倍にする
+const input = [1, 2, 3, 4];
+const output = input.map(shader);   // 結果 [2, 4, 6, 8]
+</pre>
+<p>上記のarray.mapの「シェーダー」は、数値を指定するとその2倍を返す関数にすぎません。これはおそらく、JavaScriptで「シェーダー」が意味するものに最も近い類推です。値を返すか生成する関数です。直接呼び出すのではなく、指定するとシステムが呼び出してくれます。</p>
+<p>GPU頂点シェーダーの場合、入力配列をマップするのではなく、関数を何回呼び出したいかを指定するだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function draw(count, vertexShaderFn) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+    internalBuffer[i] = vertexShaderFn(i);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+</pre>
+<p>1つの結果として、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a>とは異なり、何かを行うためにソース配列はもう必要ありません。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const shader = v =&gt; v * 2;
+const count = 4;
+draw(count, shader);
+// 出力 [0, 2, 4, 6]
+</pre>
+<p>GPUの作業を複雑にするのは、これらの関数がコンピューター内の別のシステムであるGPUで実行されることです。つまり、作成して参照するすべてのデータを何らかの方法でGPUに送信し、そのデータをどこに置いたか、どのようにアクセスするかをシェーダーに伝える必要があります。</p>
+<p>頂点シェーダーとフラグメントシェーダーは、ユニフォーム、属性、バッファ、テクスチャ、ステージ間変数、定数の6つの方法でデータを受け取ることができます。</p>
+<ol>
+<li>
+<p>ユニフォーム</p>
+<p>ユニフォームは、シェーダーの各反復で同じ値です。定数グローバル変数と考えてください。シェーダーが実行される前に設定できますが、シェーダーが使用されている間は一定のまま、つまり<em>一様</em>のままです。</p>
+<p><code class="notranslate" translate="no">draw</code>を変更して、シェーダーにユニフォームを渡すようにしましょう。これを行うには、<code class="notranslate" translate="no">bindings</code>という配列を作成し、それを使用してユニフォームを渡します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">*function draw(count, vertexShaderFn, bindings) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+*    internalBuffer[i] = vertexShaderFn(i, bindings);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+</pre>
+<p>そして、シェーダーを変更してユニフォームを使用するようにしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vertexShader = (v, bindings) =&gt; {
+  const uniforms = bindings[0];
+  return v * uniforms.multiplier;
+};
+const count = 4;
+const uniforms1 = {multiplier: 3};
+const uniforms2 = {multiplier: 5};
+const bindings1 = [uniforms1];
+const bindings2 = [uniforms2];
+draw(count, vertexShader, bindings1);
+// 出力 [0, 3, 6, 9]
+draw(count, vertexShader, bindings2);
+// 出力 [0, 5, 10, 15]
+</pre>
+<p>したがって、ユニフォームの概念はかなり単純に見えることを願っています。<code class="notranslate" translate="no">bindings</code>を介した間接参照は、WebGPUで物事が行われる方法と「似ている」ためです。上記のように、この場合、ユニフォームは場所/インデックスでアクセスします。ここでは、<code class="notranslate" translate="no">bindings[0]</code>にあります。</p>
+</li>
+<li>
+<p>属性（頂点シェーダーのみ）</p>
+<p>属性は、シェーダーの反復ごとにデータを提供します。上記の<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a>では、値<code class="notranslate" translate="no">v</code>が<code class="notranslate" translate="no">input</code>から取得され、関数に自動的に提供されました。これは、シェーダーの属性と非常によく似ています。</p>
+<p>違いは、入力をマップするのではなく、単にカウントしているため、WebGPUにこれらの入力とそれらからデータを取得する方法を伝える必要があることです。</p>
+<p><code class="notranslate" translate="no">draw</code>を次のように更新したと想像してください。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">*function draw(count, vertexShaderFn, bindings, attribsSpec) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+*    const attribs = getAttribs(attribsSpec, i);
+*    internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+
++function getAttribs(attribs, ndx) {
++  return attribs.map(({source, offset, stride}) =&gt; source[ndx * stride + offset]);
++}
+</pre>
+<p>次に、次のように呼び出すことができます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [0, 1, 2, 3, 4, 5, 6, 7];
+const buffer2 = [11, 22, 33, 44];
+const attribsSpec = [
+  { source: buffer1, offset: 0, stride: 2, },
+  { source: buffer1, offset: 1, stride: 2, },
+  { source: buffer2, offset: 0, stride: 1, },
+];
+const vertexShader = (v, bindings, attribs) =&gt; (attribs[0] + attribs[1]) * attribs[2];
+const bindings = [];
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// 出力 [11, 110, 297, 572]
+</pre>
+<p>上記のように、<code class="notranslate" translate="no">getAttribs</code>は<code class="notranslate" translate="no">offset</code>と<code class="notranslate" translate="no">stride</code>を使用して、対応する<code class="notranslate" translate="no">source</code>バッファへのインデックスを計算し、値を取得します。取得された値はシェーダーに送信されます。各反復で<code class="notranslate" translate="no">attribs</code>は異なります。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no"> 反復 |  属性
+ ----------+-------------
+     0     | [0, 1, 11]
+     1     | [2, 3, 22]
+     2     | [4, 5, 33]
+     3     | [6, 7, 44]
+</pre>
+</li>
+<li>
+<p>生のバッファ</p>
+<p>バッファは事実上配列です。もう一度、類推のために、バッファを使用する<code class="notranslate" translate="no">draw</code>のバージョンを作成しましょう。ユニフォームで行ったように、これらのバッファを<code class="notranslate" translate="no">bindings</code>を介して渡します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [0, 1, 2, 3, 4, 5, 6, 7];
+const buffer2 = [11, 22, 33, 44];
+const attribsSpec = [];
+const bindings = [
+  buffer1,
+  buffer2,
+];
+const vertexShader = (ndx, bindings, attribs) =&gt; 
+    (bindings[0][ndx * 2] + bindings[0][ndx * 2 + 1]) * bindings[1][ndx];
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// 出力 [11, 110, 297, 572]
+</pre>
+<p>ここでは、属性で行ったのと同じ結果が得られましたが、今回は、システムがバッファから値を取得する代わりに、バインドされたバッファへの独自のインデックスを計算しました。これは、基本的に配列へのランダムアクセスがあるため、属性よりも柔軟です。しかし、同じ理由で、潜在的に遅くなる可能性があります。属性が機能する方法を考えると、GPUは値が順番にアクセスされることを知っており、それを使用して最適化できます。たとえば、順番アクセスは通常、キャッシュフレンドリーです。独自のインデックスを計算する場合、GPUは、実際にアクセスしようとするまで、バッファのどの部分にアクセスするかわかりません。</p>
+</li>
+<li>
+<p>テクスチャ</p>
+<p>テクスチャは、1D、2D、または3Dのデータ配列です。もちろん、バッファを使用して独自の2Dまたは3D配列を実装することもできます。テクスチャの特別な点は、サンプリングできることです。サンプリングとは、提供する値の間で値を計算するようにGPUに依頼できることを意味します。これが何を意味するかについては、<a href="webgpu-textures.html">テクスチャに関する記事</a>で説明します。今のところ、JavaScriptの類推をもう一度作成しましょう。</p>
+<p>まず、値の間で配列を<em>サンプリング</em>する関数<code class="notranslate" translate="no">textureSample</code>を作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function textureSample(texture, ndx) {
+  const startNdx = ndx | 0;  // 整数に切り捨てます
+  const fraction = ndx % 1;  // インデックス間の小数部分を取得します
+  const start = texture[startNdx];
+  const end = texture[startNdx + 1];
+  return start + (end - start) * fraction;  // startとendの間の値を計算します
+}
+</pre>
+<p>このような関数はすでにGPUに存在します。</p>
+<p>次に、それをシェーダーで使用しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const texture = [10, 20, 30, 40, 50, 60, 70, 80];
+const attribsSpec = [];
+const bindings = [
+  texture,
+];
+const vertexShader = (ndx, bindings, attribs) =&gt;
+    textureSample(bindings[0], ndx * 1.75);
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// 出力 [10, 27.5, 45, 62.5]
+</pre>
+<p><code class="notranslate" translate="no">ndx</code>が<code class="notranslate" translate="no">3</code>の場合、<code class="notranslate" translate="no">3 * 1.75</code>または<code class="notranslate" translate="no">5.25</code>を<code class="notranslate" translate="no">textureSample</code>に渡します。これにより、<code class="notranslate" translate="no">startNdx</code>が<code class="notranslate" translate="no">5</code>と計算されます。したがって、インデックス<code class="notranslate" translate="no">5</code>と<code class="notranslate" translate="no">6</code>（<code class="notranslate" translate="no">60</code>と<code class="notranslate" translate="no">70</code>）を取得します。<code class="notranslate" translate="no">fraction</code>は<code class="notranslate" translate="no">0.25</code>になるため、<code class="notranslate" translate="no">60 + (70 - 60) * 0.25</code>（<code class="notranslate" translate="no">62.5</code>）が得られます。</p>
+<p>上記のコードを見ると、シェーダー関数で<code class="notranslate" translate="no">textureSample</code>を自分で記述できます。2つの値を手動で取得し、それらの間を補間できます。GPUにこの特別な機能がある理由は、はるかに高速に実行できるためであり、設定によっては、1つの4浮動小数点値に対して最大16個の4浮動小数点値を読み取って、1つの4浮動小数点値を生成する場合があります。これは手動で行うには多くの作業になります。</p>
+</li>
+<li>
+<p>ステージ間変数（フラグメントシェーダーのみ）</p>
+<p>ステージ間変数は、頂点シェーダーからフラグメントシェーダーへの出力です。上記のように、頂点シェーダーは、点、線、三角形を描画/ラスタライズするために使用される位置を出力します。</p>
+<p>線を描画していると想像してみましょう。頂点シェーダーが2回実行され、1回目は<code class="notranslate" translate="no">5,0</code>に相当するものを出力し、2回目は<code class="notranslate" translate="no">25,4</code>に相当するものを出力したとします。これら2つの点が与えられると、GPUは<code class="notranslate" translate="no">5,0</code>から<code class="notranslate" translate="no">25,4</code>（排他的）までの線を描画します。これを行うには、フラグメントシェーダーを20回呼び出します。その線の各ピクセルに1回ずつです。フラグメントシェーダーを呼び出すたびに、どの色を返すかを決定するのは私たち次第です。</p>
+<p>2つの点の間に線を描画するのに役立つ一対の関数があると仮定しましょう。最初の関数は、描画する必要のあるピクセル数と、それらを描画するのに役立ついくつかの値を計算します。2番目の関数は、その情報とピクセル番号を受け取り、ピクセル位置を返します。例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const line = calcLine([10, 10], [13, 13]);
+for (let i = 0; i &lt; line.numPixels; ++i) {
+  const p = calcLinePoint(line, i);
+  console.log(p);
+}
+// 出力
+// 10,10
+// 11,11
+// 12,12
+</pre>
+<p>注：<code class="notranslate" translate="no">calcLine</code>と<code class="notranslate" translate="no">calcLinePoint</code>がどのように機能するかは重要ではありません。重要なのは、それらが機能し、上記のループが線のピクセル位置を提供できるようにすることです。<strong>ただし、興味がある場合は、記事の下部近くのライブコード例を参照してください。</strong></p>
+<p>では、頂点シェーダーを変更して、反復ごとに2つの値を出力するようにしましょう。これには多くの方法があります。1つは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
+];
+const bindings = [];
+const dest = new Array(2);
+const vertexShader = (ndx, bindings, attribs) =&gt; [attribs[0], attribs[1]];
+const count = 2;
+draw(count, vertexShader, bindings, attribsSpec);
+// 出力 [[5, 0], [25, 4]]
+</pre>
+<p>次に、一度に2つの点をループし、<code class="notranslate" translate="no">rasterizeLines</code>を呼び出して線をラスタライズするコードを記述しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function rasterizeLines(dest, destWidth, inputs, fragShaderFn, bindings) {
+  for (let ndx = 0; ndx &lt; inputs.length - 1; ndx += 2) {
+    const p0 = inputs[ndx    ];
+    const p1 = inputs[ndx + 1];
+    const line = calcLine(p0, p1);
+    for (let i = 0; i &lt; line.numPixels; ++i) {
+      const p = calcLinePoint(line, i);
+      const offset = p[1] * destWidth + p[0];  // y * width + x
+      dest[offset] = fragShaderFn(bindings);
+    }
+  }
+}
+</pre>
+<p><code class="notranslate" translate="no">draw</code>を更新して、次のようにそのコードを使用できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function draw(count, vertexShaderFn, bindings, attribsSpec) {
++function draw(dest, destWidth,
++              count, vertexShaderFn, fragmentShaderFn,
++              bindings, attribsSpec,
++) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+    const attribs = getAttribs(attribsSpec, i);
+    internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+  }
+-  console.log(JSON.stringify(internalBuffer));
++  rasterizeLines(dest, destWidth, internalBuffer,
++                 fragmentShaderFn, bindings);
+}
+</pre>
+<p>これで、実際に<code class="notranslate" translate="no">internalBuffer</code>を使用しています😃！</p>
+<p><code class="notranslate" translate="no">draw</code>を呼び出すコードを更新しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
+];
+const bindings = [];
+const vertexShader = (ndx, bindings, attribs) =&gt; [attribs[0], attribs[1]];
+const count = 2;
+-draw(count, vertexShader, bindings, attribsSpec);
+
++const width = 30;
++const height = 5;
++const pixels = new Array(width * height).fill(0);
++const fragShader = (bindings) =&gt; 6;
+
+*draw(
+*   pixels, width,
+*   count, vertexShader, fragShader,
+*   bindings, attribsSpec);
+</pre>
+<p><code class="notranslate" translate="no">pixels</code>を<code class="notranslate" translate="no">0</code>が<code class="notranslate" translate="no">.</code>になる長方形として出力すると、次のようになります。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">.....666......................
+........66666.................
+.............66666............
+..................66666.......
+.......................66.....
+</pre>
+<p>残念ながら、フラグメントシェーダーは各反復で変化する入力を受け取らないため、各ピクセルに異なるものを出力する方法はありません。ここで、ステージ間変数が登場します。最初のシェーダーを変更して、余分な値を出力するようにしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
++const buffer2 = [9, 3];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
++  {source: buffer2, offset: 0, stride: 1},
+];
+const bindings = [];
+const dest = new Array(2);
+const vertexShader = (ndx, bindings, attribs) =&gt; 
+-    [attribs[0], attribs[1]];
++    [[attribs[0], attribs[1]], [attribs[2]]];
+
+...
+</pre>
+<p>他に何も変更しなかった場合、<code class="notranslate" translate="no">draw</code>内のループの後、<code class="notranslate" translate="no">internalBuffer</code>には次の値が含まれます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> [ 
+   [[ 5, 0], [9]],
+   [[25, 4], [3]],
+ ]
+</pre>
+<p>線のどのくらい進んだかを表す0.0から1.0までの値を簡単に計算できます。これを使用して、追加したばかりの余分な値を補間できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function rasterizeLines(dest, destWidth, inputs, fragShaderFn, bindings) {
+  for(let ndx = 0; ndx &lt; inputs.length - 1; ndx += 2) {
+-    const p0 = inputs[ndx    ];
+-    const p1 = inputs[ndx + 1];
++    const p0 = inputs[ndx    ][0];
++    const p1 = inputs[ndx + 1][0];
++    const v0 = inputs[ndx    ].slice(1);  // 最初の値以外のすべて
++    const v1 = inputs[ndx + 1].slice(1);
+    const line = calcLine(p0, p1);
+    for (let i = 0; i &lt; line.numPixels; ++i) {
+      const p = calcLinePoint(line, i);
++      const t = i / line.numPixels;
++      const interStageVariables = interpolateArrays(v0, v1, t);
+      const offset = p[1] * destWidth + p[0];  // y * width + x
+-      dest[offset] = fragShaderFn(bindings);
++      dest[offset] = fragShaderFn(bindings, interStageVariables);
+    }
+  }
+}
+
++// interpolateArrays([[1,2]], [[3,4]], 0.25) =&gt; [[1.5, 2.5]]
++function interpolateArrays(v0, v1, t) {
++  return v0.map((array0, ndx) =&gt; {
++    const array1 = v1[ndx];
++    return interpolateValues(array0, array1, t);
++  });
++}
+
++// interpolateValues([1,2], [3,4], 0.25) =&gt; [1.5, 2.5]
++function interpolateValues(array0, array1, t) {
++  return array0.map((a, ndx) =&gt; {
++    const b = array1[ndx];
++    return a + (b - a) * t;
++  });
++}
+</pre>
+<p>これで、フラグメントシェーダーでそれらのステージ間変数を使用できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const fragShader = (bindings) =&gt; 6;
++const fragShader = (bindings, interStageVariables) =&gt; 
++    interStageVariables[0] | 0; // 整数に変換します
+</pre>
+<p>今実行すると、次のような結果が表示されます。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">.....988......................
+........87776.................
+.............66655............
+..................54443.......
+.......................33.....
+</pre>
+<p>頂点シェーダーの最初の反復は<code class="notranslate" translate="no">[[5,0], [9]]</code>を出力し、2番目の反復は<code class="notranslate" translate="no">[[25,4], [3]]</code>を出力しました。フラグメントシェーダーが呼び出されると、それらのそれぞれの2番目の値が2つの値の間で補間されたことがわかります。</p>
+<p>3つの点が与えられた場合に三角形をラスタライズし、三角形内の各点に対してフラグメントシェーダー関数を呼び出す別の関数<code class="notranslate" translate="no">mapTriangle</code>を作成できます。2つではなく3つの点からステージ間変数を補間します。</p>
+</li>
+</ol>
+<p>上記のすべての例をライブで実行して、理解を深めるために試してみてください。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-javascript-analogies.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-javascript-analogies.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>上記のJavaScriptで起こることは類推です。ステージ間変数が実際にどのように補間されるか、線がどのように描画されるか、バッファにどのようにアクセスされるか、テクスチャがどのようにサンプリングされるか、ユニフォーム、属性がどのように指定されるかなどの詳細は、WebGPUでは異なりますが、概念は非常に似ているため、このJavaScriptの類推が、何が起こっているのかのメンタルモデルを得るのに役立つことを願っています。</p>
+<p>なぜこのようになっているのでしょうか？まあ、<code class="notranslate" translate="no">draw</code>と<code class="notranslate" translate="no">rasterizeLines</code>を見ると、各反復が他の反復から完全に独立していることに気づくかもしれません。別の言い方をすれば、各反復を任意の順序で処理できます。0、1、2、3、4の代わりに、3、1、4、0、2で処理しても、まったく同じ結果が得られます。それらが独立しているという事実は、各反復を異なるプロセッサで並行して実行できることを意味します。最新の2021年のハイエンドGPUには10000以上のプロセッサがあります。つまり、最大10000のものを並行して実行できます。これがGPUを使用する力の源です。これらのパターンに従うことで、システムは作業を大幅に並列化できます。</p>
+<p>最大の制限は次のとおりです。</p>
+<ol>
+<li>
+<p>シェーダー関数は、その入力（属性、バッファ、テクスチャ、ユニフォーム、ステージ間変数）のみを参照できます。</p>
+</li>
+<li>
+<p>シェーダーはメモリを割り当てることができません。</p>
+</li>
+<li>
+<p>シェーダーは、書き込むものを参照する場合、つまり値を生成しているものを参照する場合に注意する必要があります。</p>
+<p>考えてみれば、これは理にかなっています。上記の<code class="notranslate" translate="no">fragShader</code>が<code class="notranslate" translate="no">dest</code>を直接参照しようとしたと想像してみてください。つまり、物事を並列化しようとすると、調整が不可能になります。どの反復が最初になりますか？3番目の反復が<code class="notranslate" translate="no">dest[0]</code>を参照した場合、0番目の反復が最初に実行される必要がありますが、0番目の反復が<code class="notranslate" translate="no">dest[3]</code>を参照した場合、3番目の反復が最初に実行される必要があります。</p>
+<p>この制限を回避する設計は、CPUや複数のスレッドまたはプロセスでも発生しますが、GPUランドでは、最大10000のプロセッサが一度に実行されるため、特別な調整が必要です。他の記事でいくつかのテクニックについて説明しようとします。</p>
+</li>
+</ol>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +575,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +664,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPUの仕組み`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

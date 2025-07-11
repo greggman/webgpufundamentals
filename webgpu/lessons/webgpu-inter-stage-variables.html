@@ -555,7 +555,7 @@ will be covered in other articles.</p>
 <li><code class="notranslate" translate="no">centroid</code>: Interpolation is performed at a point that lies within all the samples covered by the fragment within the current primitive. This value is the same for all samples in the primitive.</li>
 <li><code class="notranslate" translate="no">sample</code>:  Interpolation is performed per sample. The fragment shader is invoked once per sample when this attribute is applied.</li>
 <li><code class="notranslate" translate="no">first</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. (default) The value comes from the first vertex of the primitive being drawn</li>
-<li><code class="notranslate" translate="no">either</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. The value comes from either the first or the last vertex of the primitive being drawn.</li>
+<li><code class="notranslate" translate="no">either</code>: Used only with type = <code class="notranslate" translate="no">flat</code>. The value comes from either the first or the last vertex of the primitive being drawn. Which is implementation defined.</li>
 </ul>
 <p>You specify these as attributes, for example:</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  @location(2) @interpolate(linear, center) myVariableFoo: vec4f;
@@ -565,7 +565,7 @@ will be covered in other articles.</p>
 interpolation to <code class="notranslate" translate="no">flat</code>.</p>
 <p>If you set the interpolation type to <code class="notranslate" translate="no">flat</code>, by default, the value passed to the fragment shader
 is the value of the inter-stage variable for the first vertex in that triangle. For most
-<code class="notranslate" translate="no">flat</code> use cases you should pick <code class="notranslate" translate="no">either</code>. We’ll cover why in <a href="webgpu-compatibility-mode.html">another article</a>.</p>
+<code class="notranslate" translate="no">flat</code> use cases you should pick <code class="notranslate" translate="no">either</code>. We’ll cover why in <a href="webgpu-compatibility-mode.html#flat">another article</a>.</p>
 <p>In the <a href="webgpu-uniforms.html">next article we’ll cover uniforms</a> as another way to
 pass data into shaders.</p>
 

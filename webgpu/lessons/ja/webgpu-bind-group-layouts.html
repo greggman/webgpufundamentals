@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-bind-group-layouts.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Bind Group Layouts">
+
+<meta name="description" content="明示的なバインドグループレイアウト">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bind-group-layouts_ja.jpg">
+
+<meta property="og:title" content="WebGPUのバインドグループレイアウト">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Explicit Bind Group Layouts">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bind-group-layouts_ja.jpg">
+<meta property="og:description" content="明示的なバインドグループレイアウト">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-bind-group-layouts.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Bind Group Layouts">
+<meta name="twitter:title" content="WebGPUのバインドグループレイアウト">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-bind-group-layouts.html">
-<meta name="twitter:description" content="Explicit Bind Group Layouts">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="明示的なバインドグループレイアウト">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bind-group-layouts_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-bind-group-layouts.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bind-group-layouts_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-bind-group-layouts.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-bind-group-layouts.html",
+      "inLanguage":"ja",
+      "name":"WebGPUのバインドグループレイアウト",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-bind-group-layouts.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Bind Group Layouts</title>
+<title>WebGPUのバインドグループレイアウト</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,501 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Bind Group Layouts</h1>
+    <h1>WebGPUのバインドグループレイアウト</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>バインドグループレイアウトは、WebGPUがバインドグループをコンピュートパイプラインやレンダーパイプラインに簡単かつ効率的に一致させるために使用されます。</p>
+<h2 id="仕組み：">仕組み：</h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUComputePipeline"><code class="notranslate" translate="no">GPUComputePipeline</code></a>や<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPURenderPipeline"><code class="notranslate" translate="no">GPURenderPipeline</code></a>のようなパイプラインは、0個以上の<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>を定義する<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>を使用します。各<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>は特定のグループインデックスに割り当てられます。</p>
+<div class="webgpu_center"><img src="../resources/webgpu-bind-group-layouts.svg" style="width: 900px;"></div>
+<p>バインドグループもそれぞれ特定の<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>で作成されます。</p>
+<p><code class="notranslate" translate="no">draw</code>や<code class="notranslate" translate="no">dispatchWorkgroups</code>を実行する際、WebGPUは、現在のパイプラインの<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>上の各グループインデックスの<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>が、<code class="notranslate" translate="no">setBindGroup</code>で設定された現在バインドされているバインドグループと一致するかどうかをチェックするだけで済みます。このチェックは非常に単純です。詳細なチェックのほとんどは、バインドグループを作成するときに行われます。そうすることで、実際に描画や計算を行うときには、チェックするものはほとんど残っていません。</p>
+<p>このウェブサイトのほとんどのサンプルがそうであるように、<code class="notranslate" translate="no">layout: 'auto'</code>でパイプラインを作成すると、パイプラインは独自の<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>を生成し、<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>を自動的に設定します。</p>
+<p><code class="notranslate" translate="no">layout: 'auto'</code>を<strong>使用しない</strong>主な理由は2つあります。</p>
+<ol>
+<li>
+<p><strong>デフォルトの<code class="notranslate" translate="no">'auto'</code>レイアウトとは異なるレイアウトが必要な場合</strong></p>
+<p>例えば、テクスチャとして<code class="notranslate" translate="no">rgba32float</code>を使用したいが、試すとエラーが発生する場合などです。（下記参照）</p>
+</li>
+<li>
+<p><strong>1つ以上のパイプラインでバインドグループを使用したい場合</strong></p>
+<p><code class="notranslate" translate="no">layout: 'auto'</code>でパイプラインから作成されたbindGroupLayoutから作られたバインドグループを、別のパイプラインで使用することはできません。</p>
+</li>
+</ol>
+<h2 id="layout-autoとは異なるバインドグループレイアウトの使用---rgba32float"><a id="a-rgba32float"></a> <code class="notranslate" translate="no">layout: 'auto'</code>とは異なるバインドグループレイアウトの使用 - <code class="notranslate" translate="no">'rgba32float'</code></h2>
+<p>バインドグループレイアウトが自動的に作成される方法のルールは<a href="https://www.w3.org/TR/webgpu/#abstract-opdef-default-pipeline-layout">仕様書に詳述されています</a>が、一例として…</p>
+<p><code class="notranslate" translate="no">rgba32float</code>テクスチャを使用したいとしましょう。<a href="http://localhost:8080/webgpu/lessons/webgpu-textures.html">テクスチャに関する記事の最初のテクスチャ使用例</a>を取り上げ、逆さまの5x7テクセルの「F」を描画しました。これを<code class="notranslate" translate="no">rgba32float</code>テクスチャを使用するように更新しましょう。</p>
+<p>変更点は以下の通りです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kTextureWidth = 5;
+  const kTextureHeight = 7;
+-  const _ = [255,   0,   0, 255];  // 赤
+-  const y = [255, 255,   0, 255];  // 黄
+-  const b = [  0,   0, 255, 255];  // 青
+-  const textureData = new Uint8Array([
++  const _ = [1, 0, 0, 1];  // 赤
++  const y = [1, 1, 0, 1];  // 黄
++  const b = [0, 0, 1, 1];  // 青
++  const textureData = new Float32Array([
+    b, _, _, _, _,
+
+    _, y, y, y, _,
+
+    _, y, _, _, _,
+
+    _, y, y, _, _,
+
+    _, y, _, _, _,
+
+    _, y, _, _, _,
+
+    _, _, _, _, _,
+
+  ].flat());
+
+  const texture = device.createTexture({
+    label: '赤地に黄色のF',
+
+    size: [kTextureWidth, kTextureHeight],
+-    format: 'rgba8unorm',
++    format: 'rgba32float',
+    usage:
+      GPUTextureUsage.TEXTURE_BINDING |
+      GPUTextureUsage.COPY_DST,
+  });
+  device.queue.writeTexture(
+      { texture },
+      textureData,
+-      { bytesPerRow: kTextureWidth * 4 },
++      { bytesPerRow: kTextureWidth * 4 * 4 },
+      { width: kTextureWidth, height: kTextureHeight },
+  );
+
+</pre>
+<p>これを実行するとエラーが発生します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-rgba32float-broken.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-rgba32float-broken.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>私がテストしたブラウザで得られたエラーは次のとおりです。</p>
+<blockquote>
+<ul>
+<li>WebGPU GPUValidationError: [Texture “yellow F on red”]でサポートされているサンプルタイプ（UnfilterableFloat）のいずれも、期待されるサンプルタイプ（Float）と一致しません。`<br></li>
+<li>Sampled Textureとしてentries[1]を検証中。期待されるエントリレイアウト：{sampleType: TextureSampleType::Float, viewDimension: 2, multisampled: 0}`<br></li>
+<li>[BindGroupDescriptor]を[BindGroupLayout (unlabeled)]に対して検証中`<br></li>
+<li>[Device].CreateBindGroup([BindGroupDescriptor])を呼び出し中`</li>
+</ul>
+</blockquote>
+<p>これはどういうことでしょうか？ <code class="notranslate" translate="no">rgba32float</code>（およびすべての<code class="notranslate" translate="no">xxx32float</code>）テクスチャは、デフォルトではフィルタリングできないことが判明しました。フィルタリング可能にするための<a href="webgpu-limits-and-features.html">オプション機能</a>がありますが、その機能はどこでも利用できるとは限りません。これは特にモバイルデバイスで、少なくとも2024年にはその可能性が高いです。</p>
+<p>デフォルトでは、次のように<code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>でバインディングを宣言すると、</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+</pre>
+<p>そしてパイプラインを作成するときに<code class="notranslate" translate="no">layout: 'auto'</code>を使用すると、WebGPUはフィルタリング可能なテクスチャを具体的に要求するバインドグループレイアウトを作成します。フィルタリング不可能なものをバインドしようとすると、エラーが発生します。</p>
+<p>フィルタリングできないテクスチャを使用したい場合は、手動でバインドグループレイアウトを作成する必要があります。</p>
+<p><a href="../resources/wgsl-offset-computer.html">ここ</a>に、シェーダーを貼り付けると自動レイアウトを生成してくれるツールがあります。上記の例のシェーダーを貼り付けると、次のようになります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayoutDescriptors = [
+  {
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.FRAGMENT,
+        sampler: {
+          type: "filtering",
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.FRAGMENT,
+        texture: {
+          sampleType: "float",
+          viewDimension: "2d",
+          multisampled: false,
+        },
+      },
+    ],
+  },
+];
+</pre>
+<p>これは<a href="https://www.w3.org/TR/webgpu/#dictdef-gpubindgrouplayoutdescriptor"><code class="notranslate" translate="no">GPUBindGroupLayoutDescriptor</code></a>の配列です。上記では、バインドグループが<code class="notranslate" translate="no">sampleType: "float"</code>を使用していることがわかります。これは<code class="notranslate" translate="no">'rgba8unorm'</code>のタイプですが、<code class="notranslate" translate="no">'rgba32float'</code>のタイプではありません。特定のテクスチャフォーマットが動作するサンプルタイプは、<a href="https://www.w3.org/TR/webgpu/#texture-format-caps">仕様書のこの表</a>で確認できます。</p>
+<p>この例を修正するには、テクスチャバインディングとサンプラーバインディングの両方を調整する必要があります。サンプラーバインディングは<code class="notranslate" translate="no">'non-filtering'</code>サンプラーに変更する必要があります。テクスチャバインディングは<code class="notranslate" translate="no">'unfilterable-float'</code>に変更する必要があります。</p>
+<p>そこで、まず<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>を作成する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.FRAGMENT,
+        sampler: {
+*          type: 'non-filtering',
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.FRAGMENT,
+        texture: {
+*          sampleType: 'unfilterable-float',
+          viewDimension: '2d',
+          multisampled: false,
+        },
+      },
+    ],
+  });
+</pre>
+<p>2つの変更点は上記でマークされています。</p>
+<p>次に、パイプラインで使用される<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>の配列である<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>を作成する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+</pre>
+<p><code class="notranslate" translate="no">createPipelineLayout</code>は、<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>の配列を持つオブジェクトを受け取ります。これらはグループインデックス順に並べられているため、最初のエントリは<code class="notranslate" translate="no">@group(0)</code>になり、2番目のエントリは<code class="notranslate" translate="no">@group(1)</code>になります。いずれかをスキップする必要がある場合は、空のバインドグループレイアウトを追加する必要があります。</p>
+<p>最後に、パイプラインを作成するときに、パイプラインレイアウトを渡します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'ハードコードされたテクスチャ付きクワッドパイプライン',
+
+-    layout: 'auto',
++    layout: pipelineLayout,
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>これで、この例は再び機能しますが、今度は<code class="notranslate" translate="no">rgba32float</code>テクスチャを使用しています。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-rgba32float-fixed.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-rgba32float-fixed.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>注：この例が機能するのは、フィルタリング不可能な浮動小数点数を受け入れるバインドグループレイアウトを作成するために上記の作業を行ったためですが、<code class="notranslate" translate="no">'nearest'</code>フィルタリングのみを使用する<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUSampler"><code class="notranslate" translate="no">GPUSampler</code></a>を使用しているためでもあります。<code class="notranslate" translate="no">magFilter</code>、<code class="notranslate" translate="no">minFilter</code>、または<code class="notranslate" translate="no">mipmapFilter</code>のいずれかのフィルタを<code class="notranslate" translate="no">'linear'</code>に設定すると、<code class="notranslate" translate="no">'non-filtering'</code>サンプラーバインディングで<code class="notranslate" translate="no">'filtering'</code>サンプラーを使用しようとしたというエラーが表示されます。</p>
+<h2 id="layout-autoとは異なるバインドグループレイアウトの使用---動的オフセット"><code class="notranslate" translate="no">layout: 'auto'</code>とは異なるバインドグループレイアウトの使用 - 動的オフセット</h2>
+<p>デフォルトでは、バインドグループを作成してユニフォームバッファまたはストレージバッファをバインドすると、バッファ全体がバインドされます。バインドグループを作成するときにオフセットと長さを渡すこともできます。どちらの場合も、一度設定すると変更できません。</p>
+<p>WebGPUには、<code class="notranslate" translate="no">setBindGroup</code>を呼び出すときにオフセットを変更できるオプションがあります。この機能を使用するには、手動でバインドグループレイアウトを作成し、後で設定できるようにしたい各バインディングに<code class="notranslate" translate="no">hasDynamicOffsets: true</code>を設定する必要があります。</p>
+<p>これを簡単にするために、<a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">基礎に関する記事</a>の単純な計算例を使用します。同じバッファから2セットの値を加算するように変更し、動的オフセットを使用してどちらのセットかを選択します。</p>
+<p>まず、シェーダーを次のように変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; a: array&lt;f32&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; b: array&lt;f32&gt;;
+@group(0) @binding(2) var&lt;storage, read_write&gt; dst: array&lt;f32&gt;;
+
+@compute @workgroup_size(1) fn computeSomething(
+  @builtin(global_invocation_id) id: vec3u
+) {
+  let i = id.x;
+  dst[i] = a[i] + b[i];
+}
+</pre>
+<p><code class="notranslate" translate="no">a</code>を<code class="notranslate" translate="no">b</code>に加算して<code class="notranslate" translate="no">dst</code>に書き込むだけであることがわかります。</p>
+<p>次に、バインドグループレイアウトを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+      {
+        binding: 2,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+    ],
+  });
+</pre>
+<p>すべて<code class="notranslate" translate="no">hasDynamicStorage: true</code>とマークされています。</p>
+<p>では、これを使ってパイプラインを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+
+  const pipeline = device.createComputePipeline({
+-    label: 'double compute pipeline',
++    label: 'add elements compute pipeline',
+-    layout: 'auto',
++    layout: pipelineLayout,
+    compute: {
+      module,
+    },
+  });
+</pre>
+<p>バッファを設定しましょう。オフセットは256の倍数でなければならないため<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>、少なくとも3つの有効なオフセット（0、256、512）を持つように、256 * 3バイトの大きさのバッファを作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const input = new Float32Array([1, 3, 5]);
++  const input = new Float32Array(64 * 3);
++  input.set([1, 3, 5]);
++  input.set([11, 12, 13], 64);
+
+  // 計算の入力と出力を保持するためにGPU上にバッファを作成します
+  const workBuffer = device.createBuffer({
+    label: 'work buffer',
+    size: input.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
+  });
+  // 入力データをそのバッファにコピーします
+  device.queue.writeBuffer(workBuffer, 0, input);
+</pre>
+<p>上記のコードは、<code class="notranslate" translate="no">64 * 3</code>個の32ビット浮動小数点数の配列を作成します。これは768バイトです。</p>
+<p>元の例では同じバッファの読み書きを行っていたので、同じバッファを3回バインドするだけにします。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // シェーダーにどのバッファを計算に使用するかを伝えるためのbindGroupを設定します
+  const bindGroup = device.createBindGroup({
+    label: 'bindGroup for work buffer',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+-      { binding: 0, resource: workBuffer },
++      { binding: 0, resource: { buffer: workBuffer, size: 256 } },
++      { binding: 1, resource: { buffer: workBuffer, size: 256 } },
++      { binding: 2, resource: { buffer: workBuffer, size: 256 } },
+    ],
+  });
+</pre>
+<p>注意：サイズを指定する必要があります。そうしないと、バッファ全体のサイズがデフォルトになります。その後、オフセット &gt; 0 を設定すると、範囲外のバッファの一部を指定しているため、エラーが発生します。</p>
+<p><code class="notranslate" translate="no">setBindGroup</code>では、動的オフセットを持つ各バッファに対して1つのオフセットを渡すようになりました。バインドグループレイアウトの3つのエントリすべてを<code class="notranslate" translate="no">hasDynamicOffset: true</code>とマークしたため、バインディングスロットの順序で3つのオフセットが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
+  pass.setPipeline(pipeline);
+-  pass.setBindGroup(0, bindGroup);
++  pass.setBindGroup(0, bindGroup, [0, 256, 512]);
+  pass.dispatchWorkgroups(3);
+  pass.end();
+</pre>
+<p>最後に、結果を表示するコードを変更する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  console.log(input);
+-  console.log(result);
++  console.log('a', input.slice(0, 3));
++  console.log('b', input.slice(64, 64 + 3));
++  console.log('dst', result.slice(128, 128 + 3));
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-dynamic-offsets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-dynamic-offsets.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>動的オフセットを使用すると、非動的オフセットよりもわずかに遅くなることに注意してください。その理由は、非動的オフセットでは、オフセットとサイズがバッファの範囲内にあるかどうかは、バインドグループを作成するときにチェックされるためです。動的オフセットでは、そのチェックは<code class="notranslate" translate="no">setBindGroup</code>を呼び出すまで行えません。<code class="notranslate" translate="no">setBindGroup</code>を数百回しか呼び出さない場合は、その差は問題にならないでしょう。<code class="notranslate" translate="no">setBindGroup</code>を数千回呼び出す場合は、より顕著になる可能性があります。</p>
+<h2 id="1つ以上のパイプラインでバインドグループを使用する"><a id="a-sharing-bind-groups"></a> 1つ以上のパイプラインでバインドグループを使用する</h2>
+<p>バインドグループレイアウトを手動で作成するもう1つの理由は、同じバインドグループを複数のパイプラインで使用できるようにするためです。</p>
+<p>バインドグループを再利用したい一般的な場所の1つは、シャドウ付きの基本的な3Dシーンレンダラーです。</p>
+<p>基本的な3Dシーンレンダラーでは、バインディングを次のように分割するのが一般的です。</p>
+<ul>
+<li>グローバル（パースペクティブ行列やビュー行列など）</li>
+<li>マテリアル（テクスチャ、色）</li>
+<li>ローカル（モデル行列など）</li>
+</ul>
+<p>次に、次のようにレンダリングします。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">setBindGroup(0, globalsBG)
+for each material
+  setBindGroup(1, materialBG)
+  for each object that uses material
+    setBindGroup(2, localBG)
+    draw(...)
+</pre>
+<p><a href="webgpu-shadows.html">シャドウ</a>を追加する場合、まずシャドウマップパイプラインでシャドウマップを描画する必要があります。それらのすべてのものに対して別々のバインドグループ（描画するパイプラインで動作するものと、シャドウマップをレンダリングするパイプラインで動作する別のバインドグループ）を持つのではなく、1セットのバインドグループを作成し、両方のケースで同じものを使用する方がはるかに簡単です。</p>
+<p>これは、バインドグループの共有を披露するためだけに書くには、かなり大きなサンプルです。<a href="webgpu-shadows.html">シャドウに関する記事</a>では共有バインドグループを使用していますが、<a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">基礎に関する記事</a>の単純な計算例を再度取り上げ、1つのバインドグループで2つの計算パイプラインを使用するようにします。</p>
+<p>まず、3を加算する別のシェーダーモジュールを追加しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const module = device.createShaderModule({
++  const moduleTimes2 = device.createShaderModule({
+    label: 'doubling compute module',
+    code: `
+      @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
+
+      @compute @workgroup_size(1) fn computeSomething(
+        @builtin(global_invocation_id) id: vec3u
+      ) {
+        let i = id.x;
+        data[i] = data[i] * 2.0;
+      }
+    `,
+  });
+
++  const modulePlus3 = device.createShaderModule({
++    label: 'adding 3 compute module',
++    code: `
++      @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
++
++      @compute @workgroup_size(1) fn computeSomething(
++        @builtin(global_invocation_id) id: vec3u
++      ) {
++        let i = id.x;
++        data[i] = data[i] + 3.0;
++      }
++    `,
++  });
+</pre>
+<p>次に、2つのパイプラインが同じ<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroup"><code class="notranslate" translate="no">GPUBindGroup</code></a>を共有できるように、<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>と<a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>を作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          minBindingSize: 0,
+        },
+      },
+    ],
+  });
+
+  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+</pre>
+<p>では、パイプラインを作成するときにそれらを使用しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const pipeline = device.createComputePipeline({
++  const pipelineTimes2 = device.createComputePipeline({
+    label: 'doubling compute pipeline',
+-    layout: 'auto',
++    layout: pipelineLayout,
+    compute: {
+      module: moduleTimes2,
+    },
+  });
+
++  const pipelinePlus3 = device.createComputePipeline({
++    label: 'plus 3 compute pipeline',
++    layout: pipelineLayout,
++    compute: {
+      module: modulePlus3,
++    },
++  });
+</pre>
+<p>バインドグループを設定するときは、<code class="notranslate" translate="no">bindGroupLayout</code>を直接使用しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // シェーダーにどのバッファを計算に使用するかを伝えるためのbindGroupを設定します
+  const bindGroup = device.createBindGroup({
+    label: 'bindGroup for work buffer',
+-    layout: pipeline.getBindGroupLayout(0),
++    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: workBuffer },
+    ],
+  });
+</pre>
+<p>最後に、両方のパイプラインを使用しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 計算を行うためのコマンドをエンコードします
+  const encoder = device.createCommandEncoder();
+  const pass = encoder.beginComputePass();
+-  pass.setPipeline(pipeline);
++  pass.setPipeline(pipelineTimes2);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(input.length);
++  pass.setPipeline(pipelinePlus3);
++  pass.dispatchWorkgroups(input.length);
+  pass.end();
+</pre>
+<p>結果は、1つのバインドグループで2を掛けて3を加算します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-multiple-pipelines.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-multiple-pipelines.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>あまり面白くありませんが、少なくとも動作する簡単な例です。</p>
+<p>いつ手動でバインドグループレイアウトを作成し、いつ作成しないかは、本当にあなた次第です。上記の例では、各パイプラインに1つずつ、2つのバインドグループを作成する方が間違いなく簡単だったでしょう。</p>
+<p>単純な状況では、手動でバインドグループレイアウトを作成する必要はほとんどありませんが、WebGPUプログラムがより複雑になるにつれて、バインドグループレイアウトを作成することが、あなたが頼るテクニックになる可能性があります。</p>
+<h2 id="バインドグループレイアウトの注意点："><a id="a-bind-group-layout-notes"></a> バインドグループレイアウトの注意点：</h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>を作成する際の注意点：</p>
+<ul>
+<li>
+<h2 id="各エントリは、どのbindingに対応するかを宣言する必要があります。">各エントリは、どの<code class="notranslate" translate="no">binding</code>に対応するかを宣言する必要があります。</h2>
+</li>
+<li>
+<h2 id="各エントリは、どのステージで表示されるかを宣言する必要があります。">各エントリは、どのステージで表示されるかを宣言する必要があります。</h2>
+<p>上記の例では、1つの可視性のみを宣言しました。
+たとえば、頂点シェーダーとフラグメントシェーダーの両方でバインドグループを参照したい場合は、次のように使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   visibility: GPUShaderStage.FRAGMENT | GPUShaderStage.VERTEX
+</pre>
+<p>または3つのステージすべて：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   visibility: GPUShaderStage.COMPUTE |
+               GPUShaderStage.FRAGMENT | 
+               GPUShaderStage.VERTEX
+</pre>
+</li>
+<li>
+<h2 id="いくつかのデフォルトがあります：">いくつかのデフォルトがあります：</h2>
+<p><code class="notranslate" translate="no">texture:</code>バインディングのデフォルトは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
+  sampleType: 'float',
+  viewDimension: '2d',
+  multisampled: false,
+}
+</pre>
+<p><code class="notranslate" translate="no">sampler:</code>バインディングのデフォルトは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
+  type: 'filtering',
+}
+</pre>
+<p>つまり、最も一般的なサンプラーとテクスチャの使用法では、サンプラーとテクスチャのエントリを次のように宣言できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayout = device.createBindGroupLayout({
+  entries: [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.FRAGMENT,
+      sampler: {},  // デフォルトを使用
+    },
+    {
+      binding: 1,
+      visibility: GPUShaderStage.FRAGMENT,
+      texture: {},  // デフォルトを使用
+    },
+  ],
+});
+</pre>
+</li>
+<li>
+<h2 id="バッファエントリは、可能な場合はminbindingsizeを宣言する必要があります。">バッファエントリは、可能な場合は<code class="notranslate" translate="no">minBindingSize</code>を宣言する必要があります。</h2>
+<p>バッファバインディングを宣言するときに、<code class="notranslate" translate="no">minBindingSize</code>を指定できます。</p>
+<p>良い例は、ユニフォーム用の構造体を作成することかもしれません。たとえば、<a href="webgpu-uniforms.html">ユニフォームに関する記事</a>では、この構造体がありました。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurStruct {
+  color: vec4f,
+  scale: vec2f,
+  offset: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+</pre>
+<p>32バイト必要なので、<code class="notranslate" translate="no">minBindingSize</code>を次のように宣言する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayout = device.createBindGroupLayout({
+  entries: [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.COMPUTE,
+      buffer: {
+        type: 'uniform',
+        minBindingSize: 32,
+      },
+    },
+  ],
+});
+</pre>
+<p><code class="notranslate" translate="no">minBindingSize</code>を宣言する理由は、<code class="notranslate" translate="no">createBindGroup</code>を呼び出すときにWebGPUがバッファサイズ/オフセットが正しいサイズであるかどうかをチェックできるようにするためです。<code class="notranslate" translate="no">minBindingSize</code>を設定しない場合、WebGPUは、バッファがパイプラインの正しいサイズであるかどうかを、描画/ディスパッチワークグループ時にチェックする必要があります。すべての描画呼び出しをチェックするよりも、バインドグループを作成するときに一度チェックする方が高速です。</p>
+<p>一方、数値を2倍にするためにストレージバッファを使用した上記の例では、<code class="notranslate" translate="no">minBindingSize</code>を宣言しませんでした。これは、ストレージバッファが<code class="notranslate" translate="no">array</code>として宣言されているため、渡す値の数に応じて異なるサイズのバッファをバインドできるためです。</p>
+</li>
+</ul>
+<p><a href="https://www.w3.org/TR/webgpu/#dictdef-gpubindgrouplayoutentry">仕様書のこの部分</a>は、バインドグループレイアウトを作成するためのすべてのオプションを詳述しています。</p>
+<p><a href="https://toji.dev/webgpu-best-practices/bind-groups">この記事</a>も、バインドグループとバインドグループレイアウトに関するいくつかのアドバイスがあります。</p>
+<p><a href="https://greggman.github.io/webgpu-utils">このライブラリ</a>は、構造体のサイズとデフォルトのバインドグループレイアウトを計算します。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>デバイスがより小さいオフセットをサポートしている可能性があります。<a href="webgpu-limits-and-features.html">limits and features</a>の<code class="notranslate" translate="no">minStorageBufferOffsetAlignment</code>または<code class="notranslate" translate="no">minUniformBufferOffsetAlignment</code>を参照してください。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +737,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +826,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPUのバインドグループレイアウト`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

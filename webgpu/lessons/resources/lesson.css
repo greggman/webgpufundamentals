@@ -121,8 +121,11 @@ table {
 
 .permalink>div {
   position: absolute;
-  transform: translateX(-1em);
+  transform: translate(-1em, 0.25em);
   font-size: 19px;
+}
+li .permalink>div {
+  transform: translate(-1em, 0.5em);
 }
 
 .footnote {

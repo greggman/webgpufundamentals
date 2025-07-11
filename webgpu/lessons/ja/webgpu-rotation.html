@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-rotation.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Rotation">
+
+<meta name="description" content="オブジェクトの回転">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-rotation_ja.jpg">
+
+<meta property="og:title" content="WebGPU 回転">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Rotating an object">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-rotation_ja.jpg">
+<meta property="og:description" content="オブジェクトの回転">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-rotation.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Rotation">
+<meta name="twitter:title" content="WebGPU 回転">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-rotation.html">
-<meta name="twitter:description" content="Rotating an object">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="オブジェクトの回転">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-rotation_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-rotation.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-rotation_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-rotation.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-rotation.html",
+      "inLanguage":"ja",
+      "name":"WebGPU 回転",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-rotation.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Rotation</title>
+<title>WebGPU 回転</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,251 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Rotation</h1>
+    <h1>WebGPU 回転</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-rotation.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、3D数学について学ぶことを目的とした一連の記事の2番目です。各記事は前のレッスンを基にしているので、順番に読むと最も理解しやすいかもしれません。</p>
+<ol>
+<li><a href="webgpu-translation.html">平行移動</a></li>
+<li><a href="webgpu-rotation.html">回転</a> ⬅ ここです</li>
+<li><a href="webgpu-scale.html">スケーリング</a></li>
+<li><a href="webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="webgpu-cameras.html">カメラ</a></li>
+<li><a href="webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="webgpu-scene-graphs.html">シーングラフ</a></li>
+</ol>
+<p>最初に、私がこれをどのように説明するかが理にかなっているかどうかはわかりませんが、とにかく試してみる価値はあると思います。</p>
+<p>まず、「単位円」と呼ばれるものを紹介したいと思います。中学校の数学を覚えているなら（私に眠らないでください！）、円には半径があります。円の半径は、円の中心から端までの距離です。単位円は、半径が1.0の円です。</p>
+<p>これが単位円です。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<div class="webgpu_center"><div data-diagram="unit-circle" style="display: inline-block; width: 500px;"></div></div>
+<p>円の周りの青いハンドルをドラッグすると、XとYの位置が変わることに注意してください。それらは、円上のその点の位置を表します。上部ではYが1、Xが0です。右側ではXが1、Yが0です。</p>
+<p>基本的な3年生の数学から覚えているなら、何かを1で乗算すると、それは同じままです。したがって、123 * 1 = 123です。かなり基本的ですよね？さて、単位円、半径が1.0の円も1の一種です。回転する1です。したがって、何かをこの単位円で乗算することができ、ある意味では、1で乗算するようなものですが、魔法が起こり、物事が回転します。</p>
+<p>単位円上の任意の点からそのXとYの値を取得し、<a href="webgpu-translation.html">前の例</a>から頂点位置をそれらで乗算します。</p>
+<p>シェーダーの更新は次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  color: vec4f,
+  resolution: vec2f,
+  translation: vec2f,
++  rotation: vec2f,
+};
+
+struct Vertex {
+  @location(0) position: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+
++  // 位置を回転させます
++  let rotatedPosition = vec2f(
++    vert.position.x * uni.rotation.x - vert.position.y * uni.rotation.y,
++    vert.position.x * uni.rotation.y + vert.position.y * uni.rotation.x
++  );
+
+  // 平行移動を追加します
+-  let position = vert.position + uni.translation;
++  let position = rotatedPosition + uni.translation;
+
+  // 位置をピクセルから0.0から1.0の値に変換します
+  let zeroToOne = position / uni.resolution;
+
+  // 0 &lt;-&gt; 1から0 &lt;-&gt; 2に変換します
+  let zeroToTwo = zeroToOne * 2.0;
+
+  // 0 &lt;-&gt; 2から-1 &lt;-&gt; +1（クリップ空間）に変換します
+  let flippedClipSpace = zeroToTwo - 1.0;
+
+  // Yを反転させます
+  let clipSpace = flippedClipSpace * vec2f(1, -1);
+
+  vsOut.position = vec4f(clipSpace, 0.0, 1.0);
+  return vsOut;
+}
+</pre>
+<p>そして、新しいユニフォーム値のためのスペースを追加するようにJavaScriptを更新します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  // 色、解像度、平行移動
+-  const uniformBufferSize = (4 + 2 + 2) * 4;
++  // 色、解像度、平行移動、回転、パディング
++  const uniformBufferSize = (4 + 2 + 2 + 2) * 4 + 8;
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSize,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+  // float32インデックスでのさまざまなユニフォーム値へのオフセット
+  const kColorOffset = 0;
+  const kResolutionOffset = 4;
+  const kTranslationOffset = 6;
++  const kRotationOffset = 8;
+
+  const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+  const resolutionValue = uniformValues.subarray(kResolutionOffset, kResolutionOffset + 2);
+  const translationValue = uniformValues.subarray(kTranslationOffset, kTranslationOffset + 2);
++  const rotationValue = uniformValues.subarray(kRotationOffset, kRotationOffset + 2);
+</pre>
+<p>そして、何らかのUIが必要です。これはUIを作成するためのチュートリアルではないので、1つだけ使用します。まず、それを配置するためのHTMLです。</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">  &lt;body&gt;
+    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;div id="circle"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+</pre>
+<p>次に、どこかに配置するためのCSSです。</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">#circle {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: var(--bg-color);
+}
+</pre>
+<p>そして最後に、それを使用するためのJavaScriptです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+import UnitCircle from './resources/js/unit-circle.js';
+
+...
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings.translation, '0', 0, 1000).name('translation.x');
+  gui.add(settings.translation, '1', 0, 1000).name('translation.y');
+
++  const unitCircle = new UnitCircle();
++  document.querySelector('#circle').appendChild(unitCircle.domElement);
++  unitCircle.onChange(render);
+
+  function render() {
+    ...
+
+    // JavaScript側のFloat32Arrayでユニフォーム値を設定します
+    resolutionValue.set([canvas.width, canvas.height]);
+    translationValue.set(settings.translation);
++    rotationValue.set([unitCircle.x, unitCircle.y]);
+
+    // ユニフォーム値をユニフォームバッファにアップロードします
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>そして、これが結果です。円のハンドルをドラッグして回転させるか、スライダーをドラッグして平行移動します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-rotation-via-unit-circle.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-rotation-via-unit-circle.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>なぜ機能するのでしょうか？まあ、数学を見てください。</p>
+<div class="webgpu_center">
+<pre class="webgpu_math">rotatedX = a_position.x * u_rotation.x - a_position.y * u_rotation.y;
+rotatedY = a_position.x * u_rotation.y + a_position.y * u_rotation.x;
+</pre>
+</div>
+<p>長方形があり、それを回転させたいとします。回転を開始する前は、右上隅は3.0、-9.0にあります。単位円上の点を3時から時計回りに30度の点を選択しましょう。</p>
+<div class="webgpu_center"><div data-diagram="static-circle-30" style="display: inline-block; width: 400px;"></div></div>
+<p>円上の位置はx = 0.87、y = 0.50です。</p>
+<div class="webgpu_center">
+<pre class="webgpu_math"> 3.0 * 0.87 - -9.0 * 0.50 =  7.1
+ 3.0 * 0.50 + -9.0 * 0.87 = -6.3
+</pre>
+</div>
+<p>それはまさに私たちが必要とする場所です。</p>
+<img src="../resources/rotation-drawing.svg" width="500" class="webgpu_center" style="width: 1000px">
+<p>時計回りに60度の場合も同じです。</p>
+<div class="webgpu_center"><div data-diagram="static-circle-60" style="display: inline-block; width: 400px;"></div></div>
+<p>円上の位置は0.87と0.50です。</p>
+<div class="webgpu_center">
+<pre class="webgpu_math"> 3.0 * 0.50 - -9.0 * 0.87 =  9.3
+ 3.0 * 0.87 + -9.0 * 0.50 = -1.9
+</pre>
+</div>
+<p>その点を時計回りに回転させると、X値が大きくなり、Yが小さくなることがわかります。90度を超えて進み続けると、Xは再び小さくなり始め、Yは大きくなり始めます。そのパターンが回転を与えます。</p>
+<p>単位円上の点には別の名前があります。それらはサインとコサインと呼ばれます。したがって、任意の角度に対して、次のようにサインとコサインを検索するだけです。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">function printSineAndCosineForAnAngle(angleInDegrees) {
+  const angleInRadians = angleInDegrees * Math.PI / 180;
+  const s = Math.sin(angleInRadians);
+  const c = Math.cos(angleInRadians);
+  console.log('s =', s, 'c =', c);
+}
+</pre>
+<p>JavaScriptコンソールにコードをコピーして貼り付け、<code class="notranslate" translate="no">printSineAndCosignForAngle(30)</code>と入力すると、<code class="notranslate" translate="no">s = 0.50 c = 0.87</code>と表示されます（注：数値を丸めました）。</p>
+<p>すべてをまとめると、頂点位置を好きな角度に回転させることができます。回転を、回転させたい角度のサインとコサインに設定するだけです。</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">  ...
+  const angleInRadians = angleInDegrees * Math.PI / 180;
+  rotation[0] = Math.cos(angleInRadians);
+  rotation[1] = Math.sin(angleInRadians);
+</pre>
+<p>回転設定のみを持つように変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const degToRad = d =&gt; d * Math.PI / 180;
+
+  const settings = {
+    translation: [150, 100],
++    rotation: degToRad(30),
+  };
+
+  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
+
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings.translation, '0', 0, 1000).name('translation.x');
+  gui.add(settings.translation, '1', 0, 1000).name('translation.y');
++  gui.add(settings, 'rotation', radToDegOptions);
+
+-  const unitCircle = new UnitCircle();
+-  document.querySelector('#circle').appendChild(unitCircle.domElement);
+-  unitCircle.onChange(render);
+
+  function render() {
+    ...
+
+    // JavaScript側のFloat32Arrayでユニフォーム値を設定します
+    resolutionValue.set([canvas.width, canvas.height]);
+    translationValue.set(settings.translation);
+-    rotationValue.set([unitCircle.x, unitCircle.y]);
++    rotationValue.set([
++        Math.cos(settings.rotation),
++        Math.sin(settings.rotation),
++    ]);
+</pre>
+<p>スライダーをドラッグして平行移動または回転します。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-rotation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-rotation.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>これが少しでも意味をなしたことを願っています。<a href="webgpu-scale.html">次はもっと簡単なものです。スケール</a>です。</p>
+<div class="webgpu_bottombar"><h3>ラジアンとは何ですか？</h3>
+<p>
+ラジアンは、円、回転、角度で使用される測定単位です。距離をインチ、ヤード、メートルなどで測定できるように、角度を度またはラジアンで測定できます。
+</p>
+<p>
+メートル法での数学は、ヤード・ポンド法での数学よりも簡単であることはご存知でしょう。インチからフィートに変換するには、12で割ります。インチからヤードに変換するには、36で割ります。私は頭の中で36で割ることはできません。メートル法でははるかに簡単です。ミリメートルからセンチメートルに変換するには、10で割ります。ミリメートルからメートルに変換するには、1000で割ります。私は頭の中で1000で割る**こと**ができます。
+</p>
+<p>
+ラジアンと度は似ています。度は数学を難しくします。ラジアンは数学を簡単にします。円には360度ありますが、2πラジアンしかありません。したがって、1回転は2πラジアンです。半回転は1πラジアンです。1/4回転、つまり90度は1/2πラジアンです。したがって、何かを90度回転させたい場合は、`Math.PI * 0.5`を使用するだけです。45度回転させたい場合は、`Math.PI * 0.25`などを使用します。
+</p>
+<p>
+角度、円、または回転を含むほとんどすべての数学は、ラジアンで考え始めると非常に単純に機能します。だから試してみてください。UI表示を除いて、度ではなくラジアンを使用してください。
+</p>
+</div>
+<!-- この記事の最後にこれを保持してください -->
+<script type="module" src="../webgpu-rotation.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>この単位円は、ピクセル空間に合わせて+Yが下になっています。これもYが下です。WebGPUの通常のクリップ空間は+Yが上です。前の記事で説明したように、シェーダーでYを反転させました。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +487,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +576,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 回転`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

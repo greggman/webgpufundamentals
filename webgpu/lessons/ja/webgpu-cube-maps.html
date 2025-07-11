@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-cube-maps.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Cubemaps">
+
+<meta name="description" content="WebGPUでキューブマップを使用する方法">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-cube-maps_ja.jpg">
+
+<meta property="og:title" content="WebGPU キューブマップ">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use cubemaps in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-cube-maps_ja.jpg">
+<meta property="og:description" content="WebGPUでキューブマップを使用する方法">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-cube-maps.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Cubemaps">
+<meta name="twitter:title" content="WebGPU キューブマップ">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-cube-maps.html">
-<meta name="twitter:description" content="How to use cubemaps in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPUでキューブマップを使用する方法">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-cube-maps_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-cube-maps.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-cube-maps_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-cube-maps.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-cube-maps.html",
+      "inLanguage":"ja",
+      "name":"WebGPU キューブマップ",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-cube-maps.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Cubemaps</title>
+<title>WebGPU キューブマップ</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,419 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Cubemaps</h1>
+    <h1>WebGPU キューブマップ</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-cube-maps.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、<a href="webgpu-textures.html">テクスチャに関する記事</a>と<a href="webgpu-importing-textures.html">テクスチャへの画像のインポートに関する記事</a>を読んでいることを前提としています。この記事では、<a href="webgpu-lighting-directional.html">指向性ライティングに関する記事</a>で説明されている概念も使用します。これらの記事をまだ読んでいない場合は、最初に読むことをお勧めします。</p>
+<p><a href="webgpu-textures.html">前の記事</a>では、テクスチャの使用方法、テクスチャ全体で0から1までのテクスチャ座標で参照される方法、およびオプションでミップを使用してフィルタリングされる方法について説明しました。</p>
+<p>別の種類のテクスチャは<em>キューブマップ</em>です。キューブマップは、キューブの6つの面を表す6つの面で構成されます。2次元の従来のテクスチャ座標の代わりに、キューブマップは法線、つまり3D方向を使用します。法線が指す方向に応じて、キューブの6つの面の1つが選択され、その面内のピクセルがサンプリングされて色が生成されます。</p>
+<p>簡単な例を作成しましょう。2Dキャンバスを使用して、6つの各面で使用される画像を作成します。</p>
+<p>これは、キャンバスを色と中央揃えのメッセージで塗りつぶすコードです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function generateFace(size, {faceColor, textColor, text}) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = faceColor;
+  ctx.fillRect(0, 0, size, size);
+  ctx.font = `${size * 0.7}px sans-serif`;
+  ctx.fillStyle = textColor;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  const m = ctx.measureText(text);
+  ctx.fillText(
+    text,
+    (size - m.actualBoundingBoxRight + m.actualBoundingBoxLeft) / 2,
+    (size - m.actualBoundingBoxDescent + m.actualBoundingBoxAscent) / 2
+  );
+  return canvas;
+}
+</pre>
+<p>そして、これを呼び出して6つの画像を生成するコードは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const faceSize = 128;
+const faceCanvases = [
+  { faceColor: '#F00', textColor: '#0FF', text: '+X' },
+  { faceColor: '#FF0', textColor: '#00F', text: '-X' },
+  { faceColor: '#0F0', textColor: '#F0F', text: '+Y' },
+  { faceColor: '#0FF', textColor: '#F00', text: '-Y' },
+  { faceColor: '#00F', textColor: '#FF0', text: '+Z' },
+  { faceColor: '#F0F', textColor: '#0F0', text: '-Z' },
+].map(faceInfo =&gt; generateFace(faceSize, faceInfo));
+
+// 結果を表示します
+for (const canvas of faceCanvases) {
+  document.body.appendChild(canvas);
+}
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-cube-faces.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-cube-faces.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>次に、キューブマップを使用してそれらをキューブに適用しましょう。<a href="../webgpu-importing-textures.html#a-texture-atlases">テクスチャへの画像のインポートに関する記事</a>のテクスチャアトラスの例のコードから始めます。</p>
+<p>まず、キューブマップを使用するようにシェーダーを変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+-  @location(1) texcoord: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+-  @location(0) texcoord: vec2f,
++  @location(0) normal: vec3f,
+};
+
+...
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = uni.matrix * vert.position;
+-  vsOut.texcoord = vert.texcoord;
++  vsOut.normal = normalize(vert.position.xyz);
+  return vsOut;
+}
+</pre>
+<p>シェーダーからテクスチャ座標を削除し、ステージ間変数を変更して法線をフラグメントシェーダーに渡すようにしました。キューブの位置は原点を中心に完全に中央揃えされているため、法線として使用できます。</p>
+<p><a href="webgpu-lighting-directional.html">ライティングに関する記事</a>から、法線は方向であり、通常、ある頂点のサーフェスの方向を指定するために使用されることを思い出してください。法線に正規化された位置を使用しているため、これを照らすと、キューブ全体で滑らかなライティングが得られます。</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram " style="width: 700px; height: 400px;" src="/webgpu/lessons/resources/cube-normals.html"></iframe>
+  <div class="webgpu_center">標準のキューブ法線とこのキューブの法線</div>
+</div>
+
+<p></p>
+<p>テクスチャ座標を使用していないため、テクスチャ座標の設定に関連するすべてのコードを削除できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const vertexData = new Float32Array([
+-     // 前面     左上の画像を選択
+-    -1,  1,  1,        0   , 0  ,
+-    -1, -1,  1,        0   , 0.5,
+-     1,  1,  1,        0.25, 0  ,
+-     1, -1,  1,        0.25, 0.5,
+-     // 右面     中央上の画像を選択
+-     1,  1, -1,        0.25, 0  ,
+-     1,  1,  1,        0.5 , 0  ,
+-     1, -1, -1,        0.25, 0.5,
+-     1, -1,  1,        0.5 , 0.5,
+-     // 背面      右上の画像を選択
+-     1,  1, -1,        0.5 , 0  ,
+-     1, -1, -1,        0.5 , 0.5,
+-    -1,  1, -1,        0.75, 0  ,
+-    -1, -1, -1,        0.75, 0.5,
+-    // 左面       左下の画像を選択
+-    -1,  1,  1,        0   , 0.5,
+-    -1,  1, -1,        0.25, 0.5,
+-    -1, -1,  1,        0   , 1  ,
+-    -1, -1, -1,        0.25, 1  ,
+-    // 底面     中央下の画像を選択
+-     1, -1,  1,        0.25, 0.5,
+-    -1, -1,  1,        0.5 , 0.5,
+-     1, -1, -1,        0.25, 1  ,
+-    -1, -1, -1,        0.5 , 1  ,
+-    // 上面        右下の画像を選択
+-    -1,  1,  1,        0.5 , 0.5,
+-     1,  1,  1,        0.75, 0.5,
+-    -1,  1, -1,        0.5 , 1  ,
+-     1,  1, -1,        0.75, 1  ,
++     // 前面
++    -1,  1,  1,
++    -1, -1,  1,
++     1,  1,  1,
++     1, -1,  1,
++     // 右面
++     1,  1, -1,
++     1,  1,  1,
++     1, -1, -1,
++     1, -1,  1,
++     // 背面
++     1,  1, -1,
++     1, -1, -1,
++    -1,  1, -1,
++    -1, -1, -1,
++    // 左面
++    -1,  1,  1,
++    -1,  1, -1,
++    -1, -1,  1,
++    -1, -1, -1,
++    // 底面
++     1, -1,  1,
++    -1, -1,  1,
++     1, -1, -1,
++    -1, -1, -1,
++    // 上面
++    -1,  1,  1,
++     1,  1,  1,
++    -1,  1, -1,
++     1,  1, -1,
+  ]);
+
+  ...
+
+  const pipeline = device.createRenderPipeline({
+    label: '2 attributes',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: (3 + 2) * 4, // (3+2) floats 4 bytes each
++          arrayStride: (3) * 4, // (3) floats 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
+-            {shaderLocation: 1, offset: 12, format: 'float32x2'},  // texcoord
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+    primitive: {
+      cullMode: 'back',
+    },
+    depthStencil: {
+      depthWriteEnabled: true,
+      depthCompare: 'less',
+      format: 'depth24plus',
+    },
+  });
+</pre>
+<p>フラグメントシェーダーでは、<code class="notranslate" translate="no">texture_2d</code>の代わりに<code class="notranslate" translate="no">texture_cube</code>を使用する必要があり、<code class="notranslate" translate="no">textureSample</code>は<code class="notranslate" translate="no">texture_cube</code>で使用すると<code class="notranslate" translate="no">vec3f</code>方向を取るため、法線を渡します。法線はステージ間変数であり、補間されるため、正規化する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+@group(0) @binding(1) var ourSampler: sampler;
+-@group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
++@group(0) @binding(2) var ourTexture: texture_cube&lt;f32&gt;;
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+-  return textureSample(ourTexture, ourSampler, vsOut.texcoord);
++  return textureSample(ourTexture, ourSampler, normalize(vsOut.normal));
+}
+</pre>
+<p>実際にキューブマップを作成するには、6つのレイヤーを持つ2Dテクスチャを作成します。すべてのヘルパーを変更して、複数のソースを処理できるようにしましょう。</p>
+<h2 id="テクスチャヘルパーを複数のレイヤーを処理するようにする"><a id="a-texture-helpers"></a>テクスチャヘルパーを複数のレイヤーを処理するようにする</h2>
+<p>まず、<code class="notranslate" translate="no">createTextureFromSource</code>を取得し、ソースの配列を受け取る<code class="notranslate" translate="no">createTextureFromSources</code>に変更しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function createTextureFromSource(device, source, options = {}) {
++  function createTextureFromSources(device, sources, options = {}) {
++    // すべてのソースが同じサイズであると仮定し、幅と高さには最初のソースのみを使用します
++    const source = sources[0];
+    const texture = device.createTexture({
+      format: 'rgba8unorm',
+      mipLevelCount: options.mips ? numMipLevels(source.width, source.height) : 1,
+-      size: [source.width, source.height],
++      size: [source.width, source.height, sources.length],
+      usage: GPUTextureUsage.TEXTURE_BINDING |
+             GPUTextureUsage.COPY_DST |
+             GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+-    copySourceToTexture(device, texture, source, options);
++    copySourcesToTexture(device, texture, sources, options);
+    return texture;
+  }
+</pre>
+<p>上記のコードは、各ソースに1つずつ、複数のレイヤーを持つテクスチャを作成します。また、すべてのソースが同じサイズであると想定しています。同じテクスチャのレイヤーに対してサイズが異なることは非常にまれであるため、これは良い賭けのようです。</p>
+<p>次に、複数のソースを処理するように<code class="notranslate" translate="no">copySourceToTexture</code>を更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function copySourceToTexture(device, texture, source, {flipY} = {}) {
++  function copySourcesToTexture(device, texture, sources, {flipY} = {}) {
++    sources.forEach((source, layer) =&gt; {
+*      device.queue.copyExternalImageToTexture(
+*        { source, flipY, },
+-        { texture },
++        { texture, origin: [0, 0, layer] },
+*        { width: source.width, height: source.height },
+*      );
++  });
+
+    if (texture.mipLevelCount &gt; 1) {
+      generateMips(device, texture);
+    }
+  }
+</pre>
+<p>上記では、唯一の大きな違いは、ソースをループするループを追加し、各ソースをそれぞれのレイヤーにコピーするように、テクスチャ内のコピー先として<code class="notranslate" translate="no">origin</code>を設定したことです。</p>
+<p>次に、複数のソースを処理するように<code class="notranslate" translate="no">generateMips</code>を更新する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
+    let sampler;
+    let module;
+    const pipelineByFormat = {};
+
+    return function generateMips(device, texture) {
+      if (!module) {
+        module = device.createShaderModule({
+          label: 'textured quad shaders for mip level generation',
+          code: `
+            struct VSOutput {
+              @builtin(position) position: vec4f,
+              @location(0) texcoord: vec2f,
+            };
+
+            @vertex fn vs(
+              @builtin(vertex_index) vertexIndex : u32
+            ) -&gt; VSOutput {
+              let pos = array(
+                // 1番目の三角形
+                vec2f( 0.0,  0.0),  // 中央
+                vec2f( 1.0,  0.0),  // 右、中央
+                vec2f( 0.0,  1.0),  // 中央、上
+
+                // 2番目の三角形
+                vec2f( 0.0,  1.0),  // 中央、上
+                vec2f( 1.0,  0.0),  // 右、中央
+                vec2f( 1.0,  1.0),  // 右、上
+              );
+
+              var vsOutput: VSOutput;
+              let xy = pos[vertexIndex];
+              vsOutput.position = vec4f(xy * 2.0 - 1.0, 0.0, 1.0);
+              vsOutput.texcoord = vec2f(xy.x, 1.0 - xy.y);
+              return vsOutput;
+            }
+
+            @group(0) @binding(0) var ourSampler: sampler;
+            @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+            @fragment fn fs(fsInput: VSOutput) -&gt; @location(0) vec4f {
+              return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+            }
+          `,
+        });
+
+        sampler = device.createSampler({
+          minFilter: 'linear',
+          magFilter: 'linear',
+        });
+      }
+
+      if (!pipelineByFormat[texture.format]) {
+        pipelineByFormat[texture.format] = device.createRenderPipeline({
+          label: 'mip level generator pipeline',
+          layout: 'auto',
+          vertex: {
+            module,
+          },
+          fragment: {
+            module,
+            targets: [{ format: texture.format }],
+          },
+        });
+      }
+      const pipeline = pipelineByFormat[texture.format];
+
+      const encoder = device.createCommandEncoder({
+        label: 'mip gen encoder',
+      });
+
+      for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
++        for (let layer = 0; layer &lt; texture.depthOrArrayLayers; ++layer) {
+*          const bindGroup = device.createBindGroup({
+*            layout: pipeline.getBindGroupLayout(0),
+*            entries: [
+*              { binding: 0, resource: sampler },
+-              { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
++              {
++                binding: 1,
++                resource: texture.createView({
++                  dimension: '2d',
++                  baseMipLevel: baseMipLevel - 1,
++                  mipLevelCount: 1,
++                  baseArrayLayer: layer,
++                  arrayLayerCount: 1,
++                }),
+*              },
+*            ],
+*          });
+*
+*          const renderPassDescriptor = {
+*            label: 'our basic canvas renderPass',
+*            colorAttachments: [
+*              {
+-                view: texture.createView({baseMipLevel, mipLevelCount: 1}),
++                view: texture.createView({
++                  dimension: '2d',
++                  baseMipLevel: baseMipLevel,
++                  mipLevelCount: 1,
++                  baseArrayLayer: layer,
++                  arrayLayerCount: 1,
++                }),
+*                loadOp: 'clear',
+*                storeOp: 'store',
+*              },
+*            ],
+*          };
+*
+*          const pass = encoder.beginRenderPass(renderPassDescriptor);
+*          pass.setPipeline(pipeline);
+*          pass.setBindGroup(0, bindGroup);
+*          pass.draw(6);  // call our vertex shader 6 times
+*          pass.end();
++        }
++      }
+
+      const commandBuffer = encoder.finish();
+      device.queue.submit([commandBuffer]);
+    };
+  })();
+</pre>
+<p>テクスチャの各レイヤーを処理するループを追加しました。ビューを変更して、単一のレイヤーを選択するようにしました。また、ビューに<code class="notranslate" translate="no">dimension: '2d'</code>を明示的に選択する必要がありました。なぜなら、デフォルトでは、1つ以上のレイヤーを持つ2Dテクスチャのビューは<code class="notranslate" translate="no">dimension: '2d-array'</code>を取得し、ミップマップを生成する目的では、これは望ましくないからです。</p>
+<blockquote>
+<p>注：<a href="webgpu-compatibility-mode.html">互換モードに関する記事</a>では、互換モードで動作する<code class="notranslate" translate="no">generateMips</code>のバージョンを提供しています。</p>
+</blockquote>
+<p>ここでは使用しませんが、元の<code class="notranslate" translate="no">createTextureFromSource</code>および<code class="notranslate" translate="no">copySourceToTexture</code>関数は、次のように簡単に置き換えることができます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function copySourceToTexture(device, texture, source, options = {}) {
+    copySourcesToTexture(device, texture, [source], options);
+  }
+
+  function createTextureFromSource(device, source, options = {}) {
+    return createTextureFromSources(device, [source], options);
+  }
+</pre>
+<p>これらが準備できたので、記事の冒頭で作成した面を使用できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = await createTextureFromSources(
+      device, faceCanvases, {mips: true, flipY: false});
+</pre>
+<p>残っているのは、バインドグループでテクスチャのビューを変更することだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    label: 'bind group for object',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+      { binding: 1, resource: sampler },
+-      { binding: 2, resource: texture.createView() },
++      { binding: 2, resource: texture.createView({dimension: 'cube'}) },
+    ],
+  });
+</pre>
+<p>そして、出来上がりです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-cube-map.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-cube-map.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>テクスチャのレイヤーとしての面の順序に注意してください。</p>
+<ul>
+<li>レイヤー0 =&gt; 正のx</li>
+<li>レイヤー1 =&gt; 負のx</li>
+<li>レイヤー2 =&gt; 正のy</li>
+<li>レイヤー3 =&gt; 負のy</li>
+<li>レイヤー4 =&gt; 正のz</li>
+<li>レイヤー5 =&gt; 負のz</li>
+</ul>
+<p>これを考える別の方法は、<code class="notranslate" translate="no">textureSample</code>を呼び出して対応する方向を渡すと、テクスチャのそのレイヤーの中心ピクセルの色が返されるということです。</p>
+<ul>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 1, 0, 0))</code> =&gt; レイヤー0の中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f(-1, 0, 0))</code> =&gt; レイヤー1の中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0, 1, 0))</code> =&gt; レイヤー2の中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0,-1, 0))</code> =&gt; レイヤー3の中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0, 0, 1))</code> =&gt; レイヤー4の中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0, 0,-1))</code> =&gt; レイヤー5の中心</li>
+</ul>
+<p>キューブをテクスチャリングするためにキューブマップを使用することは、通常、キューブマップが使用される目的では<strong>ありません</strong>。キューブをテクスチャリングする<em>正しい</em>、またはむしろ標準的な方法は、<a href="../webgpu-importing-textures.html#a-texture-atlases">前に述べた</a>ようにテクスチャアトラスを使用することです。この記事のポイントは、キューブマップの概念を紹介し、方向（法線）を渡すと、その方向のキューブの色が返されることを示すことでした。</p>
+<p>キューブマップとは何か、そしてそれを設定する方法を学んだので、キューブマップは何に使用されるのでしょうか？おそらく、キューブマップが最も一般的に使用されるのは、<a href="webgpu-environment-maps.html"><em>環境マップ</em></a>としてです。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +655,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +744,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU キューブマップ`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

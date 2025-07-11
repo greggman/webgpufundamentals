@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/ja/webgpu-compute-shaders-histogram.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Compute Shaders - Image Histogram">
+
+<meta name="description" content="画像ヒストグラムを効率的に計算する。">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram_ja.jpg">
+
+<meta property="og:title" content="WebGPU コンピュートシェーダー - 画像ヒストグラム">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Efficiently compute an image histogram.">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram_ja.jpg">
+<meta property="og:description" content="画像ヒストグラムを効率的に計算する。">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Compute Shaders - Image Histogram">
+<meta name="twitter:title" content="WebGPU コンピュートシェーダー - 画像ヒストグラム">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">
-<meta name="twitter:description" content="Efficiently compute an image histogram.">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="画像ヒストグラムを効率的に計算する。">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram_ja.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram_ja.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html",
+      "inLanguage":"ja",
+      "name":"WebGPU コンピュートシェーダー - 画像ヒストグラム",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Compute Shaders - Image Histogram</title>
+<title>WebGPU コンピュートシェーダー - 画像ヒストグラム</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,12 +227,976 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Compute Shaders - Image Histogram</h1>
+    <h1>WebGPU コンピュートシェーダー - 画像ヒストグラム</h1>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>ごめん！この記事はまだ翻訳されていない。<a href="https://github.com/webgpu/webgpufundamentals">翻訳してくれますか？</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-compute-shaders-histogram.html">ここに英語版がある</a>.</p>
+      <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
+<p>この記事は、<a href="webgpu-compute-shaders.html">コンピュートシェーダーの基本に関する記事</a>の続きです。</p>
+<p>これは2部構成の長い記事になり、物事を最適化するために多くのステップを踏みます。この最適化により物事は高速になりますが、残念ながら出力は結果を変更しないため、各ステップは前のステップと同じように見えます。</p>
+<p>さらに、速度とタイミングについて言及しますが、タイミングを行うためのコードを追加すると、記事と例がさらに長くなるため、タイミングについては<a href="webgpu-timing.html">別の記事</a>に譲り、これらの記事では、私自身のタイミングについて言及し、実行可能な例をいくつか提供します。この記事がコンピュートシェーダーを作成する1つの例になることを願っています。</p>
+<p>画像ヒストグラムとは、画像内のすべてのピクセルをその値またはその値の何らかの尺度で合計するものです。</p>
+<p>たとえば、この6x7の画像です。</p>
+<div class="webgpu_center">
+  <div>
+    <div data-diagram="image" style="display: inline-block; width: 240px; max-width: 100%;"></div>
+    <div style="text-align: center;">6x7</div>
+  </div>
+</div>
+<p>これらの色があります。</p>
+<div class="webgpu_center">
+  <div>
+    <div data-diagram="colors" style="display: inline-block; width: 240px; max-width: 100%;"></div>
+  </div>
+</div>
+<p>各色について、輝度レベル（どれだけ明るいか）を計算できます。オンラインで調べたところ、この式が見つかりました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 輝度に対して0から1の値を返します。
+// ここで、r、g、bはそれぞれ0から1の範囲です。
+function srgbLuminance(r, g, b) {
+  // from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+  return r * 0.2126 +
+         g * 0.7152 +
+         b * 0.0722;
+}
+</pre>
+<p>これを使用して、各値を輝度レベルに変換できます。</p>
+<div class="webgpu_center">
+  <div>
+    <div data-diagram="luminance" style="display: inline-block; width: 240px; max-width: 100%;"></div>
+  </div>
+</div>
+<p>「ビン」の数を決めることができます。3つのビンに決めましょう。次に、それらの輝度値を量子化して「ビン」を選択し、各ビンに収まるピクセルの数を合計できます。</p>
+<div class="webgpu_center">
+  <div>
+    <div data-diagram="imageHistogram" style="display: inline-block; width: 40px; max-width: 100%;"></div>
+  </div>
+</div>
+<p>最後に、それらのビンの値をグラフ化できます。</p>
+<div class="webgpu_center">
+  <div>
+    <div data-diagram="imageHistogramGraph" style="display: inline-block; width: 96px; max-width: 100%;"></div>
+  </div>
+</div>
+<p>グラフは、中程度の明るさのピクセル（🟥 16）よりも暗いピクセル（🟦 18）が多く、明るいピクセル（🟨 8）はさらに少ないことを示しています。これは3つのビンだけではそれほど面白くありません。しかし、このような写真を撮ると</p>
+<div class="webgpu_center">
+  <div>
+    <div><img src="../../resources/images/pexels-francesco-ungaro-96938-mid.jpg" style="width: 700px;"></div>
+    <div style="text-align: center;"><a href="https://www.pexels.com/photo/cute-kitten-hiding-behind-a-pillow-96938/">写真提供：Francesco Ungaro</a></div>
+  </div>
+</div>
+<p>ピクセルの輝度値を数え上げ、たとえば256個のビンに分け、グラフ化すると、このようになります。</p>
+<div class="webgpu_center center">
+  <div>
+    <div><img src="../resources/histogram-luminosity-photoshop.png" style="width: 237px;" class="nobg"></div>
+  </div>
+</div>
+<p>画像ヒストグラムの計算は非常に簡単です。まずJavaScriptでやってみましょう。</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData"><code class="notranslate" translate="no">ImageData</code></a>オブジェクトが与えられた場合に、ヒストグラムを生成する関数を作成しましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function computeHistogram(numBins, imgData) {
+  const {width, height, data} = imgData;
+  const bins = new Array(numBins).fill(0);
+  for (let y = 0; y &lt; height; ++y) {
+    for (let x = 0; x &lt; width; ++x) {
+      const offset = (y * width + x) * 4;
+
+      const r = data[offset + 0] / 255;
+      const g = data[offset + 1] / 255;
+      const b = data[offset + 2] / 255;
+      const v = srgbLuminance(r, g, b);
+
+      const bin = Math.min(numBins - 1, v * numBins) | 0;
+      ++bins[bin];
+    }
+  }
+  return histogram;
+}
+</pre>
+<p>上記のように、各ピクセルをウォークスルーします。画像からr、g、bを抽出します。輝度値を計算します。それをビンインデックスに変換し、そのビンのカウントをインクリメントします。</p>
+<p>そのデータが得られたら、グラフ化できます。メインのグラフ関数は、各ビンに対して何らかのスケールとキャンバスの高さで乗算された線を描画するだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ctx.fillStyle = '#fff';
+
+  for (let x = 0; x &lt; numBins; ++x) {
+    const v = histogram[x] * scale * height;
+    ctx.fillRect(x, height - v, 1, v);
+  }
+</pre>
+<p>スケールを決定するのは個人的な選択のようです。スケールを選択するための良い公式を知っている場合は、コメントを残してください。😅 ネットで調べたところ、スケールについてこの公式を思いつきました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numBins = histogram.length;
+  const max = Math.max(...histogram);
+  const scale = Math.max(1 / max, 0.2 * numBins / numEntries);
+</pre>
+<p>ここで、<code class="notranslate" translate="no">numEntries</code>は画像内のピクセルの総数（つまり、幅*高さ）であり、基本的には、最も値の多いビンがグラフの上部に触れるようにスケーリングしようとしていますが、そのビンが大きすぎる場合は、見栄えの良いグラフを生成するように見える比率があります。</p>
+<p>すべてをまとめると、2Dキャンバスを作成して描画します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function drawHistogram(histogram, numEntries, height = 100) {
+  const numBins = histogram.length;
+  const max = Math.max(...histogram);
+  const scale = Math.max(1 / max, 0.2 * numBins / numEntries);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = numBins;
+  canvas.height = height;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#fff';
+
+  for (let x = 0; x &lt; numBins; ++x) {
+    const v = histogram[x] * scale * height;
+    ctx.fillRect(x, height - v, 1, v);
+  }
+}
+</pre>
+<p>次に、画像を読み込む必要があります。<a href="webgpu-importing-textures.html">画像の読み込みに関する記事</a>で書いたコードを使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg');
+</pre>
+<p>画像からデータを取得する必要があります。そのためには、画像を2Dキャンバスに描画し、<code class="notranslate" translate="no">getImageData</code>を使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function getImageData(img) {
+  const canvas = document.createElement('canvas');
+
+  // キャンバスを画像と同じサイズにします
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  return ctx.getImageData(0, 0, canvas.width, canvas.height);
+}
+</pre>
+<p>また、<a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>を表示する関数も作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function showImageBitmap(imageBitmap) {
+  const canvas = document.createElement('canvas');
+  canvas.width = imageBitmap.width;
+  canvas.height = imageBitmap.height;
+
+  const bm = canvas.getContext('bitmaprenderer');
+  bm.transferFromImageBitmap(imageBitmap);
+  document.body.appendChild(canvas);
+}
+</pre>
+<p>画像が大きすぎないようにCSSを追加し、背景色を指定して描画する必要がないようにしましょう。</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">canvas {
+  display: block;
+  max-width: 256px;
+  border: 1px solid #888;
+  background-color: #333;
+}
+</pre>
+<p>そして、上記で書いた関数を呼び出すだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg');
+
+  const imgData = getImageData(imgBitmap);
+  const numBins = 256;
+  const histogram = computeHistogram(numBins, imgData);
+
+  showImageBitmap(imgBitmap);
+
+  const numEntries = imgData.width * imgData.height;
+  drawHistogram(histogram, numEntries);
+}
+</pre>
+<p>そして、これが画像ヒストグラムです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-javascript.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-javascript.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>JavaScriptコードが何をしているのか、簡単に理解できたことを願っています。WebGPUに変換しましょう！</p>
+<h1 id="gpuでヒストグラムを計算する"><a id="a-comptuing-a-histogram"></a>GPUでヒストグラムを計算する</h1>
+<p>最も明白な解決策から始めましょう。JavaScriptの<code class="notranslate" translate="no">computeHistogram</code>関数をWGSLに直接変換します。</p>
+<p>輝度関数は非常に簡単です。もう一度JavaScriptを示します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 輝度に対して0から1の値を返します。
+// ここで、r、g、bはそれぞれ0から1の範囲です。
+function srgbLuminance(r, g, b) {
+  // from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+  return r * 0.2126 +
+         g * 0.7152 +
+         b * 0.0722;
+}
+</pre>
+<p>そして、これが対応するWGSLです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">// from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+</pre>
+<p><code class="notranslate" translate="no">dot</code>関数は「ドット積」の略で、1つのベクトルの各要素を別のベクトルの対応する要素で乗算し、その結果を加算します。上記のような<code class="notranslate" translate="no">vec3f</code>の場合、次のように定義できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn dot(a: vec3f, b: vec3f) -&gt; f32 {
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+</pre>
+<p>これはJavaScriptにあったものです。主な違いは、WGSLでは個々のチャンネルではなく、色を<code class="notranslate" translate="no">vec3f</code>として渡すことです。</p>
+<p>ヒストグラムを計算する主要部分については、もう一度JavaScriptを示します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function computeHistogram(numBins, imgData) {
+  const {width, height, data} = imgData;
+  const bins = new Array(numBins).fill(0);
+  for (let y = 0; y &lt; height; ++y) {
+    for (let x = 0; x &lt; width; ++x) {
+      const offset = (y * width + x) * 4;
+
+      const r = data[offset + 0] / 255;
+      const g = data[offset + 1] / 255;
+      const b = data[offset + 2] / 255;
+      const v = srgbLuminance(r, g, b);
+
+      const bin = Math.min(numBins - 1, v * numBins) | 0;
+      ++bins[bin];
+    }
+  }
+  return bins;
+}
+</pre>
+<p>これが対応するWGSLです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;u32&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+// from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(1) fn cs() {
+  let size = textureDimensions(ourTexture, 0);
+  let numBins = f32(arrayLength(&amp;bins));
+  let lastBinIndex = u32(numBins - 1);
+  for (var y = 0u; y &lt; size.y; y++) {
+    for (var x = 0u; x &lt; size.x; x++) {
+      let position = vec2u(x, y);
+      let color = textureLoad(ourTexture, position, 0);
+      let v = srgbLuminance(color.rgb);
+      let bin = min(u32(v * numBins), lastBinIndex);
+      bins[bin] += 1;
+    }
+  }
+}
+</pre>
+<p>上記では、あまり変更はありません。JavaScriptでは、<code class="notranslate" translate="no">imgData</code>からデータ、幅、高さを取得します。WGSLでは、<code class="notranslate" translate="no">textureDimensions</code>関数に渡すことで、テクスチャから幅と高さを取得します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let size = textureDimensions(ourTexture, 0);
+</pre>
+<p><code class="notranslate" translate="no">textureDimensions</code>は、テクスチャとミップレベル（上記の<code class="notranslate" translate="no">0</code>）を受け取り、そのテクスチャのミップレベルのサイズを返します。</p>
+<p>JavaScriptで行ったように、テクスチャのすべてのピクセルをループします。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  for (var y = 0u; y &lt; size.y; y++) {
+    for (var x = 0u; x &lt; size.x; x++) {
+</pre>
+<p><code class="notranslate" translate="no">textureLoad</code>を呼び出して、テクスチャから色を取得します。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      let position = vec2u(x, y);
+      let color = textureLoad(ourTexture, position, 0);
+</pre>
+<p><code class="notranslate" translate="no">textureLoad</code>は、テクスチャの単一のミップレベルから単一のテクセルを返します。テクスチャ、<code class="notranslate" translate="no">vec2u</code>テクセル位置、ミップレベル（<code class="notranslate" translate="no">0</code>）を受け取ります。</p>
+<p>輝度値を計算し、それをビンインデックスに変換して、そのビンをインクリメントします。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      let position = vec2u(x, y);
+      let color = textureLoad(ourTexture, position, 0);
++      let v = srgbLuminance(color.rgb);
++      let bin = min(u32(v * numBins), lastBinIndex);
++      bins[bin] += 1;
+</pre>
+<p>コンピュートシェーダーができたので、それを使用しましょう。</p>
+<p>かなり標準的な初期化コードがあります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('WebGPUをサポートするブラウザが必要です');
+    return;
+  }
+</pre>
+<p>次に、シェーダーを作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    label: 'histogram shader',
+    code: `
+      @group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;u32&gt;;
+      @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+      // from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+      const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+      fn srgbLuminance(color: vec3f) -&gt; f32 {
+        return saturate(dot(color, kSRGBLuminanceFactors));
+      }
+
+      @compute @workgroup_size(1) fn cs() {
+        let size = textureDimensions(ourTexture, 0);
+        let numBins = f32(arrayLength(&amp;bins));
+        let lastBinIndex = u32(numBins - 1);
+        for (var y = 0u; y &lt; size.y; y++) {
+          for (var x = 0u; x &lt; size.x; x++) {
+            let position = vec2u(x, y);
+            let color = textureLoad(ourTexture, position, 0);
+            let v = srgbLuminance(color.rgb);
+            let bin = min(u32(v * numBins), lastBinIndex);
+            bins[bin] += 1;
+          }
+        }
+      }
+    `,
+  });
+</pre>
+<p>シェーダーを実行するためのコンピュートパイプラインを作成します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createComputePipeline({
+    label: 'histogram',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+</pre>
+<p>画像を読み込んだ後、テクスチャを作成してデータをコピーする必要があります。<a href="../webgpu-importing-textures.html#a-create-texture-from-source">テクスチャへの画像の読み込みに関する記事</a>で書いた<code class="notranslate" translate="no">createTextureFromSource</code>関数を使用します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg');
+  const texture = createTextureFromSource(device, imgBitmap);
+</pre>
+<p>シェーダーが色の値を合計するためのストレージバッファを作成する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numBins = 256;
+  const histogramBuffer = device.createBuffer({
+    size: numBins * 4, // 256エントリ * 4バイト/u32
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+  });
+</pre>
+<p>そして、結果を取得して描画するためのバッファです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const resultBuffer = device.createBuffer({
+    size: histogramBuffer.size,
+    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+  });
+</pre>
+<p>テクスチャとヒストグラムバッファをパイプラインに渡すためのバインドグループが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    label: 'histogram bindGroup',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: histogramBuffer },
+      { binding: 1, resource: texture.createView() },
+    ],
+  });
+</pre>
+<p>コンピュートシェーダーを実行するコマンドを設定できるようになりました。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
+  const pass = encoder.beginComputePass();
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(1);
+  pass.end();
+</pre>
+<p>ヒストグラムバッファを結果バッファにコピーする必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
+  const pass = encoder.beginComputePass();
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(1);
+  pass.end();
+
++  encoder.copyBufferToBuffer(histogramBuffer, 0, resultBuffer, 0, resultBuffer.size);
+</pre>
+<p>そして、コマンドを実行します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
+  const pass = encoder.beginComputePass();
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(1);
+  pass.end();
+
+  encoder.copyBufferToBuffer(histogramBuffer, 0, resultBuffer, 0, resultBuffer.size);
+
++  const commandBuffer = encoder.finish();
++  device.queue.submit([commandBuffer]);
+</pre>
+<p>最後に、結果バッファからデータを取得し、既存の関数に渡してヒストグラムを描画できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  await resultBuffer.mapAsync(GPUMapMode.READ);
+  const histogram = new Uint32Array(resultBuffer.getMappedRange());
+
+  showImageBitmap(imgBitmap);
+
+  const numEntries = texture.width * texture.height;
+  drawHistogram(histogram, numEntries);
+
+  resultBuffer.unmap();
+</pre>
+<p>そして、それは機能するはずです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-slow.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-slow.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>結果を計時したところ、<strong>これはJavaScriptバージョンよりも約30倍遅いことがわかりました!!!</strong> 😱😱😱 (YMMV)。</p>
+<p>どうしたのでしょうか？上記の解決策は単一のループで設計し、サイズ1の単一のワークグループ呼び出しを使用しました。つまり、GPUの単一の「コア」のみがヒストグラムの計算に使用されたということです。GPUコアは一般的にCPUコアほど高速ではありません。CPUコアには、速度を上げるための大量の追加回路があります。GPUは大規模な並列化から速度を得ますが、設計をより単純に保つ必要があります。上記のシェーダーでは、並列化を利用しませんでした。</p>
+<p>小さなサンプルテクスチャを使用して何が起こっているかの図を次に示します。</p>
+<div class="webgpu_center compute-diagram">
+  <div data-diagram="single"></div>
+</div>
+<blockquote>
+<h2 id="図とシェーダーの違い">図とシェーダーの違い</h2>
+<p>これらの図は、シェーダーを完全に表現したものではありません。</p>
+<ul>
+<li>シェーダーには256個のビンがありますが、3つのビンしか表示されていません。</li>
+<li>コードは簡略化されています。</li>
+<li>▢はテクセルカラーです。</li>
+<li>◯は輝度として表されるビンの選択です。</li>
+<li>多くのものが省略されています。
+<ul>
+<li><code class="notranslate" translate="no">wid</code> = <code class="notranslate" translate="no">workgroup_id</code></li>
+<li><code class="notranslate" translate="no">gid</code> = <code class="notranslate" translate="no">global_invocation_id</code></li>
+<li><code class="notranslate" translate="no">lid</code> = <code class="notranslate" translate="no">local_invocation_id</code></li>
+<li><code class="notranslate" translate="no">ourTex</code> = <code class="notranslate" translate="no">ourTexture</code></li>
+<li><code class="notranslate" translate="no">texLoad</code> = <code class="notranslate" translate="no">textureLoad</code></li>
+<li>など…</li>
+</ul>
+</li>
+</ul>
+<p>これらの変更の多くは、多くの詳細を表示しようとするとスペースが限られているためです。この最初の例では単一の呼び出しを使用しますが、進むにつれて、より少ないスペースにより多くの情報を詰め込む必要があります。図が理解を助けるものであり、物事をより混乱させるものではないことを願っています。😅</p>
+</blockquote>
+<p>単一のGPU呼び出しがCPUよりも遅いことを考えると、アプローチを並列化する方法を見つける必要があります。</p>
+<h2 id="最適化---より多くの呼び出し">最適化 - より多くの呼び出し</h2>
+<p>これを高速化する最も簡単で明白な方法は、ピクセルごとに1つのワークグループを使用することです。上記のコードにはforループがあります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">for (y) {
+   for (x) {
+      ...
+   }
+}
+</pre>
+<p>代わりに<code class="notranslate" translate="no">global_invocation_id</code>を入力として使用し、すべてのピクセルを個別の呼び出しで処理するようにコードを変更できます。</p>
+<p>シェーダーに必要な変更は次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+// from: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(1, 1, 1)
+-fn cs() {
++fn cs(@builtin(global_invocation_id) global_invocation_id: vec3u) {
+-  let size = textureDimensions(ourTexture, 0);
+  let numBins = f32(arrayLength(&amp;bins));
+  let lastBinIndex = u32(numBins - 1);
+-  for (var y = 0u; y &lt; size.y; y++) {
+-    for (var x = 0u; x &lt; size.x; x++) {
+-      let position = vec2u(x, y);
++  let position = global_invocation_id.xy;
+  let color = textureLoad(ourTexture, position, 0);
+  let v = srgbLuminance(color.rgb);
+  let bin = min(u32(v * numBins), lastBinIndex);
+  bins[bin] += 1;
+-    }
+-  }
+}
+</pre>
+<p>ご覧のとおり、ループをなくし、代わりに<code class="notranslate" translate="no">@builtin(global_invocation_id)</code>値を使用して、各ワークグループが単一のピクセルを担当するようにしました。理論的には、これによりすべてのピクセルを並列に処理できることになります。画像は2448×1505で、ほぼ370万ピクセルなので、並列化の機会はたくさんあります。</p>
+<p>必要なもう1つの変更は、実際にピクセルごとに1つのワークグループを実行することです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
+  const pass = encoder.beginComputePass();
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+-  pass.dispatchWorkgroups(1);
++  pass.dispatchWorkgroups(texture.width, texture.height);
+  pass.end();
+</pre>
+<p>実行中です。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-with-race.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-with-race.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>何が問題なのでしょうか？なぜこのヒストグラムは前のヒストグラムと一致せず、合計も一致しないのでしょうか？注：お使いのコンピューターでは、私とは異なる結果が得られる場合があります。私の場合、これは前のバージョンのヒストグラムが上で、新しいバージョンの4つの結果が下です。</p>
+<style>
+.local-img img {
+  border: 1px solid #888;
+  margin: 0.5em;
+}
+</style>
+<div class="webgpu_center local-img">
+  <div>
+      <img src="../resources/histogram-slow-luminosity.png" class="histogram-img">
+      <div style="text-align: center;">前の結果</div>
+  </div>
+  <div>
+    <div>
+        <img src="../resources/histogram-race-01.png" class="histogram-img">
+        <img src="../resources/histogram-race-02.png" class="histogram-img">
+    </div>
+    <div>
+        <img src="../resources/histogram-race-03.png" class="histogram-img">
+        <img src="../resources/histogram-race-04.png" class="histogram-img">
+    </div>
+    <div style="text-align: center;">新しい結果</div>
+  </div>
+</div>
+<p>新しいバージョンでは、一貫性のない結果が得られます（少なくとも私のマシンでは）。</p>
+<p>何が起こったのでしょうか？</p>
+<p>これは、<a href="../../webgpu-compute-shaders.html#a-race-conditions">前の記事</a>で述べた古典的な<em>競合状態</em>です。</p>
+<p>シェーダーのこの行</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">        bins[bin] += 1;
+</pre>
+<p>は、実際にはこれに変換されます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">   let value = bins[bin];
+   value = value + 1
+   bins[bin] = value;
+</pre>
+<p>2つ以上の呼び出しが並列に実行され、同じ<code class="notranslate" translate="no">bin</code>値を持つとどうなるでしょうか？</p>
+<p><code class="notranslate" translate="no">bin = 1</code>で<code class="notranslate" translate="no">bins[1] = 3</code>の2つの呼び出しを想像してみてください。並列に実行されると、両方の呼び出しが3をロードし、両方の呼び出しが4を書き込みますが、正しい答えは5です。</p>
+<div class="webgpu_center data-table">
+  <style>
+    .local-race th { text-align: center; }
+    .local-race td { white-space: pre; }
+    .local-race .step { color: #969896; }
+  </style>
+  <div>
+  <table class="local-race">
+    <thead>
+      <tr><th>呼び出し1</th>
+      <th>呼び出し2</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>value = bins[bin]     <span class="step">// 3をロード</span></td>
+        <td>value = bins[bin]     <span class="step">// 3をロード</span></td>
+      </tr><tr>
+        <td>value = value + 1     <span class="step">// 1を追加</span></td>
+        <td>value = value + 1     <span class="step">// 1を追加</span></td>
+      </tr>
+      <tr>
+        <td>bins[bin] = value     <span class="step">// 4を格納</span></td>
+        <td>bins[bin] = value     <span class="step">// 4を格納</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<p>下の図で問題を視覚的に確認できます。いくつかの呼び出しがビンの現在の値を取得し、それに1を加えて元に戻すのがわかります。それぞれが、別の呼び出しが同じビンを同時に読み書きしていることに気づいていません。</p>
+<div class="webgpu_center compute-diagram"><div data-diagram="race"></div></div>
+<p>WGSLには、この問題を解決するための特別な「アトミック」命令があります。この場合、<code class="notranslate" translate="no">atomicAdd</code>を使用できます。<code class="notranslate" translate="no">atomicAdd</code>は、加算を「アトミック」にします。つまり、ロード-&gt;加算-&gt;格納の3つの操作ではなく、3つの操作すべてが一度に「アトミックに」行われます。これにより、2つ以上の呼び出しが同時に値を更新するのを効果的に防ぎます。</p>
+<p>アトミック関数には、<code class="notranslate" translate="no">i32</code>または<code class="notranslate" translate="no">u32</code>でのみ機能し、データ自体が<code class="notranslate" translate="no">atomic</code>型である必要があるという要件があります。</p>
+<p>シェーダーへの変更は次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;u32&gt;;
++@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;atomic&lt;u32&gt;&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(1, 1, 1)
+fn cs(@builtin(global_invocation_id) global_invocation_id: vec3u) {
+  let numBins = f32(arrayLength(&amp;bins));
+  let lastBinIndex = u32(numBins - 1);
+  let position = global_invocation_id.xy;
+  let color = textureLoad(ourTexture, position, 0);
+  let v = srgbLuminance(color.rgb);
+  let bin = min(u32(v * numBins), lastBinIndex);
+-  bins[bin] += 1;
++  atomicAdd(&amp;bins[bin], 1u);
+}
+</pre>
+<p>これで、ピクセルごとに1つのワークグループ呼び出しを使用するコンピュートシェーダーが機能します！</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-race-fixed.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-race-fixed.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>残念ながら、新しい問題があります。<code class="notranslate" translate="no">atomicAdd</code>は、他の呼び出しが同じビンを同時に更新するのを効果的にブロックする必要があります。ここで問題を確認できます。下の図は、<code class="notranslate" translate="no">atomicAdd</code>を3つの操作として示していますが、呼び出しが<code class="notranslate" translate="no">atomicAdd</code>を実行している場合、別の呼び出しが完了するまで待機する必要があるように「ビンをロック」します。</p>
+<div class="webgpu_center compute-diagram">
+  <div>2つのワークグループ、1つは下のビンをロックし、もう1つは同じ下のビンの使用をブロックされています</div>
+  <div data-diagram="lockedBin"></div>
+</div>
+<p>図では、呼び出しがビンをロックしている場合、呼び出しからビンの色の線が表示されます。そのビンがロック解除されるのを待っている呼び出しには、停止標識🛑が表示されます。</p>
+<div class="webgpu_center compute-diagram"><div data-diagram="noRace"></div></div>
+<p>私のマシンでは、この新しいバージョンはJavaScriptよりも約4倍高速に実行されますが、YMMVです。</p>
+<h2 id="ワークグループ">ワークグループ</h2>
+<p>もっと速くできますか？<a href="../../webgpu-compute-shaders.html">前の記事</a>で述べたように、「ワークグループ」は、GPUに実行を依頼できる最小の作業単位です。シェーダーモジュールを作成するときに3次元でワークグループのサイズを定義し、<code class="notranslate" translate="no">dispatchWorkgroups</code>を呼び出してこれらのワークグループを多数実行します。</p>
+<p>ワークグループは、内部ストレージを共有し、ワークグループ自体内でそのストレージを調整できます。その事実をどのように利用できるでしょうか？</p>
+<p>これを試してみましょう。ワークグループのサイズを256x1（ワークグループあたり256回の呼び出し）にします。各呼び出しが画像の256x1セクションで機能するようにします。これは、合計で<code class="notranslate" translate="no">Math.ceil(texture.width / 256) * texture.height</code>のワークグループを持つことを意味します。2448×1505の画像の場合、10 x 1505または15050のワークグループになります。</p>
+<p>ワークグループ内の呼び出しにワークグループメモリを使用して、輝度値をビンに合計させます。</p>
+<p>最後に、ワークグループのワークグループメモリを独自の「チャンク」にコピーします。そうすれば、他のワークグループと調整する必要がなくなります。完了したら、別のコンピュートシェーダーを実行してチャンクを合計します。</p>
+<p>シェーダーを編集しましょう。まず、<code class="notranslate" translate="no">bins</code>を<code class="notranslate" translate="no">storage</code>型から<code class="notranslate" translate="no">workgroup</code>型に変更して、同じワークグループ内の呼び出しとのみ共有されるようにします。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;atomic&lt;u32&gt;&gt;;
++const chunkWidth = 256;
++const chunkHeight = 1;
++const chunkSize = chunkWidth * chunkHeight;
++var&lt;workgroup&gt; bins: array&lt;atomic&lt;u32&gt;, chunkSize&gt;;
+</pre>
+<p>上記では、簡単に変更できるようにいくつかの定数を宣言しました。</p>
+<p>次に、すべてのチャンク用のストレージが必要です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+</pre>
+<p>定数を使用してワークグループのサイズを定義できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">-@compute @workgroup_size(1, 1, 1)
++@compute @workgroup_size(chunkWidth, chunkHeight, 1)
+</pre>
+<p>ビンをインクリメントする主要部分は、前のシェーダーと非常によく似ています。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn cs(@builtin(global_invocation_id) global_invocation_id: vec3u) {
+  let size = textureDimensions(ourTexture, 0);
+  let position = global_invocation_id.xy;
++  if (all(position &lt; size)) {
+-    let numBins = f32(arrayLength(&amp;bins));
++    let numBins = f32(chunkSize);
+    let lastBinIndex = u32(numBins - 1);
+    let color = textureLoad(ourTexture, position, 0);
+    let v = srgbLuminance(color.rgb);
+    let bin = min(u32(v * numBins), lastBinIndex);
+    atomicAdd(&amp;bins[bin], 1u);
+  }
+</pre>
+<p>チャンクサイズはシェーダーにハードコーディングされているため、テクスチャ外のピクセルで作業したくありません。たとえば、画像が300ピクセル幅の場合、最初のワークグループはピクセル0から255で作業します。2番目のワークグループはピクセル256から511で作業しますが、ピクセル299までしか作業する必要はありません。これが<code class="notranslate" translate="no">if(all(position &lt; size))</code>の役割です。<code class="notranslate" translate="no">position</code>と<code class="notranslate" translate="no">size</code>は両方とも<code class="notranslate" translate="no">vec2u</code>なので、<code class="notranslate" translate="no">position &lt; size</code>は2つのブール値、つまり<code class="notranslate" translate="no">vec2&lt;bool&gt;</code>を生成します。<code class="notranslate" translate="no">all</code>関数は、すべての入力がtrueの場合に<code class="notranslate" translate="no">true</code>を返します。したがって、コードは<code class="notranslate" translate="no">position.x &lt; size.x</code>と<code class="notranslate" translate="no">position.y &lt; size.y</code>の場合にのみ<code class="notranslate" translate="no">if</code>内に入ります。</p>
+<p><code class="notranslate" translate="no">numBins</code>については、チャンクサイズに定義したのと同じ数のビンがあります。<code class="notranslate" translate="no">var&lt;storage&gt;</code>で行ったように<code class="notranslate" translate="no">var&lt;workgroup&gt;</code>にバッファを渡さないため、サイズを検索できなくなりました。そのサイズは、シェーダーモジュールを作成するときに定義されます。</p>
+<p>最後に、シェーダーの最も異なる部分です。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  workgroupBarrier();
+
+  let chunksAcross = (size.x + chunkWidth - 1) / chunkWidth;
+  let chunkDim = vec2u(chunkWidth, chunkHeight);
+  let chunkPos = global_invocation_id.xy / chunkDim;
+  let chunk = chunkPos.y * chunksAcross + chunkPos.x;
+  let binPos = global_invocation_id.xy % chunkDim;
+  let bin = binPos.y * chunkWidth + binPos.x;
+
+  chunks[chunk][bin] = atomicLoad(&amp;bins[bin]);
+}
+</pre>
+<p>この部分は、各呼び出しが1つのビンを、このワークグループが作業している特定のチャンクの対応するビンにコピーするだけです。<code class="notranslate" translate="no">global_invocation_id</code>を<code class="notranslate" translate="no">chunkPos</code>と<code class="notranslate" translate="no">binPos</code>の両方に変換するための計算の一部です。これらの値は、事実上<code class="notranslate" translate="no">workgroup_id</code>と<code class="notranslate" translate="no">local_invocation_id</code>なので、このコードを次のように簡略化できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  workgroupBarrier();
+
+  let chunksAcross = (size.x + chunkWidth - 1) / chunkWidth;
+  let chunk = workgroup_id.y * chunksAcross + workgroup_id.x;
+  let bin = local_invocation_id.y * chunkWidth + local_invocation_id.x;
+
+  chunks[chunk][bin] = atomicLoad(&amp;bins[bin]);
+}
+</pre>
+<p>次に、<code class="notranslate" translate="no">workgroup_id</code>と<code class="notranslate" translate="no">local_invocation_id</code>をシェーダー関数の入力として追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-fn cs(@builtin(global_invocation_id) global_invocation_id: vec3u) {
++fn cs(
++  @builtin(global_invocation_id) global_invocation_id: vec3u,
++  @builtin(workgroup_id) workgroup_id: vec3u,
++  @builtin(local_invocation_id) local_invocation_id: vec3u,
++) {
+
+  ...
+</pre>
+<h2 id="workgroupbarrier"><a id="a-workgroup-barrier"></a>workgroupBarrier</h2>
+<p><code class="notranslate" translate="no">workgroupBarrier()</code>は、事実上、「このワークグループのすべての呼び出しがこのポイントに到達するまでここで停止する」と言っています。これが必要なのは、各呼び出しが<code class="notranslate" translate="no">bins</code>の異なる要素を更新しているためですが、その後、各呼び出しは<code class="notranslate" translate="no">bins</code>から1つの要素のみを<code class="notranslate" translate="no">chunks</code>の1つの対応する要素にコピーするため、他のすべての呼び出しが完了していることを確認する必要があります。</p>
+<p>別の言い方をすれば、どの呼び出しも、テクスチャから読み取る色に応じて<code class="notranslate" translate="no">bins</code>の任意の要素を<code class="notranslate" translate="no">atomicAdd</code>できます。しかし、<code class="notranslate" translate="no">local_invocation_id</code> = 3,0のみが<code class="notranslate" translate="no">bin[3]</code>を<code class="notranslate" translate="no">chunks[chunk][3]</code>にコピーするため、他のすべての呼び出しが<code class="notranslate" translate="no">bin[3]</code>を更新する機会を持つまで待機する必要があります。</p>
+<p>すべてをまとめると、これが新しいシェーダーです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const chunkWidth = 256;
+const chunkHeight = 1;
+const chunkSize = chunkWidth * chunkHeight;
+var&lt;workgroup&gt; bins: array&lt;atomic&lt;u32&gt;, chunkSize&gt;;
+@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(chunkWidth, chunkHeight, 1)
+fn cs(
+  @builtin(global_invocation_id) global_invocation_id: vec3u,
+  @builtin(workgroup_id) workgroup_id: vec3u,
+  @builtin(local_invocation_id) local_invocation_id: vec3u,
+) {
+  let size = textureDimensions(ourTexture, 0);
+  let position = global_invocation_id.xy;
+  if (all(position &lt; size)) {
+    let numBins = f32(chunkSize);
+    let lastBinIndex = u32(numBins - 1);
+    let color = textureLoad(ourTexture, position, 0);
+    let v = srgbLuminance(color.rgb);
+    let bin = min(u32(v * numBins), lastBinIndex);
+    atomicAdd(&amp;bins[bin], 1u);
+  }
+
+  workgroupBarrier();
+
+  let chunksAcross = (size.x + chunkWidth - 1) / chunkWidth;
+  let chunk = workgroup_id.y * chunksAcross + workgroup_id.x;
+  let bin = local_invocation_id.y * chunkWidth + local_invocation_id.x;
+
+  chunks[chunk][bin] = atomicLoad(&amp;bins[bin]);
+}
+</pre>
+<p>もう1つできることは、<code class="notranslate" translate="no">chunkWidth</code>と<code class="notranslate" translate="no">chunkHeight</code>をハードコーディングするのではなく、JavaScriptから次のように渡すことです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const k = {
++    chunkWidth: 256,
++    chunkHeight: 1,
++  };
++  const sharedConstants = Object.entries(k)
++    .map(([k, v]) =&gt; `const ${k} = ${v};`)
++    .join('\n');
+
+  const histogramChunkModule = device.createShaderModule({
+    label: 'histogram chunk shader',
+    code: `
+-      const chunkWidth = 256;
+-      const chunkHeight = 1;
++      ${sharedConstants}
+      const chunkSize = chunkWidth * chunkHeight;
+      var&lt;workgroup&gt; bins: array&lt;atomic&lt;u32&gt;, chunkSize&gt;;
+      @group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
+      @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+      ...
+    `,
+  });
+</pre>
+<p>このシェーダーを実行すると、次のようになります。</p>
+<div class="webgpu_center compute-diagram"><div data-diagram="chunks"></div></div>
+<p>上記のように、各ワークグループは1チャンク分のピクセルを読み取り、それに応じてビンを更新します。以前と同様に、2つの呼び出しが同じビンを更新する必要がある場合、そのうちの1つは待機する必要があります🛑。その後、それらはすべて<code class="notranslate" translate="no">workgroupBarrier</code>🚧で互いに待機します。その後、各呼び出しは、担当するビンを、作業しているチャンクの対応するビンにコピーします。</p>
+<h2 id="チャンクの合計">チャンクの合計</h2>
+<p>すべてのピクセルの輝度値がカウントされましたが、答えを得るにはビンを合計する必要があります。それを実行するコンピュートシェーダーを作成しましょう。ビンごとに1つの呼び出しを行います。各呼び出しは、各チャンクの同じビンのすべての値を合計し、その結果を最初のチャンクに書き込みます。</p>
+<p>コードは次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const chunkWidth = 256;
+const chunkHeight = 1;
+const chunkSize = chunkWidth * chunkHeight;
+@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
+
+@compute @workgroup_size(chunkSize, 1, 1)
+fn cs(@builtin(local_invocation_id) local_invocation_id: vec3u) {
+  var sum = u32(0);
+  let numChunks = arrayLength(&amp;chunks);
+  for (var i = 0u; i &lt; numChunks; i++) {
+    sum += chunks[i][local_invocation_id.x];
+  }
+  chunks[0][local_invocation_id.x] = sum;
+}
+</pre>
+<p>そして、以前と同様に、<code class="notranslate" translate="no">chunkWidth</code>と<code class="notranslate" translate="no">chunkHeight</code>を挿入できます。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const chunkSumModule = device.createShaderModule({
+  label: 'chunk sum shader',
+  code: `
+*    ${sharedConstants}
+    const chunkSize = chunkWidth * chunkHeight;
+    @group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
+
+    @compute @workgroup_size(chunkSize, 1, 1)
+
+    ...
+    }
+  `,
+});
+</pre>
+<p>このシェーダーは、事実上、次のように機能します。</p>
+<div class="webgpu_center compute-diagram"><div data-diagram="sum"></div></div>
+<p>これらの2つのシェーダーができたので、それらを使用するようにコードを更新しましょう。両方のシェーダーのパイプラインを作成する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const pipeline = device.createComputePipeline({
+-    label: 'histogram',
+-    layout: 'auto',
+-    compute: {
+-      module,
+--    },
+-  });
+
++  const histogramChunkPipeline = device.createComputePipeline({
++    label: 'histogram',
++    layout: 'auto',
++    compute: {
++      module: histogramChunkModule,
+++    },
++  });
++
++  const chunkSumPipeline = device.createComputePipeline({
++    label: 'chunk sum',
++    layout: 'auto',
++    compute: {
++      module: chunkSumModule,
+++    },
++  });
+</pre>
+<p>すべてのチャンクに十分な大きさのストレージバッファを作成する必要があるため、画像全体をカバーするために必要なチャンクの数を計算します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg');
+  const texture = createTextureFromSource(device, imgBitmap);
+
+-  const numBins = 256;
+-  const histogramBuffer = device.createBuffer({
+-    size: numBins * 4, // 256エントリ * 4バイト/u32
+-    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+-  });
++  const chunkSize = k.chunkWidth * k.chunkHeight;
++  const chunksAcross = Math.ceil(texture.width / k.chunkWidth);
++  const chunksDown = Math.ceil(texture.height / k.chunkHeight);
++  const numChunks = chunksAcross * chunksDown;
++  const chunksBuffer = device.createBuffer({
++    size: numChunks * chunkSize * 4, // 4バイト/u32
++    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
++  });
+</pre>
+<p>結果を読み取るための結果バッファはまだ必要ですが、前のバッファと同じサイズではありません。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const resultBuffer = device.createBuffer({
+-    size: histogramBuffer.size,
++    size: chunkSize * 4,  // 4バイト/u32
+    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+  });
+</pre>
+<p>各パスにバインドグループが必要です。1つはテクスチャとチャンクを最初のシェーダーに渡し、もう1つはチャンクを2番目のシェーダーに渡します。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const bindGroup = device.createBindGroup({
++  const histogramBindGroup = device.createBindGroup({
+    label: 'histogram bindGroup',
+    layout: histogramChunkPipeline.getBindGroupLayout(0),
+    entries: [
+-      { binding: 0, resource: histogramBuffer },
++      { binding: 0, resource: chunksBuffer },
+      { binding: 1, resource: texture.createView() },
+    ],
+  });
+
+  const chunkSumBindGroup = device.createBindGroup({
+    label: 'sum bindGroup',
+    layout: chunkSumPipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: chunksBuffer },
+    ],
+  });
+</pre>
+<p>最後に、シェーダーを実行できます。まず、ピクセルを読み取ってビンに分類する部分です。チャンクごとに1つのワークグループをディスパッチします。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const encoder = device.createCommandEncoder({ label: 'histogram encoder' });
+  const pass = encoder.beginComputePass();
+
++  // 各領域のヒストグラムを作成します
+-  pass.setPipeline(pipeline);
+-  pass.setBindGroup(0, bindGroup);
+-  pass.dispatchWorkgroups(texture.width, texture.height);
++  pass.setPipeline(histogramChunkPipeline);
++  pass.setBindGroup(0, histogramBindGroup);
++  pass.dispatchWorkgroups(chunksAcross, chunksDown);
+</pre>
+<p>次に、チャンクを合計するシェーダーを実行する必要があります。これは、ビンごとに1つの呼び出し（256回の呼び出し）を使用する1つのワークグループだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // 領域を合計します
++  pass.setPipeline(chunkSumPipeline);
++  pass.setBindGroup(0, chunkSumBindGroup);
++  pass.dispatchWorkgroups(1);
+</pre>
+<p>残りのコードは同じです。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-optimized.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-optimized.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>私のマシンでこれを計時したところ、最初のシェーダーが0.2msで実行されるのを見てうれしく思いました！画像全体を読み取り、すべてのチャンクをあっという間に埋め尽くしました！</p>
+<p>残念ながら、チャンクを合計する部分ははるかに時間がかかりました。11msです。これは、前のシェーダーよりも遅いです！</p>
+<p>別のマシンでは、前の解決策は4.4msで、この新しい解決策は1.7msだったので、完全な損失ではありませんでした。</p>
+<p>もっとうまくできますか？</p>
+<h2 id="リデュース">リデュース</h2>
+<p>上記の解決策では、単一のワークグループを使用しました。256回の呼び出しがありますが、最新のGPUには数千のコアがあり、そのうち256個しか使用していません。</p>
+<p>試すことができる1つの手法は、リデュースと呼ばれることがあります。各ワークグループに2つのチャンクのみを追加させ、その結果をそれら2つのチャンクの最初に書き込みます。こうすることで、1000個のチャンクがある場合、500個のワークグループを使用できます。これははるかに多くの並列化です。プロセスを繰り返し、500個のチャンクを250個に、250個を125個に、125個を63個に、というように、1つのチャンクにリデュースするまで繰り返します。</p>
+<div class="webgpu_center compute-diagram"><div data-diagram="reduceDiagram"></div></div>
+<p>1つのシェーダーのみを使用でき、チャンクを1つのチャンクにリデュースするためのストライドを渡すだけです。ストライドは、合計している2番目のチャンクに到達するために進む必要があるチャンクの数です。ストライド1を渡すと、隣接するチャンクを合計します。ストライド2を渡すと、1つおきのチャンクを合計します。など…</p>
+<p>シェーダーへの変更は次のとおりです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const chunkSumModule = device.createShaderModule({
+  label: 'chunk sum shader',
+  code: `
+    ${sharedConstants}
+    const chunkSize = chunkWidth * chunkHeight;
+
++    struct Uniforms {
++      stride: u32,
++    };
+
+    @group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;vec4u, chunkSize&gt;&gt;;
++    @group(0) @binding(1) var&lt;uniform&gt; uni: Uniforms;
+
+    @compute @workgroup_size(chunkSize, 1, 1) fn cs(
+      @builtin(local_invocation_id) local_invocation_id: vec3u,
+      @builtin(workgroup_id) workgroup_id: vec3u,
+    ) {
+-      var sum = u32(0);
+-      let numChunks = arrayLength(&amp;chunks);
+-      for (var i = 0u; i &lt; numChunks; i++) {
+-        sum += chunks[i][local_invocation_id.x];
+-      }
+-      chunks[0][local_invocation_id.x] = sum;
++      let chunk0 = workgroup_id.x * uni.stride * 2;
++      let chunk1 = chunk0 + uni.stride;
++
++      let sum = chunks[chunk0][local_invocation_id.x] +
++                chunks[chunk1][local_invocation_id.x];
++      chunks[chunk0][local_invocation_id.x] = sum;
+    }
+  `,
+});
+</pre>
+<p>上記のように、<code class="notranslate" translate="no">workgroup_id.x</code>と、ユニフォームとして渡す<code class="notranslate" translate="no">uni.stride</code>に基づいて<code class="notranslate" translate="no">chunk0</code>と<code class="notranslate" translate="no">chunk1</code>を計算します。次に、2つのチャンクから2つのビンを追加し、それらを最初のビンに格納します。</p>
+<p>正しい数の呼び出しとストライド設定で実行すると、次のようになります。注：暗くなったチャンクは、使用されなくなったチャンクです。</p>
+<div class="webgpu_center compute-diagram"><div data-diagram="reduce"></div></div>
+<p>この新しいものを機能させるには、各ストライド値とバインドグループにユニフォームバッファを追加する必要があります。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const sumBindGroups = [];
+const numSteps = Math.ceil(Math.log2(numChunks));
+for (let i = 0; i &lt; numSteps; ++i) {
+  const stride = 2 ** i;
+  const uniformBuffer = device.createBuffer({
+    size: 4,
+    usage: GPUBufferUsage.UNIFORM,
+    mappedAtCreation: true,
+  });
+  new Uint32Array(uniformBuffer.getMappedRange()).set([stride]);
+  uniformBuffer.unmap();
+
+  const chunkSumBindGroup = device.createBindGroup({
+    layout: chunkSumPipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: chunksBuffer },
+      { binding: 1, resource: uniformBuffer },
+    ],
+  });
+  sumBindGroups.push(chunkSumBindGroup);
+}
+</pre>
+<p>次に、1つのチャンクにリデュースするまで、正しい数のディスパッチでこれらを呼び出すだけです。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  // 領域を合計します
+-  pass.setPipeline(chunkSumPipeline);
+-  pass.setBindGroup(0, chunkSumBindGroup);
+-  pass.dispatchWorkgroups(1);
++  // チャンクをリデュースします
++  const pass = encoder.beginComputePass();
++  pass.setPipeline(chunkSumPipeline);
++  let chunksLeft = numChunks;
++  sumBindGroups.forEach(bindGroup =&gt; {
++    pass.setBindGroup(0, bindGroup);
++    const dispatchCount = Math.floor(chunksLeft / 2);
++    chunksLeft -= dispatchCount;
++    pass.dispatchWorkgroups(dispatchCount);
++  });
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-optimized-more.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-optimized-more.html" target="_blank">クリックして別のウインドウを開く</a>
+</div>
+
+<p></p>
+<p>このバージョンを計時したところ、テストした両方のマシンで1ms未満でした！🎉🚀</p>
+<p>さまざまなマシンからのタイミングをいくつか示します。</p>
+<div class="webgpu_center data-table">
+  <div data-diagram="timings"></div>
+</div>
+<p>ヒストグラムを計算するより高速な方法があるかもしれません。また、異なるチャンクサイズを試す方が良いかもしれません。256x1よりも16x16の方が良いかもしれません。また、ある時点でWebGPUは<em>サブグループ</em>をサポートする可能性が高く、これはまったく別のトピックであり、さらに最適化の余地があります。</p>
+<p>今のところ、これらの例がコンピュートシェーダーの作成と最適化の方法に関するいくつかのアイデアを提供したことを願っています。要点は次のとおりです。</p>
+<ul>
+<li>GPUが提供するすべての並列化を利用する方法を見つける</li>
+<li>競合状態に注意する</li>
+<li><code class="notranslate" translate="no">var&lt;workgroup&gt;</code>を使用して、ワークグループのすべての呼び出しで共有されるストレージを作成する</li>
+<li>呼び出し間の調整が少ないアルゴリズムを設計するように努める</li>
+<li>調整が必要な場合は、アトミック操作と<code class="notranslate" translate="no">workgroupBarrier</code>が解決策になる可能性があります。</li>
+</ul>
+<p>この点では、まあまあでした。ワークグループメモリでチャンクを計算するとき、<code class="notranslate" translate="no">atomicAdd</code>を介して解決した競合がまだありますが、ワークグループの<code class="notranslate" translate="no">bins</code>から<code class="notranslate" translate="no">chunks</code>にコピーするときに競合はなく、<code class="notranslate" translate="no">chunks</code>を最終結果の1つにリデュースするときにも競合はありません。</p>
+<p>もう1つあるかもしれません。</p>
+<ul>
+<li>GPUが高速であると想定しない</li>
+</ul>
+<p>GPUの個々のコアはそれほど高速ではないことを学びました。すべての速度は並列化から得られるため、並列ソリューションを設計する必要があります。</p>
+<p><a href="webgpu-compute-shaders-histogram-part-2.html">次の記事</a>では、これらを少し調整し、JavaScriptに引き戻すのではなく、GPUを使用して結果をグラフ化するように変更します。また、画像ヒストグラムを作成したことに基づいて、リアルタイムのビデオ調整も試みます。</p>
+<!-- この記事の最後にこれを保持してください -->
+<link rel="stylesheet" href="../webgpu-compute-shaders-histogram.css">
+<script type="module" src="../webgpu-compute-shaders-histogram.js"></script>
 
     </div>
     <div class="lesson-sidebar">
@@ -203,84 +1212,85 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基本</li>
+        <div id="toc">
+          <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">Uniforms</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">Storage Buffers</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+<li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
+  <li>テクスチャ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-textures.html">テクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-importing-textures.html">画像の読み込み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-textures-external-video.html">ビデオの使用</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cube-maps.html">キューブマップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/ja/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-copying-data.html">データのコピー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-limits-and-features.html">オプション機能と制限</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-timing.html">タイミングパフォーマンス</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-how-it-works.html">仕組み</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compatibility-mode.html">互換モード</a></li>
         </ul>
   <li>3Dの数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-translation.html">平行移動</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-rotation.html">回転</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scale.html">スケール</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-math.html">行列演算</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-orthographic-projection.html">正射影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-perspective-projection.html">透視投影</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-cameras.html">カメラ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-matrix-stacks.html">行列スタック</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-scene-graphs.html">シーングラフ</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>ライト</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-lighting-directional.html">指向性ライティング</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-point.html">点光源</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-lighting-spot.html">スポットライト</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>テクニック</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">Environment maps</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">Skyboxes</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-environment-maps.html">環境マップ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-skybox.html">スカイボックス</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>ポストプロセッシング</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
         <ul>
-          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/ja/webgpu-compute-shaders.html">コンピュートシェーダーの基本</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">画像ヒストグラム</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">画像ヒストグラム パート2</a></li>
         </ul>
   <li>その他のトピック</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-multiple-canvases.html">複数のキャンバス</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-points.html">ポイント</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-from-webgl.html">WebGLからWebGPUへ</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-optimization.html">速度と最適化</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-debugging.html">デバッグとエラー</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-resources.html">リソース / 参考文献</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-wgsl-function-reference.html">WGSL 関数リファレンス</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL オフセット計算機</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">github</a></li>
@@ -291,13 +1301,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        <div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU コンピュートシェーダー - 画像ヒストグラム`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

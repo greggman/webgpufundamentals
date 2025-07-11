@@ -198,7 +198,7 @@ async function main() {
     entries: [
       { binding: 0, resource: sampler },
       { binding: 1, resource: srcTextureUnpremultipliedAlpha.createView() },
-      { binding: 2, resource: { buffer: uniformBuffer }},
+      { binding: 2, resource: uniformBuffer},
     ],
   });
 
@@ -207,7 +207,7 @@ async function main() {
     entries: [
       { binding: 0, resource: sampler },
       { binding: 1, resource: dstTextureUnpremultipliedAlpha.createView() },
-      { binding: 2, resource: { buffer: uniformBuffer }},
+      { binding: 2, resource: uniformBuffer},
     ],
   });
 
@@ -216,7 +216,7 @@ async function main() {
     entries: [
       { binding: 0, resource: sampler },
       { binding: 1, resource: srcTexturePremultipliedAlpha.createView() },
-      { binding: 2, resource: { buffer: uniformBuffer }},
+      { binding: 2, resource: uniformBuffer},
     ],
   });
 
@@ -225,7 +225,7 @@ async function main() {
     entries: [
       { binding: 0, resource: sampler },
       { binding: 1, resource: dstTexturePremultipliedAlpha.createView() },
-      { binding: 2, resource: { buffer: uniformBuffer }},
+      { binding: 2, resource: uniformBuffer},
     ],
   });
 
