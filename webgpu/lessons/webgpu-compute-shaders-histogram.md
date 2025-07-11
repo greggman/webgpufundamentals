@@ -478,7 +478,7 @@ our pipeline
     layout: pipeline.getBindGroupLayout(0),
     entries: [
       { binding: 0, resource: histogramBuffer},
-      { binding: 1, resource: texture.createView() },
+      { binding: 1, resource: texture },
     ],
   });
 ```
@@ -1150,7 +1150,7 @@ to the first shader and another to pass the chunks to the second shader
     entries: [
 -      { binding: 0, resource: histogramBuffer},
 +      { binding: 0, resource: chunksBuffer},
-      { binding: 1, resource: texture.createView() },
+      { binding: 1, resource: texture },
     ],
   });
 

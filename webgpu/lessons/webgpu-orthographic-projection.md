@@ -1271,9 +1271,9 @@ at render time.
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 +    const canvasTexture = context.getCurrentTexture();
-+    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
++    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
 +    // If we don't have a depth texture OR if its size is different
 +    // from the canvasTexture when make a new depth texture
@@ -1289,7 +1289,7 @@ at render time.
 +        usage: GPUTextureUsage.RENDER_ATTACHMENT,
 +      });
 +    }
-+    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
++    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 
   ...
 ```

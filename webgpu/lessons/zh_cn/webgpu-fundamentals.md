@@ -347,7 +347,7 @@ function render() {
     // 从当前画布上下文获取纹理并设置为目标纹理
     renderPassDescriptor.colorAttachments[0].view = context
         .getCurrentTexture()
-        .createView();
+        ;
 
     // 创建命令编码器以开始编码命令
     const encoder = device.createCommandEncoder({ label: 'our encoder' });

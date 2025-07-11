@@ -437,7 +437,7 @@ JavaScript-овом `Array.map(function(value, index) { ... })`. Если мы �
   function render() {
     // Получаем текущую текстуру из canvas context и устанавливаем ее как текстуру для рендеринга
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     // создаем шаблон команды, чтобы запускать их
     const encoder = device.createCommandEncoder({ label: 'our encoder' });

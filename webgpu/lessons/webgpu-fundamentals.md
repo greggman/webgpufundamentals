@@ -508,7 +508,7 @@ Now it's time to render.
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     // make a command encoder to start encoding commands
     const encoder = device.createCommandEncoder({ label: 'our encoder' });

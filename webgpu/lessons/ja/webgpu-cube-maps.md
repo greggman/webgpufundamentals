@@ -415,7 +415,7 @@ struct VSOutput {
     entries: [
       { binding: 0, resource: uniformBuffer },
       { binding: 1, resource: sampler },
--      { binding: 2, resource: texture.createView() },
+-      { binding: 2, resource: texture },
 +      { binding: 2, resource: texture.createView({dimension: 'cube'}) },
     ],
   });

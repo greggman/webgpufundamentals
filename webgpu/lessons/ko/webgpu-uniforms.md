@@ -311,7 +311,7 @@ const rand = (min, max) => {
     // 캔버스 컨텍스트에서 텍스처를 얻고,
     // 이를 렌더링할 텍스처로 설정함
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder();
     const pass = encoder.beginRenderPass(renderPassDescriptor);

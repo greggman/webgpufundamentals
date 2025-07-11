@@ -260,7 +260,7 @@ a pipeline, binding bind groups, and dispatching workgroups.
     const bindGroup = device.createBindGroup({
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: texture.createView() },
+        { binding: 0, resource: texture },
       ],
     });
 

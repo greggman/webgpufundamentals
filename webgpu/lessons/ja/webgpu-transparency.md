@@ -60,7 +60,7 @@ async function main() {
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     const pass = encoder.beginRenderPass(renderPassDescriptor);
     pass.end();
@@ -121,7 +121,7 @@ canvas {
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    const { alpha } = settings;
 +    clearValue[3] = alpha;
@@ -620,7 +620,7 @@ const dstCanvas = createDestinationImage(size);
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTextureUnpremultipliedAlpha.createView() },
+      { binding: 1, resource: srcTextureUnpremultipliedAlpha },
       { binding: 2, resource: { buffer: srcUniform.buffer }},
     ],
   });
@@ -629,7 +629,7 @@ const dstCanvas = createDestinationImage(size);
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTextureUnpremultipliedAlpha.createView() },
+      { binding: 1, resource: dstTextureUnpremultipliedAlpha },
       { binding: 2, resource: { buffer: dstUniform.buffer }},
     ],
   });
@@ -638,7 +638,7 @@ const dstCanvas = createDestinationImage(size);
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTexturePremultipliedAlpha.createView() },
+      { binding: 1, resource: srcTexturePremultipliedAlpha },
       { binding: 2, resource: { buffer: srcUniform.buffer }},
     ],
   });
@@ -647,7 +647,7 @@ const dstCanvas = createDestinationImage(size);
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTexturePremultipliedAlpha.createView() },
+      { binding: 1, resource: dstTexturePremultipliedAlpha },
       { binding: 2, resource: { buffer: dstUniform.buffer }},
     ],
   });
@@ -785,7 +785,7 @@ const dstCanvas = createDestinationImage(size);
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    function updateUniforms(uniform, canvasTexture, texture) {
 +      const projectionMatrix = mat4.ortho(0, canvasTexture.width, canvasTexture.height, 0, -1, 1);
@@ -1114,7 +1114,7 @@ const dstCanvas = createDestinationImage(size);
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 ```
 
@@ -1149,7 +1149,7 @@ const dstCanvas = createDestinationImage(size);
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    {
 +      const { alpha, color, premultiply } = clear;

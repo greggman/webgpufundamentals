@@ -167,7 +167,7 @@ struct OurVertexShaderOutput {
     layout: pipeline.getBindGroupLayout(0),
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: texture.createView() },
+      { binding: 1, resource: texture },
     ],
   });
 ```
@@ -272,7 +272,7 @@ struct OurVertexShaderOutput {
       layout: pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: sampler },
-        { binding: 1, resource: texture.createView() },
+        { binding: 1, resource: texture },
       ],
     });
 +    bindGroups.push(bindGroup);
@@ -447,7 +447,7 @@ struct OurVertexShaderOutput {
       layout: pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: sampler },
-        { binding: 1, resource: texture.createView() },
+        { binding: 1, resource: texture },
 +        { binding: 2, resource: uniformBuffer },
       ],
     });
@@ -892,7 +892,7 @@ struct Uniforms {
         layout: pipeline.getBindGroupLayout(0),
         entries: [
           { binding: 0, resource: sampler },
-          { binding: 1, resource: texture.createView() },
+          { binding: 1, resource: texture },
           { binding: 2, resource: uniformBuffer },
         ],
       }));

@@ -339,13 +339,12 @@ async function main() {
       format: 'rgba8unorm',
       usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
-    const renderTargetView = renderTarget.createView();
-    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
+    renderPassDescriptor.colorAttachments[0].view = renderTarget;
 
     postProcessBindGroup = device.createBindGroup({
       layout: postProcessPipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: renderTargetView },
+        { binding: 0, resource: renderTarget },
         { binding: 1, resource: postProcessSampler },
         { binding: 2, resource: postProcessUniformBuffer },
       ],
@@ -367,11 +366,11 @@ async function main() {
     const outBindGroup = device.createBindGroup({
       layout: postProcessPipeline.getBindGroupLayout(1),
       entries: [
-        { binding: 0, resource: dstTexture.createView() },
+        { binding: 0, resource: dstTexture },
       ],
     });
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginComputePass();
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);

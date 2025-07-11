@@ -869,7 +869,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
 
     histogramHelper.computeHistogram(encoder, videoTexture);
 
-    const canvasTexture = context.getCurrentTexture().createView();
+    const canvasTexture = context.getCurrentTexture();
 
     // Draw video
     {

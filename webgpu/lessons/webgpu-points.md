@@ -221,7 +221,7 @@ resolution.
     // set it as the texture to render to.
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    // Update the resolution in the uniform buffer
 +    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
@@ -334,7 +334,7 @@ And we need a sampler and we need to add them to our bind group
     entries: [
       { binding: 0, resource: uniformBuffer},
 +      { binding: 1, resource: sampler },
-+      { binding: 2, resource: texture.createView() },
++      { binding: 2, resource: texture },
     ],
   });
 ```
@@ -620,7 +620,7 @@ And the code to draw using a projection matrix, camera, and other
     // set it as the texture to render to.
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     // Set the matrix in the uniform buffer
     const fov = 90 * Math.PI / 180;

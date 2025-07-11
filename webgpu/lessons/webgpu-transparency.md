@@ -67,7 +67,7 @@ async function main() {
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     const pass = encoder.beginRenderPass(renderPassDescriptor);
     pass.end();
@@ -129,7 +129,7 @@ the clear value as well as whether or not it's premultiplied
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    const { alpha } = settings;
 +    clearValue[3] = alpha;
@@ -705,7 +705,7 @@ With the bindGroupLayout created, we can use it to make bindGroups.
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTextureUnpremultipliedAlpha.createView() },
+      { binding: 1, resource: srcTextureUnpremultipliedAlpha },
       { binding: 2, resource: srcUniform.buffer},
     ],
   });
@@ -714,7 +714,7 @@ With the bindGroupLayout created, we can use it to make bindGroups.
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTextureUnpremultipliedAlpha.createView() },
+      { binding: 1, resource: dstTextureUnpremultipliedAlpha },
       { binding: 2, resource: dstUniform.buffer},
     ],
   });
@@ -723,7 +723,7 @@ With the bindGroupLayout created, we can use it to make bindGroups.
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTexturePremultipliedAlpha.createView() },
+      { binding: 1, resource: srcTexturePremultipliedAlpha },
       { binding: 2, resource: srcUniform.buffer},
     ],
   });
@@ -732,7 +732,7 @@ With the bindGroupLayout created, we can use it to make bindGroups.
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTexturePremultipliedAlpha.createView() },
+      { binding: 1, resource: dstTexturePremultipliedAlpha },
       { binding: 2, resource: dstUniform.buffer},
     ],
   });
@@ -877,7 +877,7 @@ the src texture with the srcPipeline (with blending)
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    function updateUniforms(uniform, canvasTexture, texture) {
 +      const projectionMatrix = mat4.ortho(0, canvasTexture.width, canvasTexture.height, 0, -1, 1);
@@ -1161,7 +1161,7 @@ Let's also let you choose the canvas configuration for `alphaMode`.
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 ```
 
@@ -1196,7 +1196,7 @@ And finally, lets let you pick the clearValue for the render pass.
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    {
 +      const { alpha, color, premultiply } = clear;

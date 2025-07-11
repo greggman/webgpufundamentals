@@ -222,7 +222,7 @@ that match the `@binding(?)`s we put in the shader.
     layout: pipeline.getBindGroupLayout(0),
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: texture.createView() },
+      { binding: 1, resource: texture },
     ],
   });
 ```
@@ -366,7 +366,7 @@ We'll also create a bind group that uses that sampler.
       layout: pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: sampler },
-        { binding: 1, resource: texture.createView() },
+        { binding: 1, resource: texture },
       ],
     });
 +    bindGroups.push(bindGroup);
@@ -556,7 +556,7 @@ add it to the bind group.
       layout: pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: sampler },
-        { binding: 1, resource: texture.createView() },
+        { binding: 1, resource: texture },
 +        { binding: 2, resource: uniformBuffer},
       ],
     });
@@ -1058,7 +1058,7 @@ buffer per location like we covered in [the article on uniforms](webgpu-uniforms
         layout: pipeline.getBindGroupLayout(0),
         entries: [
           { binding: 0, resource: sampler },
-          { binding: 1, resource: texture.createView() },
+          { binding: 1, resource: texture },
           { binding: 2, resource: uniformBuffer},
         ],
       }));

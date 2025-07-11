@@ -134,15 +134,15 @@ MSAAは、マルチサンプリングアンチエイリアシングの略です�
 -    // キャンバスコンテキストから現在のテクスチャを取得し、
 -    // レンダリングするテクスチャとして設定します。
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 
 +    // マルチサンプルテクスチャをレンダリングするテクスチャとして設定します
 +    renderPassDescriptor.colorAttachments[0].view =
-+        multisampleTexture.createView();
++        multisampleTexture;
 +    // キャンバステクスチャを、マルチサンプルテクスチャを「解決」する
 +    // テクスチャとして設定します。
 +    renderPassDescriptor.colorAttachments[0].resolveTarget =
-+        canvasTexture.createView();
++        canvasTexture;
 ```
 
 *解決*とは、マルチサンプルテクスチャを取得し、本当に欲しかったテクスチャのサイズに変換するプロセスです。この場合、キャンバスです。上記では、4倍のバージョンで、4倍のテクスチャを1倍のテクスチャにバイリニアフィルタリングすることで、この手順を手動で行いました。これは同様のプロセスですが、実際にはマルチサンプルテクスチャを使用したバイリニアフィルタリングではありません。[下記参照](#a-not-a-grid)

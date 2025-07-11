@@ -357,7 +357,7 @@ async function main() {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTextureUnpremultipliedAlpha.createView() },
+      { binding: 1, resource: srcTextureUnpremultipliedAlpha },
       { binding: 2, resource: srcUniform.buffer},
     ],
   });
@@ -366,7 +366,7 @@ async function main() {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTextureUnpremultipliedAlpha.createView() },
+      { binding: 1, resource: dstTextureUnpremultipliedAlpha },
       { binding: 2, resource: dstUniform.buffer},
     ],
   });
@@ -375,7 +375,7 @@ async function main() {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTexturePremultipliedAlpha.createView() },
+      { binding: 1, resource: srcTexturePremultipliedAlpha },
       { binding: 2, resource: srcUniform.buffer},
     ],
   });
@@ -384,7 +384,7 @@ async function main() {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTexturePremultipliedAlpha.createView() },
+      { binding: 1, resource: dstTexturePremultipliedAlpha },
       { binding: 2, resource: dstUniform.buffer},
     ],
   });
@@ -639,7 +639,7 @@ async function main() {
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     {
       const { alpha, color, premultiply } = clear;

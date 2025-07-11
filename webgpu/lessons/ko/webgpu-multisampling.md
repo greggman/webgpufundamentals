@@ -142,15 +142,15 @@ MSAA는 멀티샘플링 안티앨리어싱(Multi-Sampling Anti-aliasing)의 약�
 -    // 캔버스 컨텍스트에서 현재 텍스처를 가져와서
 -    // 렌더링할 텍스처로 설정합니다.
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 
 +    // 멀티샘플 텍스처를 렌더링할 텍스처로 설정합니다
 +    renderPassDescriptor.colorAttachments[0].view =
-+        multisampleTexture.createView();
++        multisampleTexture;
 +    // 캔버스 텍스처를 멀티샘플 텍스처를 "병합"할
 +    // 대상 텍스처로 설정합니다.
 +    renderPassDescriptor.colorAttachments[0].resolveTarget =
-+        canvasTexture.createView();
++        canvasTexture;
 ```
 
 *병합(resolve)*이란 멀티샘플 텍스처의 데이터를 우리가 실제로 원하는 크기의 텍스처로 변환하는 과정입니다. 이 예제에서는 그 대상이 바로 캔버스입니다.

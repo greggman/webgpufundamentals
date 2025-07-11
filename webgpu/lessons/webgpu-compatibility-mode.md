@@ -69,7 +69,7 @@ You can then view it 3 different view dimensions
 
 ```js
 // a view of myTexture as a 2d array with 6 layers
-const as2DArray = myTexture.createView();
+const as2DArray = myTexture;
 
 // view layer 3 of myTexture as a 2d texture
 const as2D = myTexture.createView({
@@ -115,7 +115,7 @@ const bindGroup = device.createBindGroup({
     {
       binding,
       // ERROR in compatibility mode: texture is a cubemap not a 2d-array
-      resource: cubeTexture.createView(),
+      resource: cubeTexture,
     },
   ],
 })

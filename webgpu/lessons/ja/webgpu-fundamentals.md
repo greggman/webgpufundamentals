@@ -435,7 +435,7 @@ WebGPUで生成するオブジェクトは、ほぼすべてについて`label`�
     // canvasのコンテキストから、カレントテクスチャを得る。
 	// それをレンダーパスに設定して、描画対象として指定する。
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     // コマンドエンコーダを生成する。コマンドのエンコードができる状態にする。
 	const encoder = device.createCommandEncoder({ label: 'our encoder' });

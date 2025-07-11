@@ -114,8 +114,7 @@ to the canvas, we need it to render to a separate texture.
 +      format: 'rgba8unorm',
 +      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
 +    });
-+    const renderTargetView = renderTarget.createView();
-+    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
+++    renderPassDescriptor.colorAttachments[0].view = renderTarget;
 +  }
 
   let then = 0;
@@ -127,7 +126,7 @@ to the canvas, we need it to render to a separate texture.
 -    // Get the current texture from the canvas context and
 -    // set it as the texture to render to.
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 +    const canvasTexture = context.getCurrentTexture();
 +    setupPostProcess(canvasTexture);
 
@@ -168,7 +167,7 @@ or we won't see anything so lets do that.
 
 ```js
   function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -320,7 +319,7 @@ We need to add it to our bind group
     postProcessBindGroup = device.createBindGroup({
       layout: postProcessPipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: renderTargetView },
+        { binding: 0, resource: renderTarget },
         { binding: 1, resource: postProcessSampler },
 +        { binding: 2, resource: postProcessUniformBuffer },
       ],
@@ -354,7 +353,7 @@ and we need to upload those settings to the uniform buffer
 +      ]),
 +    );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -477,7 +476,7 @@ and upload the new settings
       ]),
     );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -635,11 +634,11 @@ We need to stop using a render pass and instead use a compute pass for our post 
 +    const outBindGroup = device.createBindGroup({
 +      layout: postProcessPipeline.getBindGroupLayout(1),
 +      entries: [
-+        { binding: 0, resource: dstTexture.createView() },
++        { binding: 0, resource: dstTexture },
 +      ],
 +    });
 
--    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
 -    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
 +    const pass = encoder.beginComputePass();
     pass.setPipeline(postProcessPipeline);

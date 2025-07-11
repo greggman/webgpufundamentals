@@ -611,7 +611,7 @@ the scale buffer, and the texture
         },
       },
       { binding: 1, resource: scaleBuffer},
-      { binding: 2, resource: texture.createView() },
+      { binding: 2, resource: texture },
     ],
   });
 ```
@@ -783,7 +783,7 @@ and finally we can render
       label: 'our basic canvas renderPass',
       colorAttachments: [
         {
-          view: context.getCurrentTexture().createView(),
+          view: context.getCurrentTexture(),
           clearValue: [0.3, 0.3, 0.3, 1],
           loadOp: 'clear',
           storeOp: 'store',
@@ -1043,7 +1043,7 @@ get a [cover effect](https://developer.mozilla.org/en-US/docs/Web/CSS/background
 ```js
     // Draw to canvas
     {
-      const canvasTexture = context.getCurrentTexture().createView();
+      const canvasTexture = context.getCurrentTexture();
       renderPassDescriptor.colorAttachments[0].view = canvasTexture;
       const pass = encoder.beginRenderPass(renderPassDescriptor);
 

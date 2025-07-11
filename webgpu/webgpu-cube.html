@@ -43,9 +43,7 @@ async function main() {
     presentationFormat,
     // these are filled out in resizeToDisplaySize
     renderTarget: undefined,
-    renderTargetView: undefined,
     depthTexture: undefined,
-    depthTextureView: undefined,
     sampleCount: 4,  // can be 1 or 4
   };
 
@@ -217,7 +215,7 @@ async function main() {
       { binding: 0, resource: vsUniformBuffer },
       { binding: 1, resource: fsUniformBuffer },
       { binding: 2, resource: sampler },
-      { binding: 3, resource: tex.createView() },
+      { binding: 3, resource: tex },
     ],
   });
 
@@ -272,7 +270,6 @@ async function main() {
           usage: GPUTextureUsage.RENDER_ATTACHMENT,
         });
         canvasInfo.renderTarget = newRenderTarget;
-        canvasInfo.renderTargetView = newRenderTarget.createView();
       }
 
       const newDepthTexture = device.createTexture({
@@ -282,7 +279,6 @@ async function main() {
         usage: GPUTextureUsage.RENDER_ATTACHMENT,
       });
       canvasInfo.depthTexture = newDepthTexture;
-      canvasInfo.depthTextureView = newDepthTexture.createView();
     }
     return needResize;
   }
@@ -309,12 +305,12 @@ async function main() {
 
     if (canvasInfo.sampleCount === 1) {
         const colorTexture = context.getCurrentTexture();
-        renderPassDescriptor.colorAttachments[0].view = colorTexture.createView();
+        renderPassDescriptor.colorAttachments[0].view = colorTexture;
     } else {
-      renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTargetView;
-      renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture().createView();
+      renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTarget;
+      renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture();
     }
-    renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTextureView;
+    renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTexture;
 
     const commandEncoder = device.createCommandEncoder();
     const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);

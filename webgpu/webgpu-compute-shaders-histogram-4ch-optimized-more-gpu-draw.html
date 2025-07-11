@@ -250,7 +250,7 @@ async function main() {
     layout: histogramChunkPipeline.getBindGroupLayout(0),
     entries: [
       { binding: 0, resource: chunksBuffer},
-      { binding: 1, resource: texture.createView() },
+      { binding: 1, resource: texture },
     ],
   });
 
@@ -259,7 +259,7 @@ async function main() {
     entries: [
       { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
       { binding: 1, resource: scaleBuffer},
-      { binding: 2, resource: texture.createView() },
+      { binding: 2, resource: texture },
     ],
   });
 
@@ -388,7 +388,7 @@ async function main() {
       label: 'our basic canvas renderPass',
       colorAttachments: [
         {
-          view: context.getCurrentTexture().createView(),
+          view: context.getCurrentTexture(),
           clearValue: [0.3, 0.3, 0.3, 1],
           loadOp: 'clear',
           storeOp: 'store',

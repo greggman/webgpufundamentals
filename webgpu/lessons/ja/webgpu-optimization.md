@@ -366,7 +366,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
       ],
@@ -458,7 +458,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     // 深度テクスチャがない場合、またはそのサイズが
     // キャンバステクスチャと異なる場合は、新しい深度テクスチャを作成します。
@@ -474,7 +474,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
         usage: GPUTextureUsage.RENDER_ATTACHMENT,
       });
     }
-    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 ```
 
 コマンドバッファとレンダーパスを開始し、頂点バッファとインデックスバッファを設定します。
@@ -606,7 +606,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     ...
 
@@ -1235,7 +1235,7 @@ struct PerObjectUniforms {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
 +        { binding: 3, resource: globalUniformBuffer },
@@ -1534,7 +1534,7 @@ struct PerObjectUniforms {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
         { binding: 3, resource: globalUniformBuffer },
@@ -1668,7 +1668,7 @@ struct PerObjectUniforms {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
 -        { binding: 2, resource: uniformBuffer },
 +        {
@@ -1807,7 +1807,7 @@ WebGPUのマッピングは非同期に行われるため、バッファをマ�
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: { buffer: uniformBuffer, offset: uniformBufferOffset, size: uniformBufferSize }},
         { binding: 3, resource: globalUniformBuffer },

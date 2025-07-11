@@ -161,15 +161,15 @@ to make it a multisample texture.
 -    // Get the current texture from the canvas context and
 -    // set it as the texture to render to.
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 
 +    // Set the multisample texture as the texture to render to
 +    renderPassDescriptor.colorAttachments[0].view =
-+        multisampleTexture.createView();
++        multisampleTexture;
 +    // Set the canvas texture as the texture to "resolve"
 +    // the multisample texture to.
 +    renderPassDescriptor.colorAttachments[0].resolveTarget =
-+        canvasTexture.createView();
++        canvasTexture;
 ```
 
 *Resolving* is the process of taking the multisample texture and converting it to a

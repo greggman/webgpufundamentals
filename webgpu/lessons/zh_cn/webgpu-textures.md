@@ -166,7 +166,7 @@ const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
         { binding: 0, resource: sampler },
-        { binding: 1, resource: texture.createView() },
+        { binding: 1, resource: texture },
     ],
 });
 ```
@@ -273,7 +273,7 @@ pass.end();
       layout: pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: sampler },
-        { binding: 1, resource: texture.createView() },
+        { binding: 1, resource: texture },
       ],
     });
 +    bindGroups.push(bindGroup);
@@ -448,7 +448,7 @@ struct OurVertexShaderOutput {
       layout: pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: sampler },
-        { binding: 1, resource: texture.createView() },
+        { binding: 1, resource: texture },
 +        { binding: 2, resource: uniformBuffer},
       ],
     });
@@ -902,7 +902,7 @@ for (let i = 0; i < 8; ++i) {
             layout: pipeline.getBindGroupLayout(0),
             entries: [
                 { binding: 0, resource: sampler },
-                { binding: 1, resource: texture.createView() },
+                { binding: 1, resource: texture },
                 { binding: 2, resource: uniformBuffer },
             ],
         })

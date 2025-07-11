@@ -207,7 +207,7 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
     const bindGroup = device.createBindGroup({
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: texture.createView() },
+        { binding: 0, resource: texture },
       ],
     });
 

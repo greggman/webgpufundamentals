@@ -182,7 +182,7 @@ async function main() {
     // set it as the texture to render to.
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     // Set the size in the uniform values
     sizeValue[0] = 10;

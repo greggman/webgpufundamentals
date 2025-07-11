@@ -108,7 +108,7 @@ async function main() {
     layout: pipeline.getBindGroupLayout(0),
     entries: [
       { binding: 0, resource: histogramBuffer},
-      { binding: 1, resource: texture.createView() },
+      { binding: 1, resource: texture },
     ],
   });
 
@@ -120,7 +120,7 @@ async function main() {
   const renderPassDescriptor = {
     colorAttachments: [
       {
-        view: unusedTex.createView(),
+        view: unusedTex,
         clearValue: [0, 0, 0, 0],
         loadOp: 'clear',
         storeOp: 'store',

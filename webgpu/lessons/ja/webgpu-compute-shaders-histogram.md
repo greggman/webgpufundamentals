@@ -440,7 +440,7 @@ async function main() {
     layout: pipeline.getBindGroupLayout(0),
     entries: [
       { binding: 0, resource: histogramBuffer },
-      { binding: 1, resource: texture.createView() },
+      { binding: 1, resource: texture },
     ],
   });
 ```
@@ -1026,7 +1026,7 @@ const chunkSumModule = device.createShaderModule({
     entries: [
 -      { binding: 0, resource: histogramBuffer },
 +      { binding: 0, resource: chunksBuffer },
-      { binding: 1, resource: texture.createView() },
+      { binding: 1, resource: texture },
     ],
   });
 

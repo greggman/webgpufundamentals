@@ -152,7 +152,7 @@ async function main() {
     // set it as the texture to render to.
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     // Update the resolution in the uniform buffer
     resolutionValue.set([canvasTexture.width, canvasTexture.height]);

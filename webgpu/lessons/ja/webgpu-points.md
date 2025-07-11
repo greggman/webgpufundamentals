@@ -213,7 +213,7 @@ JavaScriptでは、ポイントごとにサイズ属性を追加し、`stepMode:
     // レンダリングするテクスチャとして設定します。
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    // ユニフォームバッファの解像度を更新します
 +    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
@@ -324,7 +324,7 @@ struct VSOutput {
     entries: [
       { binding: 0, resource: uniformBuffer },
 +      { binding: 1, resource: sampler },
-+      { binding: 2, resource: texture.createView() },
++      { binding: 2, resource: texture },
     ],
   });
 ```
@@ -604,7 +604,7 @@ struct VSOutput {
     // レンダリングするテクスチャとして設定します。
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     // ユニフォームバッファに行列を設定します
     const fov = 90 * Math.PI / 180;

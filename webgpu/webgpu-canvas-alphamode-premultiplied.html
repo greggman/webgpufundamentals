@@ -80,7 +80,7 @@ async function main() {
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     const { alpha } = settings;
     clearValue[3] = alpha;

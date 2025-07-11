@@ -204,10 +204,10 @@ async function initWebGPUPixelRender(webgpuCanvas) {
     }
 
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
-    multisampleRenderPassDescriptor.colorAttachments[0].view = multisampleTexture.createView();
-    multisampleRenderPassDescriptor.colorAttachments[0].resolveTarget = canvasTexture.createView();
+    multisampleRenderPassDescriptor.colorAttachments[0].view = multisampleTexture;
+    multisampleRenderPassDescriptor.colorAttachments[0].resolveTarget = canvasTexture;
 
     const encoder = device.createCommandEncoder({
       label: 'render quad encoder',

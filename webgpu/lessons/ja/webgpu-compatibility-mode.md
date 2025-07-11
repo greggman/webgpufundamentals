@@ -49,7 +49,7 @@ const myTexture = device.createTexture({
 
 ```js
 // myTextureを6層の2D配列として表示
-const as2DArray = myTexture.createView();
+const as2DArray = myTexture;
 
 // myTextureのレイヤー3を2Dテクスチャとして表示
 const as2D = myTexture.createView({
@@ -87,7 +87,7 @@ const bindGroup = device.createBindGroup({
     {
       binding,
       // 互換モードでのエラー：テクスチャはキューブマップであり、2D配列ではありません
-      resource: cubeTexture.createView(),
+      resource: cubeTexture,
     },
   ],
 })

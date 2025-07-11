@@ -244,7 +244,7 @@ uniform 버퍼와 스토리지 버퍼의 주요한 차이점은 아래와 같습
     // 캔버스 컨텍스트로부터 현재 텍스처를 얻어오고
     // 이를 렌더링을 수행할 텍스처로 설정
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder();
     const pass = encoder.beginRenderPass(renderPassDescriptor);
