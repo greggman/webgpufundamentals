@@ -521,7 +521,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: uniformBuffer },
+        { binding: 0, resource: { buffer: uniformBuffer }},
       ],
     });
 

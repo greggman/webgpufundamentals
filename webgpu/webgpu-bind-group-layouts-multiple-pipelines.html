@@ -106,7 +106,7 @@ async function main() {
     label: 'bindGroup for work buffer',
     layout: bindGroupLayout,
     entries: [
-      { binding: 0, resource: workBuffer },
+      { binding: 0, resource: { buffer: workBuffer } },
     ],
   });
 

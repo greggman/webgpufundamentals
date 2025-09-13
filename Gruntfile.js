@@ -194,7 +194,13 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('buildindex', function() {
-    generateIndex('out/webgpu');
+    let dirs = fs.readdirSync('out', { withFileTypes: true, recursive: true });
+    dirs = dirs.filter(dir => dir.isDirectory());
+    dirs = dirs.filter(dir => !fs.existsSync(path.join(dir.path, dir.name, 'index.html')));
+    dirs = dirs.filter(dir => !(/monaco-editor|types/.test(path.join(dir.path, dir.name))));
+    dirs.forEach(dir => {
+      generateIndex(path.join(dir.path, dir.name));
+    });
   });
 
   grunt.registerTask('serve', function() {

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <style>
+    :root {
+      color-scheme: light dark;
+      --cell-border: #ddd;
+      --odd-bg-color: rgba(0, 0, 0, 0.05);
+      --hover-bg-color: rgba(0, 0, 255, 0.1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --cell-border: #333;
+        --odd-bg-color: rgba(255, 255, 255, 0.05);
+        --hover-bg-color: rgba(192, 192, 255, 0.2);
+      }
+    }
+
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    html, body {
+      font-family: monospace;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+    }
+    a {
+      text-decoration: none;
+      width: 100%;
+      display: block;
+    }
+    table {
+      max-width: 900px;
+      border-collapse: collapse;
+    }
+    td {
+      border: 1px solid var(--cell-border);
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+    }
+    tbody td:nth-child(3) {
+      text-align: right;
+      width: 1%;
+    }
+    tbody td:nth-child(4) {
+      text-align: center;
+      white-space: pre;
+      width: 1%;
+    }
+    tr:nth-child(even) {
+      background-color: var(--odd-bg-color);
+    }
+    tr:hover {
+      background-color: var(--hover-bg-color);
+    }
+
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr><th></th><th>filename</th><th>size</th><th>date</th></tr>
+      </thead>
+      <tbody>
+<tr><td><a href="neg-x.jpg">🖼️</a></td><td><a href="neg-x.jpg">neg-x.jpg</a></td><td><a href="neg-x.jpg">586k</a></td><td><a href="neg-x.jpg">2025-09-07</a></td></tr>
+<tr><td><a href="neg-y.jpg">🖼️</a></td><td><a href="neg-y.jpg">neg-y.jpg</a></td><td><a href="neg-y.jpg">662k</a></td><td><a href="neg-y.jpg">2025-09-07</a></td></tr>
+<tr><td><a href="neg-z.jpg">🖼️</a></td><td><a href="neg-z.jpg">neg-z.jpg</a></td><td><a href="neg-z.jpg">710k</a></td><td><a href="neg-z.jpg">2025-09-07</a></td></tr>
+<tr><td><a href="pos-x.jpg">🖼️</a></td><td><a href="pos-x.jpg">pos-x.jpg</a></td><td><a href="pos-x.jpg">652k</a></td><td><a href="pos-x.jpg">2025-09-07</a></td></tr>
+<tr><td><a href="pos-y.jpg">🖼️</a></td><td><a href="pos-y.jpg">pos-y.jpg</a></td><td><a href="pos-y.jpg">625k</a></td><td><a href="pos-y.jpg">2025-09-07</a></td></tr>
+<tr><td><a href="pos-z.jpg">🖼️</a></td><td><a href="pos-z.jpg">pos-z.jpg</a></td><td><a href="pos-z.jpg">658k</a></td><td><a href="pos-z.jpg">2025-09-07</a></td></tr>
+      </tbody>
+    </table>
+  </body>
+</html>

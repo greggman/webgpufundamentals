@@ -312,7 +312,7 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
 <p>テクスチャを通常の<code class="notranslate" translate="no">TEXTURE_BINDING</code>として使用する場合、<code class="notranslate" translate="no">textureSample</code>のような関数を呼び出すことができます。これは、ミップレベル全体で最大16個のテクセルをロードし、それらをブレンドします。テクスチャを<code class="notranslate" translate="no">STORAGE_BINDING</code>として使用する場合、一度に1つのテクセルをロードおよび保存する<code class="notranslate" translate="no">textureLoad</code>および/または<code class="notranslate" translate="no">textureStore</code>のみを呼び出すことができます。</p>
 </li>
 </ul>
-<h2 id="ストレージテクスチャとしてのキャンバス">ストレージテクスチャとしてのキャンバス</h2>
+<h2 id="ストレージテクスチャとしてのキャンバス"><a id="canvas-as-storage-texture"></a> ストレージテクスチャとしてのキャンバス</h2>
 <p>キャンバステクスチャをストレージテクスチャとして使用できます。そのためには、ストレージテクスチャとして使用できるテクスチャを提供するようにコンテキストを構成します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
   context.configure({

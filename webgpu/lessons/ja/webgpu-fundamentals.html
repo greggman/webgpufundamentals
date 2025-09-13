@@ -778,7 +778,7 @@ WebGPUでこのデータを利用するには、GPU上にバッファを用意�
     label: 'bindGroup for work buffer',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: workBuffer },
+      { binding: 0, resource: { buffer: workBuffer } },
     ],
   });
 </pre>

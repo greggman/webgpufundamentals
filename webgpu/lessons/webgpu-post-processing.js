@@ -40,7 +40,7 @@ async function drawSine(elem) {
         var vsOutput: VSOutput;
         let xy = pos[vertexIndex];
         vsOutput.position = vec4f(xy, 0.0, 1.0);
-        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
         return vsOutput;
       }
 

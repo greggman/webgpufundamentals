@@ -351,7 +351,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: uniformBuffer},
+      { binding: 0, resource: { buffer: uniformBuffer }},
     ],
   });
 </pre>
@@ -489,7 +489,7 @@ const rand = (min, max) =&gt; {
 +      label: `bind group for obj: ${i}`,
 +      layout: pipeline.getBindGroupLayout(0),
 +      entries: [
-+        { binding: 0, resource: uniformBuffer},
++        { binding: 0, resource: { buffer: uniformBuffer }},
 +      ],
 +    });
 +
@@ -654,8 +654,8 @@ device.queue.submit([commandBuffer]);
       label: `bind group for obj: ${i}`,
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: staticUniformBuffer},
-+        { binding: 1, resource: uniformBuffer},
+        { binding: 0, resource: { buffer: staticUniformBuffer }},
++        { binding: 1, resource: { buffer: uniformBuffer }},
       ],
     });
 

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <style>
+    :root {
+      color-scheme: light dark;
+      --cell-border: #ddd;
+      --odd-bg-color: rgba(0, 0, 0, 0.05);
+      --hover-bg-color: rgba(0, 0, 255, 0.1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --cell-border: #333;
+        --odd-bg-color: rgba(255, 255, 255, 0.05);
+        --hover-bg-color: rgba(192, 192, 255, 0.2);
+      }
+    }
+
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    html, body {
+      font-family: monospace;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+    }
+    a {
+      text-decoration: none;
+      width: 100%;
+      display: block;
+    }
+    table {
+      max-width: 900px;
+      border-collapse: collapse;
+    }
+    td {
+      border: 1px solid var(--cell-border);
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+    }
+    tbody td:nth-child(3) {
+      text-align: right;
+      width: 1%;
+    }
+    tbody td:nth-child(4) {
+      text-align: center;
+      white-space: pre;
+      width: 1%;
+    }
+    tr:nth-child(even) {
+      background-color: var(--odd-bg-color);
+    }
+    tr:hover {
+      background-color: var(--hover-bg-color);
+    }
+
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr><th></th><th>filename</th><th>size</th><th>date</th></tr>
+      </thead>
+      <tbody>
+<tr><td><a href="gui-helpers.js">📄</a></td><td><a href="gui-helpers.js">gui-helpers.js</a></td><td><a href="gui-helpers.js">457b</a></td><td><a href="gui-helpers.js">2025-09-07</a></td></tr>
+<tr><td><a href="non-negative-rolling-average.js">📄</a></td><td><a href="non-negative-rolling-average.js">non-negative-rolling-average.js</a></td><td><a href="non-negative-rolling-average.js">779b</a></td><td><a href="non-negative-rolling-average.js">2025-09-07</a></td></tr>
+<tr><td><a href="rolling-average.js">📄</a></td><td><a href="rolling-average.js">rolling-average.js</a></td><td><a href="rolling-average.js">471b</a></td><td><a href="rolling-average.js">2025-09-07</a></td></tr>
+<tr><td><a href="timing-helper.js">📄</a></td><td><a href="timing-helper.js">timing-helper.js</a></td><td><a href="timing-helper.js">4k</a></td><td><a href="timing-helper.js">2025-09-07</a></td></tr>
+<tr><td><a href="unit-circle.js">📄</a></td><td><a href="unit-circle.js">unit-circle.js</a></td><td><a href="unit-circle.js">7k</a></td><td><a href="unit-circle.js">2025-09-07</a></td></tr>
+      </tbody>
+    </table>
+  </body>
+</html>

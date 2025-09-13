@@ -266,7 +266,7 @@ that fits in clip space.</p>
         var vsOutput: VSOutput;
         let xy = pos[vertexIndex];
         vsOutput.position = vec4f(xy, 0.0, 1.0);
-        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
         return vsOutput;
       }
 
@@ -469,7 +469,7 @@ and dark using a sine wave and taking the absolute value.</p>
         var vsOutput: VSOutput;
         let xy = pos[vertexIndex];
         vsOutput.position = vec4f(xy, 0.0, 1.0);
-        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
         return vsOutput;
       }
 
@@ -509,7 +509,7 @@ the effect on and off so we can compare effect to no effect.</p>
       entries: [
         { binding: 0, resource: renderTargetView },
         { binding: 1, resource: postProcessSampler },
-+        { binding: 2, resource: postProcessUniformBuffer },
++        { binding: 2, resource: { buffer: postProcessUniformBuffer }},
       ],
     });
 </pre>
@@ -573,7 +573,7 @@ sometimes this stuck out. Let’s add something to approximate that effect.</p>
         var vsOutput: VSOutput;
         let xy = pos[vertexIndex];
         vsOutput.position = vec4f(xy, 0.0, 1.0);
-        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
         return vsOutput;
       }
 
@@ -722,7 +722,7 @@ checking we can and choosing a texture format that supports it.</p>
 -        var vsOutput: VSOutput;
 -        let xy = pos[vertexIndex];
 -        vsOutput.position = vec4f(xy, 0.0, 1.0);
--        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+-        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
 -        return vsOutput;
 -      }
 

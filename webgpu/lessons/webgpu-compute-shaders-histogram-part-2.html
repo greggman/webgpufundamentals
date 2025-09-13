@@ -760,7 +760,7 @@ the scale buffer, and the texture</p>
           size: chunkSize * 4 * 4,
         },
       },
-      { binding: 1, resource: scaleBuffer},
+      { binding: 1, resource: { buffer: scaleBuffer }},
       { binding: 2, resource: texture.createView() },
     ],
   });
@@ -882,8 +882,8 @@ having to make special vertex data.</p>
       layout: drawHistogramPipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
-        { binding: 1, resource: uniformBuffer },
-        { binding: 2, resource: scaleBuffer},
+        { binding: 1, resource: { buffer: uniformBuffer } },
+        { binding: 2, resource: { buffer: scaleBuffer }},
       ],
     });
 </pre>
@@ -1096,8 +1096,8 @@ for each of the 2 histograms we want to draw</p>
       layout: drawHistogramPipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
-        { binding: 1, resource: uniformBuffer },
-        { binding: 2, resource: scaleBuffer},
+        { binding: 1, resource: { buffer: uniformBuffer } },
+        { binding: 2, resource: { buffer: scaleBuffer }},
       ],
     });
 
@@ -1118,7 +1118,7 @@ the bind groups that reference the texture every frame</p>
     const histogramBindGroup = device.createBindGroup({
       layout: histogramChunkPipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: chunksBuffer},
+        { binding: 0, resource: { buffer: chunksBuffer }},
         { binding: 1, resource: texture },
       ],
     });
@@ -1127,7 +1127,7 @@ the bind groups that reference the texture every frame</p>
       layout: scalePipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
-        { binding: 1, resource: scaleBuffer},
+        { binding: 1, resource: { buffer: scaleBuffer }},
         { binding: 2, resource: texture },
       ],
     });
@@ -1152,7 +1152,7 @@ get a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size#
         entries: [
           { binding: 0, resource: videoSampler },
           { binding: 1, resource: texture },
-          { binding: 2, resource: videoUniformBuffer},
+          { binding: 2, resource: { buffer: videoUniformBuffer }},
         ],
       });
 

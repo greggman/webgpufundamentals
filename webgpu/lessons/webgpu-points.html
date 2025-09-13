@@ -411,7 +411,7 @@ can remove the topology setting since we want the default <code class="notransla
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: uniformBuffer},
+      { binding: 0, resource: { buffer: uniformBuffer }},
     ],
   });
 </pre>
@@ -520,7 +520,7 @@ struct VSOutput {
   const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: uniformBuffer},
+      { binding: 0, resource: { buffer: uniformBuffer }},
 +      { binding: 1, resource: sampler },
 +      { binding: 2, resource: texture.createView() },
     ],
@@ -770,7 +770,7 @@ as a bindGroup to pass the uniform buffer our shader.</p>
   const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: uniformBuffer},
+      { binding: 0, resource: { buffer: uniformBuffer }},
     ],
   });
 </pre>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <style>
+    :root {
+      color-scheme: light dark;
+      --cell-border: #ddd;
+      --odd-bg-color: rgba(0, 0, 0, 0.05);
+      --hover-bg-color: rgba(0, 0, 255, 0.1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --cell-border: #333;
+        --odd-bg-color: rgba(255, 255, 255, 0.05);
+        --hover-bg-color: rgba(192, 192, 255, 0.2);
+      }
+    }
+
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    html, body {
+      font-family: monospace;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+    }
+    a {
+      text-decoration: none;
+      width: 100%;
+      display: block;
+    }
+    table {
+      max-width: 900px;
+      border-collapse: collapse;
+    }
+    td {
+      border: 1px solid var(--cell-border);
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+    }
+    tbody td:nth-child(3) {
+      text-align: right;
+      width: 1%;
+    }
+    tbody td:nth-child(4) {
+      text-align: center;
+      white-space: pre;
+      width: 1%;
+    }
+    tr:nth-child(even) {
+      background-color: var(--odd-bg-color);
+    }
+    tr:hover {
+      background-color: var(--hover-bg-color);
+    }
+
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr><th></th><th>filename</th><th>size</th><th>date</th></tr>
+      </thead>
+      <tbody>
+<tr><td><a href="dat.gui.min.js">📄</a></td><td><a href="dat.gui.min.js">dat.gui.min.js</a></td><td><a href="dat.gui.min.js">49k</a></td><td><a href="dat.gui.min.js">2025-09-07</a></td></tr>
+<tr><td><a href="dat.gui.module.js">📄</a></td><td><a href="dat.gui.module.js">dat.gui.module.js</a></td><td><a href="dat.gui.module.js">85k</a></td><td><a href="dat.gui.module.js">2025-09-07</a></td></tr>
+<tr><td><a href="jquery-3.3.1.slim.min.js">📄</a></td><td><a href="jquery-3.3.1.slim.min.js">jquery-3.3.1.slim.min.js</a></td><td><a href="jquery-3.3.1.slim.min.js">68k</a></td><td><a href="jquery-3.3.1.slim.min.js">2025-09-07</a></td></tr>
+<tr><td><a href="lzma.js">📄</a></td><td><a href="lzma.js">lzma.js</a></td><td><a href="lzma.js">5k</a></td><td><a href="lzma.js">2025-09-07</a></td></tr>
+<tr><td><a href="lzma_worker.js">📄</a></td><td><a href="lzma_worker.js">lzma_worker.js</a></td><td><a href="lzma_worker.js">134k</a></td><td><a href="lzma_worker.js">2025-09-07</a></td></tr>
+<tr><td><a href="model-viewer.3.3.0.min.js">📄</a></td><td><a href="model-viewer.3.3.0.min.js">model-viewer.3.3.0.min.js</a></td><td><a href="model-viewer.3.3.0.min.js">881k</a></td><td><a href="model-viewer.3.3.0.min.js">2025-09-07</a></td></tr>
+<tr><td><a href="muigui-0.x.module.js">📄</a></td><td><a href="muigui-0.x.module.js">muigui-0.x.module.js</a></td><td><a href="muigui-0.x.module.js">106k</a></td><td><a href="muigui-0.x.module.js">2025-09-07</a></td></tr>
+<tr><td><a href="pixel-perfect.js">📄</a></td><td><a href="pixel-perfect.js">pixel-perfect.js</a></td><td><a href="pixel-perfect.js">2k</a></td><td><a href="pixel-perfect.js">2025-09-07</a></td></tr>
+<tr><td><a href="split.min.js">📄</a></td><td><a href="split.min.js">split.min.js</a></td><td><a href="split.min.js">7k</a></td><td><a href="split.min.js">2025-09-07</a></td></tr>
+<tr><td><a href="svg.esm.js">📄</a></td><td><a href="svg.esm.js">svg.esm.js</a></td><td><a href="svg.esm.js">173k</a></td><td><a href="svg.esm.js">2025-09-07</a></td></tr>
+<tr><td><a href="tweakpane-3.1.7.min.js">📄</a></td><td><a href="tweakpane-3.1.7.min.js">tweakpane-3.1.7.min.js</a></td><td><a href="tweakpane-3.1.7.min.js">143k</a></td><td><a href="tweakpane-3.1.7.min.js">2025-09-07</a></td></tr>
+<tr><td><a href="twgl-full.module.js">📄</a></td><td><a href="twgl-full.module.js">twgl-full.module.js</a></td><td><a href="twgl-full.module.js">361k</a></td><td><a href="twgl-full.module.js">2025-09-07</a></td></tr>
+<tr><td><a href="webgpu-utils-1.x.module.js">📄</a></td><td><a href="webgpu-utils-1.x.module.js">webgpu-utils-1.x.module.js</a></td><td><a href="webgpu-utils-1.x.module.js">304k</a></td><td><a href="webgpu-utils-1.x.module.js">2025-09-07</a></td></tr>
+<tr><td><a href="webgpu-utils.module.js">📄</a></td><td><a href="webgpu-utils.module.js">webgpu-utils.module.js</a></td><td><a href="webgpu-utils.module.js">204k</a></td><td><a href="webgpu-utils.module.js">2025-09-07</a></td></tr>
+<tr><td><a href="wgpu-matrix.module.js">📄</a></td><td><a href="wgpu-matrix.module.js">wgpu-matrix.module.js</a></td><td><a href="wgpu-matrix.module.js">183k</a></td><td><a href="wgpu-matrix.module.js">2025-09-07</a></td></tr>
+      </tbody>
+    </table>
+  </body>
+</html>

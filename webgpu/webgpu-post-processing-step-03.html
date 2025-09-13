@@ -276,7 +276,7 @@ async function main() {
         var vsOutput: VSOutput;
         let xy = pos[vertexIndex];
         vsOutput.position = vec4f(xy, 0.0, 1.0);
-        vsOutput.texcoord = xy * vec2f(0.5) + vec2f(0.5);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
         return vsOutput;
       }
 
@@ -355,7 +355,7 @@ async function main() {
       entries: [
         { binding: 0, resource: renderTargetView },
         { binding: 1, resource: postProcessSampler },
-        { binding: 2, resource: postProcessUniformBuffer },
+        { binding: 2, resource: { buffer: postProcessUniformBuffer }},
       ],
     });
   }

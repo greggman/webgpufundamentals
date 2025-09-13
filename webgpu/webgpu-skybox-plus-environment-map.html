@@ -420,7 +420,7 @@ async function main() {
     label: 'bind group for object',
     layout: skyBoxPipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: skyBoxUniformBuffer},
+      { binding: 0, resource: { buffer: skyBoxUniformBuffer }},
       { binding: 1, resource: sampler },
       { binding: 2, resource: texture.createView({dimension: 'cube'}) },
     ],
@@ -467,7 +467,7 @@ async function main() {
     label: 'bind group for object',
     layout: envMapPipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: envMapUniformBuffer},
+      { binding: 0, resource: { buffer: envMapUniformBuffer }},
       { binding: 1, resource: sampler },
       { binding: 2, resource: texture.createView({dimension: 'cube'}) },
     ],

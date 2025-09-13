@@ -322,7 +322,7 @@ uniformValues.set([-0.5, -0.25], kOffsetOffset); // set the offset
 <p>接下来，正如<a href="../webgpu-fundamentals.html#a-draw-diagram">第一篇文章</a>中的图表所示，要让着色器了解我们的缓冲区，我们需要创建一个绑定组，并将缓冲区绑定到我们在着色器中设置的<code class="notranslate" translate="no"> @binding(?)</code> 上。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
-    entries: [{ binding: 0, resource: uniformBuffer }],
+    entries: [{ binding: 0, resource: { buffer: uniformBuffer } }],
 });
 </pre>
 <p>现在，在提交命令缓冲区之前，我们需要设置 <code class="notranslate" translate="no">uniformValues</code> 的剩余值，然后将这些值复制到 GPU 上的缓冲区。我们将
@@ -433,7 +433,7 @@ const rand = (min, max) =&gt; {
 +      label: `bind group for obj: ${i}`,
 +      layout: pipeline.getBindGroupLayout(0),
 +      entries: [
-+        { binding: 0, resource: uniformBuffer},
++        { binding: 0, resource: { buffer: uniformBuffer }},
 +      ],
 +    });
 +
@@ -589,8 +589,8 @@ device.queue.submit([commandBuffer]);
       label: `bind group for obj: ${i}`,
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: staticUniformBuffer},
-+        { binding: 1, resource: uniformBuffer},
+        { binding: 0, resource: { buffer: staticUniformBuffer }},
++        { binding: 1, resource: { buffer: uniformBuffer }},
       ],
     });
 

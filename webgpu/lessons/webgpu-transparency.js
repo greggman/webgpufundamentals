@@ -163,7 +163,7 @@ const drawBlendResultsP = deviceP.then(device => {
     entries: [
       { binding: 0, resource: sampler },
       { binding: 1, resource: srcTexture.createView() },
-      { binding: 2, resource: uniformBuffer},
+      { binding: 2, resource: { buffer: uniformBuffer }},
     ],
   });
 
@@ -172,7 +172,7 @@ const drawBlendResultsP = deviceP.then(device => {
     entries: [
       { binding: 0, resource: sampler },
       { binding: 1, resource: dstTexture.createView() },
-      { binding: 2, resource: uniformBuffer},
+      { binding: 2, resource: { buffer: uniformBuffer }},
     ],
   });
 
