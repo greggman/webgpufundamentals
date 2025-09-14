@@ -458,7 +458,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     });
 
 </pre>
-<p><a href="../webgpu-fundamentals.html#a-resizing">各キャンバスのサイズを変更する</a>ために<a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>も追加しましょう。</p>
+<p><a href="webgpu-fundamentals.html#a-resizing">各キャンバスのサイズを変更する</a>ために<a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>も追加しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const resizeObserver = new ResizeObserver(entries =&gt; {
     for (const entry of entries) {
       const canvas = entry.target;

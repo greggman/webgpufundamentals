@@ -266,7 +266,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </li>
 </ul>
 <p>上記のステップに従って最適化できる例を作成し、それを最適化できるようにしましょう。</p>
-<p>注：これは偽の例です。多数のキューブを描画するだけであり、<a href="../webgpu-storage-buffers.html#a-instancing">ストレージバッファ</a>と<a href="../webgpu-vertex-buffers.html#a-instancing">頂点バッファ</a>に関する記事で説明した<em>インスタンス化</em>を使用して物事を確実に最適化できます。さまざまな種類のオブジェクトを大量に処理することでコードを乱雑にしたくありませんでした。インスタンス化は、プロジェクトが同じモデルを多数使用する場合に最適化するための優れた方法です。植物、木、岩、ゴミなどは、インスタンス化を使用して最適化されることがよくあります。他のモデルの場合、それは間違いなくあまり一般的ではありません。</p>
+<p>注：これは偽の例です。多数のキューブを描画するだけであり、<a href="webgpu-storage-buffers.html#a-instancing">ストレージバッファ</a>と<a href="webgpu-vertex-buffers.html#a-instancing">頂点バッファ</a>に関する記事で説明した<em>インスタンス化</em>を使用して物事を確実に最適化できます。さまざまな種類のオブジェクトを大量に処理することでコードを乱雑にしたくありませんでした。インスタンス化は、プロジェクトが同じモデルを多数使用する場合に最適化するための優れた方法です。植物、木、岩、ゴミなどは、インスタンス化を使用して最適化されることがよくあります。他のモデルの場合、それは間違いなくあまり一般的ではありません。</p>
 <p>たとえば、テーブルには4、6、または8つの椅子があり、それらの椅子を描画するためにインスタンス化を使用する方がおそらく高速ですが、描画する500以上のもののリストで、椅子が唯一の例外である場合、椅子をインスタンス化を使用するように整理するが、インスタンス化を使用する他の状況を見つけられない最適なデータ編成を考え出す努力は、おそらく価値がありません。</p>
 <p>上記の段落の要点は、適切な場合にインスタンス化を使用することです。同じものを数百以上描画する場合は、インスタンス化がおそらく適切です。同じものを少数しか描画しない場合は、それらの少数のものを特別扱いする努力は、おそらく価値がありません。</p>
 <p>いずれにせよ、これが私たちのコードです。一般的に使用してきた初期化コードがあります。</p>
@@ -374,7 +374,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     `,
   });
 </pre>
-<p>このシェーダーモジュールは、<a href="../webgpu-lighting-point.html#a-specular">他の場所で説明されているスペキュラハイライト付きの点光源</a>と同様のライティングを使用します。ほとんどの3Dモデルはテクスチャを使用するため、テクスチャを含めるのが最善だと思いました。テクスチャを色で乗算して、各キューブの色を調整できるようにします。そして、ライティングと<a href="webgpu-perspective-projection.html">3Dでのキューブの投影</a>を行うために必要なすべてのユニフォーム値があります。</p>
+<p>このシェーダーモジュールは、<a href="webgpu-lighting-point.html#a-specular">他の場所で説明されているスペキュラハイライト付きの点光源</a>と同様のライティングを使用します。ほとんどの3Dモデルはテクスチャを使用するため、テクスチャを含めるのが最善だと思いました。テクスチャを色で乗算して、各キューブの色を調整できるようにします。そして、ライティングと<a href="webgpu-perspective-projection.html">3Dでのキューブの投影</a>を行うために必要なすべてのユニフォーム値があります。</p>
 <p>キューブのデータと、そのデータをバッファに入れる必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function createBufferWithData(device, data, usage) {
     const buffer = device.createBuffer({
@@ -649,7 +649,7 @@ const randomArrayElement = arr =&gt; arr[Math.random() * arr.length | 0];
   }
   requestAnimationFrame(render);
 </pre>
-<p>レンダーループ内で、レンダーパス記述子を更新します。また、深度テクスチャが存在しない場合、または持っているものがキャンバステクスチャとサイズが異なる場合は、深度テクスチャを作成します。これは、<a href="../webgpu-orthographic-projection.html#a-depth-textures">3Dに関する記事</a>で行いました。</p>
+<p>レンダーループ内で、レンダーパス記述子を更新します。また、深度テクスチャが存在しない場合、または持っているものがキャンバステクスチャとサイズが異なる場合は、深度テクスチャを作成します。これは、<a href="webgpu-orthographic-projection.html#a-depth-textures">3Dに関する記事</a>で行いました。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
     const canvasTexture = context.getCurrentTexture();

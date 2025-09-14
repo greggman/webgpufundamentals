@@ -238,7 +238,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <code class="notranslate" translate="no">device.queue.writeTexture</code>를 호출하여 데이터를 텍스처에 넣었습니다.
 <code class="notranslate" translate="no">device.queue</code>에는 또다른 함수인 <code class="notranslate" translate="no">device.queue.copyExternalImageToTexture</code>가 있는데,
 이 함수는 이미지를 텍스처로 복사할 수 있게 해줍니다.</p>
-<p>이 함수는 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>를 입력으로 받으니 <a href="../webgpu-textures.html#a-mag-filter">이전 글의 magFilter 예제</a>를 수정하여 몇 개 이미지를 로딩하도록
+<p>이 함수는 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>를 입력으로 받으니 <a href="webgpu-textures.html#a-mag-filter">이전 글의 magFilter 예제</a>를 수정하여 몇 개 이미지를 로딩하도록
 수정해보겠습니다.</p>
 <p>먼저 이미지로부터 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>를 반환하는 코드가 필요합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  async function loadImageBitmap(url) {
@@ -302,14 +302,14 @@ WebGPU에서 우리는 노멀 맵이나 높이(height) 맵등 색상이 아닌 �
 
 <p></p>
 <h2 id="gpu에서-밉-생성하기"><a id="a-generating-mips-on-the-gpu"></a>GPU에서 밉 생성하기</h2>
-<p><a href="../webgpu-textures.html#a-mipmap-filter">이전 글에서 우리는 밉맵도 생성했었습니다</a>.
+<p><a href="webgpu-textures.html#a-mipmap-filter">이전 글에서 우리는 밉맵도 생성했었습니다</a>.
 하지만 이전의 경우에는 우리가 이미지 데이터에 접근하기 쉬운 경우였습니다.
 이미지를 로딩할 때는 이미지를 2D 캔버스에 그리고, <code class="notranslate" translate="no">getImageData</code>를 호출해서 데이터를 얻은 뒤에 밉을 생성하여 업로드해야 합니다.
 이러한 과정은 꽤나 오래 걸릴 수 있습니다.
 또한 2D 캔버스 렌더링은 내부 구현에 의존적이기 때문에 데이터의 손실이 있을 수도 있습니다.</p>
 <p>우리가 밉맵을 생성한 방법은 이중선형 보간이었고, 이는 GPU가 <code class="notranslate" translate="no">minFilter: linear</code>를 수행하는 것과 동일한 알고리즘입니다.
 이러한 기능을 활용하여 GPU상에서 밉 레벨을 생성할 수 있습니다.</p>
-<p><a href="../webgpu-textures.html#a-mipmap-filter">이전 글의 밉맵 필터 예제</a>를 수정하여 이미지를 로딩하고 GPU를 사용해 밉을 만들어봅시다.</p>
+<p><a href="webgpu-textures.html#a-mipmap-filter">이전 글의 밉맵 필터 예제</a>를 수정하여 이미지를 로딩하고 GPU를 사용해 밉을 만들어봅시다.</p>
 <p>먼저, 텍스처를 생성하는 코드를 수정하여 밉 레벨을 만들도록 합시다.
 몇 개나 생성해야 할지는 아래와 같이 계산하면 됩니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numMipLevels = (...sizes) =&gt; {
@@ -601,7 +601,7 @@ WebGPU에서 우리는 노멀 맵이나 높이(height) 맵등 색상이 아닌 �
     return createTextureFromSource(device, imgBitmap, options);
   }
 </pre>
-<p>이러한 준비 과정으로 인해서 <a href="../webgpu-textures.html#a-mipmap-filter">mipmapFilter 예제</a>로부터 수정되는 부분은 아래밖에 없습니다.</p>
+<p>이러한 준비 과정으로 인해서 <a href="webgpu-textures.html#a-mipmap-filter">mipmapFilter 예제</a>로부터 수정되는 부분은 아래밖에 없습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const textures = [
 -    createTextureWithMips(createBlendedMipmap(), 'blended'),
 -    createTextureWithMips(createCheckedMipmap(), 'checker'),

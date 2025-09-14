@@ -302,7 +302,7 @@ struct VSOutput {
 <p><a href="https://www.w3.org/TR/webgpu/#dictdef-gpurenderpipelinedescriptor"><code class="notranslate" translate="no">pipeline</code>記述子</a>の<a href="https://www.w3.org/TR/webgpu/#dictdef-gpuvertexstate"><code class="notranslate" translate="no">vertex</code></a>エントリに、1つ以上の頂点バッファからデータを取得する方法を記述するために使用される<code class="notranslate" translate="no">buffers</code>配列を追加しました。最初の、そして唯一のバッファについて、バイト単位で<code class="notranslate" translate="no">arrayStride</code>を設定しました。この場合の<em>ストライド</em>は、バッファ内の1つの頂点のデータから、バッファ内の次の頂点のデータに進むために取得するバイト数です。</p>
 <div class="webgpu_center"><img src="../resources/vertex-buffer-one.svg" style="width: 1024px;"></div>
 <p>データは<code class="notranslate" translate="no">vec2f</code>であり、2つのfloat32数値なので、<code class="notranslate" translate="no">arrayStride</code>を8に設定しました。</p>
-<p>次に、属性の配列を定義します。1つしかありません。<code class="notranslate" translate="no">shaderLocation: 0</code>は、<code class="notranslate" translate="no">Vertex</code>構造体の<code class="notranslate" translate="no">location(0)</code>に対応します。<code class="notranslate" translate="no">offset: 0</code>は、この属性のデータが頂点バッファのバイト0から始まることを示します。最後に、<code class="notranslate" translate="no">format: 'float32x2'</code>は、WebGPUにバッファからデータを2つの32ビット浮動小数点数として取得するように指示します。（注：<code class="notranslate" translate="no">attributes</code>プロパティは、最初の記事の<a href="../webgpu-fundamentals.html#a-draw-diagram">単純化された描画図</a>に示されています）。</p>
+<p>次に、属性の配列を定義します。1つしかありません。<code class="notranslate" translate="no">shaderLocation: 0</code>は、<code class="notranslate" translate="no">Vertex</code>構造体の<code class="notranslate" translate="no">location(0)</code>に対応します。<code class="notranslate" translate="no">offset: 0</code>は、この属性のデータが頂点バッファのバイト0から始まることを示します。最後に、<code class="notranslate" translate="no">format: 'float32x2'</code>は、WebGPUにバッファからデータを2つの32ビット浮動小数点数として取得するように指示します。（注：<code class="notranslate" translate="no">attributes</code>プロパティは、最初の記事の<a href="webgpu-fundamentals.html#a-draw-diagram">単純化された描画図</a>に示されています）。</p>
 <p>頂点データを保持するバッファの使用法を<code class="notranslate" translate="no">STORAGE</code>から<code class="notranslate" translate="no">VERTEX</code>に変更し、バインドグループから削除する必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const vertexStorageBuffer = device.createBuffer({
 -    label: 'storage buffer vertices',
@@ -790,7 +790,7 @@ struct VSOutput {
 +    colorOffset += 9;  // 余分なバイトと位置をスキップします
   };
 </pre>
-<p>上記では、<code class="notranslate" translate="no">vertexData</code>と同じデータの<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"><code class="notranslate" translate="no">Uint8Array</code></a>ビューである<code class="notranslate" translate="no">colorData</code>を作成します。これが不明な場合は、<a href="../webgpu-memory-layout.html#multiple-views-of-the-same-arraybuffer">データメモリレイアウトに関する記事</a>を確認してください。</p>
+<p>上記では、<code class="notranslate" translate="no">vertexData</code>と同じデータの<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"><code class="notranslate" translate="no">Uint8Array</code></a>ビューである<code class="notranslate" translate="no">colorData</code>を作成します。これが不明な場合は、<a href="webgpu-memory-layout.html#multiple-views-of-the-same-arraybuffer">データメモリレイアウトに関する記事</a>を確認してください。</p>
 <p>次に、<code class="notranslate" translate="no">colorData</code>を使用して色を挿入し、0↔1から0↔255に展開します。</p>
 <p>この（頂点ごとの）データのメモリレイアウトは次のようになります。</p>
 <div class="webgpu_center"><img src="../resources/vertex-buffer-f32x2-u8x4.svg" style="width: 1024px;"></div>

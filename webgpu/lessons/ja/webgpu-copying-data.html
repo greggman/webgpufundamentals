@@ -482,7 +482,7 @@ buffer.unmap();
 
 console.log(f32[0]); // undefinedを出力します
 </pre>
-<p><a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">最初の記事</a>で、ストレージバッファ内の数値を2倍にし、その結果をマップ可能なバッファにコピーして、結果を読み取るためにマップした例をすでに見てきました。</p>
+<p><a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">最初の記事</a>で、ストレージバッファ内の数値を2倍にし、その結果をマップ可能なバッファにコピーして、結果を読み取るためにマップした例をすでに見てきました。</p>
 <p>もう1つの例は、<a href="../webgpu-compute-shaders.md">コンピュートシェーダーの基本</a>に関する記事です。ここでは、さまざまな<code class="notranslate" translate="no">@builtin</code>コンピュートシェーダーの値をストレージバッファに出力しました。次に、それらの結果をマップ可能なバッファにコピーし、結果を読み取るためにマップしました。</p>
 <h2 id="mappedatcreation"><a id="a-mapped-at-creation"></a>mappedAtCreation</h2>
 <p><code class="notranslate" translate="no">mappedAtCreation: true</code>は、バッファを作成するときに追加できるフラグです。この場合、バッファには<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>も<code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE</code>も使用法フラグは必要ありません。</p>

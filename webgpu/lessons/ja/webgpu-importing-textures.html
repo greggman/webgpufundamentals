@@ -234,7 +234,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
 <p><a href="webgpu-textures.html">前の記事</a>でテクスチャの使用に関するいくつかの基本を説明しました。この記事では、画像をテクスチャに読み込むことと、GPUでミップマップを生成することについて説明します。</p>
 <p>前の記事では、<code class="notranslate" translate="no">device.createTexture</code>を呼び出してテクスチャを作成し、<code class="notranslate" translate="no">device.queue.writeTexture</code>を呼び出してテクスチャにデータを入れました。<code class="notranslate" translate="no">device.queue</code>には、画像をテクスチャにコピーできる<code class="notranslate" translate="no">device.queue.copyExternalImageToTexture</code>という別の関数があります。</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>を受け取ることができるので、<a href="../webgpu-textures.html#a-mag-filter">前の記事のmagFilterの例</a>を取り上げ、いくつかの画像を読み込むように変更しましょう。</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>を受け取ることができるので、<a href="webgpu-textures.html#a-mag-filter">前の記事のmagFilterの例</a>を取り上げ、いくつかの画像を読み込むように変更しましょう。</p>
 <p>まず、画像から<a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>を取得するためのコードが必要です。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  async function loadImageBitmap(url) {
     const res = await fetch(url);
@@ -290,9 +290,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <p></p>
 <h2 id="gpuでミップを生成する"><a id="a-generating-mips-on-the-gpu"></a>GPUでミップを生成する</h2>
-<p><a href="../webgpu-textures.html#a-mipmap-filter">前の記事では、ミップマップも生成しました</a>が、その場合、画像データに簡単にアクセスできました。画像を読み込むときに、その画像を2Dキャンバスに描画し、<code class="notranslate" translate="no">getImageData</code>を呼び出してデータを取得し、最後にミップを生成してアップロードすることができました。これはかなり遅くなります。また、キャンバス2Dのレンダリング方法は意図的に実装に依存するため、損失が発生する可能性もあります。</p>
+<p><a href="webgpu-textures.html#a-mipmap-filter">前の記事では、ミップマップも生成しました</a>が、その場合、画像データに簡単にアクセスできました。画像を読み込むときに、その画像を2Dキャンバスに描画し、<code class="notranslate" translate="no">getImageData</code>を呼び出してデータを取得し、最後にミップを生成してアップロードすることができました。これはかなり遅くなります。また、キャンバス2Dのレンダリング方法は意図的に実装に依存するため、損失が発生する可能性もあります。</p>
 <p>ミップレベルを生成したとき、バイリニア補間を行いました。これは、GPUが<code class="notranslate" translate="no">minFilter: linear</code>で行うこととまったく同じです。この機能を使用して、GPUでミップレベルを生成できます。</p>
-<p><a href="../webgpu-textures.html#a-mipmap-filter">前の記事のmipmapFilterの例</a>を変更して、画像を読み込み、GPUを使用してミップを生成するようにしましょう。</p>
+<p><a href="webgpu-textures.html#a-mipmap-filter">前の記事のmipmapFilterの例</a>を変更して、画像を読み込み、GPUを使用してミップを生成するようにしましょう。</p>
 <p>まず、テクスチャを作成するコードを変更して、ミップレベルを作成するようにします。作成する数を把握する必要があり、次のように計算できます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numMipLevels = (...sizes) =&gt; {
     const maxSize = Math.max(...sizes);
@@ -527,7 +527,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </li>
 </ul>
 <blockquote>
-<p>注：この関数は2Dテクスチャのみを処理します。<a href="../webgpu-cube-maps.html#a-texture-helpers">キューブマップに関する記事</a>では、この関数を拡張して2D配列テクスチャとキューブマップを処理する方法について説明しています。</p>
+<p>注：この関数は2Dテクスチャのみを処理します。<a href="webgpu-cube-maps.html#a-texture-helpers">キューブマップに関する記事</a>では、この関数を拡張して2D配列テクスチャとキューブマップを処理する方法について説明しています。</p>
 </blockquote>
 <h2 id="単純な画像読み込み関数"><a id="a-texture-helpers"></a>単純な画像読み込み関数</h2>
 <p>画像をテクスチャに読み込み、ミップを生成するのを簡単にするためのサポート関数をいくつか作成しましょう。</p>
@@ -564,7 +564,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return createTextureFromSource(device, imgBitmap, options);
   }
 </pre>
-<p>これらの設定で、<a href="../webgpu-textures.html#a-mipmap-filter">mipmapFilterサンプル</a>への唯一の大きな変更はこれです。</p>
+<p>これらの設定で、<a href="webgpu-textures.html#a-mipmap-filter">mipmapFilterサンプル</a>への唯一の大きな変更はこれです。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const textures = [
 -    createTextureWithMips(createBlendedMipmap(), 'blended'),
 -    createTextureWithMips(createCheckedMipmap(), 'checker'),

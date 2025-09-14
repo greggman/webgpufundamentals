@@ -330,7 +330,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </pre>
 <p>위에서 우리는 색상을 녹색으로 설정했습니다.
 오프셋은 삼각형을 왼쪽으로 캔버스의 1/4만큼, 아래쪽으로 캔버스의 1/8만큼 이동합니다 (클립 공간은 -1에서 1 사이여서 2유닛이고, 따라서 2유닛의 1/8은 0.25임).</p>
-<p>다음으로 <a href="../webgpu-fundamentals.html#a-draw-diagram">첫 번째 글의 다이어그램에서</a> 셰이더에게 버퍼에 대해 알려준 것처럼, 우리는 바인드 그룹을 만들고 해당 버퍼를 셰이더에서 설정한 것과 동일한 <code class="notranslate" translate="no">@binding(?)</code>에 바인딩해야 합니다.</p>
+<p>다음으로 <a href="webgpu-fundamentals.html#a-draw-diagram">첫 번째 글의 다이어그램에서</a> 셰이더에게 버퍼에 대해 알려준 것처럼, 우리는 바인드 그룹을 만들고 해당 버퍼를 셰이더에서 설정한 것과 동일한 <code class="notranslate" translate="no">@binding(?)</code>에 바인딩해야 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [

@@ -543,7 +543,7 @@ fn srgbLuminance(color: vec3f) -&gt; f32 {
     },
   });
 </pre>
-<p>画像を読み込んだ後、テクスチャを作成してデータをコピーする必要があります。<a href="../webgpu-importing-textures.html#a-create-texture-from-source">テクスチャへの画像の読み込みに関する記事</a>で書いた<code class="notranslate" translate="no">createTextureFromSource</code>関数を使用します。</p>
+<p>画像を読み込んだ後、テクスチャを作成してデータをコピーする必要があります。<a href="webgpu-importing-textures.html#a-create-texture-from-source">テクスチャへの画像の読み込みに関する記事</a>で書いた<code class="notranslate" translate="no">createTextureFromSource</code>関数を使用します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg');
   const texture = createTextureFromSource(device, imgBitmap);
 </pre>

@@ -402,7 +402,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </ol>
 <h2 id="破棄"><a href="../a-discard"></a>破棄</h2>
 <p><code class="notranslate" translate="no">discard</code>は、フラグメントシェーダーで使用して現在のフラグメントを破棄したり、言い換えれば、ピクセルを描画しないようにしたりできるWGSLステートメントです。</p>
-<p><a href="../webgpu-inter-stage-variables.html#a-builtin-position">ステージ間変数に関する記事</a>の<code class="notranslate" translate="no">@builtin(position)</code>を使用して、フラグメントシェーダーでチェッカーボードを描画する例を取り上げましょう。</p>
+<p><a href="webgpu-inter-stage-variables.html#a-builtin-position">ステージ間変数に関する記事</a>の<code class="notranslate" translate="no">@builtin(position)</code>を使用して、フラグメントシェーダーでチェッカーボードを描画する例を取り上げましょう。</p>
 <p>2色のチェッカーボードを描画する代わりに、2つのケースのいずれかを破棄します。</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
 -  let red = vec4f(1, 0, 0, 1);
@@ -463,7 +463,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 </pre>
 <p>ここで、<code class="notranslate" translate="no">threshold</code>は、ユニフォームからの値、定数、または適切なものであってもかまいません。</p>
-<p>これは、スプライトや、草や葉のような葉に使用されるのが最も一般的です。なぜなら、描画していて、<a href="../webgpu-orthograpic-projection.html#a-depth-textures">正射影に関する記事</a>で導入した深度テクスチャを使用している場合、スプライト、葉、または草の葉を描画すると、現在描画しているものの後ろにあるスプライト、葉、または草は、アルファ値が0であっても、深度テクスチャをまだ更新しているため、描画されません。したがって、描画する代わりに破棄します。これについては、別の記事で詳しく説明します。</p>
+<p>これは、スプライトや、草や葉のような葉に使用されるのが最も一般的です。なぜなら、描画していて、<a href="webgpu-orthograpic-projection.html#a-depth-textures">正射影に関する記事</a>で導入した深度テクスチャを使用している場合、スプライト、葉、または草の葉を描画すると、現在描画しているものの後ろにあるスプライト、葉、または草は、アルファ値が0であっても、深度テクスチャをまだ更新しているため、描画されません。したがって、描画する代わりに破棄します。これについては、別の記事で詳しく説明します。</p>
 <h2 id="ブレンド設定"><a href="../a-blending"></a>ブレンド設定</h2>
 <p>最後に、ブレンド設定について説明します。レンダーパイプラインを作成するとき、フラグメントシェーダーの各<code class="notranslate" translate="no">target</code>に対して、ブレンディング状態を設定できます。つまり、これまでの他の例の典型的なパイプラインは次のとおりです。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const pipeline = device.createRenderPipeline({
@@ -644,7 +644,7 @@ function createSourceImage(size) {
 </div>
 
 <p></p>
-<p>両方ができたので、<a href="../webgpu-import-textures.html#a-loading-canvas">テクスチャのインポートに関する記事</a>のキャンバスインポートの例を変更できます。</p>
+<p>両方ができたので、<a href="webgpu-import-textures.html#a-loading-canvas">テクスチャのインポートに関する記事</a>のキャンバスインポートの例を変更できます。</p>
 <p>まず、2つのキャンバス画像を作成しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const size = 300;
 const srcCanvas = createSourceImage(size);

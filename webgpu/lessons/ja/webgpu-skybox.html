@@ -273,7 +273,7 @@ struct VSOutput {
   return textureSample(ourTexture, ourSampler, normalize(t.xyz / t.w) * vec3f(1, 1, -1));
 }
 </pre>
-<p>注：<a href="../webgpu-environment-maps.html#a-flipped">前の記事で説明した理由</a>により、z方向を-1で乗算します。</p>
+<p>注：<a href="webgpu-environment-maps.html#a-flipped">前の記事で説明した理由</a>により、z方向を-1で乗算します。</p>
 <p>パイプラインには、頂点ステージにバッファがありません。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
     label: 'no attributes',

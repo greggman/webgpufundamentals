@@ -385,7 +385,7 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
   });
 </pre>
 <p>ストレージテクスチャを<code class="notranslate" translate="no">write</code>としてマークし、シェーダー自体で特定のテクスチャ形式を指定する必要があったことに注意してください。<code class="notranslate" translate="no">TEXTURE_BINDING</code>とは異なり、<code class="notranslate" translate="no">STORAGE_BINDING</code>はテクスチャの正確な形式を知る必要があります。</p>
-<p>設定は、<a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">最初の記事で記述したコンピュートシェーダー</a>に似ています。シェーダーモジュールを作成した後、それを使用するコンピュートパイプラインを設定します。</p>
+<p>設定は、<a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">最初の記事で記述したコンピュートシェーダー</a>に似ています。シェーダーモジュールを作成した後、それを使用するコンピュートパイプラインを設定します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createComputePipeline({
     label: 'circles in storage texture',
     layout: 'auto',

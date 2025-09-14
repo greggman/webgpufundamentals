@@ -321,7 +321,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   uniformValues.set([-0.5, -0.25], kOffsetOffset);      // オフセットを設定します
 </pre>
 <p>上記では、色を緑に設定しています。オフセットは、三角形をキャンバスの左1/4、下1/8に移動します。（クリップ空間は-1から1まで、つまり2単位の幅なので、0.25は2の1/8です）。</p>
-<p>次に、<a href="../webgpu-fundamentals.html#a-draw-diagram">最初の記事の図が示すように</a>、シェーダーにバッファについて伝えるには、バインドグループを作成してバッファをバインドする必要があります。シェーダーで設定したのと同じ<code class="notranslate" translate="no">@group(?)</code>と<code class="notranslate" translate="no">@binding(?)</code>を渡す必要があります。</p>
+<p>次に、<a href="webgpu-fundamentals.html#a-draw-diagram">最初の記事の図が示すように</a>、シェーダーにバッファについて伝えるには、バインドグループを作成してバッファをバインドする必要があります。シェーダーで設定したのと同じ<code class="notranslate" translate="no">@group(?)</code>と<code class="notranslate" translate="no">@binding(?)</code>を渡す必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [

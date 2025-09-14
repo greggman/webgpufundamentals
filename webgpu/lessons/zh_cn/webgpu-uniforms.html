@@ -319,7 +319,7 @@ uniformValues.set([0, 1, 0, 1], kColorOffset); // set the color
 uniformValues.set([-0.5, -0.25], kOffsetOffset); // set the offset
 </pre>
 <p>上面我们将颜色设置为绿色。偏移量将使三角形向画布左侧移动 1/4，向下移动 1/8（请记住，剪辑空间从 -1 到 1 的宽度为 2 个单位，因此 0.25 是 2 的 1/8）。</p>
-<p>接下来，正如<a href="../webgpu-fundamentals.html#a-draw-diagram">第一篇文章</a>中的图表所示，要让着色器了解我们的缓冲区，我们需要创建一个绑定组，并将缓冲区绑定到我们在着色器中设置的<code class="notranslate" translate="no"> @binding(?)</code> 上。</p>
+<p>接下来，正如<a href="webgpu-fundamentals.html#a-draw-diagram">第一篇文章</a>中的图表所示，要让着色器了解我们的缓冲区，我们需要创建一个绑定组，并将缓冲区绑定到我们在着色器中设置的<code class="notranslate" translate="no"> @binding(?)</code> 上。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [{ binding: 0, resource: { buffer: uniformBuffer } }],

@@ -352,9 +352,9 @@ const bindGroup = device.createBindGroup({
 <p>この制限もそれほど大きな問題ではありません。テクスチャからレイヤーのサブセットを選択したいプログラムはほとんどありません。</p>
 <h2 id="互換モードでのミップマップの生成"><a id="a-generating-mipmaps"></a> 互換モードでのミップマップの生成</h2>
 <p>ただし、これら両方の制限が発生する場所が1つあり、それは一般的なユースケースであるミップマップの生成時です。</p>
-<p><a href="../webgpu-importing-textures.html#a-generating-mips-on-the-gpu">テクスチャへの画像のインポートに関する記事</a>で、GPUベースのミップマップジェネレーターを作成したことを思い出してください。<a href="../webgpu-cube-maps.html#a-texture-helpers">キューブマップに関する記事</a>で、2D配列とキューブマップのミップマップを生成するようにその関数を変更しました。そのバージョンでは、テクスチャの各レイヤーを常に<code class="notranslate" translate="no">'2d'</code>ディメンションで表示して、テクスチャの1つのレイヤーのみを参照していました。これは、上記の理由により互換モードでは機能しません。<code class="notranslate" translate="no">'2d-array'</code>または<code class="notranslate" translate="no">'cube'</code>テクスチャの<code class="notranslate" translate="no">'2d'</code>ビューを使用することはできません。また、読み取るレイヤーを選択するためにバインドグループで個々のレイヤーを選択することもできません。</p>
+<p><a href="webgpu-importing-textures.html#a-generating-mips-on-the-gpu">テクスチャへの画像のインポートに関する記事</a>で、GPUベースのミップマップジェネレーターを作成したことを思い出してください。<a href="webgpu-cube-maps.html#a-texture-helpers">キューブマップに関する記事</a>で、2D配列とキューブマップのミップマップを生成するようにその関数を変更しました。そのバージョンでは、テクスチャの各レイヤーを常に<code class="notranslate" translate="no">'2d'</code>ディメンションで表示して、テクスチャの1つのレイヤーのみを参照していました。これは、上記の理由により互換モードでは機能しません。<code class="notranslate" translate="no">'2d-array'</code>または<code class="notranslate" translate="no">'cube'</code>テクスチャの<code class="notranslate" translate="no">'2d'</code>ビューを使用することはできません。また、読み取るレイヤーを選択するためにバインドグループで個々のレイヤーを選択することもできません。</p>
 <p>コードを互換モードで動作させるには、作成されたのと同じビューディメンションのテクスチャを操作する必要があり、<code class="notranslate" translate="no">createView</code>を介してレイヤーを選択するのではなく、すべてのレイヤーにアクセスできるテクスチャを渡し、シェーダー自体で目的のレイヤーを選択する必要があります。</p>
-<p>では、やってみましょう！<a href="../webgpu-cube-maps.html#a-texture-helpers">キューブマップに関する記事</a>の<code class="notranslate" translate="no">generateMips</code>のコードから始めます。</p>
+<p>では、やってみましょう！<a href="webgpu-cube-maps.html#a-texture-helpers">キューブマップに関する記事</a>の<code class="notranslate" translate="no">generateMips</code>のコードから始めます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
     let sampler;
     let module;
@@ -857,7 +857,7 @@ struct VSOutput {
 </li>
 <li>
 <h2 id="interpolationlinearとinterpolation-sampleはサポートされていません。"><code class="notranslate" translate="no">@interpolation(linear)</code>と<code class="notranslate" translate="no">@interpolation(..., sample)</code>はサポートされていません。</h2>
-<p>これらは、<a href="../webgpu-inter-stage-variables.html#a-interpolate">ステージ間変数に関する記事</a>で簡単に触れました。</p>
+<p>これらは、<a href="webgpu-inter-stage-variables.html#a-interpolate">ステージ間変数に関する記事</a>で簡単に触れました。</p>
 </li>
 <li>
 <h2 id="interpolateflatとinterpolateflat-firstはサポートされていません。"><code class="notranslate" translate="no">@interpolate(flat)</code>と<code class="notranslate" translate="no">@interpolate(flat, first)</code>はサポートされていません。</h2>

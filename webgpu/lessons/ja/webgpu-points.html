@@ -310,7 +310,7 @@ struct VSOutput {
 </div>
 
 <p></p>
-<p>残念ながら、それらはすべて1ピクセルのサイズしかありません。1ピクセルサイズのポイントは、WebGPUがサポートするすべてです。もっと大きなものが必要な場合は、自分で行う必要があります。幸いなことに、それは簡単です。クワッドを作成し、<a href="../webgpu-vertex-buffers.html#a-instancing">インスタンス化</a>を使用するだけです。</p>
+<p>残念ながら、それらはすべて1ピクセルのサイズしかありません。1ピクセルサイズのポイントは、WebGPUがサポートするすべてです。もっと大きなものが必要な場合は、自分で行う必要があります。幸いなことに、それは簡単です。クワッドを作成し、<a href="webgpu-vertex-buffers.html#a-instancing">インスタンス化</a>を使用するだけです。</p>
 <p>頂点シェーダーにクワッドとサイズ属性を追加しましょう。また、描画しているテクスチャのサイズを渡すためのユニフォームも追加しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
   @location(0) position: vec2f,

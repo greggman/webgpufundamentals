@@ -281,7 +281,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li>最終的なテクスチャと同じサイズのマルチサンプルテクスチャを作成します。</li>
 <li>レンダーパスをマルチサンプルテクスチャにレンダリングし、最終的なテクスチャ（キャンバス）に<em>解決</em>するように設定します。</li>
 </ol>
-<p>簡単にするために、<a href="../webgpu-fundamentals.html#a-resizing">基礎に関する記事</a>の最後にあるレスポンシブな三角形の例を取り上げ、マルチサンプリングを追加しましょう。</p>
+<p>簡単にするために、<a href="webgpu-fundamentals.html#a-resizing">基礎に関する記事</a>の最後にあるレスポンシブな三角形の例を取り上げ、マルチサンプリングを追加しましょう。</p>
 <h3 id="パイプラインをマルチサンプルテクスチャにレンダリングするように設定する">パイプラインをマルチサンプルテクスチャにレンダリングするように設定する</h3>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
     label: 'our hardcoded red triangle pipeline',
@@ -389,7 +389,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <p><code class="notranslate" translate="no">colorAttachment[0].resolveTarget</code>を設定すると、WebGPUに「このレンダーパスのすべての描画が終了したら、マルチサンプルテクスチャを<code class="notranslate" translate="no">resolveTarget</code>に設定されたテクスチャにダウンスケールする」と指示します。複数のレンダーパスがある場合は、おそらく最後のパスまで解決したくないでしょう。最後のパスで解決するのが最も高速ですが、解決するためだけに空の最後のレンダーパスを作成することも完全に許容されます。最初のパス以外のすべてのパスで<code class="notranslate" translate="no">loadOp</code>を<code class="notranslate" translate="no">'clear'</code>ではなく<code class="notranslate" translate="no">'load'</code>に設定するようにしてください。そうしないと、クリアされます。</p>
 <h2 id="オプションで、各サンプルポイントでフラグメントシェーダーを実行できます。">オプションで、各サンプルポイントでフラグメントシェーダーを実行できます。</h2>
 <p>上記では、フラグメントシェーダーはマルチサンプルテクスチャの4つのサンプルごとに1回しか実行されないと述べました。1回実行し、三角形の内側にあるサンプルに結果を格納します。これが、解像度を4倍にしてレンダリングするよりも高速な理由です。</p>
-<p><a href="../webgpu-inter-stage-variables.html#a-interpolate">ステージ間変数に関する記事</a>では、<code class="notranslate" translate="no">@interpolate(...)</code>属性を使用してステージ間変数を補間する方法を説明しました。1つのオプションは<code class="notranslate" translate="no">sample</code>で、この場合、フラグメントシェーダーはサンプルごとに1回実行されます。また、<code class="notranslate" translate="no">@builtin(sample_index)</code>のような組み込みもあり、現在作業しているサンプルを教えてくれます。また、<code class="notranslate" translate="no">@builtin(sample_mask)</code>は、入力として、三角形の内側にあるサンプルを教えてくれ、出力として、サンプルポイントが更新されるのを防ぐことができます。</p>
+<p><a href="webgpu-inter-stage-variables.html#a-interpolate">ステージ間変数に関する記事</a>では、<code class="notranslate" translate="no">@interpolate(...)</code>属性を使用してステージ間変数を補間する方法を説明しました。1つのオプションは<code class="notranslate" translate="no">sample</code>で、この場合、フラグメントシェーダーはサンプルごとに1回実行されます。また、<code class="notranslate" translate="no">@builtin(sample_index)</code>のような組み込みもあり、現在作業しているサンプルを教えてくれます。また、<code class="notranslate" translate="no">@builtin(sample_mask)</code>は、入力として、三角形の内側にあるサンプルを教えてくれ、出力として、サンプルポイントが更新されるのを防ぐことができます。</p>
 <h2 id="centerとcentroid"><code class="notranslate" translate="no">center</code>と<code class="notranslate" translate="no">centroid</code></h2>
 <p>3つの<em>サンプリング</em>補間モードがあります。上記では、フラグメントシェーダーがサンプルごとに1回呼び出される<code class="notranslate" translate="no">'sample'</code>モードについて説明しました。他の2つのモードは、デフォルトの<code class="notranslate" translate="no">'center'</code>と<code class="notranslate" translate="no">'centroid'</code>です。</p>
 <ul>

@@ -279,7 +279,7 @@ for (const canvas of faceCanvases) {
 </div>
 
 <p></p>
-<p>次に、キューブマップを使用してそれらをキューブに適用しましょう。<a href="../webgpu-importing-textures.html#a-texture-atlases">テクスチャへの画像のインポートに関する記事</a>のテクスチャアトラスの例のコードから始めます。</p>
+<p>次に、キューブマップを使用してそれらをキューブに適用しましょう。<a href="webgpu-importing-textures.html#a-texture-atlases">テクスチャへの画像のインポートに関する記事</a>のテクスチャアトラスの例のコードから始めます。</p>
 <p>まず、キューブマップを使用するようにシェーダーを変更しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
   matrix: mat4x4f,
@@ -638,7 +638,7 @@ struct VSOutput {
 <li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0, 0, 1))</code> =&gt; レイヤー4の中心</li>
 <li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0, 0,-1))</code> =&gt; レイヤー5の中心</li>
 </ul>
-<p>キューブをテクスチャリングするためにキューブマップを使用することは、通常、キューブマップが使用される目的では<strong>ありません</strong>。キューブをテクスチャリングする<em>正しい</em>、またはむしろ標準的な方法は、<a href="../webgpu-importing-textures.html#a-texture-atlases">前に述べた</a>ようにテクスチャアトラスを使用することです。この記事のポイントは、キューブマップの概念を紹介し、方向（法線）を渡すと、その方向のキューブの色が返されることを示すことでした。</p>
+<p>キューブをテクスチャリングするためにキューブマップを使用することは、通常、キューブマップが使用される目的では<strong>ありません</strong>。キューブをテクスチャリングする<em>正しい</em>、またはむしろ標準的な方法は、<a href="webgpu-importing-textures.html#a-texture-atlases">前に述べた</a>ようにテクスチャアトラスを使用することです。この記事のポイントは、キューブマップの概念を紹介し、方向（法線）を渡すと、その方向のキューブの色が返されることを示すことでした。</p>
 <p>キューブマップとは何か、そしてそれを設定する方法を学んだので、キューブマップは何に使用されるのでしょうか？おそらく、キューブマップが最も一般的に使用されるのは、<a href="webgpu-environment-maps.html"><em>環境マップ</em></a>としてです。</p>
 
     </div>

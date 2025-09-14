@@ -286,7 +286,7 @@ for (const canvas of faceCanvases) {
 
 <p></p>
 <p>이제 큐브맵을 사용하여 이 이미지를 큐브에 적용해 봅시다.
-<a href="../webgpu-importing-textures.html#a-texture-atlases">이미지 로딩</a>의 텍스처 아틀라스 예제 코드를 가지고 시작해 보겠습니다.</p>
+<a href="webgpu-importing-textures.html#a-texture-atlases">이미지 로딩</a>의 텍스처 아틀라스 예제 코드를 가지고 시작해 보겠습니다.</p>
 <p>먼저 큐브맵을 사용하도록 셰이더를 수정합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
   matrix: mat4x4f,
@@ -635,7 +635,7 @@ struct VSOutput {
 
 <p></p>
 <p>큐브맵을 큐브의 텍스처로 사용하는 것은 원래의 사용 용도가 <strong>아닙니다</strong>.
-큐브를 텍스처링하는 <em>올바른</em> 또는 표준적인 방법은 <a href="../webgpu-importing-textures.html#a-texture-atlases">이전에 이야기한 것처럼</a> 텍스처 아틀라스를 사용하는 것입니다.
+큐브를 텍스처링하는 <em>올바른</em> 또는 표준적인 방법은 <a href="webgpu-importing-textures.html#a-texture-atlases">이전에 이야기한 것처럼</a> 텍스처 아틀라스를 사용하는 것입니다.
 이 글의 요지는 큐브맵에 대한 개념을 소개하고 방향(법선)을 전달하면 그 방향에 맞는 색상값이 반환된다는 사실을 보여드리는 것이었습니다.</p>
 <p>이제 큐브맵이 무엇인지 배웠고 설정하는 법도 배웠는데, 그러면 큐브맵은 뭐에 사용하는 걸까요?
 아마도 큐브맵이 사용되는 가장 일반적인 용도는 <a href="webgpu-environment-maps.html"><em>환경 맵(environment map)</em></a>일 겁니다.</p>

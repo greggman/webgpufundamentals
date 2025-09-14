@@ -325,7 +325,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   uniformValues.set([-0.5, -0.25], kOffsetOffset);      // устанавливаем смещение
 </pre>
 <p>Выше мы установили зеленый цвет. Смещение будет двигать треугольник к левой четверти нашего canvas’a и до нижней одной-восьмой (запомните, что clip space распологается в значениях от -1 до 1, где 0.25 будет 1/8 от двух).</p>
-<p>Далее, <a href="../webgpu-fundamentals.html#a-draw-diagram">мы делаем как диаграмме показаной в первой статье</a>,
+<p>Далее, <a href="webgpu-fundamentals.html#a-draw-diagram">мы делаем как диаграмме показаной в первой статье</a>,
 чтобы сказать шейдеру о нашем буфере, нам нужно создать bind group и забиндить (bind) буфер в тот же самый <code class="notranslate" translate="no">@binding(?)</code> куда мы установили наш шейдер.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),

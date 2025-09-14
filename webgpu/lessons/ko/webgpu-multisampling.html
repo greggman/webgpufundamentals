@@ -283,7 +283,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li>멀티 샘플 텍스처를 최종 텍스처와 같은 크기로 만드세요.</li>
 <li>렌더 패스(render pass)를 설정할 때, 멀티샘플 텍스처로 렌더링한 후 그 결과를 최종 텍스처(canvas)에 병합(resolve)하도록 합니다.</li>
 </ol>
-<p>간단히 하기 위해, <a href="../webgpu-fundamentals.html#a-resizing">기본 개념 문서</a> 끝부분에 있는 반응형(responsive) 삼각형 예제를 가져와서, 여기에 멀티샘플링(multisampling)을 추가해 봅시다.</p>
+<p>간단히 하기 위해, <a href="webgpu-fundamentals.html#a-resizing">기본 개념 문서</a> 끝부분에 있는 반응형(responsive) 삼각형 예제를 가져와서, 여기에 멀티샘플링(multisampling)을 추가해 봅시다.</p>
 <h3 id="파이프라인에서-멀티-샘플-텍스처로-렌더링하도록-설정하세요">파이프라인에서 멀티 샘플 텍스처로 렌더링하도록 설정하세요.</h3>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
     label: 'our hardcoded red triangle pipeline',
@@ -405,7 +405,7 @@ sampleCount = 4일 때, 샘플 위치는 다음과 같은 방식으로 배치됩
 단, 첫 번째 패스를 제외한 모든 패스에서 <code class="notranslate" translate="no">loadOp</code>를 <code class="notranslate" translate="no">'clear'</code>가 아닌 <code class="notranslate" translate="no">'load'</code>로 설정해야 합니다. 그렇지 않으면 텍스처가 지워질 것입니다.</p>
 <h2 id="선택적으로-각-샘플-포인트에서-프래그먼트-셰이더를-실행할-수-있습니다">선택적으로 각 샘플 포인트에서 프래그먼트 셰이더를 실행할 수 있습니다.</h2>
 <p>앞서 우리는 프래그먼트 셰이더가 멀티샘플 텍스처의 4개 샘플마다 한 번만 실행된다고 설명했습니다. 셰이더는 한 번 실행되고 그 결과를 실제로 삼각형 내부에 있는 샘플들에 저장합니다. 이것이 4배 해상도로 렌더링하는 것보다 더 빠른 이유입니다.</p>
-<p><a href="../webgpu-inter-stage-variables.html#a-interpolate">WebGPU에서 인터스테이지 변수에 관한 글</a>에서 우리는 <code class="notranslate" translate="no">@interpolate(...)</code> 속성을 사용하여 인터스테이지 변수의 보간 방법을 지정할 수 있다고 언급했습니다. 여러 옵션 중 하나인 <code class="notranslate" translate="no">sample</code>을 사용하면 프래그먼트 셰이더가 각 샘플마다 한 번씩 실행됩니다.
+<p><a href="webgpu-inter-stage-variables.html#a-interpolate">WebGPU에서 인터스테이지 변수에 관한 글</a>에서 우리는 <code class="notranslate" translate="no">@interpolate(...)</code> 속성을 사용하여 인터스테이지 변수의 보간 방법을 지정할 수 있다고 언급했습니다. 여러 옵션 중 하나인 <code class="notranslate" translate="no">sample</code>을 사용하면 프래그먼트 셰이더가 각 샘플마다 한 번씩 실행됩니다.
 WebGPU에는 몇 가지 유용한 내장 변수들이 있습니다. <code class="notranslate" translate="no">@builtin(sample_index)</code>는 현재 작업 중인 샘플이 어떤 것인지 알려주며, <code class="notranslate" translate="no">@builtin(sample_mask)</code>는 입력으로 사용될 때 삼각형 내부에 있는 어떤 샘플들이 있는지 알려주고, 출력으로 사용될 때는 샘플 포인트가 업데이트되는 것을 방지할 수 있게 해줍니다.</p>
 <h2 id="center-대-centroid"><code class="notranslate" translate="no">center</code> 대 <code class="notranslate" translate="no">centroid</code></h2>
 <p>3가지 <em>샘플링</em> 보간 모드가 있습니다. 위에서 우리는 각 샘플마다 프래그먼트 셰이더가 한 번씩 호출되는 <code class="notranslate" translate="no">'sample'</code> 모드에 대해 언급했습니다. 다른 두 가지 모드는 기본값인 <code class="notranslate" translate="no">'center'</code>와 <code class="notranslate" translate="no">'centroid'</code>입니다.</p>

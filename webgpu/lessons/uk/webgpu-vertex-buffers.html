@@ -330,7 +330,7 @@ we added a <code class="notranslate" translate="no">buffers</code> array which i
 атрибуту починаються з нульового байту в буфері вершин. І нарешті
 <code class="notranslate" translate="no">format: 'float32x2'</code> позначає те, що ми просимо WebGPU витягнути
 дані з буфера у форматі двох 32-бітних чисел з рухомою комою. (Нотатка: властивість <code class="notranslate" translate="no">attributes</code> показана на
-<a href="../webgpu-fundamentals.html#a-draw-diagram">спрощеній діаграмі малювання</a> з першої статті).</p>
+<a href="webgpu-fundamentals.html#a-draw-diagram">спрощеній діаграмі малювання</a> з першої статті).</p>
 <p>Тепер ми маємо змінити тип використання буфера, який міститиме
 вершини з <code class="notranslate" translate="no">STORAGE</code> на <code class="notranslate" translate="no">VERTEX</code> і видалити його з групи прив’язки.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const vertexStorageBuffer = device.createBuffer({
@@ -858,7 +858,7 @@ WebGPU, щоб він нормалізував ці значення з 0 ↔ 25
   };
 </pre>
 <p>Вище ми робимо <code class="notranslate" translate="no">colorData</code>, яке є <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array"><code class="notranslate" translate="no">Uint8Array</code></a> відображенням тих самих
-даних як і <code class="notranslate" translate="no">vertexData</code>. Перегляньте <a href="../webgpu-memory-layout.html#multiple-views-of-the-same-arraybuffer">статтю про схему розміщення даних</a> якшо це не до кінця зрозуміло.</p>
+даних як і <code class="notranslate" translate="no">vertexData</code>. Перегляньте <a href="webgpu-memory-layout.html#multiple-views-of-the-same-arraybuffer">статтю про схему розміщення даних</a> якшо це не до кінця зрозуміло.</p>
 <p>Далі ми використовуємо <code class="notranslate" translate="no">colorData</code> для отримання кольорів, перетворюючи
 їх з 0 ↔ 1 до 0 ↔ 255.</p>
 <p>Розміщення даних в пам’яті (для кожної вершини) виглядає так:</p>

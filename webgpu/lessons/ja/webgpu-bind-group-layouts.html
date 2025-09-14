@@ -402,7 +402,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <h2 id="layout-autoとは異なるバインドグループレイアウトの使用---動的オフセット"><code class="notranslate" translate="no">layout: 'auto'</code>とは異なるバインドグループレイアウトの使用 - 動的オフセット</h2>
 <p>デフォルトでは、バインドグループを作成してユニフォームバッファまたはストレージバッファをバインドすると、バッファ全体がバインドされます。バインドグループを作成するときにオフセットと長さを渡すこともできます。どちらの場合も、一度設定すると変更できません。</p>
 <p>WebGPUには、<code class="notranslate" translate="no">setBindGroup</code>を呼び出すときにオフセットを変更できるオプションがあります。この機能を使用するには、手動でバインドグループレイアウトを作成し、後で設定できるようにしたい各バインディングに<code class="notranslate" translate="no">hasDynamicOffsets: true</code>を設定する必要があります。</p>
-<p>これを簡単にするために、<a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">基礎に関する記事</a>の単純な計算例を使用します。同じバッファから2セットの値を加算するように変更し、動的オフセットを使用してどちらのセットかを選択します。</p>
+<p>これを簡単にするために、<a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">基礎に関する記事</a>の単純な計算例を使用します。同じバッファから2セットの値を加算するように変更し、動的オフセットを使用してどちらのセットかを選択します。</p>
 <p>まず、シェーダーを次のように変更しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; a: array&lt;f32&gt;;
 @group(0) @binding(1) var&lt;storage, read_write&gt; b: array&lt;f32&gt;;
@@ -532,7 +532,7 @@ for each material
     draw(...)
 </pre>
 <p><a href="webgpu-shadows.html">シャドウ</a>を追加する場合、まずシャドウマップパイプラインでシャドウマップを描画する必要があります。それらのすべてのものに対して別々のバインドグループ（描画するパイプラインで動作するものと、シャドウマップをレンダリングするパイプラインで動作する別のバインドグループ）を持つのではなく、1セットのバインドグループを作成し、両方のケースで同じものを使用する方がはるかに簡単です。</p>
-<p>これは、バインドグループの共有を披露するためだけに書くには、かなり大きなサンプルです。<a href="webgpu-shadows.html">シャドウに関する記事</a>では共有バインドグループを使用していますが、<a href="../webgpu-fundamentals.html#a-run-computations-on-the-gpu">基礎に関する記事</a>の単純な計算例を再度取り上げ、1つのバインドグループで2つの計算パイプラインを使用するようにします。</p>
+<p>これは、バインドグループの共有を披露するためだけに書くには、かなり大きなサンプルです。<a href="webgpu-shadows.html">シャドウに関する記事</a>では共有バインドグループを使用していますが、<a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">基礎に関する記事</a>の単純な計算例を再度取り上げ、1つのバインドグループで2つの計算パイプラインを使用するようにします。</p>
 <p>まず、3を加算する別のシェーダーモジュールを追加しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const module = device.createShaderModule({
 +  const moduleTimes2 = device.createShaderModule({

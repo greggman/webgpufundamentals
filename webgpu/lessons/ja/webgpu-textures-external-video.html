@@ -479,7 +479,7 @@ vvvvvvvv
   </div>
 </div>
 <p>WebGPUは、ここで効果的に最適化を提供しています。従来のグラフィックスライブラリでは、これはあなたに任されていました。YUVからRGBに変換するコードを自分で記述するか、OSに依頼します。データをRGBAテクスチャにコピーし、そのRGBAテクスチャを<code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>として使用します。この方法はより柔軟です。ビデオと静止画像で異なるシェーダーを作成する必要はありません。しかし、YUVテクスチャからRGBAテクスチャへの変換が必要なため、遅くなります。</p>
-<p>この遅くて柔軟な方法は、WebGPUでも利用可能であり、<a href="../webgpu-importing-textures.html#a-loading-video">前の記事</a>で説明しました。柔軟性が必要な場合、ビデオと静止画像で異なるシェーダーを必要とせずにどこでもビデオを使用したい場合は、その方法を使用してください。</p>
+<p>この遅くて柔軟な方法は、WebGPUでも利用可能であり、<a href="webgpu-importing-textures.html#a-loading-video">前の記事</a>で説明しました。柔軟性が必要な場合、ビデオと静止画像で異なるシェーダーを必要とせずにどこでもビデオを使用したい場合は、その方法を使用してください。</p>
 <p>WebGPUが<code class="notranslate" translate="no">texture_external</code>にこの最適化を提供する理由の1つは、これがWebであるためです。ブラウザでサポートされているビデオの形式は時間とともに変化します。WebGPUはこれを処理しますが、YUVからRGBに変換するシェーダーを自分で記述する必要がある場合、ビデオの形式が変更されないことを知る必要があり、これはWebが保証できるものではありません。</p>
 <p>この記事で説明した<code class="notranslate" translate="no">texture_external</code>メソッドを使用する最も明白な場所は、顔認識で視覚化や背景分離を追加する場合など、meet、zoom、FBメッセンジャー関連の機能などのビデオ関連機能です。もう1つは、WebGPUがWebXRでサポートされるようになった場合のVRビデオです。</p>
 <h2 id="カメラの使用"><a id="a-web-camera"></a>カメラの使用</h2>
@@ -523,7 +523,7 @@ vvvvvvvv
 </div>
 
 <p></p>
-<p>より効率的な<code class="notranslate" translate="no">texture_external</code>タイプのテクスチャではなく、より柔軟な<code class="notranslate" translate="no">texture&lt;f32&gt;</code>タイプのテクスチャとしてカメラ画像が必要な場合は、<a href="../webgpu-importing-textures.html#a-loading-video">前の記事のビデオの例</a>に同様の変更を加えることができます。</p>
+<p>より効率的な<code class="notranslate" translate="no">texture_external</code>タイプのテクスチャではなく、より柔軟な<code class="notranslate" translate="no">texture&lt;f32&gt;</code>タイプのテクスチャとしてカメラ画像が必要な場合は、<a href="webgpu-importing-textures.html#a-loading-video">前の記事のビデオの例</a>に同様の変更を加えることができます。</p>
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
