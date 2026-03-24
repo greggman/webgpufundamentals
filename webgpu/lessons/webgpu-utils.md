@@ -29,7 +29,7 @@ TOC: WebGPU Utils and Math
 >
 > At some point though, it becomes harder
 > to understand the code dealing with these details instead of just saying
-> "set the uniform" and you, having learned previously that "set the uniforms" means
+> "set the uniforms" and you, having learned previously that "set the uniforms" means
 > "compute the offset to the various pieces of data, make typed arrays views to
 > make it possible to set that data. And then later, before rendering, set it and
 > upload the values to the GPU.
@@ -834,7 +834,7 @@ Or, we could use the `set` function, when appropriate, to make things even easie
     device.queue.writeBuffer(uniformBuffer, 0, uni.arrayBuffer);
 ```
 
-You can imaging the `set` function, at least for the use-case shown above, is
+You can imagine the `set` function, at least for the use-case shown above, is
 pretty straight forward.
 
 This would work

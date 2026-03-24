@@ -987,6 +987,7 @@ In the following articles, we'll cover various ways to pass data into shaders.
 * [storage buffers](webgpu-storage-buffers.html)
 * [vertex buffers](webgpu-vertex-buffers.html)
 * [textures](webgpu-textures.html)
+* [immediates](webgpu-immediates.html)
 * [constants](webgpu-constants.html)
 
 Then we'll cover [the basics of WGSL](webgpu-wgsl.html).

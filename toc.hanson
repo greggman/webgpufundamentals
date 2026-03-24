@@ -15,6 +15,7 @@
         'webgpu-multisampling.md',
       ],
     },
+    'webgpu-immediates.md',
     'webgpu-constants.md',
     'webgpu-memory-layout.md',
     'webgpu-transparency.md',
