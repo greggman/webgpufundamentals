@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-matrix-math.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-matrix-math.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-matrix-math.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-matrix-math.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-matrix-math.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-matrix-math.html">Русский
@@ -228,6 +228,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU Matrix Math</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -437,7 +440,7 @@ newY = y * sy;
 That seems like a lot of work just to do the same thing we were already doing.</p>
 <p>This is where the magic comes in. It turns out we can multiply matrices
 together and apply all the transformations at once. Let’s assume we have
-a function, <code class="notranslate" translate="no">m3.multiply</code>, that takes two matrices, multiplies them and
+a function, <code class="notranslate" translate="no">mat3.multiply</code>, that takes two matrices, multiplies them and
 returns the result.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat3 = {
   multiply: function(a, b) {
@@ -709,7 +712,7 @@ matrix from the previous ‘F’.</p>
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: uniformBuffer },
       ],
     });
 
@@ -968,15 +971,15 @@ multiply them as we go. Effectively we could write functions like this</p>
   ...
 
   translate: function(m, translation) {
-    return m3.multiply(m, m3.translation(translation));
+    return mat3.multiply(m, mat3.translation(translation));
   },
 
   rotate: function(m, angleInRadians) {
-    return m3.multiply(m, m3.rotation(angleInRadians));
+    return mat3.multiply(m, mat3.rotation(angleInRadians));
   },
 
   scale: function(m, scale) {
-    return m3.multiply(m, m3.scaling(scale));
+    return mat3.multiply(m, mat3.scaling(scale));
   },
 
   ...
@@ -1356,7 +1359,7 @@ projection matrix's aspect ratio using <code class="notranslate" translate="no">
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-matrix-math.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-matrix-math.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-matrix-math.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-matrix-math.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-matrix-math.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-matrix-math.html">Русский
@@ -1426,6 +1429,15 @@ projection matrix's aspect ratio using <code class="notranslate" translate="no">
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -1501,8 +1513,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

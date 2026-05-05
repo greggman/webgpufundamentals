@@ -137,7 +137,7 @@ export default class TimingHelper {
 
     const resultBuffer = this.#resultBuffer;
     await resultBuffer.mapAsync(GPUMapMode.READ);
-    const times = new BigInt64Array(resultBuffer.getMappedRange());
+    const times = new BigUint64Array(resultBuffer.getMappedRange());
     const duration = Number(times[1] - times[0]);
     resultBuffer.unmap();
     this.#resultBuffers.push(resultBuffer);

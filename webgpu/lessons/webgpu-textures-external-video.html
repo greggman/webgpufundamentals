@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-textures-external-video.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-textures-external-video.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-textures-external-video.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-textures-external-video.html">Русский
@@ -228,6 +228,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU Using Video Efficiently</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -375,8 +378,8 @@ create them later . <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a>
 -        layout: pipeline.getBindGroupLayout(0),
 -        entries: [
 -          { binding: 0, resource: sampler },
--          { binding: 1, resource: texture.createView() },
--          { binding: 2, resource: { buffer: uniformBuffer }},
+-          { binding: 1, resource: texture },
+-          { binding: 2, resource: uniformBuffer },
 -        ],
 -      }));
 
@@ -409,7 +412,7 @@ the bindgroups</p>
 +        entries: [
 +          { binding: 0, resource: sampler },
 +          { binding: 1, resource: texture },
-+          { binding: 2, resource: { buffer: uniformBuffer }},
++          { binding: 2, resource: uniformBuffer },
 +        ],
 +      });
 
@@ -562,7 +565,7 @@ background separation. Another might be for VR video once WebGPU is supported in
   await startPlayingAndWaitForVideo(video);
 </pre>
 <p>Then, when the user clicks play, we call <code class="notranslate" translate="no">getUserMedia</code> and ask for the camera. The resulting stream
-is then applied to the video. There are no changes to the WebGPU parts of the code.</p>
+is then applied to the video.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function waitForClick() {
     return new Promise(resolve =&gt; {
       window.addEventListener(
@@ -585,7 +588,15 @@ is then applied to the video. There are no changes to the WebGPU parts of the co
     });
   }
 </pre>
-<p>Done!</p>
+<p>Depending on your use case you probably want to mirror the image
+so it appears the same as a mirror.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+      mat4.rotateX(matrix, 0.25 * Math.PI * Math.sign(y), matrix);
+-      mat4.scale(matrix, [1, -1, 1], matrix);
++      mat4.scale(matrix, [-1, -1, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+</pre>
+<p>No other changes are needed.</p>
 <p></p><div class="webgpu_example_container">
   <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-external-video-camera.html"></iframe></div>
   <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-external-video-camera.html" target="_blank">click here to open in a separate window</a>
@@ -624,7 +635,7 @@ we create at render time. Whether that’s worth it is up to your particular nee
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-textures-external-video.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-textures-external-video.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-textures-external-video.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-textures-external-video.html">Русский
@@ -694,6 +705,15 @@ we create at render time. Whether that’s worth it is up to your particular nee
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -769,8 +789,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

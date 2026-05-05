@@ -4,6 +4,8 @@
   --main-bg-color: #F8F8F8;
   --code-fg-color: #000;
   --code-bg-color: rgb(224, 224, 224);
+  --error-bg-color: #F00;
+  --error-fg-color: white;
   --comment-notes-fg-color: red;
   --comment-notes-bg-color: #DDD;
   --blockquote-bg-color: #DEF;
@@ -36,6 +38,8 @@
     --main-bg-color: #333;
     --code-fg-color: #FFF;
     --code-bg-color: #666;
+    --error-bg-color: #800;
+    --error-fg-color: white;
     --comment-notes-fg-color: red;
     --comment-notes-bg-color: #222;
     --blockquote-bg-color: #1b1b44;
@@ -57,6 +61,22 @@
   .y-axis, .y-axis * { color: hsl(120, 100%, 40%) !important; }
   .z-axis, .z-axis * { color: hsl(240, 100%, 80%) !important; }
 }
+
+#need-newer-webgpu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  > div {
+    padding: 2em;
+    margin: 2em;
+    background-color: var(--error-bg-color);
+    color: var(--error-fg-color);
+    border: 0.25em solid black;
+  }
+}
+
 
 html {
   box-sizing: border-box;
@@ -458,13 +478,35 @@ div[data-diagram] {
   text-align: center;
   max-width: 95%;
 }
-.webgpu_center div,
-.webgpu_center img,
-.webgpu_center video,
-.webgpu_center>object {
+.webgpu_left {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 95%;
+}
+.webgpu_center>div,
+.webgpu_center>img,
+.webgpu_center>svg,
+.webgpu_center>video,
+.webgpu_center>object,
+.webgpu_left>div,
+.webgpu_left>img,
+.webgpu_left>svg,
+.webgpu_left>video,
+.webgpu_left>object {
   max-width: 100%;
 }
-.webgpu_center table {
+/* note: DO NOT ENABLE THIS!
+.webgpu_center>img,
+.webgpu_center>svg,
+.webgpu_center>video,
+.webgpu_center>object {
+  width: 100%;
+}
+*/
+.webgpu_center>table {
   display: inline-table;
 }
 .webgpu_image>img {
@@ -807,8 +849,10 @@ pre.prettyprint.lighttheme .fun { color: #900; }  /* function name */
     .webgpu_navbar,
     .lesson-comment-sep,
     .lesson-sidebar,
-    .lesson-comments {
-        display: none;
+    .lesson-comments,
+    #forkongithub,
+    .linedeleted-button {
+        display: none !important;
     }
 }
 
@@ -893,47 +937,51 @@ pre.prettyprint.lighttheme .fun { color: #900; }  /* function name */
   font-size: medium;
   line-height: 1.25em;
   max-width: 90%;
-}
-.data-table pre {
-  white-space: normal;
-  margin: 0.5em;
-  background-color: inherit;
-}
-.data-table pre.prettyprint {
-  white-space: pre;
-}
-.data-table>div {
-  display: inline-block;
-  text-align: left;
-}
-.data-table table {
-  border-collapse: collapse;
-  font-family: var(--code-font-family);
-}
-.data-table thead {
-  background-color: var(--table-head-bg-color);
-  break-inside: avoid;
-}
-.data-table tr:nth-child(even) {
-  background-color: var(--table-even-bg-color)
-}
-.data-table th,
-.data-table td {
-  padding: 0.2em;
-  border: 1px solid var(--byte-border-color);
-}
-.data-table tr.data-table-head {
-  background-color: var(--table-line-head-bg-color);
-  font-weight: bold;
-}
-.data-table a[href^="https://www.w3.org"]:before {
-  content: "§";
-  text-decoration: none;
-  margin-right: 0.25em;
-}
-.data-table .right { text-align: right }
-.data-table .left { text-align: left }
 
+  pre {
+    white-space: normal;
+    margin: 0.5em;
+    background-color: inherit;
+  }
+  pre.prettyprint {
+    white-space: pre;
+  }
+  &>div {
+    display: inline-block;
+    text-align: left;
+  }
+  table {
+    border-collapse: collapse;
+    font-family: var(--code-font-family);
+  }
+  thead {
+    background-color: var(--table-head-bg-color);
+    break-inside: avoid;
+  }
+  tr:nth-child(even) {
+    background-color: var(--table-even-bg-color)
+  }
+  th,
+  td {
+    padding: 0.2em;
+    border: 1px solid var(--byte-border-color);
+  }
+  li p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+  tr.data-table-head {
+    background-color: var(--table-line-head-bg-color);
+    font-weight: bold;
+  }
+  a[href^="https://www.w3.org"]:before {
+    content: "§";
+    text-decoration: none;
+    margin-right: 0.25em;
+  }
+  .right { text-align: right }
+  .left { text-align: left }
+}
 /* ---- byte table styles ---- */
 
 :root {

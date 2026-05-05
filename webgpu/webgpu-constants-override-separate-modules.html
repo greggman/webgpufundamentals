@@ -39,7 +39,7 @@ async function main() {
   });
 
   const vertexModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VOut {
         @builtin(position) pos: vec4f,
         @location(0) color: vec4f,
@@ -67,7 +67,7 @@ async function main() {
   });
 
   const fragmentModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VOut {
         @builtin(position) pos: vec4f,
         @location(0) color: vec4f,

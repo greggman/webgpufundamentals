@@ -3,23 +3,23 @@ import {
 } from '../../3rdparty/webgpu-utils-1.x.module.js';
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createByteDiagramForType,
-} from './resources/data-byte-diagram.js';
+} from './resources/js/data-byte-diagram.js';
 import {
   createRequestAnimationFrameLoop,
-} from './resources/good-raf.js';
+} from './resources/js/good-raf.js';
 import {
   createElem as el
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import {
   mat3,
   vec2,
 } from '../../3rdparty/wgpu-matrix.module.js';
 import {
   hsla,
-} from './resources/utils.js';
+} from './resources/js/utils.js';
 
 const degToRad = d => d * Math.PI / 180;
 
@@ -75,7 +75,7 @@ async function main() {
   const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         color: vec4f,
         resolution: vec2f,
@@ -202,7 +202,7 @@ async function main() {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: uniformBuffer },
       ],
     });
 

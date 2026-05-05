@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-inter-stage-variables.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-inter-stage-variables.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Inter-stage Variables</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>In the <a href="webgpu-fundamentals.html">previous article</a>, we covered a few super
@@ -244,7 +247,7 @@ previous article. All we’re going to do is change the shaders.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
 -    label: 'our hardcoded red triangle shaders',
 +    label: 'our hardcoded rgb triangle shaders',
-    code: `
+    code: /* wgsl */ `
 +      struct OurVertexShaderOutput {
 +        @builtin(position) position: vec4f,
 +        @location(0) color: vec4f,
@@ -355,7 +358,7 @@ it didn’t have a location. Instead, it was declared as <code class="notranslat
 </pre>
 <p>That field is <strong>NOT</strong> an inter-stage variable. Instead, it’s a <code class="notranslate" translate="no">builtin</code>. It
 happens that <code class="notranslate" translate="no">@builtin(position)</code> has a different meaning in a vertex shader vs
-a fragment shader. In fact a better way to think about is is vertex shaders
+a fragment shader. In fact a better way to think about it is vertex shaders
 and fragment shader are just 2 different functions that happen to have a parameter
 with the same name.</p>
 <p>Imagine we have 2 JavaScript functions</p>
@@ -391,7 +394,7 @@ coordinates:</p>
 checkerboard.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
     label: 'our hardcoded checkerboard triangle shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
 -        @location(0) color: vec4f,
@@ -462,7 +465,7 @@ We could also split them into separate modules:</p>
 -    label: 'hardcoded checkerboard triangle shaders',
 +  const vsModule = device.createShaderModule({
 +    label: 'hardcoded triangle',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
       };
@@ -485,7 +488,7 @@ We could also split them into separate modules:</p>
 +
 +  const fsModule = device.createShaderModule({
 +    label: 'checkerboard',
-+    code: `
++    code: /* wgsl */ `
 -      @fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
 +      @fragment fn fs(@builtin(position) pixelPosition: vec4f) -&gt; @location(0) vec4f {
         let red = vec4f(1, 0, 0, 1);
@@ -573,7 +576,7 @@ pass data into shaders.</p>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-inter-stage-variables.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-inter-stage-variables.html">Русский
@@ -643,6 +646,15 @@ pass data into shaders.</p>
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -718,8 +730,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

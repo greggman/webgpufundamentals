@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>WebGPU Scene Graph - File Cabinets</title>
+    <title>WebGPU Scene Graph - File Cabinets w/animation</title>
     <style>
       @import url(resources/webgpu-lesson.css);
 html, body {
@@ -32,6 +32,7 @@ canvas {
     <canvas></canvas>
   </body>
   <script type="module">
+/* eslint-disable brace-style */
 import GUI from '../3rdparty/muigui-0.x.module.js';
 import { addButtonLeftJustified } from './resources/js/gui-helpers.js';
 
@@ -507,22 +508,21 @@ class SceneGraphNode {
     this.parent = parent;
   }
 
-  updateWorldMatrix(parentWorldMatrix) {
+  updateWorldMatrix() {
     // update the local matrix from its source if it has one.
     this.source?.getMatrix(this.localMatrix);
 
-    if (parentWorldMatrix) {
-      // a matrix was passed in so do the math
-      mat4.multiply(parentWorldMatrix, this.localMatrix, this.worldMatrix);
+    if (this.parent) {
+      // we have a parent do the math
+      mat4.multiply(this.parent.worldMatrix, this.localMatrix, this.worldMatrix);
     } else {
-      // no matrix was passed in so just copy local to world
+      // we have no parent so just copy local to world
       mat4.copy(this.localMatrix, this.worldMatrix);
     }
 
     // now process all the children
-    const worldMatrix = this.worldMatrix;
-    this.children.forEach(function(child) {
-      child.updateWorldMatrix(worldMatrix);
+      this.children.forEach(function(child) {
+      child.updateWorldMatrix();
     });
   }
 }
@@ -567,7 +567,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         matrix: mat4x4f,
         color: vec4f,
@@ -667,7 +667,7 @@ async function main() {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: uniformBuffer },
       ],
     });
 
@@ -796,39 +796,64 @@ async function main() {
     },
   };
 
-  let currentNode;
   const settings = {
+    cameraRotation: degToRad(-45),
     animate: false,
     showMeshNodes: false,
     showAllTRS: false,
-    translation: new Float32Array([0, 0, 0]),
-    rotation: new Float32Array([0, 0, 0]),
-    scale: new Float32Array([1, 1, 1]),
-    cameraRotation: degToRad(-45),
   };
+
+  // Presents a TRS to the UI. Letting set which TRS
+  // is being edited.
+  class TRSUIHelper {
+    #trs = new TRS();
+
+    constructor() {}
+
+    setTRS(trs) {
+      this.#trs = trs;
+    }
+
+    get translationX() { return this.#trs.translation[0]; }
+    set translationX(x) { this.#trs.translation[0] = x; }
+    get translationY() { return this.#trs.translation[1]; }
+    set translationY(x) { this.#trs.translation[1] = x; }
+    get translationZ() { return this.#trs.translation[2]; }
+    set translationZ(x) { this.#trs.translation[2] = x; }
+
+    get rotationX() { return this.#trs.rotation[0]; }
+    set rotationX(x) { this.#trs.rotation[0] = x; }
+    get rotationY() { return this.#trs.rotation[1]; }
+    set rotationY(x) { this.#trs.rotation[1] = x; }
+    get rotationZ() { return this.#trs.rotation[2]; }
+    set rotationZ(x) { this.#trs.rotation[2] = x; }
+
+    get scaleX() { return this.#trs.scale[0]; }
+    set scaleX(x) { this.#trs.scale[0] = x; }
+    get scaleY() { return this.#trs.scale[1]; }
+    set scaleY(x) { this.#trs.scale[1] = x; }
+    get scaleZ() { return this.#trs.scale[2]; }
+    set scaleZ(x) { this.#trs.scale[2] = x; }
+  }
+  const trsUIHelper = new TRSUIHelper();
 
   const radToDegOptions = { min: -90, max: 90, step: 1, converters: GUI.converters.radToDeg };
   const cameraRadToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
 
-  function updateCurrentNodeGUI() {
-    const source = currentNode.source;
-    settings.translation.set(source.translation);
-    settings.rotation.set(source.rotation);
-    settings.scale.set(source.scale);
-    trsFolder.updateDisplay();
-  }
+  const kUnelected = '\u3000'; // full-width space
+  const kSelected = '➡️';
+  const prefixRE = new RegExp(`^(?:${kUnelected}|${kSelected})`);
 
   function setCurrentSceneGraphNode(node) {
-    currentNode = node;
+    trsUIHelper.setTRS(node.source);
     trsFolder.name(`orientation: ${node.name}`);
-    updateCurrentNodeGUI();
-  }
+    trsFolder.updateDisplay();
 
-  function updateCurrentNodeFromSettings() {
-    const source = currentNode.source;
-    source.translation.set(settings.translation);
-    source.rotation.set(settings.rotation);
-    source.scale.set(settings.scale);
+    // Mark which node is selected.
+    for (const b of nodeButtons) {
+      const name = b.button.getName().replace(prefixRE, '');
+      b.button.name(`${b.node === node ? kSelected : kUnelected}${name}`);
+    }
   }
 
   // \u00a0 is non-breaking space.
@@ -847,8 +872,11 @@ async function main() {
     const nodes = [];
     if (node.source instanceof TRS) {
       const label = `${prefix === undefined ? '' : `${prefix}${plusDash}`}${node.name}`;
-      nodes.push(addButtonLeftJustified(
-          gui, label, () => setCurrentSceneGraphNode(node)));
+      nodes.push({
+        button: addButtonLeftJustified(
+          gui, label, () => setCurrentSceneGraphNode(node)),
+        node,
+      });
     }
     const childPrefix = prefix === undefined
       ? ''
@@ -870,24 +898,23 @@ async function main() {
   gui.add(settings, 'showAllTRS').onChange(showTRS);
   const trsFolder = gui.addFolder('orientation');
   const trsControls = [
-    trsFolder.add(settings.translation, '0', -200, 200, 1).name('translation x'),
-    trsFolder.add(settings.translation, '1', -200, 200, 1).name('translation y'),
-    trsFolder.add(settings.translation, '2', -200, 200, 1).name('translation z'),
-    trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x'),
-    trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y'),
-    trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z'),
-    trsFolder.add(settings.scale, '0', 0.1, 100).name('scale x'),
-    trsFolder.add(settings.scale, '1', 0.1, 100).name('scale y'),
-    trsFolder.add(settings.scale, '2', 0.1, 100).name('scale z'),
+    trsFolder.add(trsUIHelper, 'translationX', -200, 200, 1),
+    trsFolder.add(trsUIHelper, 'translationY', -200, 200, 1),
+    trsFolder.add(trsUIHelper, 'translationZ', -200, 200, 1),
+    trsFolder.add(trsUIHelper, 'rotationX', radToDegOptions),
+    trsFolder.add(trsUIHelper, 'rotationY', radToDegOptions),
+    trsFolder.add(trsUIHelper, 'rotationZ', radToDegOptions),
+    trsFolder.add(trsUIHelper, 'scaleX', 0.1, 100),
+    trsFolder.add(trsUIHelper, 'scaleY', 0.1, 100),
+    trsFolder.add(trsUIHelper, 'scaleZ', 0.1, 100),
   ];
-  trsFolder.onChange(updateCurrentNodeFromSettings);
   const nodesFolder = gui.addFolder('nodes');
   const nodeButtons = addSceneGraphNodeToGUI(nodesFolder, root);
 
   function showMeshNodes(show) {
-    for (const child of nodeButtons) {
-      if (child.domElement.textContent.includes('mesh')) {
-        child.show(show);
+    for (const {node, button} of nodeButtons) {
+      if (node.name.includes('mesh')) {
+        button.show(show);
       }
     }
   }
@@ -949,6 +976,8 @@ async function main() {
   let wasRunning = false;
   function render() {
     renderRequestId = undefined;
+    objectNdx = 0;
+
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     const canvasTexture = context.getCurrentTexture();
@@ -1017,7 +1046,7 @@ async function main() {
 
     if (settings.animate) {
       animate(time);
-      updateCurrentNodeGUI();
+      trsFolder.updateDisplay();
       requestRender();
     }
   }

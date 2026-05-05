@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-inter-stage-variables.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Inter-stage Variables">
+
+<meta name="description" content="Pasar datos de un vertex shader a un fragment shader">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-inter-stage-variables_es.jpg">
+
+<meta property="og:title" content="Variables entre etapas en WebGPU (Inter-stage Variables)">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Passing Data from a Vertex Shader to a Fragment Shader">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-inter-stage-variables_es.jpg">
+<meta property="og:description" content="Pasar datos de un vertex shader a un fragment shader">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-inter-stage-variables.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Inter-stage Variables">
+<meta name="twitter:title" content="Variables entre etapas en WebGPU (Inter-stage Variables)">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-inter-stage-variables.html">
-<meta name="twitter:description" content="Passing Data from a Vertex Shader to a Fragment Shader">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Pasar datos de un vertex shader a un fragment shader">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-inter-stage-variables_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-inter-stage-variables.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-inter-stage-variables_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-inter-stage-variables.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-inter-stage-variables.html",
+      "inLanguage":"es",
+      "name":"Variables entre etapas en WebGPU (Inter-stage Variables)",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-inter-stage-variables.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Inter-stage Variables</title>
+<title>Variables entre etapas en WebGPU (Inter-stage Variables)</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-inter-stage-variables.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-inter-stage-variables.html">Русский
@@ -182,18 +227,290 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Inter-stage Variables</h1>
+    <h1>Variables entre etapas en WebGPU (Inter-stage Variables)</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>En el <a href="webgpu-fundamentals.html">artículo anterior</a>, cubrimos algunos conceptos súper básicos sobre WebGPU. En este artículo vamos a repasar <em>lo básico</em> de las variables entre etapas (inter-stage variables).</p>
+<p>Las variables entre etapas entran en juego entre un vertex shader (shader de vértices) y un fragment shader (shader de fragmentos).</p>
+<p>Cuando un vertex shader devuelve 3 posiciones, se rasteriza un triángulo. El vertex shader puede devolver valores extra en cada una de esas posiciones y, por defecto, esos valores se interpolarán entre los 3 puntos.</p>
+<p>Hagamos un pequeño ejemplo. Empezaremos con los shaders del triángulo del artículo anterior. Todo lo que vamos a hacer es cambiar los shaders.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+-    label: 'nuestros shaders de triángulo rojo estático',
++    label: 'nuestros shaders de triángulo rgb estático',
+    code: /* wgsl */ `
++      struct OurVertexShaderOutput {
++        @builtin(position) position: vec4f,
++        @location(0) color: vec4f,
++      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+-      ) -&gt; @builtin(position) vec4f {
++      ) -&gt; OurVertexShaderOutput {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // superior centro
+          vec2f(-0.5, -0.5),  // inferior izquierda
+          vec2f( 0.5, -0.5)   // inferior derecha
+        );
++        var color = array&lt;vec4f, 3&gt;(
++          vec4f(1, 0, 0, 1), // rojo
++          vec4f(0, 1, 0, 1), // verde
++          vec4f(0, 0, 1, 1), // azul
++        );
+
+-        return vec4f(pos[vertexIndex], 0.0, 1.0);
++        var vsOutput: OurVertexShaderOutput;
++        vsOutput.position = vec4f(pos[vertexIndex], 0.0, 1.0);
++        vsOutput.color = color[vertexIndex];
++        return vsOutput;
+      }
+
+-      @fragment fn fs() -&gt; @location(0) vec4f {
+-        return vec4f(1, 0, 0, 1);
++      @fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
++        return fsInput.color;
+      }
+    `,
+  });
+</pre>
+<p>En primer lugar, declaramos un <code class="notranslate" translate="no">struct</code>. Esta es una forma sencilla de coordinar las variables entre etapas entre un vertex shader y un fragment shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) color: vec4f,
+      };
+</pre>
+<p>Luego declaramos que nuestro vertex shader devuelve una estructura de este tipo:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+-      ) -&gt; @builtin(position) vec4f {
++      ) -&gt; OurVertexShaderOutput {
+</pre>
+<p>A continuación, creamos un array de 3 colores.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">        var color = array&lt;vec4f, 3&gt;(
+          vec4f(1, 0, 0, 1), // rojo
+          vec4f(0, 1, 0, 1), // verde
+          vec4f(0, 0, 1, 1), // azul
+        );
+</pre>
+<p>Luego, en lugar de devolver solo un <code class="notranslate" translate="no">vec4f</code> para la posición, declaramos una instancia de la estructura, la rellenamos y la devolvemos:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-        return vec4f(pos[vertexIndex], 0.0, 1.0);
++        var vsOutput: OurVertexShaderOutput;
++        vsOutput.position = vec4f(pos[vertexIndex], 0.0, 1.0);
++        vsOutput.color = color[vertexIndex];
++        return vsOutput;
+</pre>
+<p>En el fragment shader, declaramos que toma uno de estos structs como argumento de la función:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+        return fsInput.color;
+      }
+</pre>
+<p>Finalmente devolviendo el color.</p>
+<p>Si ejecutamos eso veremos que, cada vez que la GPU llamó a nuestro fragment shader, le pasó un color que fue interpolado entre los 3 puntos.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-inter-stage-variables-triangle.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-inter-stage-variables-triangle.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Las variables entre etapas se utilizan con mayor frecuencia para interpolar coordenadas de textura a través de un triángulo, lo que cubriremos en <a href="webgpu-textures.html">el artículo sobre texturas</a>. Otro uso común es interpolar normales a través de un triángulo, lo que cubriremos en <a href="webgpu-lighting-directional.html">el primer artículo sobre iluminación</a>.</p>
+<h2 id="las-variables-entre-etapas-se-conectan-por-location">Las variables entre etapas se conectan por <code class="notranslate" translate="no">location</code></h2>
+<p>Un punto importante, como casi todo en WebGPU, es que la conexión entre el vertex shader y el fragment shader es por índice. Para las variables entre etapas, se conectan por el índice de ubicación (location index).</p>
+<p>Para ver a qué me refiero, cambiemos solo el fragment shader para que tome un parámetro <code class="notranslate" translate="no">vec4f</code> en la <code class="notranslate" translate="no">location(0)</code> en lugar del struct:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @fragment fn fs(@location(0) color: vec4f) -&gt; @location(0) vec4f {
+        return color;
+      }
+</pre>
+<p>Al ejecutarlo vemos que sigue funcionando.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-inter-stage-variables-triangle-by-fn-param.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-inter-stage-variables-triangle-by-fn-param.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="builtinposition"><a id="a-builtin-position"></a> <code class="notranslate" translate="no">@builtin(position)</code></h2>
+<p>Eso ayuda a señalar otra peculiaridad. Nuestro shader original que usaba el mismo struct tanto en el vertex shader como en el fragment shader tenía un campo llamado <code class="notranslate" translate="no">position</code> pero no tenía una ubicación (location). En su lugar, estaba declarado como <code class="notranslate" translate="no">@builtin(position)</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      struct OurVertexShaderOutput {
+*        @builtin(position) position: vec4f,
+        @location(0) color: vec4f,
+      };
+</pre>
+<p>Ese campo <strong>NO</strong> es una variable entre etapas. En su lugar, es un <code class="notranslate" translate="no">builtin</code> (integrado). Resulta que <code class="notranslate" translate="no">@builtin(position)</code> tiene un significado diferente en un vertex shader frente a un fragment shader. De hecho, una mejor manera de pensarlo es que los vertex shaders y los fragment shaders son solo 2 funciones diferentes que casualmente tienen un parámetro con el mismo nombre.</p>
+<p>Imagina que tenemos 2 funciones de JavaScript:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// Dibujar un círculo de tamaño radius, en position: [x, y]
+function drawCircle({ ctx, position, radius }) {
+  // de CanvasRenderingContext2D
+  ctx.beginPath();
+  ctx.arc(...position, radius, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// Devolver el índice de un elemento en un array comenzando en position
+function findIndex({ array, position, value }) {
+  return array.indexOf(value, position);
+}
+</pre>
+<p>Ambas funciones anteriores tienen un parámetro llamado <code class="notranslate" translate="no">position</code>. Generalmente no hay confusión entre las dos. Es similar con los vertex shaders y los fragment shaders. Sus builtins son diferentes e independientes; cada uno de ellos simplemente tiene un <code class="notranslate" translate="no">@builtin</code> llamado <code class="notranslate" translate="no">position</code> y, al compilar cada entry point del shader, el código WGSL se lee solo para ese entry point.</p>
+<p>En un vertex shader, <code class="notranslate" translate="no">@builtin(position)</code> es la coordenada que proporcionas como salida y que la GPU utiliza para dibujar triángulos/líneas/puntos.</p>
+<p>En un fragment shader, <code class="notranslate" translate="no">@builtin(position)</code> es una entrada. Es la coordenada de píxel del píxel para el cual se le pide al fragment shader que calcule un color o valor en ese momento.</p>
+<p>Las coordenadas de píxel se especifican por los bordes de los píxeles. Los valores proporcionados al fragment shader son las coordenadas del centro del píxel.</p>
+<p>Si la textura en la que estuviéramos dibujando fuera de 3x2 píxeles de tamaño, estas serían las coordenadas:</p>
+<div class="webgpu_center"><img src="../resources/webgpu-pixels.svg" style="width: 500px;"></div>
+<p>Podemos cambiar nuestro shader para usar esta posición. Por ejemplo, dibujemos un tablero de ajedrez (checkerboard).</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    label: 'nuestros shaders de triángulo con tablero de ajedrez estático',
+    code: /* wgsl */ `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+-        @location(0) color: vec4f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; OurVertexShaderOutput {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // superior centro
+          vec2f(-0.5, -0.5),  // inferior izquierda
+          vec2f( 0.5, -0.5)   // inferior derecha
+        );
+-        var color = array&lt;vec4f, 3&gt;(
+-          vec4f(1, 0, 0, 1), // rojo
+-          vec4f(0, 1, 0, 1), // verde
+-          vec4f(0, 0, 1, 1), // azul
+-        );
+
+        var vsOutput: OurVertexShaderOutput;
+        vsOutput.position = vec4f(pos[vertexIndex], 0.0, 1.0);
+-        vsOutput.color = color[vertexIndex];
+        return vsOutput;
+      }
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+-        return fsInput.color;
++        let rojo = vec4f(1, 0, 0, 1);
++        let cian = vec4f(0, 1, 1, 1);
++
++        let grid = vec2u(fsInput.position.xy) / 8;
++        let checker = (grid.x + grid.y) % 2 == 1;
++
++        return select(rojo, cian, checker);
+      }
+    `,
+  });
+</pre>
+<p>El código anterior toma <code class="notranslate" translate="no">fsInput.position</code>, que fue declarada como <code class="notranslate" translate="no">@builtin(position)</code>, y convierte sus coordenadas <code class="notranslate" translate="no">xy</code> a un <code class="notranslate" translate="no">vec2u</code>, que son 2 enteros sin signo. Luego los divide por 8, dándonos una cuenta que aumenta cada 8 píxeles. Después suma las coordenadas de cuadrícula <code class="notranslate" translate="no">x</code> e <code class="notranslate" translate="no">y</code>, calcula el módulo 2 y compara el resultado con 1. Esto nos dará un booleano que es verdadero o falso para cada otro entero. Finalmente, usa la función <code class="notranslate" translate="no">select</code> de WGSL que, dados 2 valores, selecciona uno u otro basándose en una condición booleana. En JavaScript, <code class="notranslate" translate="no">select</code> se escribiría así:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// Si condition es false devuelve `a`, de lo contrario devuelve `b`
+select = (a, b, condition) =&gt; condition ? b : a;
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-fragment-shader-builtin-position.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-fragment-shader-builtin-position.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Incluso si no usas <code class="notranslate" translate="no">@builtin(position)</code> en un fragment shader, es conveniente que esté ahí porque significa que podemos usar el mismo struct tanto para un vertex shader como para un fragment shader. Una lección importante es que el campo <code class="notranslate" translate="no">position</code> del struct en el vertex shader frente al fragment shader es totalmente independiente. Son variables completamente diferentes.</p>
+<p>Como se señaló anteriormente, para las variables entre etapas, lo único que importa es la <code class="notranslate" translate="no">@location(?)</code>. Por lo tanto, no es raro declarar diferentes structs para la salida de un vertex shader frente a la entrada de un fragment shader.</p>
+<p>Para que esto quede más claro, el hecho de que tanto el vertex shader como el fragment shader estén en el mismo string en nuestros ejemplos es solo una conveniencia. También podríamos dividirlos en módulos separados:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const module = device.createShaderModule({
+-    label: 'shaders de triángulo con tablero de ajedrez estático',
++  const vsModule = device.createShaderModule({
++    label: 'triángulo estático',
+    code: /* wgsl */ `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; OurVertexShaderOutput {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // superior centro
+          vec2f(-0.5, -0.5),  // inferior izquierda
+          vec2f( 0.5, -0.5)   // inferior derecha
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        vsOutput.position = vec4f(pos[vertexIndex], 0.0, 1.0);
+        return vsOutput;
+      }
++    `,
++  });
++
++  const fsModule = device.createShaderModule({
++    label: 'tablero de ajedrez',
+    code: /* wgsl */ `
+-      @fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
++      @fragment fn fs(@builtin(position) pixelPosition: vec4f) -&gt; @location(0) vec4f {
+        let rojo = vec4f(1, 0, 0, 1);
+        let cian = vec4f(0, 1, 1, 1);
+
+-        let grid = vec2u(fsInput.position.xy) / 8;
++        let grid = vec2u(pixelPosition.xy) / 8;
+        let checker = (grid.x + grid.y) % 2 == 1;
+
+        return select(rojo, cian, checker);
+      }
+    `,
+  });
+</pre>
+<p>Y tendríamos que actualizar la creación de nuestro pipeline para usar estos:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'pipeline de triángulo con tablero de ajedrez estático',
+    layout: 'auto',
+    vertex: {
+-      module,
++      module: vsModule,
+    },
+    fragment: {
+-      module,
++      module: fsModule,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+</pre>
+<p>Y esto funciona igual:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-fragment-shader-builtin-position-separate-modules.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-fragment-shader-builtin-position-separate-modules.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>El punto es que el hecho de que ambos shaders estén en el mismo string en la mayoría de los ejemplos de WebGPU es solo una conveniencia. En realidad, primero WebGPU analiza el WGSL para asegurarse de que sea sintácticamente correcto. Luego, WebGPU mira cada <code class="notranslate" translate="no">entryPoint</code> que especificas por separado. Mira las partes que cada entryPoint referencia y nada más.</p>
+<p>Los strings compartidos son útiles porque múltiples shaders pueden compartir cosas como estructuras, ubicaciones de binding y group, constantes y funciones. Pero, desde el punto de vista de WebGPU, es como si hubieras duplicado todo, una vez para cada entryPoint.</p>
+<p>Nota: No es tan común generar un tablero de ajedrez usando el <code class="notranslate" translate="no">@builtin(position)</code>. Los tableros de ajedrez u otros patrones se implementan con mucha más frecuencia <a href="webgpu-textures.html">usando texturas</a>. De hecho, verás un problema si cambias el tamaño de la ventana. Como el tablero de ajedrez se basa en las coordenadas de píxel del canvas, es relativo al canvas, no relativo al triángulo.</p>
+<h2 id="ajustes-de-interpolación"><a id="a-interpolate"></a>Ajustes de interpolación</h2>
+<p>Vimos anteriormente que las variables entre etapas, las salidas de un vertex shader, se interpolan cuando se pasan al fragment shader. Hay 2 conjuntos de ajustes que pueden modificar el comportamiento: el tipo de interpolación (interpolation type) y el muestreo de interpolación (interpolation sampling). Configurarlos a algo distinto de los valores por defecto no es muy común, pero hay casos de uso que se cubrirán en otros artículos.</p>
+<p>Tipo de interpolación:</p>
+<ul>
+<li><code class="notranslate" translate="no">perspective</code>: Los valores se interpolan de manera correcta según la perspectiva (<strong>por defecto</strong>)</li>
+<li><code class="notranslate" translate="no">linear</code>: Los valores se interpolan de manera lineal, sin corrección de perspectiva</li>
+<li><code class="notranslate" translate="no">flat</code>: Los valores no se interpolan. El muestreo de interpolación no se usa con la interpolación flat</li>
+</ul>
+<p>Muestreo de interpolación:</p>
+<ul>
+<li><code class="notranslate" translate="no">center</code>: La interpolación se realiza en el centro del píxel. (<strong>por defecto</strong>)</li>
+<li><code class="notranslate" translate="no">centroid</code>: La interpolación se realiza en un punto que se encuentra dentro de todas las muestras cubiertas por el fragmento dentro de la primitiva actual. Este valor es el mismo para todas las muestras en la primitiva.</li>
+<li><code class="notranslate" translate="no">sample</code>: La interpolación se realiza por muestra. El fragment shader se invoca una vez por muestra cuando se aplica este atributo.</li>
+<li><code class="notranslate" translate="no">first</code>: Se usa solo con type = <code class="notranslate" translate="no">flat</code>. (por defecto) El valor proviene del primer vértice de la primitiva que se está dibujando.</li>
+<li><code class="notranslate" translate="no">either</code>: Se usa solo con type = <code class="notranslate" translate="no">flat</code>. El valor proviene del primer o del último vértice de la primitiva que se está dibujando. Cuál de ellos depende de la implementación.</li>
+</ul>
+<p>Especificas estos como atributos, por ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  @location(2) @interpolate(linear, center) myVariableFoo: vec4f;
+  @location(3) @interpolate(flat) myVariableBar: vec4f;
+</pre>
+<p>Ten en cuenta que si la variable entre etapas es de tipo entero, entonces debes establecer su interpolación a <code class="notranslate" translate="no">flat</code>.</p>
+<p>Si estableces el tipo de interpolación a <code class="notranslate" translate="no">flat</code>, por defecto, el valor pasado al fragment shader es el valor de la variable entre etapas para el primer vértice de ese triángulo. Para la mayoría de los casos de uso de <code class="notranslate" translate="no">flat</code>, deberías elegir <code class="notranslate" translate="no">either</code>. Cubriremos por qué en <a href="webgpu-compatibility-mode.html#flat">otro artículo</a>.</p>
+<p>En el <a href="webgpu-uniforms.html">siguiente artículo cubriremos los uniforms</a> como otra forma de pasar datos a los shaders.</p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-inter-stage-variables.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-inter-stage-variables.html">Русский
@@ -203,84 +520,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +618,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Variables entre etapas en WebGPU (Inter-stage Variables)`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

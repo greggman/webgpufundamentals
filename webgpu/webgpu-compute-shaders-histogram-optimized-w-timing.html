@@ -50,7 +50,7 @@ async function main() {
 
   const histogramChunkModule = device.createShaderModule({
     label: 'histogram chunk shader',
-    code: `
+    code: /* wgsl */ `
       ${sharedConstants}
       const chunkSize = chunkWidth * chunkHeight;
       var<workgroup> bins: array<atomic<u32>, chunkSize>;
@@ -92,7 +92,7 @@ async function main() {
 
   const chunkSumModule = device.createShaderModule({
     label: 'chunk sum shader',
-    code: `
+    code: /* wgsl */ `
       ${sharedConstants}
       const chunkSize = chunkWidth * chunkHeight;
       @group(0) @binding(0) var<storage, read_write> chunks: array<array<u32, chunkSize>>;
@@ -146,8 +146,8 @@ async function main() {
     label: 'histogram bindGroup',
     layout: histogramChunkPipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: chunksBuffer }},
-      { binding: 1, resource: texture.createView() },
+      { binding: 0, resource: chunksBuffer },
+      { binding: 1, resource: texture },
     ],
   });
 
@@ -155,7 +155,7 @@ async function main() {
     label: 'sum bindGroup',
     layout: chunkSumPipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: chunksBuffer }},
+      { binding: 0, resource: chunksBuffer },
     ],
   });
 

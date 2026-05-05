@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-inter-stage-variables.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-inter-stage-variables.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-inter-stage-variables.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>inter-stage(シェーダ間)変数</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>前回の「<a href="webgpu-fundamentals.html">基本</a>」と題した記事では、
@@ -244,7 +247,7 @@ WebGPUの、とてもとても基本的な事柄について説明しました�
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
 -    label: 'our hardcoded red triangle shaders',
 +    label: 'our hardcoded rgb triangle shaders',
-    code: `
+    code: /* wgsl */ `
 +      struct OurVertexShaderOutput {
 +        @builtin(position) position: vec4f,
 +        @location(0) color: vec4f,
@@ -374,7 +377,7 @@ inter-stage変数の場合、<code class="notranslate" translate="no">location</
 例として、市松模様(checkerboard)を描いてみます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
     label: 'our hardcoded checkerboard triangle shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
 -        @location(0) color: vec4f,
@@ -446,7 +449,7 @@ select = (a, b, condition) =&gt; condition ? b : a;
 -    label: 'hardcoded checkerboard triangle shaders',
 +  const vsModule = device.createShaderModule({
 +    label: 'hardcoded triangle',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
       };
@@ -469,7 +472,7 @@ select = (a, b, condition) =&gt; condition ? b : a;
 +
 +  const fsModule = device.createShaderModule({
 +    label: 'checkerboard',
-+    code: `
++    code: /* wgsl */ `
 -      @fragment fn fs(@builtin(position) pixelPosition: vec4f) -&gt; @location(0) vec4f {
 +      @fragment fn fs(@builtin(position) pixelPosition: vec4f) -&gt; @location(0) vec4f {
         let red = vec4f(1, 0, 0, 1);
@@ -556,7 +559,7 @@ WebGPUでは、この「補間」をどうやるかについて、設定項目�
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-inter-stage-variables.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-inter-stage-variables.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-inter-stage-variables.html">Русский
@@ -626,6 +629,15 @@ WebGPUでは、この「補間」をどうやるかについて、設定項目�
   <li>ポストプロセッシング</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
@@ -692,8 +704,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

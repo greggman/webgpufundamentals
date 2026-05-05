@@ -588,7 +588,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         matrix: mat4x4f,
         color: vec4f,
@@ -671,7 +671,7 @@ async function main() {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: uniformBuffer },
       ],
     });
 
@@ -815,6 +815,8 @@ async function main() {
   }
 
   function render() {
+    objectNdx = 0;
+
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     const canvasTexture = context.getCurrentTexture();

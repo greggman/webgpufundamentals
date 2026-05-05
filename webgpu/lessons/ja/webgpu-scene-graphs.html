@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-scene-graphs.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-scene-graphs.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-scene-graphs.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-scene-graphs.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-scene-graphs.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-scene-graphs.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU シーングラフ</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
@@ -319,15 +322,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     this.parent = parent;
   }
 
-  updateWorldMatrix(parentWorldMatrix) {
+  updateWorldMatrix() {
     // ソースがある場合は、そのソースからローカル行列を更新します。
     this.source?.getMatrix(this.localMatrix);
 
-    if (parentWorldMatrix) {
-      // 行列が渡されたので、計算を行います
-      mat4.multiply(parentWorldMatrix, this.localMatrix, this.worldMatrix);
+    if (this.parent) {
+      // 親があるので、計算を行います
+      mat4.multiply(his.parent.worldMatrix, this.localMatrix, this.worldMatrix);
     } else {
-      // 行列が渡されなかったので、ローカルをワールドにコピーするだけです
+      // 親がないので、ローカルをワールドにコピーするだけです
       mat4.copy(this.localMatrix, this.worldMatrix);
     }
 
@@ -521,12 +524,44 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <h2 id="guiの追加"><a id="a-gui"></a>GUIの追加</h2>
 <p>シーングラフの主なポイントは、データであるため、操作できることです。グラフを調整および微調整するためのUIを追加しましょう。</p>
 <p>まず、平行移動、回転、スケールのコントロールを追加しましょう。</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Presents a TRS to the UI. Letting set which TRS
+  // is being edited.
+  class TRSUIHelper {
+    #trs = new TRS();
+
+    constructor() {}
+
+    setTRS(trs) {
+      this.#trs = trs;
+    }
+
+    get translationX() { return this.#trs.translation[0]; }
+    set translationX(x) { this.#trs.translation[0] = x; }
+    get translationY() { return this.#trs.translation[1]; }
+    set translationY(x) { this.#trs.translation[1] = x; }
+    get translationZ() { return this.#trs.translation[2]; }
+    set translationZ(x) { this.#trs.translation[2] = x; }
+
+    get rotationX() { return this.#trs.rotation[0]; }
+    set rotationX(x) { this.#trs.rotation[0] = x; }
+    get rotationY() { return this.#trs.rotation[1]; }
+    set rotationY(x) { this.#trs.rotation[1] = x; }
+    get rotationZ() { return this.#trs.rotation[2]; }
+    set rotationZ(x) { this.#trs.rotation[2] = x; }
+
+    get scaleX() { return this.#trs.scale[0]; }
+    set scaleX(x) { this.#trs.scale[0] = x; }
+    get scaleY() { return this.#trs.scale[1]; }
+    set scaleY(x) { this.#trs.scale[1] = x; }
+    get scaleZ() { return this.#trs.scale[2]; }
+    set scaleZ(x) { this.#trs.scale[2] = x; }
+  }
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+ const trsUIHelper = new TRSUIHelper();
+
+  const settings = {
 -    cameraRotation: 0,
 +    cameraRotation: degToRad(-45),
-+    translation: new Float32Array([0, 0, 0]),
-+    rotation: new Float32Array([0, 0, 0]),
-+    scale: new Float32Array([1, 1, 1]),
   };
 
 -  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
@@ -538,58 +573,36 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -  gui.add(settings, 'cameraRotation', radToDegOptions);
 +  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
 +  const trsFolder = gui.addFolder('orientation');
-+  trsFolder.add(settings.translation, '0', -200, 200, 1).name('translation x');
-+  trsFolder.add(settings.translation, '1', -200, 200, 1).name('translation y');
-+  trsFolder.add(settings.translation, '2', -200, 200, 1).name('translation z');
-+  trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x');
-+  trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y');
-+  trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z');
-+  trsFolder.add(settings.scale, '0', 0.1, 100).name('scale x');
-+  trsFolder.add(settings.scale, '1', 0.1, 100).name('scale y');
-+  trsFolder.add(settings.scale, '2', 0.1, 100).name('scale z');
-</pre>
-<p>次に、現在選択されているシーングラフのノードを更新するコードを追加しましょう。</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let currentNode;
-+  function updateCurrentNodeFromSettings() {
-+    const source = currentNode.source;
-+    source.translation.set(settings.translation);
-+    source.rotation.set(settings.rotation);
-+    source.scale.set(settings.scale);
-+  }
-</pre>
-<p>そして、平行移動、回転、またはスケールのウィジェットのいずれかが変更されるたびにこれを呼び出しましょう。</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
-  gui.onChange(render);
-  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
-  const trsFolder = gui.addFolder('orientation');
-+  trsFolder.onChange(updateCurrentNodeFromSettings);
-  ...
++  trsFolder.add(trsUIHelper, 'translationX', -200, 200, 1),
++  trsFolder.add(trsUIHelper, 'translationY', -200, 200, 1),
++  trsFolder.add(trsUIHelper, 'translationZ', -200, 200, 1),
++  trsFolder.add(trsUIHelper, 'rotationX', radToDegOptions),
++  trsFolder.add(trsUIHelper, 'rotationY', radToDegOptions),
++  trsFolder.add(trsUIHelper, 'rotationZ', radToDegOptions),
++  trsFolder.add(trsUIHelper, 'scaleX', 0.1, 100),
++  trsFolder.add(trsUIHelper, 'scaleY', 0.1, 100),
++  trsFolder.add(trsUIHelper, 'scaleZ', 0.1, 100),
 </pre>
 <p>次に、ノードを選択する方法が必要なので、シーングラフをウォークし、各ノードにボタンを作成しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import GUI from '../3rdparty/muigui-0.x.module.js';
 +import { addButtonLeftJustified } from './resources/js/gui-helpers.js';
 
 ...
-  let currentNode;
-  function updateCurrentNodeFromSettings() {
-    const source = currentNode.source;
-    source.translation.set(settings.translation);
-    source.rotation.set(settings.rotation);
-    source.scale.set(settings.scale);
-  }
 
-+  function updateCurrentNodeGUI() {
-+    const source = currentNode.source;
-+    settings.translation.set(source.translation);
-+    settings.rotation.set(source.rotation);
-+    settings.scale.set(source.scale);
-+    trsFolder.updateDisplay();
-+  }
++  const kUnelected = '\u3000'; // full-width space
++  const kSelected = '➡️';
++  const prefixRE = new RegExp(`^(?:${kUnelected}|${kSelected})`);
 +
 +  function setCurrentSceneGraphNode(node) {
-+    currentNode = node;
++    trsUIHelper.setTRS(node.source);
 +    trsFolder.name(`orientation: ${node.name}`);
-+    updateCurrentNodeGUI();
++    trsFolder.updateDisplay();
++
++    // Mark which node is selected.
++    for (const b of nodeButtons) {
++      const name = b.button.getName().replace(prefixRE, '');
++      b.button.name(`${b.node === node ? kSelected : kUnelected}${name}`);
++    }
 +  }
 +
 +  // \u00a0は改行しないスペースです。
@@ -626,7 +639,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +
 +  setCurrentSceneGraphNode(root.children[0]);
 </pre>
-<p>上記では、<code class="notranslate" translate="no">TRS</code>ソースを持つ各ノードにボタンを作成しました。ボタンがクリックされると、<code class="notranslate" translate="no">setCurrentSceneGraphNode</code>が呼び出され、そのボタンのノードが渡されます。<code class="notranslate" translate="no">setCurrentSceneGraphNode</code>はフォルダ名を更新し、次に<code class="notranslate" translate="no">updateCurrentNodeGUI</code>を呼び出して、新しく選択されたノードのデータで<code class="notranslate" translate="no">settings</code>を更新します。</p>
+<p>上記では、<code class="notranslate" translate="no">TRS</code>ソースを持つ各ノードにボタンを作成しました。ボタンがクリックされると、<code class="notranslate" translate="no">setCurrentSceneGraphNode</code>が呼び出され、そのボタンのノードが渡されます。<code class="notranslate" translate="no">setCurrentSceneGraphNode</code>はフォルダ名を更新し、次に<code class="notranslate" translate="no">trsFolder.updateDisplay</code>を呼び出して、新しく選択された<code class="notranslate" translate="no">TRS</code>のデータでUIを更新します。</p>
 <p>これは機能しますが、UIが小さなウィンドウには少し乱雑であることがわかったので、いくつかの調整を次に示します。</p>
 <ol>
 <li>
@@ -635,9 +648,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const settings = {
    cameraRotation: degToRad(-45),
 +   showAllTRS: false,
-   translation: new Float32Array([0, 0, 0]),
-   rotation: new Float32Array([0, 0, 0]),
-   scale: new Float32Array([1, 1, 1]),
  };
 
  const gui = new GUI();
@@ -645,17 +655,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
 + gui.add(settings, 'showAllTRS').onChange(showTRS);
  const trsFolder = gui.addFolder('orientation');
- trsFolder.onChange(updateCurrentNodeFromSettings);
 + const trsControls = [
-*   trsFolder.add(settings.translation, '0', -200, 200, 1).name('translation x'),
-*   trsFolder.add(settings.translation, '1', -200, 200, 1).name('translation y'),
-*   trsFolder.add(settings.translation, '2', -200, 200, 1).name('translation z'),
-*   trsFolder.add(settings.rotation, '0', radToDegOptions).name('rotation x'),
-*   trsFolder.add(settings.rotation, '1', radToDegOptions).name('rotation y'),
-*   trsFolder.add(settings.rotation, '2', radToDegOptions).name('rotation z'),
-*   trsFolder.add(settings.scale, '0', 0.1, 100).name('scale x'),
-*   trsFolder.add(settings.scale, '1', 0.1, 100).name('scale y'),
-*   trsFolder.add(settings.scale, '2', 0.1, 100).name('scale z'),
+*   trsFolder.add(trsUIHelper, 'translationX', -200, 200, 1),
+*   trsFolder.add(trsUIHelper, 'translationY', -200, 200, 1),
+*   trsFolder.add(trsUIHelper, 'translationZ', -200, 200, 1),
+*   trsFolder.add(trsUIHelper, 'rotationX', radToDegOptions),
+*   trsFolder.add(trsUIHelper, 'rotationY', radToDegOptions),
+*   trsFolder.add(trsUIHelper, 'rotationZ', radToDegOptions),
+*   trsFolder.add(trsUIHelper, 'scaleX', 0.1, 100),
+*   trsFolder.add(trsUIHelper, 'scaleY', 0.1, 100),
+*   trsFolder.add(trsUIHelper, 'scaleZ', 0.1, 100),
 + ];
 const nodesFolder = gui.addFolder('nodes');
 addSceneGraphNodeToGUI(nodesFolder, root);
@@ -708,9 +717,6 @@ addSceneGraphNodeToGUI(nodesFolder, root);
     cameraRotation: degToRad(-45),
 +    showMeshNodes: false,
     showAllTRS: false,
-    translation: new Float32Array([0, 0, 0]),
-    rotation: new Float32Array([0, 0, 0]),
-    scale: new Float32Array([1, 1, 1]),
   };
 
   const gui = new GUI();
@@ -822,13 +828,10 @@ addSceneGraphNodeToGUI(nodesFolder, root);
 </pre>
 <p>最後に、アニメーションのオン/オフを切り替えるためのコードを設定しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    cameraRotation: degToRad(-45),
 +    animate: false,
     showMeshNodes: false,
     showAllTRS: false,
-    translation: new Float32Array([0, 0, 0]),
-    rotation: new Float32Array([0, 0, 0]),
-    scale: new Float32Array([1, 1, 1]),
-    cameraRotation: degToRad(-45),
   };
 
   const gui = new GUI();
@@ -850,24 +853,21 @@ addSceneGraphNodeToGUI(nodesFolder, root);
 
   ...
 
--      const isRunning = settings.animate;
-+      const isRunning = settings.animate || shots.length;
-      const now = performance.now() * 0.001;
-+      const deltaTime = wasRunning ? now - then : 0;
-+      then = now;
-
-      if (isRunning) {
-        time += deltaTime;
-      }
-+      wasRunning = isRunning;
-
-      if (settings.animate) {
-        animate(time);
-        updateCurrentNodeGUI();
-        requestRender();
-      }
-
-+      processShots(now, deltaTime);
++    const isRunning = settings.animate;
++    const now = performance.now() * 0.001;
++    const deltaTime = wasRunning ? now - then : 0;
++    then = now;
++
++    if (isRunning) {
++      time += deltaTime;
++    }
++    wasRunning = isRunning;
++
++    if (settings.animate) {
++      animate(time);
++      trs.updateDisplay();
++      requestRender();
++    }
   }
 </pre>
 <p>上記の複雑な点は、アニメーションがチェックされている場合にのみクロックを実行したいということです。したがって、前のフレームで<code class="notranslate" translate="no">wasRunning</code>だったかどうかを確認します。そうでない場合は、<code class="notranslate" translate="no">deltaTime</code>を0に設定します。そうすれば、アニメーション化していなかった時間だけクロックが進むことはありません。</p>
@@ -1207,7 +1207,7 @@ addSceneGraphNodeToGUI(nodesFolder, root);
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-scene-graphs.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-scene-graphs.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-scene-graphs.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-scene-graphs.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-scene-graphs.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-scene-graphs.html">Русский
@@ -1277,6 +1277,15 @@ addSceneGraphNodeToGUI(nodesFolder, root);
   <li>ポストプロセッシング</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
@@ -1343,8 +1352,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

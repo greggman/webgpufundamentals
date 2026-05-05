@@ -36,7 +36,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'our hardcoded red triangle shaders',
-    code: `
+    code: /* wgsl */ `
       @vertex fn vs(
         @builtin(vertex_index) vertexIndex : u32
       ) -> @builtin(position) vec4f {

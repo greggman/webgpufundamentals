@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-optimization.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-optimization.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-optimization.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-optimization.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-optimization.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-optimization.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Speed and Optimization</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>Most of the examples on this site are written to be as understandable as
@@ -316,7 +319,7 @@ in general.</p>
 </pre>
 <p>Then let’s make a shader module.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         normalMatrix: mat3x3f,
         viewProjection: mat4x4f,
@@ -359,7 +362,7 @@ in general.</p>
         // and pass it to the fragment shader
         vsOut.surfaceToLight = uni.lightWorldPosition - surfaceWorldPosition;
 
-        // Compute the vector of the surface to the light
+        // Compute the vector of the surface to the view
         // and pass it to the fragment shader
         vsOut.surfaceToView = uni.viewWorldPosition - surfaceWorldPosition;
 
@@ -619,7 +622,7 @@ to position and animate each object.</p>
       entries: [
         { binding: 0, resource: material.texture.createView() },
         { binding: 1, resource: material.sampler },
-        { binding: 2, resource: { buffer: uniformBuffer }},
+        { binding: 2, resource: uniformBuffer },
       ],
     });
 
@@ -848,15 +851,15 @@ the example even more. We needed something showing animation I threw something t
   }
   requestAnimationFrame(render);
 
-  +const observer = new ResizeObserver(entries =&gt; {
-  +  entries.forEach(entry =&gt; {
-  +    canvasToSizeMap.set(entry.target, {
-  +      width: Math.max(1, Math.min(entry.contentBoxSize[0].inlineSize, device.limits.maxTextureDimension2D)),
-  +      height: Math.max(1, Math.min(entry.contentBoxSize[0].blockSize, device.limits.maxTextureDimension2D)),
-  +    });
-  +  });
-  +});
-  +observer.observe(canvas);
++  const observer = new ResizeObserver(entries =&gt; {
++    entries.forEach(entry =&gt; {
++      canvasToSizeMap.set(entry.target, {
++        width: Math.max(1, Math.min(entry.contentBoxSize[0].inlineSize, device.limits.maxTextureDimension2D)),
++        height: Math.max(1, Math.min(entry.contentBoxSize[0].blockSize, device.limits.maxTextureDimension2D)),
++      });
++    });
++  });
++  observer.observe(canvas);
 </pre>
 <p>Let’s also add in some timing. We’ll use the <code class="notranslate" translate="no">NonNegativeRollingAverage</code> and <code class="notranslate" translate="no">TimingHelper</code> classes
 we made in <a href="webgpu-timing.html">the article on timing</a>.</p>
@@ -1280,7 +1283,7 @@ to every uniform buffer. We’ll also copy less data per object
 with <code class="notranslate" translate="no">device.queue.writeBuffer</code></p>
 <p>Here’s the new shader</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
 -      struct Uniforms {
 -        normalMatrix: mat3x3f,
 -        viewProjection: mat4x4f,
@@ -1341,7 +1344,7 @@ with <code class="notranslate" translate="no">device.queue.writeBuffer</code></p
 -        vsOut.surfaceToLight = uni.lightWorldPosition - surfaceWorldPosition;
 +        vsOut.surfaceToLight = glb.lightWorldPosition - surfaceWorldPosition;
 
-        // Compute the vector of the surface to the light
+        // Compute the vector of the surface to the view
         // and pass it to the fragment shader
 -        vsOut.surfaceToView = uni.viewWorldPosition - surfaceWorldPosition;
 +        vsOut.surfaceToView = glb.viewWorldPosition - surfaceWorldPosition;
@@ -1455,8 +1458,8 @@ global uniform buffer to each object’s bind group.</p>
       entries: [
         { binding: 0, resource: material.texture.createView() },
         { binding: 1, resource: material.sampler },
-        { binding: 2, resource: { buffer: uniformBuffer }},
-+        { binding: 3, resource: { buffer: globalUniformBuffer }},
+        { binding: 2, resource: uniformBuffer },
++        { binding: 3, resource: globalUniformBuffer },
       ],
     });
 
@@ -1589,7 +1592,7 @@ them to the uniform buffer every frame.</p>
 them at init time and then just add them to our bind group.</p>
 <p>First let’s change the shaders to use another uniform buffer.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct GlobalUniforms {
         viewProjection: mat4x4f,
         lightWorldPosition: vec3f,
@@ -1642,7 +1645,7 @@ them at init time and then just add them to our bind group.</p>
         // and pass it to the fragment shader
         vsOut.surfaceToLight = glb.lightWorldPosition - surfaceWorldPosition;
 
-        // Compute the vector of the surface to the light
+        // Compute the vector of the surface to the view
         // and pass it to the fragment shader
         vsOut.surfaceToView = glb.viewWorldPosition - surfaceWorldPosition;
 
@@ -1750,8 +1753,8 @@ object’s bind group.</p>
       entries: [
         { binding: 0, resource: material.texture.createView() },
         { binding: 1, resource: material.sampler },
-        { binding: 2, resource: { buffer: uniformBuffer }},
-        { binding: 3, resource: { buffer: globalUniformBuffer }},
+        { binding: 2, resource: uniformBuffer },
+        { binding: 3, resource: globalUniformBuffer },
 +        { binding: 4, resource: { buffer: material.materialUniformBuffer }},
       ],
     });
@@ -1887,7 +1890,7 @@ buffer.</p>
       entries: [
         { binding: 0, resource: material.texture.createView() },
         { binding: 1, resource: material.sampler },
--        { binding: 2, resource: { buffer: uniformBuffer }},
+-        { binding: 2, resource: uniformBuffer },
 +        {
 +          binding: 2,
 +          resource: {
@@ -1896,7 +1899,7 @@ buffer.</p>
 +            size: uniformBufferSize,
 +          },
 +        },
-        { binding: 3, resource: { buffer: globalUniformBuffer }},
+        { binding: 3, resource: globalUniformBuffer },
         { binding: 4, resource: { buffer: material.materialUniformBuffer }},
       ],
     });
@@ -2032,7 +2035,7 @@ make new typedarray views after mapping.</p>
         { binding: 0, resource: material.texture.createView() },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: { buffer: uniformBuffer, offset: uniformBufferOffset, size: uniformBufferSize }},
-        { binding: 3, resource: { buffer: globalUniformBuffer }},
+        { binding: 3, resource: globalUniformBuffer },
         { binding: 4, resource: { buffer: material.materialUniformBuffer }},
       ],
     });
@@ -2254,7 +2257,7 @@ some ideas for getting more speed in specialized situations.</p>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-optimization.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-optimization.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-optimization.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-optimization.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-optimization.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-optimization.html">Русский
@@ -2324,6 +2327,15 @@ some ideas for getting more speed in specialized situations.</p>
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -2399,8 +2411,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

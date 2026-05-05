@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-cube-maps.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-cube-maps.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-cube-maps.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-cube-maps.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-cube-maps.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-cube-maps.html">Русский
@@ -228,6 +228,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU Cubemaps</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -497,7 +500,7 @@ we copy each source to its respective layer.</p>
       if (!module) {
         module = device.createShaderModule({
           label: 'textured quad shaders for mip level generation',
-          code: `
+          code: /* wgsl */ `
             struct VSOutput {
               @builtin(position) position: vec4f,
               @location(0) texcoord: vec2f,
@@ -638,9 +641,9 @@ a version of <code class="notranslate" translate="no">generateMips</code> that w
     label: 'bind group for object',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: uniformBuffer }},
+      { binding: 0, resource: uniformBuffer },
       { binding: 1, resource: sampler },
--      { binding: 2, resource: texture.createView() },
+-      { binding: 2, resource: texture },
 +      { binding: 2, resource: texture.createView({dimension: 'cube'}) },
     ],
   });
@@ -685,7 +688,7 @@ used for? Probably the single most common thing a cubemap is used for is as an
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-cube-maps.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-cube-maps.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-cube-maps.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-cube-maps.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-cube-maps.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-cube-maps.html">Русский
@@ -755,6 +758,15 @@ used for? Probably the single most common thing a cubemap is used for is as an
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -830,8 +842,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

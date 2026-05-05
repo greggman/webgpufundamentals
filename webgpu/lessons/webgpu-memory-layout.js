@@ -3,18 +3,18 @@ import {
 } from '../../3rdparty/webgpu-utils-1.x.module.js';
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createByteDiagramForType,
   getCodeForUniform,
-} from './resources/data-byte-diagram.js';
+} from './resources/js/data-byte-diagram.js';
 import {
   makeTable,
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import {
   makeElem
-} from './resources/jsonml.js';
-import typeInfo from './resources/wgsl-data-types.js';
+} from './resources/js/jsonml.js';
+import typeInfo from './resources/js/wgsl-data-types.js';
 
 renderDiagrams({
   ourStructV1(elem) {

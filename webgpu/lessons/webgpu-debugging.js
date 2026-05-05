@@ -1,12 +1,12 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createElem as el
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import {
   createRequestAnimationFrameLoop,
-} from './resources/good-raf.js';
+} from './resources/js/good-raf.js';
 import * as wgh from '../../3rdparty/webgpu-utils-1.x.module.js';
 import { mat4 } from '../../3rdparty/wgpu-matrix.module.js';
 
@@ -122,8 +122,8 @@ async function visualizeTextureCoords(elem, bad) {
     const bindGroup = device.createBindGroup({
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer } },
-        { binding: 1, resource: { buffer: sharedUniformBuffer } },
+        { binding: 0, resource: uniformBuffer  },
+        { binding: 1, resource: sharedUniformBuffer  },
       ],
     });
 

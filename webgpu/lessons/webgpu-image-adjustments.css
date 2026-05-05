@@ -1,0 +1,126 @@
+.adjustment {
+  display: flex;
+  align-items: center;
+  flex-direction: column-reverse;
+
+  .widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .labeled-range {
+    display: flex;
+    justify-content: space-between;
+    font-family: monospace;
+    text-align: right;
+  }
+  .labeled-range>div {
+    flex: 1 1 auto;
+    display: flex;
+  }
+
+  .image, canvas {
+    max-width: 400px;
+    min-width: 50px;
+    width: 400px;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .colorRange {
+    border: 1px solid gray;
+    margin: 2px;
+ 
+    input[type="color"] {
+      opacity: 0;
+      width: 2em;
+      height: 2em;
+    }
+  }
+
+  .arrow {
+    width: 4em;
+    height: 2em;
+    background-image: url('/webgpu/lessons/resources/arrow-right.svg');
+    background-size: constrain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+.rgb-hsl {
+  display: flex;
+
+  > div {
+    flex: 1 1 50%;
+    width: 50%;
+  }
+}
+
+.rgb-diagram {
+  position: relative;
+
+  #labels {
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    font-family: monospace;
+    font-size: small;
+
+    div {
+      color: white;
+      text-shadow:
+        -1px -1px 0 #000,
+        0   -1px 0 #000,
+        1px -1px 0 #000,
+        1px  0   0 #000,
+        1px  1px 0 #000,
+        0    1px 0 #000,
+        -1px  1px 0 #000,
+        -1px  0   0 #000;
+    }
+  }
+}
+
+  .sliders {
+    display: flex;
+    justify-content: center;
+
+    .labeled-range {
+      display: flex;
+      justify-content: space-between;
+      font-family: monospace;
+      align-items: center;
+      text-align: right;
+    }
+    .labeled-range>div {
+      flex: 1 1 auto;
+      display: flex;
+    }
+
+  }
+
+
+
+@media (max-width: 700px) {
+  .adjustment {
+    flex-direction: column-reverse;
+
+    .widget {
+      margin: 0.5em;
+      flex-direction: column-reverse;
+    }
+
+    .arrow {
+      margin-top: 0.5em;
+      height: 1em;
+      background-image: url('/webgpu/lessons/resources/arrow-down.svg');
+    }
+
+  }
+}

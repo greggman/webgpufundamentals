@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-compute-shaders.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Compute Shader Basics">
+
+<meta name="description" content="Cómo usar compute shaders en WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders_es.jpg">
+
+<meta property="og:title" content="Conceptos básicos de Compute Shader en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use compute shaders in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders_es.jpg">
+<meta property="og:description" content="Cómo usar compute shaders en WebGPU">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Compute Shader Basics">
+<meta name="twitter:title" content="Conceptos básicos de Compute Shader en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders.html">
-<meta name="twitter:description" content="How to use compute shaders in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Cómo usar compute shaders en WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders.html",
+      "inLanguage":"es",
+      "name":"Conceptos básicos de Compute Shader en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Compute Shader Basics</title>
+<title>Conceptos básicos de Compute Shader en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-compute-shaders.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders.html">Русский
@@ -182,18 +227,274 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Compute Shader Basics</h1>
+    <h1>Conceptos básicos de Compute Shader en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-compute-shaders.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Este artículo continúa de <a href="webgpu-fundamentals.html">el artículo sobre los fundamentos</a>.
+Comenzaremos con algunos conceptos básicos de los compute shaders (shaders de cómputo) y luego, con suerte, pasaremos a ejemplos de resolución de problemas del mundo real.</p>
+<p>En el <a href="webgpu-fundamentals.html">artículo anterior</a> creamos un compute shader extremadamente simple que duplicaba números en su lugar.</p>
+<p>Aquí está el shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
+
+@compute @workgroup_size(1) fn computeSomething(
+  @builtin(global_invocation_id) id: vec3&lt;u32&gt;
+) {
+  let i = id.x;
+  data[i] = data[i] * 2.0;
+}
+</pre>
+<p>Luego ejecutamos el compute shader efectivamente de esta manera:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
+  pass.dispatchWorkgroups(count);
+</pre>
+<p>Necesitamos repasar la definición de workgroup.</p>
+<p>Puedes pensar en un workgroup como una pequeña colección de hilos (threads). Cada hilo se ejecuta en paralelo. Defines el tamaño del workgroup estáticamente en WGSL. Los tamaños de workgroup se definen en 3 dimensiones, pero por defecto es 1, por lo que nuestro <code class="notranslate" translate="no">@workgroup_size(1)</code> es equivalente a <code class="notranslate" translate="no">@workgroup_size(1, 1, 1)</code>.</p>
+<p><a id="a-local-invocation-id"></a>Si definimos un workgroup como, por ejemplo, <code class="notranslate" translate="no">@workgroup_size(3, 4, 2)</code>, entonces estamos definiendo 3 * 4 * 2 hilos o, dicho de otra forma, estamos definiendo un workgroup de 24 hilos.</p>
+<div class="webgpu_center">
+  <img src="../resources/gpu-workgroup.svg" style="width: 500px;">
+  <div><code class="notranslate" translate="no">local_invocation_id</code> de los hilos en un workgroup</div>
+</div>
+<p><a id="a-workgroup-id"></a>Si luego llamamos a <code class="notranslate" translate="no">pass.dispatchWorkgroups(4, 3, 2)</code>, estamos diciendo: ejecuta un workgroup de 24 hilos, 4 * 3 * 2 veces (24) para un total de 576 hilos.</p>
+<div class="webgpu_center">
+  <img src="../resources/gpu-workgroup-dispatch.svg" style="width: 500px;">
+  <div><code class="notranslate" translate="no">workgroup_id</code> de los workgroups despachados</div>
+</div>
+<p>Dentro de cada “invocación” de nuestro compute shader, están disponibles las siguientes variables integradas (builtins).</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">local_invocation_id</code>: El id de este hilo dentro de un workgroup.</p>
+<p><a href="#a-local-invocation-id">Ver el diagrama de arriba</a>.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">workgroup_id</code>: El id del workgroup.</p>
+<p>Cada hilo dentro de un workgroup tendrá el mismo id de workgroup.
+<a href="#a-workgroup-id">Ver el diagrama de arriba</a>.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">global_invocation_id</code>: Un id único para cada hilo.</p>
+<p>Puedes pensar en esto como:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">global_invocation_id = workgroup_id * workgroup_size + local_invocation_id
+</pre>
+</li>
+<li>
+<p><code class="notranslate" translate="no">num_workgroups</code>: Lo que pasaste a <code class="notranslate" translate="no">pass.dispatchWorkgroups</code>.</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">local_invocation_index</code>: El id de este hilo linealizado.</p>
+<p>Puedes pensar en esto como:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">rowSize = workgroup_size.x
+sliceSize = rowSize * workgroup_size.y
+local_invocation_index =
+      local_invocation_id.x +
+      local_invocation_id.y * rowSize +
+      local_invocation_id.z * sliceSize
+</pre>
+</li>
+</ul>
+<p>Hagamos un ejemplo para usar estos valores. Simplemente escribiremos los valores de cada invocación en buffers y luego imprimiremos los valores.</p>
+<p>Aquí está el shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const dispatchCount = [4, 3, 2];
+const workgroupSize = [2, 3, 4];
+
+// multiplica todos los elementos de un array
+const arrayProd = arr =&gt; arr.reduce((a, b) =&gt; a * b);
+
+const numThreadsPerWorkgroup = arrayProd(workgroupSize);
+
+const code = `
+// ¡NOTA!: vec3u tiene un padding de 4 bytes
+@group(0) @binding(0) var&lt;storage, read_write&gt; workgroupResult: array&lt;vec3u&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; localResult: array&lt;vec3u&gt;;
+@group(0) @binding(2) var&lt;storage, read_write&gt; globalResult: array&lt;vec3u&gt;;
+
+@compute @workgroup_size(${workgroupSize}) fn computeSomething(
+    @builtin(workgroup_id) workgroup_id : vec3&lt;u32&gt;,
+    @builtin(local_invocation_id) local_invocation_id : vec3&lt;u32&gt;,
+    @builtin(global_invocation_id) global_invocation_id : vec3&lt;u32&gt;,
+    @builtin(local_invocation_index) local_invocation_index: u32,
+    @builtin(num_workgroups) num_workgroups: vec3&lt;u32&gt;
+) {
+  // workgroup_index es similar a local_invocation_index excepto que es para
+  // workgroups, no hilos dentro de un workgroup.
+  // No es un builtin, así que lo calculamos nosotros mismos.
+
+  let workgroup_index =  
+     workgroup_id.x +
+     workgroup_id.y * num_workgroups.x +
+     workgroup_id.z * num_workgroups.x * num_workgroups.y;
+
+  // global_invocation_index es like local_invocation_index
+  // excepto que es lineal a través de todas las invocaciones en todos los
+  // workgroups despachados. No es un builtin, así que lo calculamos nosotros mismos.
+
+  let global_invocation_index =
+     workgroup_index * ${numThreadsPerWorkgroup} +
+     local_invocation_index;
+
+  // ahora podemos escribir cada uno de estos builtins en nuestros buffers.
+  workgroupResult[global_invocation_index] = workgroup_id;
+  localResult[global_invocation_index] = local_invocation_id;
+  globalResult[global_invocation_index] = global_invocation_id;
+`;
+</pre>
+<p>Usamos un template literal de JavaScript para poder establecer el tamaño del workgroup desde la variable de JavaScript <code class="notranslate" translate="no">workgroupSize</code>. Esto termina quedando codificado (hardcoded) en el shader.</p>
+<p>Ahora que tenemos el shader, podemos crear 3 buffers para almacenar estos resultados.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numWorkgroups = arrayProd(dispatchCount);
+  const numResults = numWorkgroups * numThreadsPerWorkgroup;
+  const size = numResults * 4 * 4;  // vec3f * u32
+
+  let usage = GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC;
+  const workgroupBuffer = device.createBuffer({size, usage});
+  const localBuffer = device.createBuffer({size, usage});
+  const globalBuffer = device.createBuffer({size, usage});
+</pre>
+<p>Como señalamos antes, no podemos mapear buffers de storage directamente en JavaScript, por lo que necesitamos algunos buffers que sí podamos mapear. Copiaremos los resultados desde los buffers de storage a estos buffers de resultados mapeables y luego leeremos los resultados.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  usage = GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST;
+  const workgroupReadBuffer = device.createBuffer({size, usage});
+  const localReadBuffer = device.createBuffer({size, usage});
+  const globalReadBuffer = device.createBuffer({size, usage});
+</pre>
+<p>Creamos un bindgroup para vincular todos nuestros buffers de storage:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: workgroupBuffer },
+      { binding: 1, resource: localBuffer },
+      { binding: 2, resource: globalBuffer },
+    ],
+  });
+</pre>
+<p>Iniciamos un codificador (encoder) y un codificador de compute pass, igual que en nuestro ejemplo anterior, y luego añadimos los comandos para ejecutar el compute shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Codificar comandos para realizar el cálculo
+  const encoder = device.createCommandEncoder({ label: 'compute builtin encoder' });
+  const pass = encoder.beginComputePass({ label: 'compute builtin pass' });
+
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(...dispatchCount);
+  pass.end();
+</pre>
+<p>Necesitamos copiar los resultados de los buffers de storage a los buffers de resultados mapeables.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  encoder.copyBufferToBuffer(workgroupBuffer, 0, workgroupReadBuffer, 0, size);
+  encoder.copyBufferToBuffer(localBuffer, 0, localReadBuffer, 0, size);
+  encoder.copyBufferToBuffer(globalBuffer, 0, globalReadBuffer, 0, size);
+</pre>
+<p>Y luego finalizamos el encoder y enviamos el buffer de comandos.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Finalizar la codificación y enviar (submit) los comandos
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+</pre>
+<p>Como antes, para leer los resultados mapeamos los buffers y, una vez que estén listos, obtenemos vistas de arrays con tipo (typed arrays) de su contenido.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Leer los resultados
+   await Promise.all([
+    workgroupReadBuffer.mapAsync(GPUMapMode.READ),
+    localReadBuffer.mapAsync(GPUMapMode.READ),
+    globalReadBuffer.mapAsync(GPUMapMode.READ),
+  ]);
+
+  const workgroup = new Uint32Array(workgroupReadBuffer.getMappedRange());
+  const local = new Uint32Array(localReadBuffer.getMappedRange());
+  const global = new Uint32Array(globalReadBuffer.getMappedRange());
+</pre>
+<blockquote>
+<p>Importante: Mapeamos 3 buffers aquí y usamos <code class="notranslate" translate="no">await Promise.all</code> para esperar a que todos estén listos para su uso. <strong>NO</strong> puedes simplemente esperar al último buffer. Debes esperar a los 3 buffers.</p>
+</blockquote>
+<p>Finalmente, podemos imprimirlos:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const get3 = (arr, i) =&gt; {
+    const off = i * 4;
+    return `${arr[off]}, ${arr[off + 1]}, ${arr[off + 2]}`;
+  };
+
+  for (let i = 0; i &lt; numResults; ++i) {
+    if (i % numThreadsPerWorkgroup === 0) {
+      log(`\
+ ---------------------------------------
+ global                 local     global   dispatch: ${i / numThreadsPerWorkgroup}
+ invoc.    workgroup    invoc.    invoc.
+ index     id           id        id
+ ---------------------------------------`);
+    }
+    log(` ${i.toString().padStart(3)}:      ${get3(workgroup, i)}      ${get3(local, i)}   ${get3(global, i)}`)
+  }
+}
+
+function log(...args) {
+  const elem = document.createElement('pre');
+  elem.textContent = args.join(' ');
+  document.body.appendChild(elem);
+}
+</pre>
+<p>Aquí está el resultado:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-builtins.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-builtins.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Estas variables integradas suelen ser las únicas entradas que cambian por hilo de un compute shader para una llamada a <code class="notranslate" translate="no">pass.dispatchWorkgroups</code>, por lo que para ser efectivo necesitas descubrir cómo usarlas para diseñar una función de compute shader que haga lo que quieres, dadas estas variables integradas <code class="notranslate" translate="no">..._id</code> como entrada.</p>
+<h2 id="tamaño-del-workgroup">Tamaño del Workgroup</h2>
+<p>¿Qué tamaño deberías darle a un workgroup? A menudo surge la pregunta: ¿por qué no usar siempre <code class="notranslate" translate="no">@workgroup_size(1, 1, 1)</code>? Así sería más trivial decidir cuántas iteraciones ejecutar solo con los parámetros de <code class="notranslate" translate="no">pass.dispatchWorkgroups</code>.</p>
+<p>La razón es que múltiples hilos dentro de un workgroup son más rápidos que despachos individuales.</p>
+<p>Por un lado, los hilos en un workgroup a menudo se ejecutan al unísono (lockstep), por lo que ejecutar 16 de ellos es tan rápido como ejecutar 1.</p>
+<p>Los límites por defecto para WebGPU son los siguientes:</p>
+<ul>
+<li><code class="notranslate" translate="no">maxComputeInvocationsPerWorkgroup</code>: 256</li>
+<li><code class="notranslate" translate="no">maxComputeWorkgroupSizeX</code>: 256</li>
+<li><code class="notranslate" translate="no">maxComputeWorkgroupSizeY</code>:	256</li>
+<li><code class="notranslate" translate="no">maxComputeWorkgroupSizeZ</code>:	64</li>
+</ul>
+<p>Como puedes ver, el primer límite <code class="notranslate" translate="no">maxComputeInvocationsPerWorkgroup</code> significa que los 3 parámetros de <code class="notranslate" translate="no">@workgroup_size</code> no pueden multiplicarse para dar un número mayor que 256. En otras palabras:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">    @workgroup_size(256, 1, 1)   // bien
+    @workgroup_size(128, 2, 1)   // bien
+    @workgroup_size(16, 16, 1)   // bien
+    @workgroup_size(16, 16, 2)   // mal: 16 * 16 * 2 = 512
+</pre>
+<p>Desafortunadamente, el tamaño perfecto depende de la GPU y WebGPU no puede proporcionar esa información. <strong>El consejo general para WebGPU es elegir un tamaño de workgroup de 64</strong>, a menos que tengas alguna razón específica para elegir otro tamaño. Aparentemente, la mayoría de las GPUs pueden ejecutar eficientemente 64 cosas al unísono. Si eliges un número mayor y la GPU no puede hacerlo de forma rápida, elegirá un camino más lento. Si, por otro lado, eliges un número menor de lo que la GPU puede manejar, es posible que no obtengas el máximo rendimiento.</p>
+<h2 id="condiciones-de-carrera-en-compute-shaders"><a id="a-race-conditions"></a>Condiciones de Carrera en Compute Shaders</h2>
+<p>Un error común en WebGPU es no manejar las condiciones de carrera (race conditions). Una condición de carrera ocurre cuando múltiples hilos se están ejecutando al mismo tiempo y, efectivamente, están en una carrera por ver quién llega primero o último.</p>
+<p>Digamos que tienes este compute shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; result: array&lt;f32&gt;;
+
+@compute @workgroup_size(32) fn computeSomething(
+    @builtin(local_invocation_id) local_invocation_id : vec3&lt;u32&gt;,
+) {
+  result[0] = f32(local_invocation_id.x);
+}
+</pre>
+<p>Si eso es difícil de leer, aquí tienes más o menos el mismo JavaScript:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const result = [];
+for (let i = 0; i &lt; 32; ++i) {
+  result[0] = i;
+}
+</pre>
+<p>En el caso de JavaScript, después de que se ejecuta el código, <code class="notranslate" translate="no">result[0]</code> es claramente 31. Sin embargo, en el caso del compute shader, las 32 iteraciones del shader se ejecutan en paralelo. Cualquiera que termine última será la que deje su valor en <code class="notranslate" translate="no">result[0]</code>. Cuál de ellas se ejecutará última no está definido.</p>
+<p>De la especificación:</p>
+<blockquote>
+<p>WebGPU no ofrece garantías sobre:</p>
+<ul>
+<li>
+<p>Si las invocaciones de diferentes workgroups se ejecutan de forma concurrente. Es decir, no puedes asumir que se ejecutan más de un workgroup a la vez.</p>
+</li>
+<li>
+<p>Si, una vez que las invocaciones de un workgroup comienzan a ejecutarse, otros workgroups se bloquean. Es decir, no puedes asumir que solo se ejecuta un workgroup a la vez. Mientras se ejecuta un workgroup, la implementación puede optar por ejecutar simultáneamente otros workgroups también, u otro trabajo en cola pero no bloqueado.</p>
+</li>
+<li>
+<p>Si las invocaciones de un workgroup en particular comienzan a ejecutarse antes que las invocaciones de otro workgroup. Es decir, no puedes asumir que los workgroups se lanzan en un orden particular.</p>
+</li>
+</ul>
+</blockquote>
+<p>Repasaremos algunas de las formas de lidiar con este problema en futuros ejemplos. Por ahora, nuestros dos ejemplos no tienen condiciones de carrera, ya que cada iteración del compute shader hace algo que no se ve afectado por las demás iteraciones.</p>
+<p>Siguiente: <a href="webgpu-compute-shaders-histogram.html">Ejemplos de Compute Shaders - Histograma de imagen</a></p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-compute-shaders.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders.html">Русский
@@ -203,84 +504,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +602,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Conceptos básicos de Compute Shader en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

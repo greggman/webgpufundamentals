@@ -446,7 +446,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         matrix: mat4x4f,
       };
@@ -527,7 +527,7 @@ async function main() {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: uniformBuffer },
       ],
     });
 

@@ -49,7 +49,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'circles in storage texture',
-    code: `
+    code: /* wgsl */ `
       @group(0) @binding(0) var tex: texture_storage_2d<${presentationFormat}, write>;
 
       @compute @workgroup_size(1) fn cs(
@@ -82,7 +82,7 @@ async function main() {
     const bindGroup = device.createBindGroup({
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: texture.createView() },
+        { binding: 0, resource: texture },
       ],
     });
 

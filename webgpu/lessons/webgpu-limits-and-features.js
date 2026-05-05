@@ -1,10 +1,10 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   makeTable,
-} from './resources/elem.js';
-import { shortSize } from './resources/utils.js';
+} from './resources/js/elem.js';
+import { shortSize } from './resources/js/utils.js';
 
 export const kMaxUnsignedLongValue = 4294967295;
 export const kMaxUnsignedLongLongValue = Number.MAX_SAFE_INTEGER;
@@ -18,6 +18,7 @@ function makeObjectFromTable(propertyNames, defaults, values) {
   ]));
 }
 
+// TODO: Once Compat is in the spec, this should be updated to include Compat limits
 /* eslint-disable no-sparse-arrays */
 const kLimitInfo = makeObjectFromTable(
                                                [    'class', 'default',            'maximumValue'],
@@ -47,7 +48,6 @@ const kLimitInfo = makeObjectFromTable(
   'maxBufferSize':                             [           , 268435456, kMaxUnsignedLongLongValue],
   'maxVertexAttributes':                       [           ,        16,                          ],
   'maxVertexBufferArrayStride':                [           ,      2048,                          ],
-  'maxInterStageShaderComponents':             [           ,        60,                          ],
   'maxInterStageShaderVariables':              [           ,        16,                          ],
 
   'maxColorAttachments':                       [           ,         8,                          ],
@@ -62,21 +62,33 @@ const kLimitInfo = makeObjectFromTable(
 });
 
 const kFeatures = new Set([
-  'bgra8unorm-storage',
+  'core-features-and-limits',
   'depth-clip-control',
   'depth32float-stencil8',
   'texture-compression-bc',
+  'texture-compression-bc-sliced-3d',
   'texture-compression-etc2',
   'texture-compression-astc',
+  'texture-compression-astc-sliced-3d',
   'timestamp-query',
   'indirect-first-instance',
   'shader-f16',
   'rg11b10ufloat-renderable',
+  'bgra8unorm-storage',
   'float32-filterable',
+  'float32-blendable',
+  'clip-distances',
+  'dual-source-blending',
+  'subgroups',
+  'texture-formats-tier1',
+  'texture-formats-tier2',
+  'primitive-index',
+  'texture-component-swizzle',
 ]);
-window.k = kFeatures;
 
-const adapter = await navigator.gpu?.requestAdapter();
+// TODO: Once Compat is in the spec, this should be updated to request featureLevel: "compatibility"
+const coreAdapter = await navigator.gpu?.requestAdapter();
+const defaultDevice = await coreAdapter.requestDevice();
 
 function withShortSize(v) {
   return v >= 1024 ? `${v} (${shortSize(v)})` : `${v}`;
@@ -92,19 +104,58 @@ function getObjLikeKeys(objLike) {
   return keys;
 }
 
+// Find all limit names known in the browser OR in the table above.
+const limitNames = (() => {
+  const names = Object.keys(kLimitInfo);
+  if (coreAdapter) {
+    names.push(...getObjLikeKeys(coreAdapter.limits));
+  }
+  return [...new Set(names)].sort(sortAlphabetically);
+})();
+
+function renderAdapterLimit(key) {
+  let tagName = 'not-present';
+  let text = coreAdapter ? 'limit not present' : 'webgpu not supported';
+  if (coreAdapter && key in coreAdapter.limits) {
+    const defaultLimit = defaultDevice?.limits[key] ?? kLimitInfo[key]?.default;
+    const adapterLimit = coreAdapter.limits[key];
+    tagName = '';
+    const compare = key.startsWith('min')
+      ? (a, b) => a < b
+      : (a, b) => a > b;
+    if (compare(adapterLimit, defaultLimit)) {
+      tagName = 'exceeds-limit';
+    }
+    text = withShortSize(coreAdapter.limits[key]);
+  }
+  return [tagName, text];
+}
+
+function renderSpecLimit(key) {
+  let tagName = 'not-present';
+  let text = 'unknown';
+  if (key in kLimitInfo) {
+    tagName = '';
+    text = withShortSize(kLimitInfo[key]?.default);
+  }
+  return [tagName, text];
+}
+
 renderDiagrams({
   limits(elem) {
     const addRow = makeTable(elem, ['limit name', 'your device', 'min']);
-    for (const key of getObjLikeKeys(adapter.limits).sort(sortAlphabetically)) {
-      addRow([key, [adapter.limits[key] > kLimitInfo[key]?.default ? 'exceeds-limit' : '', withShortSize(adapter.limits[key])], withShortSize(kLimitInfo[key]?.default)]);
+    for (const key of limitNames) {
+      addRow([key, renderAdapterLimit(key), renderSpecLimit(key)]);
     }
   },
 
   features(elem) {
     const addRow = makeTable(elem, ['feature', 'your device']);
-    const allKeys = new Set([...kFeatures, ...adapter.features]);
-    for (const key of [...allKeys.keys()].sort(sortAlphabetically)) {
-      addRow([key, adapter.features.has(key) ? '✅' : kFeatures.has(key) ? '🚫' : '🤷‍♂️']);
+    if (coreAdapter) {
+      const allKeys = new Set([...kFeatures, ...coreAdapter.features]);
+      for (const key of [...allKeys.keys()].sort(sortAlphabetically)) {
+        addRow([key, coreAdapter.features.has(key) ? '✅' : kFeatures.has(key) ? '🚫' : '🤷‍♂️']);
+      }
     }
   },
 });

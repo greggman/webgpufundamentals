@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-uniforms.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-uniforms.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-uniforms.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-uniforms.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-uniforms.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-uniforms.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Uniforms</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>The previous article was about <a href="webgpu-inter-stage-variables.html">inter-stage variables</a>.
@@ -240,7 +243,7 @@ you ask the GPU to execute the shader.</p>
 <p>We’ll start again with the triangle example from <a href="webgpu-fundamentals.html">the first article</a> and modify it to use some uniforms.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
     label: 'triangle shaders with uniforms',
-    code: `
+    code: /* wgsl */ `
 +      struct OurStruct {
 +        color: vec4f,
 +        scale: vec2f,
@@ -346,7 +349,7 @@ We need to pass the same <code class="notranslate" translate="no">@group(?)</cod
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: uniformBuffer }},
+      { binding: 0, resource: uniformBuffer },
     ],
   });
 </pre>
@@ -480,7 +483,7 @@ we can draw a bunch of individual things.</p>
 +      label: `bind group for obj: ${i}`,
 +      layout: pipeline.getBindGroupLayout(0),
 +      entries: [
-+        { binding: 0, resource: { buffer: uniformBuffer }},
++        { binding: 0, resource: uniformBuffer },
 +      ],
 +    });
 +
@@ -555,7 +558,7 @@ color and offset are not, so we’re wasting time uploading color and offset.</p
 <p>We could split the uniforms into uniforms that need to be set once and uniforms
 that are updated each time we draw.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct OurStruct {
         color: vec4f,
 -        scale: vec2f,
@@ -646,8 +649,8 @@ that are updated each time we draw.</p>
       label: `bind group for obj: ${i}`,
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: staticUniformBuffer }},
-+        { binding: 1, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: staticUniformBuffer },
++        { binding: 1, resource: uniformBuffer },
       ],
     });
 
@@ -686,7 +689,7 @@ by multiple objects.</p>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-uniforms.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-uniforms.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-uniforms.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-uniforms.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-uniforms.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-uniforms.html">Русский
@@ -756,6 +759,15 @@ by multiple objects.</p>
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -831,8 +843,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

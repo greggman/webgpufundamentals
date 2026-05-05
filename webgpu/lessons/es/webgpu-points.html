@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-points.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Points">
+
+<meta name="description" content="Dibujando puntos en WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_es.jpg">
+
+<meta property="og:title" content="Puntos en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Drawing Points in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_es.jpg">
+<meta property="og:description" content="Dibujando puntos en WebGPU">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-points.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Points">
+<meta name="twitter:title" content="Puntos en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-points.html">
-<meta name="twitter:description" content="Drawing Points in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Dibujando puntos en WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-points.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-points.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-points.html",
+      "inLanguage":"es",
+      "name":"Puntos en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-points.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Points</title>
+<title>Puntos en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-points.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-points.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-points.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-points.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-points.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-points.html">Русский
@@ -182,18 +227,747 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Points</h1>
+    <h1>Puntos en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-points.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>WebGPU soporta el dibujo de puntos. Hacemos esto estableciendo la topología primitiva (primitive topology) a <code class="notranslate" translate="no">'point-list'</code> en una render pipeline.</p>
+<p>Vamos a crear un ejemplo sencillo con puntos aleatorios, partiendo de las ideas presentadas en <a href="webgpu-vertex-buffers.html">el artículo sobre buffers de vértices</a>.</p>
+<p>Primero, un vertex shader y un fragment shader sencillos. Para simplificar, solo usaremos coordenadas de espacio de recorte (clip space) para las posiciones y codificaremos a piñón el color amarillo en nuestro fragment shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@vertex fn vs(vert: Vertex,) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = vert.position;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 1, 0, 1); // amarillo
+}
+</pre>
+<p>Luego, cuando creamos una pipeline, establecemos la topología a <code class="notranslate" translate="no">'point-list'</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'puntos de 1 píxel',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: 2 * 4, // 2 floats, 4 bytes cada uno
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // posición
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
++    primitive: {
++      topology: 'point-list',
++    },
+  });
+</pre>
+<p>Llenemos un buffer de vértices con algunos puntos aleatorios en el espacio de recorte:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const rand = (min, max) =&gt; min + Math.random() * (max - min);
+
+  const kNumPoints = 100;
+  const vertexData = new Float32Array(kNumPoints * 2);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+    const offset = i * 2;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
+  }
+
+  const vertexBuffer = device.createBuffer({
+    label: 'vértices del buffer de vértices',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+</pre>
+<p>Y luego dibujamos:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.draw(kNumPoints);
+    pass.end();
+</pre>
+<p>Y con eso obtenemos 100 puntos amarillos aleatorios.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Desafortunadamente, todos tienen solo 1 píxel de tamaño. WebGPU solo soporta puntos de 1 píxel. Si queremos algo más grande, tenemos que hacerlo nosotros mismos. Afortunadamente, es fácil de hacer. Simplemente crearemos un quad y usaremos <a href="webgpu-vertex-buffers.html#a-instancing">instanciado (instancing)</a>.</p>
+<p>Añadamos un quad a nuestro vertex shader y un atributo de tamaño. También añadamos un uniform para pasar el tamaño de la textura en la que estamos dibujando.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
++  @location(1) size: f32,
+};
+
++struct Uniforms {
++  resolution: vec2f,
++};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
++@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
++    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
++  let points = array(
++    vec2f(-1, -1),
++    vec2f( 1, -1),
++    vec2f(-1,  1),
++    vec2f(-1,  1),
++    vec2f( 1, -1),
++    vec2f( 1,  1),
++  );
+   var vsOut: VSOutput;
++  let pos = points[vNdx];
+-  vsOut.position = vec4f(vert.position, 0, 1);
++  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
+   return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 1, 0, 1); // amarillo
+}
+</pre>
+<p>En JavaScript, necesitamos añadir un atributo para el tamaño por punto, establecer los atributos para que avancen por instancia configurando <code class="notranslate" translate="no">stepMode: 'instance'</code>, y podemos eliminar la configuración de la topología ya que queremos la predeterminada <code class="notranslate" translate="no">'triangle-list'</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'puntos de tamaño variable',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: 2 * 4, // 2 floats, 4 bytes cada uno
++          arrayStride: (2 + 1) * 4, // 3 floats, 4 bytes cada uno
++          stepMode: 'instance',
+           attributes: [
+             {shaderLocation: 0, offset: 0, format: 'float32x2'},  // posición
++            {shaderLocation: 1, offset: 8, format: 'float32'},  // tamaño
+           ],
+         },
+       ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+-    primitive: {
+-      topology: 'point-list',
+-    },
+  });
+</pre>
+<p>Añadamos un tamaño aleatorio por punto a nuestros datos de vértices:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumPoints = 100;
+-  const vertexData = new Float32Array(kNumPoints * 2);
++  const vertexData = new Float32Array(kNumPoints * 3);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+-    const offset = i * 2;
++    const offset = i * 3;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
++    vertexData[offset + 2] = rand(1, 32);
+  }
+</pre>
+<p>Necesitamos un uniform buffer para poder pasar la resolución:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const uniformValues = new Float32Array(2);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kResolutionOffset = 0;
+  const resolutionValue = uniformValues.subarray(
+      kResolutionOffset, kResolutionOffset + 2);
+</pre>
+<p>Y necesitamos un bind group para vincular el uniform buffer:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+    ],
+  });
+</pre>
+<p>Luego, al renderizar, podemos actualizar el uniform buffer con la resolución actual:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // Obtén la textura actual del contexto del canvas y
+    // establécela como la textura en la que renderizar.
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
++    // Actualiza la resolución en el uniform buffer
++    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
++    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>luego establecemos nuestro bind group y renderizamos una instancia por punto:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
++    pass.setBindGroup(0, bindGroup);
+-    pass.draw(kNumPoints);
++    pass.draw(6, kNumPoints);
+    pass.end();
+</pre>
+<p>Y ahora tenemos puntos de tamaño variable.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-size.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-size.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>¿Qué pasaría si quisiéramos texturizar nuestros puntos? Solo necesitamos pasar coordenadas de textura desde el vertex shader al fragment shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) size: f32,
+};
+
+struct Uniforms {
+  resolution: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
++  @location(0) texcoord: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
+  let points = array(
+    vec2f(-1, -1),
+    vec2f( 1, -1),
+    vec2f(-1,  1),
+    vec2f(-1,  1),
+    vec2f( 1, -1),
+    vec2f( 1,  1),
+  );
+  var vsOut: VSOutput;
+  let pos = points[vNdx];
+  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
++  vsOut.texcoord = pos * 0.5 + 0.5;
+  return vsOut;
+}
+</pre>
+<p>Y, por supuesto, usar una textura en el fragment shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+@group(0) @binding(1) var s: sampler;
++@group(0) @binding(2) var t: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+-  return vec4f(1, 1, 0, 1); // amarillo
++  return textureSample(t, s, vsOut.texcoord);
+}
+</pre>
+<p>Crearemos una textura sencilla usando un canvas tal como cubrimos en <a href="webgpu-importing-textures.html">el artículo sobre importación de texturas</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const ctx = new OffscreenCanvas(32, 32).getContext('2d');
+  ctx.font = '27px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🥑', 16, 16);
+
+  const texture = device.createTexture({
+    size: [32, 32],
+    format: 'rgba8unorm',
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.COPY_DST |
+           GPUTextureUsage.RENDER_ATTACHMENT,
+  });
+  device.queue.copyExternalImageToTexture(
+    { source: ctx.canvas, flipY: true },
+    { texture, premultipliedAlpha: true },
+    [32, 32],
+  );
+</pre>
+<p>Y necesitamos un sampler y añadirlos a nuestro bind group:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const sampler = device.createSampler({
+    minFilter: 'linear',
+    magFilter: 'linear',
+  });
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
++      { binding: 1, resource: sampler },
++      { binding: 2, resource: texture },
+    ],
+  });
+</pre>
+<p>Añadamos también el blending para obtener <a href="webgpu-transparency.html">transparencia</a>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'puntos de tamaño variable con textura',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (2 + 1) * 4, // 3 floats, 4 bytes cada uno
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // posición
+            {shaderLocation: 1, offset: 8, format: 'float32'},  // tamaño
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+-      targets: [{ format: presentationFormat }],
++      targets: [
++        {
++         format: presentationFormat,
++          blend: {
++            color: {
++              srcFactor: 'one',
++              dstFactor: 'one-minus-src-alpha',
++              operation: 'add',
++            },
++            alpha: {
++              srcFactor: 'one',
++              dstFactor: 'one-minus-src-alpha',
++              operation: 'add',
++            },
++          },
++        },
++      ],
+    },
+  });
+</pre>
+<p>Y ahora tenemos puntos texturizados.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-texture.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-texture.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Y podríamos seguir: ¿qué tal una rotación por punto? Usando las matemáticas que cubrimos en <a href="webgpu-matrix-math.html">el artículo sobre matemáticas de matrices</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) size: f32,
++  @location(2) rotation: f32,
+};
+
+struct Uniforms {
+  resolution: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
+  let points = array(
+    vec2f(-1, -1),
+    vec2f( 1, -1),
+    vec2f(-1,  1),
+    vec2f(-1,  1),
+    vec2f( 1, -1),
+    vec2f( 1,  1),
+  );
+  var vsOut: VSOutput;
+  let pos = points[vNdx];
++  let c = cos(vert.rotation);
++  let s = sin(vert.rotation);
++  let rot = mat2x2f(
++     c, s,
++    -s, c,
++  );
+-  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
++  vsOut.position = vec4f(vert.position + rot * pos * vert.size / uni.resolution, 0, 1);
+  vsOut.texcoord = pos * 0.5 + 0.5;
+  return vsOut;
+}
+</pre>
+<p>Necesitamos añadir el atributo de rotación a nuestra pipeline:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'puntos texturizados, con tamaño y rotación',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: (2 + 1) * 4, // 3 floats, 4 bytes cada uno
++          arrayStride: (2 + 1 + 1) * 4, // 4 floats, 4 bytes cada uno
+           stepMode: 'instance',
+           attributes: [
+             {shaderLocation: 0, offset: 0, format: 'float32x2'},  // posición
+             {shaderLocation: 1, offset: 8, format: 'float32'},  // tamaño
++            {shaderLocation: 2, offset: 12, format: 'float32'},  // rotación
+           ],
+         },
+       ],
+    },
+    ...
+</pre>
+<p>Necesitamos añadir la rotación a nuestros datos de vértices:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumPoints = 100;
+-  const vertexData = new Float32Array(kNumPoints * 3);
++  const vertexData = new Float32Array(kNumPoints * 4);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+-    const offset = i * 3;
++    const offset = i * 4;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
+*    vertexData[offset + 2] = rand(10, 64);
++    vertexData[offset + 3] = rand(0, Math.PI * 2);
+  }
+
+</pre>
+<p>Cambiemos también la textura de 🥑 a 👉:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  ctx.fillText('🥑', 16, 16);
++  ctx.fillText('👉', 16, 16);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-rotation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-rotation.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h1 id="¿y-qué-hay-de-los-puntos-en-3d">¿Y qué hay de los puntos en 3D?</h1>
+<p>La respuesta sencilla es simplemente añadir los valores del quad después de realizar <a href="webgpu-perspective-projection.html">las matemáticas 3D para los vértices</a>.</p>
+<p>Por ejemplo, aquí tienes un código para crear posiciones 3D para una <a href="https://www.google.com/search?q=fibonacci+sphere">esfera de Fibonacci</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createFibonacciSphereVertices({
+  numSamples,
+  radius,
+}) {
+  const vertices = [];
+  const increment = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i &lt; numSamples; ++i) {
+    const offset = 2 / numSamples;
+    const y = ((i * offset) - 1) + (offset / 2);
+    const r = Math.sqrt(1 - Math.pow(y, 2));
+    const phi = (i % numSamples) * increment;
+    const x = Math.cos(phi) * r;
+    const z = Math.sin(phi) * r;
+    vertices.push(x * radius, y * radius, z * radius);
+  }
+  return new Float32Array(vertices);
+}
+</pre>
+<p>Podemos dibujar los vértices como puntos aplicando matemáticas 3D a los mismos, tal como <a href="../webgpu-cameras.js">cubrimos en la serie sobre matemáticas 3D</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec4f,
+};
+
+struct Uniforms {
+*  matrix: mat4x4f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+) -&gt; VSOutput {
+  var vsOut: VSOutput;
+*  let clipPos = uni.matrix * vert.position;
+  vsOut.position = clipPos;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 0.5, 0.2, 1);  // naranja
+}
+</pre>
+<p>Aquí tenemos nuestra pipeline y buffer de vértices:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'puntos 3D con tamaño fijo',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (3) * 4, // 3 floats, 4 bytes cada uno
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // posición
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [
+        {
+         format: presentationFormat,
+        },
+      ],
+    },
+    primitive: {
+      topology: 'point-list',
+    },
+  });
+
+  const vertexData = createFibonacciSphereVertices({
+    radius: 1,
+    numSamples: 1000,
+  });
+  const kNumPoints = vertexData.length / 3;
+
+  const vertexBuffer = device.createBuffer({
+    label: 'vértices del buffer de vértices',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+</pre>
+<p>Y un uniform buffer y valores uniform para nuestra matriz, así como un bindGroup para pasar el uniform buffer a nuestro shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const uniformValues = new Float32Array(16);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kMatrixOffset = 0;
+  const matrixValue = uniformValues.subarray(
+      kMatrixOffset, kMatrixOffset + 16);
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+    ],
+  });
+</pre>
+<p>Y el código para dibujar usando una matriz de proyección, cámara y otras matemáticas 3D.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    time *= 0.001;
+
+    // Obtén la textura actual del contexto del canvas y
+    // establécela como la textura en la que renderizar.
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
+    // Establece la matriz en el uniform buffer
+    const fov = 90 * Math.PI / 180;
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(fov, aspect, 0.1, 50);
+    const view = mat4.lookAt(
+      [0, 0, 1.5],  // posición
+      [0, 0, 0],    // objetivo
+      [0, 1, 0],    // arriba
+    );
+    const viewProjection = mat4.multiply(projection, view);
+    mat4.rotateY(viewProjection, time, matrixValue);
+    mat4.rotateX(matrixValue, time * 0.5, matrixValue);
+
+    // Copia los valores uniform a la GPU
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setBindGroup(0, bindGroup);
+    pass.draw(kNumPoints);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+</pre>
+<p>También cambiamos a un bucle <code class="notranslate" translate="no">requestAnimationFrame</code>.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d-1px.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d-1px.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Eso es difícil de ver, así que para aplicar las técnicas anteriores, simplemente añadimos la posición del quad tal como lo hicimos previamente.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec4f,
+};
+
+struct Uniforms {
+  matrix: mat4x4f,
++  resolution: vec2f,
++  size: f32,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
++    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
++  let points = array(
++    vec2f(-1, -1),
++    vec2f( 1, -1),
++    vec2f(-1,  1),
++    vec2f(-1,  1),
++    vec2f( 1, -1),
++    vec2f( 1,  1),
++  );
+  var vsOut: VSOutput;
++  let pos = points[vNdx];
+  let clipPos = uni.matrix * vert.position;
++  let pointPos = vec4f(pos * uni.size / uni.resolution, 0, 0);
+-  vsOut.position = clipPos;
++  vsOut.position = clipPos + pointPos;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 0.5, 0.2, 1);
+}
+</pre>
+<p>A diferencia del ejemplo anterior, no usaremos un tamaño diferente para cada vértice. En su lugar, pasaremos un único tamaño para todos los vértices.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformValues = new Float32Array(16);
++  const uniformValues = new Float32Array(16 + 2 + 1 + 1);
+   const uniformBuffer = device.createBuffer({
+     size: uniformValues.byteLength,
+     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+   });
+   const kMatrixOffset = 0;
++  const kResolutionOffset = 16;
++  const kSizeOffset = 18;
+   const matrixValue = uniformValues.subarray(
+       kMatrixOffset, kMatrixOffset + 16);
++  const resolutionValue = uniformValues.subarray(
++      kResolutionOffset, kResolutionOffset + 2);
++  const sizeValue = uniformValues.subarray(
++      kSizeOffset, kSizeOffset + 1);
+</pre>
+<p>Necesitamos establecer la resolución como hicimos antes, y también un tamaño:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    ...
++    // Establece el tamaño en el uniform buffer
++    sizeValue[0] = 10;
+
+    const fov = 90 * Math.PI / 180;
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(fov, aspect, 0.1, 50);
+    const view = mat4.lookAt(
+      [0, 0, 1.5],  // posición
+      [0, 0, 0],    // objetivo
+      [0, 1, 0],    // arriba
+    );
+    const viewProjection = mat4.multiply(projection, view);
+    mat4.rotateY(viewProjection, time, matrixValue);
+    mat4.rotateX(matrixValue, time * 0.5, matrixValue);
+
++    // Actualiza la resolución en el uniform buffer
++    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
+
+    // Copia los valores uniform a la GPU
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>Y, como hicimos antes, necesitamos cambiar de dibujar puntos a dibujar quads instanciados:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'puntos 3D',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (3) * 4, // 3 floats, 4 bytes cada uno
++          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // posición
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [
+        {
+         format: presentationFormat,
+        },
+      ],
+    },
+-    primitive: {
+-      topology: 'point-list',
+-    },
+  });
+
+  ...
+
+  function render(time) {
+
+    ...
+
+-    pass.draw(kNumPoints);
++    pass.draw(6, kNumPoints);
+
+    ...
+</pre>
+<p>Esto nos da puntos en 3D. Incluso se escalan según su distancia de la cámara.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="puntos-3d-de-tamaño-fijo"><a id="a-fixed-size-3d-points"></a> Puntos 3D de tamaño fijo</h2>
+<p>¿Qué pasa si queremos que los puntos mantengan un tamaño fijo?</p>
+<p>Recuerda del <a href="webgpu-perspective-projection.html">artículo sobre proyección de perspectiva</a> que la GPU divide la posición que devolvemos del vertex shader por W. Esta división nos da la perspectiva al hacer que las cosas que están más lejos parezcan más pequeñas. Por lo tanto, para los puntos que no queremos que cambien de tamaño, simplemente necesitamos multiplicarlos por esa W para que, después de ser divididos, tengan el valor que realmente queríamos.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    var vsOut: VSOutput;
+    let pos = points[vNdx];
+    let clipPos = uni.matrix * vert.position;
+    let pointPos = vec4f(pos * uni.size / uni.resolution * clipPos.w, 0, 0);
+    vsOut.position = clipPos + pointPos;
+    return vsOut;
+</pre>
+<p>Y ahora mantienen el mismo tamaño.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d-fixed-size.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d-fixed-size.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<div class="webgpu_bottombar">
+<h3>¿Por qué WebGPU no soporta puntos más grandes que 1x1 píxel?</h3>
+<p>WebGPU se basa en APIs de GPU nativas como Vulkan, Metal, DirectX e incluso OpenGL. Desafortunadamente, esas APIs no se ponen de acuerdo entre sí sobre lo que significa soportar el renderizado de puntos. Algunas APIs tienen límites dependientes del dispositivo sobre el tamaño de los puntos. Algunas APIs no renderizan un punto si su centro está fuera del espacio de recorte (clip space), mientras que otras sí lo hacen. En algunas APIs, este segundo problema depende del controlador (driver). Todo eso significa que WebGPU decidió hacer lo más portable y solo soportar píxeles de tamaño 1x1.</p>
+<p>Lo bueno es que es fácil soportar puntos más grandes tú mismo, como se mostró arriba. Las soluciones anteriores son portables entre dispositivos, no tienen límite en el tamaño de un punto y recortan los puntos de manera consistente en todos los dispositivos. Dibujan la porción de cualquier punto que esté dentro del espacio de recorte, independientemente de si el centro del punto está fuera de dicho espacio.</p>
+<p>Mejor aún, estas soluciones son más flexibles. Por ejemplo, la rotación de puntos no es algo soportado por las APIs nativas. Al implementar nuestras propias soluciones, podemos añadir fácilmente más características, haciendo las cosas aún más flexibles.</p>
+</div>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-points.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-points.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-points.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-points.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-points.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-points.html">Русский
@@ -203,84 +977,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +1075,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Puntos en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-wgsl.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-wgsl.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-wgsl.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-wgsl.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-wgsl.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-wgsl.html">Русский
@@ -228,6 +228,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU WGSL</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -531,12 +534,117 @@ from a built-in feature of WebGPU.</p>
 }
 </pre>
 <p>Above <code class="notranslate" translate="no">blap.vNdx</code> gets its value from the builtin <code class="notranslate" translate="no">vertex_index</code> and <code class="notranslate" translate="no">blap.iNdx</code> gets its value from the builtin <code class="notranslate" translate="no">instance_index</code>.</p>
-<div class="webgpu_center center data-table">
+<div class="webgpu_center center data-table builtins" style="max-width: 900px;">
+<h1>Compute Shader Builtins</h1>
 <table class="data">
   <thead>
     <tr>
       <th>Builtin Name</th>
-      <th>Stage</th>
+      <th>IO</th>
+      <th>Type</th>
+      <th>Description </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_id">local_invocation_id</dfn> </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#local-invocation-id" id="ref-for-local-invocation-id①">local invocation ID</a>,
+            i.e. its position in the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid①">workgroup grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_index">local_invocation_index</dfn> </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#local-invocation-index" id="ref-for-local-invocation-index">local invocation index</a>, a linearized index of
+          the invocation’s position within the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid②">workgroup grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-global_invocation_id">global_invocation_id</dfn> </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#global-invocation-id" id="ref-for-global-invocation-id">global invocation ID</a>,
+          i.e. its position in the <a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">compute shader grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-workgroup_id">workgroup_id</dfn> </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#workgroup-id" id="ref-for-workgroup-id">workgroup ID</a>,
+          i.e. the position of the workgroup in the <a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">compute shader grid</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-num_workgroups">num_workgroups</dfn> </td>
+      <td>input </td>
+      <td>vec3&lt;u32&gt; </td>
+      <td style="width:50%">The <a data-link-type="dfn" href="#dispatch-size" id="ref-for-dispatch-size">dispatch size</a>, <code class="notranslate" translate="no">vec&lt;u32&gt;(group_count_x, group_count_y, group_count_z)</code>, of the compute shader <a href="https://www.w3.org/TR/webgpu/#compute-pass-encoder-dispatch">dispatched</a> by the API. </td>
+    </tr>
+  </tbody>
+  </table>
+<h1>Fragment Shader Builtins</h1>
+<table class="data">
+  <thead>
+    <tr>
+      <th>Builtin Name</th>
+      <th>IO</th>
+      <th>Type</th>
+      <th>Description </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-position">position</dfn> </td>
+      <td>input </td>
+      <td>vec4&lt;f32&gt; </td>
+      <td style="width:50%">Framebuffer position of the current fragment in <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#framebuffer" id="ref-for-framebuffer">framebuffer</a> space.
+      (The <em>x</em>, <em>y</em>, and <em>z</em> components have already been scaled such that <em>w</em> is now 1.)
+      See <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-front_facing">front_facing</dfn> </td>
+      <td>input </td>
+      <td>bool </td>
+      <td style="width:50%">True when the current fragment is on a <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#front-facing" id="ref-for-front-facing">front-facing</a> primitive.
+         False otherwise. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-frag_depth">frag_depth</dfn> </td>
+      <td>output </td>
+      <td>f32 </td>
+      <td style="width:50%">Updated depth of the fragment, in the viewport depth range.
+      See <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
+    </tr>
+    <tr>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_index">sample_index</dfn> </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample index for the current fragment.
+         The value is least 0 and at most <code class="notranslate" translate="no">sampleCount</code>-1, where <code class="notranslate" translate="no">sampleCount</code> is the MSAA sample <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-count" id="ref-for-dom-gpumultisamplestate-count">count</a></code> specified for the GPU render pipeline. <br>See <a href="https://www.w3.org/TR/webgpu/#gpurenderpipeline"><cite>WebGPU</cite> § 10.3 GPURenderPipeline</a>. </td>
+    </tr>
+    <tr>
+      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_mask">sample_mask</dfn> </td>
+      <td>input </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample coverage mask for the current fragment.
+         It contains a bitmask indicating which samples in this fragment are covered
+         by the primitive being rendered. <br>See <a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
+    </tr>
+    <tr>
+      <td>output </td>
+      <td>u32 </td>
+      <td style="width:50%">Sample coverage mask control for the current fragment.
+         The last value written to this variable becomes the <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#shader-output-mask" id="ref-for-shader-output-mask">shader-output mask</a>.
+         Zero bits in the written value will cause corresponding samples in
+         the color attachments to be discarded. <br>See <a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
+    </tr>
+  </tbody>
+</table>
+<h1>Vertex Shader Builtins</h1>
+<table class="data">
+  <thead>
+    <tr>
+      <th>Builtin Name</th>
       <th>IO</th>
       <th>Type</th>
       <th>Description </th>
@@ -545,7 +653,6 @@ from a built-in feature of WebGPU.</p>
   <tbody>
     <tr>
       <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-vertex_index">vertex_index</dfn> </td>
-      <td>vertex </td>
       <td>input </td>
       <td>u32 </td>
       <td style="width:50%">
@@ -559,7 +666,6 @@ from a built-in feature of WebGPU.</p>
     </tr>
     <tr>
       <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-instance_index">instance_index</dfn> </td>
-      <td>vertex </td>
       <td>input </td>
       <td>u32 </td>
       <td style="width:50%">
@@ -569,8 +675,7 @@ from a built-in feature of WebGPU.</p>
          The index is incremented by one for each additional instance in the draw.</p></td>
     </tr>
     <tr>
-      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-position">position</dfn> </td>
-      <td>vertex </td>
+      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-position">position</dfn> </td>
       <td>output </td>
       <td>vec4&lt;f32&gt; </td>
       <td style="width:50%">Output position of the current vertex, using homogeneous coordinates.
@@ -579,98 +684,74 @@ from a built-in feature of WebGPU.</p>
       coordinate space.
       See <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
     </tr>
-    <tr>
-      <td>fragment </td>
-      <td>input </td>
-      <td>vec4&lt;f32&gt; </td>
-      <td style="width:50%">Framebuffer position of the current fragment in <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#framebuffer" id="ref-for-framebuffer">framebuffer</a> space.
-      (The <em>x</em>, <em>y</em>, and <em>z</em> components have already been scaled such that <em>w</em> is now 1.)
-      See <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
-    </tr>
-    <tr>
-      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-front_facing">front_facing</dfn> </td>
-      <td>fragment </td>
-      <td>input </td>
-      <td>bool </td>
-      <td style="width:50%">True when the current fragment is on a <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#front-facing" id="ref-for-front-facing">front-facing</a> primitive.
-         False otherwise. </td>
-    </tr>
-    <tr>
-      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-frag_depth">frag_depth</dfn> </td>
-      <td>fragment </td>
-      <td>output </td>
-      <td>f32 </td>
-      <td style="width:50%">Updated depth of the fragment, in the viewport depth range.
-      See <a href="https://www.w3.org/TR/webgpu/#coordinate-systems"><cite>WebGPU</cite> § 3.3 Coordinate Systems</a>. </td>
-    </tr>
-    <tr>
-      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_id">local_invocation_id</dfn> </td>
-      <td>compute </td>
-      <td>input </td>
-      <td>vec3&lt;u32&gt; </td>
-      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#local-invocation-id" id="ref-for-local-invocation-id①">local invocation ID</a>,
-            i.e. its position in the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid①">workgroup grid</a>. </td>
-    </tr>
-    <tr>
-      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-local_invocation_index">local_invocation_index</dfn> </td>
-      <td>compute </td>
-      <td>input </td>
-      <td>u32 </td>
-      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#local-invocation-index" id="ref-for-local-invocation-index">local invocation index</a>, a linearized index of
-          the invocation’s position within the <a data-link-type="dfn" href="#workgroup-grid" id="ref-for-workgroup-grid②">workgroup grid</a>. </td>
-    </tr>
-    <tr>
-      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-global_invocation_id">global_invocation_id</dfn> </td>
-      <td>compute </td>
-      <td>input </td>
-      <td>vec3&lt;u32&gt; </td>
-      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#global-invocation-id" id="ref-for-global-invocation-id">global invocation ID</a>,
-          i.e. its position in the <a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">compute shader grid</a>. </td>
-    </tr>
-    <tr>
-      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-workgroup_id">workgroup_id</dfn> </td>
-      <td>compute </td>
-      <td>input </td>
-      <td>vec3&lt;u32&gt; </td>
-      <td style="width:50%">The current invocation’s <a data-link-type="dfn" href="#workgroup-id" id="ref-for-workgroup-id">workgroup ID</a>,
-          i.e. the position of the workgroup in the <a data-link-type="dfn" href="#compute-shader-grid" id="ref-for-compute-shader-grid">compute shader grid</a>. </td>
-    </tr>
-    <tr>
-      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-num_workgroups">num_workgroups</dfn> </td>
-      <td>compute </td>
-      <td>input </td>
-      <td>vec3&lt;u32&gt; </td>
-      <td style="width:50%">The <a data-link-type="dfn" href="#dispatch-size" id="ref-for-dispatch-size">dispatch size</a>, <code class="notranslate" translate="no">vec&lt;u32&gt;(group_count_x, group_count_y, group_count_z)</code>, of the compute shader <a href="https://www.w3.org/TR/webgpu/#compute-pass-encoder-dispatch">dispatched</a> by the API. </td>
-    </tr>
-    <tr>
-      <td><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_index">sample_index</dfn> </td>
-      <td>fragment </td>
-      <td>input </td>
-      <td>u32 </td>
-      <td style="width:50%">Sample index for the current fragment.
-         The value is least 0 and at most <code class="notranslate" translate="no">sampleCount</code>-1, where <code class="notranslate" translate="no">sampleCount</code> is the MSAA sample <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-count" id="ref-for-dom-gpumultisamplestate-count">count</a></code> specified for the GPU render pipeline. <br>See <a href="https://www.w3.org/TR/webgpu/#gpurenderpipeline"><cite>WebGPU</cite> § 10.3 GPURenderPipeline</a>. </td>
-    </tr>
-    <tr>
-      <td rowspan="2"><dfn class="dfn-paneled" data-dfn-for="built-in values" data-dfn-type="dfn" data-noexport="" id="built-in-values-sample_mask">sample_mask</dfn> </td>
-      <td>fragment </td>
-      <td>input </td>
-      <td>u32 </td>
-      <td style="width:50%">Sample coverage mask for the current fragment.
-         It contains a bitmask indicating which samples in this fragment are covered
-         by the primitive being rendered. <br>See <a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
-    </tr>
-    <tr>
-      <td>fragment </td>
-      <td>output </td>
-      <td>u32 </td>
-      <td style="width:50%">Sample coverage mask control for the current fragment.
-         The last value written to this variable becomes the <a data-link-type="dfn" href="https://gpuweb.github.io/gpuweb/#shader-output-mask" id="ref-for-shader-output-mask">shader-output mask</a>.
-         Zero bits in the written value will cause corresponding samples in
-         the color attachments to be discarded. <br>See <a href="https://www.w3.org/TR/webgpu/#sample-masking"><cite>WebGPU</cite> § 23.3.11 Sample Masking</a>. </td>
-    </tr>
   </tbody>
   </table>
 </div>
+<p>It’s important to note here, there isn’t one builtin called <code class="notranslate" translate="no">position</code>. There are 2 builtins, an output called <code class="notranslate" translate="no">position</code> used
+in vertex shaders, and an input called <code class="notranslate" translate="no">position</code> used in fragment shaders. This is no different than having 2 functions in JavaScript</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">/**
+ * function that has position as an output
+ * @param {{array: number[], index: number, position: Float32Array}} params
+ */
+function getVertex(params) {
+  const { array, index, position } = params;
+  position[0] = array[index];
+  position[1] = array[index + 1];
+  position[2] = array[index + 2];
+}
+
+/**
+ * function that has position as an input
+ * @param {{position: Float32Array}} params
+ */
+function printValue(params) {
+  const { position } = params;
+  return [...position].map(v =&gt; v.toString()).join(', ');
+}
+</pre>
+<p>Above are 2 functions that both have a parameter called <code class="notranslate" translate="no">position</code>. They are unrelated to each other.
+The same is true of <code class="notranslate" translate="no">@builtin(position)</code> in a vertex shader and <code class="notranslate" translate="no">@builtin(position)</code> in a fragment shader.
+The 2 are unrelated to each other. The confusion often comes from the fact that one struct declaration can
+be used in a single shader module.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VOut {
+  @builtin(position) p: vec4f;
+};
+
+@vertex fn vs() -&gt; VOut {
+  // this is setting the vertex shader's @builtin(position)
+  return VOut(vec4f(0, 0, 0, 1));
+}
+
+@fragment fn fs(v: VOut) {
+  // this is reading the fragment shader's @builtin(position)
+  return v.p;
+}
+</pre>
+<p>From the point of view of WGSL, VOut is declared twice. Once when used in <code class="notranslate" translate="no">vs</code> and again in <code class="notranslate" translate="no">fs</code>.</p>
+<p>To maybe see this more clearly, you can declare these to shaders in separate modules.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VOut {
+  @builtin(position) p: vec4f;
+};
+
+@vertex fn vs() -&gt; VOut {
+  // this is setting the vertex shader's @builtin(position)
+  return VOut(vec4f(0, 0, 0, 1));
+}
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VIn {
+  @builtin(position) fragPosition: vec4f;
+};
+
+@fragment fn fs(v: VIn) {
+  // this is reading the fragment shader's @builtin(position)
+  return v.fragPosition;
+}
+</pre>
+<p>These 2 shader modules, combined into a render pipeline, are equivalent to the
+previous one declared in one module.</p>
+<p>The benefit to them both being called <code class="notranslate" translate="no">position</code> is it allows them to be used in the same
+shader module. If that wasn’t true, you’d be required to declare a different struct
+for vertex shader output vs fragment shader input.</p>
 <h2 id="flow-control">flow control</h2>
 <p>Like most computer languages, WGSL has flow control statements.</p>
 <h3 id="for">for</h3>
@@ -917,6 +998,8 @@ color = vec4(color.bgr, color.a);  // Ok
 bindings if you use <code class="notranslate" translate="no">vs1</code> in a pipeline. <code class="notranslate" translate="no">vs2</code> does reference both <code class="notranslate" translate="no">uni1</code> and <code class="notranslate" translate="no">uni2</code>
 so they will both show up as a required bindings when using <code class="notranslate" translate="no">vs2</code> in a pipeline.</p>
 <p class="copyright" data-fill-with="copyright">  <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+<!-- keep this at the bottom of the article -->
+<link href="webgpu-wgsl.css" rel="stylesheet">
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
@@ -931,7 +1014,7 @@ The thing is, <code class="notranslate" translate="no">o</code> is const. It is 
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-wgsl.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-wgsl.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-wgsl.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-wgsl.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-wgsl.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-wgsl.html">Русский
@@ -1001,6 +1084,15 @@ The thing is, <code class="notranslate" translate="no">o</code> is const. It is 
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -1076,8 +1168,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

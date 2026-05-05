@@ -21,7 +21,7 @@ async function main() {
 
   const moduleTimes2 = device.createShaderModule({
     label: 'doubling compute module',
-    code: `
+    code: /* wgsl */ `
       @group(0) @binding(0) var<storage, read_write> data: array<f32>;
 
       @compute @workgroup_size(1) fn computeSomething(
@@ -35,7 +35,7 @@ async function main() {
 
   const modulePlus3 = device.createShaderModule({
     label: 'adding 3 compute module',
-    code: `
+    code: /* wgsl */ `
       @group(0) @binding(0) var<storage, read_write> data: array<f32>;
 
       @compute @workgroup_size(1) fn computeSomething(
@@ -106,7 +106,7 @@ async function main() {
     label: 'bindGroup for work buffer',
     layout: bindGroupLayout,
     entries: [
-      { binding: 0, resource: { buffer: workBuffer } },
+      { binding: 0, resource: workBuffer  },
     ],
   });
 

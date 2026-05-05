@@ -103,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-buffers.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-buffers.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-buffers.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-buffers.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU 存储缓冲区(Storage Buffer)</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -409,8 +412,8 @@ const bindGroup = device.createBindGroup({
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-        { binding: 0, resource: { buffer: staticStorageBuffer } },
-        { binding: 1, resource: { buffer: changingStorageBuffer } },
+        { binding: 0, resource: staticStorageBuffer  },
+        { binding: 1, resource: changingStorageBuffer  },
     ],
 });
 </pre>
@@ -587,9 +590,9 @@ device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-        { binding: 0, resource: { buffer: staticStorageBuffer } },
-        { binding: 1, resource: { buffer: changingStorageBuffer } },
-        +{ binding: 2, resource: { buffer: vertexStorageBuffer } },
+        { binding: 0, resource: staticStorageBuffer  },
+        { binding: 1, resource: changingStorageBuffer  },
+        +{ binding: 2, resource: vertexStorageBuffer  },
     ],
 });
 </pre>
@@ -611,7 +614,11 @@ device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
 @group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
 </pre>
 <p>我们完全可以不使用结构体，直接使用 <code class="notranslate" translate="no">vec2f</code>。</p>
-<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(2) var&lt;storage, read&gt; pos: vec2f;
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
++@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;vec2f&gt;;
+...
+-pos[vertexIndex].position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
 </pre>
 <p>但是，如果把它变成一个结构体，以后添加每个顶点的数据会不会更容易呢？</p>
 <p>通过存储缓冲区传递顶点的方法越来越受欢迎。不过我听说在一些较老的设备上，这种方式比传统方式要慢，我们将在下一篇关于<a href="webgpu-vertex-buffers.html">顶点缓冲区</a>的文章中介绍这种方式。</p>
@@ -629,7 +636,7 @@ device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-buffers.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-buffers.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-buffers.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-buffers.html">Русский
@@ -650,17 +657,17 @@ device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
   <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">加载图像</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">高效使用视频</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">立方体贴图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
@@ -669,7 +676,7 @@ device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
         </ul>
   <li>3D数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">Translation</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">平移(Translation)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-rotation.html">Rotation</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scale.html">Scale</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-math.html">Matrix Math</a></li>
@@ -699,6 +706,15 @@ device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
@@ -768,8 +784,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

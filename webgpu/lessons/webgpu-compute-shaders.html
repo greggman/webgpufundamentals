@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-compute-shaders.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Compute Shader Basics</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>This article continues from <a href="webgpu-fundamentals.html">the article on fundamentals</a>.
@@ -292,7 +295,7 @@ are available.</p>
 <p><code class="notranslate" translate="no">local_invocation_index</code>: The id of this thread linearized</p>
 <p>You can think of this as</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">rowSize = workgroup_size.x
-sliceSize = rowWidth * workgroup_size.y
+sliceSize = rowSize * workgroup_size.y
 local_invocation_index =
       local_invocation_id.x +
       local_invocation_id.y * rowSize +
@@ -373,9 +376,9 @@ buffers and then read the results.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: workgroupBuffer }},
-      { binding: 1, resource: { buffer: localBuffer }},
-      { binding: 2, resource: { buffer: globalBuffer }},
+      { binding: 0, resource: workgroupBuffer },
+      { binding: 1, resource: localBuffer },
+      { binding: 2, resource: globalBuffer },
     ],
   });
 </pre>
@@ -538,7 +541,7 @@ unaffected by the other iterations.</p>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-compute-shaders.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders.html">Русский
@@ -608,6 +611,15 @@ unaffected by the other iterations.</p>
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -683,8 +695,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

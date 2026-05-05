@@ -301,7 +301,7 @@ struct Light {
   </div>
     <script src="/3rdparty/split.min.js"></script>
     <script src="/monaco-editor/min/vs/loader.js"></script>
-    <script src="prettify.js"></script>
+    <script src="js/prettify.js"></script>
     <script src="/3rdparty/lzma.js"></script>
     <script type="module">
 /* global monaco */
@@ -311,17 +311,17 @@ struct Light {
 import {
   makeShaderDataDefinitions,
   setIntrinsicsToView,
-} from '../../../3rdparty/webgpu-utils-1.x.module.js';
+} from '/3rdparty/webgpu-utils-2.x.module.js';
 import {
   createByteDiagramForType,
   getCodeForUniform,
   makeBindGroupLayoutDescriptorsJS,
-} from './data-byte-diagram.js';
-import { createElem as el } from './elem.js';
+} from './js/data-byte-diagram.js';
+import { createElem as el } from './js/elem.js';
 import {
   convertHexToBytes,
   convertBytesToHex,
-} from './utils.js';
+} from './js/utils.js';
 const compressor = new LZMA('/3rdparty/lzma_worker.js');
 
 // eslint-disable-next-line new-cap
@@ -442,6 +442,10 @@ const dataTypes = {
   structs: {
     label: 'struct',
     toTypeDef: v => v,
+  },
+  immediates: {
+    label: 'immediate',
+    toTypeDef: v => v.typeDefinition,
   },
   uniforms: {
     label: 'uniform',
@@ -573,7 +577,7 @@ async function updateResults(code, style) {
 }
 
 /* global require */
-require.config({ paths: { 'vs': '/monaco-editor/min/vs' }});
+require.config({ paths: { vs: `${window.location.origin}/monaco-editor/min/vs` }});
 require(['vs/editor/editor.main'], () => {
   const editor = monaco.editor.create(document.querySelector('#editor'), {
     value: examples.basic,

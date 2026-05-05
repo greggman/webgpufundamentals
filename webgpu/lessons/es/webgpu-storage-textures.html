@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-storage-textures.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Storage Textures">
+
+<meta name="description" content="Cómo usar texturas de almacenamiento (storage textures)">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_es.jpg">
+
+<meta property="og:title" content="Texturas de almacenamiento (Storage Textures) en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use Storage Textures">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_es.jpg">
+<meta property="og:description" content="Cómo usar texturas de almacenamiento (storage textures)">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-textures.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Storage Textures">
+<meta name="twitter:title" content="Texturas de almacenamiento (Storage Textures) en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-textures.html">
-<meta name="twitter:description" content="How to use Storage Textures">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Cómo usar texturas de almacenamiento (storage textures)">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-textures.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-textures.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-textures.html",
+      "inLanguage":"es",
+      "name":"Texturas de almacenamiento (Storage Textures) en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-textures.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Storage Textures</title>
+<title>Texturas de almacenamiento (Storage Textures) en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-textures.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-textures.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-textures.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-textures.html">Русский
@@ -182,18 +227,299 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Storage Textures</h1>
+    <h1>Texturas de almacenamiento (Storage Textures) en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-storage-textures.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Las texturas de almacenamiento (storage textures) son simplemente <a href="webgpu-textures.html">texturas</a> en las que puedes escribir o “almacenar” directamente.
+Normalmente especificamos triángulos en un vertex shader (shader de vértices) y la GPU actualiza la textura
+por nosotros de forma indirecta, pero con una textura de almacenamiento podemos escribir directamente en la
+textura donde queramos.</p>
+<p>Las texturas de almacenamiento no son un tipo especial de textura; más bien, son simplemente una
+textura como cualquier otra que creas con <code class="notranslate" translate="no">createTexture</code>. Añades el
+flag de uso <code class="notranslate" translate="no">STORAGE_BINDING</code> y ahora puedes usar la textura como una textura de almacenamiento
+además de cualquier otro flag de uso que necesites, y entonces también puedes usar
+la textura como una textura de almacenamiento.</p>
+<p>En cierto sentido, una textura de almacenamiento es como un storage buffer (buffer de almacenamiento) que usamos como un array 2D. Por ejemplo, podríamos
+crear un storage buffer y referenciarlo en el código de esta manera:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0)
+  var&lt;storage&gt; buf: array&lt;f32&gt;;
+
+...
+fn loadValueFromBuffer(pos: vec2u) -&gt; f32 {
+  return buffer[pos.y * width + pos.x];
+}
+
+fn storeValueToBuffer(pos: vec2u, v: f32) {
+  buffer[pos.y * width + pos.x] = v;
+}
+
+...
+  let pos = vec2u(2, 3);
+  var v = loadValueFromBuffer(pos);
+  storeValueToBuffer(pos, v * 2.0);
+
+</pre>
+<p>frente a una textura de almacenamiento:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">@group(0) @binding(0)
+  var tex: texture_storage_2d&lt;r32float, read_write&gt;;
+
+...
+
+   let pos = vec2u(2, 3);
+   let mipLevel = 0;
+   var v = textureLoad(tex, pos, mipLevel);
+   textureStore(tex, pos, mipLevel, v * 2);
+
+</pre>
+<p>Dado que parecen equivalentes, ¿cuáles son las diferencias entre usar manualmente
+un storage buffer y una textura de almacenamiento?</p>
+<ul>
+<li>
+<p>Una textura de almacenamiento sigue siendo una textura.</p>
+<p>Puedes usarla con un shader como una textura de almacenamiento y como una textura normal
+(con samplers, mipmaps (niveles de mip), etc.) en otro shader.</p>
+</li>
+<li>
+<p>Una textura de almacenamiento tiene interpretación de formato, un storage buffer no.</p>
+<p>Ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">@group(0) @binding(0) var tex: texture_storage_2d&lt;rgba8unorm, read&gt;;
+@group(0) @binding(1) var buf: array&lt;f32&gt;;
+
+   ...
+    let t = textureLoad(tex, pos, 0);
+    let b = buffer[pos.y * bufferWidth + pos.x];
+</pre>
+<p>Arriba, cuando llamamos a <code class="notranslate" translate="no">textureLoad</code>, la textura es una textura <code class="notranslate" translate="no">rgba8unorm</code>,
+lo que significa que se cargan 4 bytes y se convierten automáticamente en 4 valores de
+punto flotante entre 0 y 1, y se devuelven como un <code class="notranslate" translate="no">vec4f</code>.</p>
+<p>En el caso del buffer, se cargan 4 bytes como un único valor <code class="notranslate" translate="no">f32</code>. Podríamos
+cambiar el buffer a <code class="notranslate" translate="no">array&lt;u32&gt;</code> y luego cargar un valor, y dividirlo manualmente en
+4 valores de un byte, y convertirlos nosotros mismos a flotantes pero, si eso es lo que
+queríamos, lo obtenemos gratis con una textura de almacenamiento.</p>
+</li>
+<li>
+<p>Una textura de almacenamiento tiene dimensiones.</p>
+<p>Para un buffer, la única dimensión es su longitud, o mejor dicho, la longitud de
+su binding <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. Arriba, cuando usamos un buffer como un array 2D,
+necesitábamos <code class="notranslate" translate="no">width</code> (ancho) para convertir de una coordenada 2D a un índice de buffer 1D.
+Tendríamos que escribir el valor de <code class="notranslate" translate="no">width</code> directamente en el código o pasarlo de
+alguna manera<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>. Con una textura podemos llamar a <code class="notranslate" translate="no">textureDimensions</code>
+para obtener las dimensiones de la textura.</p>
+</li>
+</ul>
+<p>Dicho esto, hay límites en las texturas de almacenamiento.</p>
+<ul>
+<li>
+<p>Solo ciertos formatos pueden ser <code class="notranslate" translate="no">read_write</code> (lectura_escritura).</p>
+<p>Esos son <code class="notranslate" translate="no">r32float</code>, <code class="notranslate" translate="no">r32sint</code> y <code class="notranslate" translate="no">r32uint</code>.</p>
+<p>Otros formatos soportados solo pueden ser <code class="notranslate" translate="no">read</code> (lectura) o <code class="notranslate" translate="no">write</code> (escritura) dentro de un único
+shader.</p>
+</li>
+<li>
+<p>Solo ciertos formatos pueden usarse como texturas de almacenamiento.</p>
+<p>Hay una gran cantidad de formatos de textura, pero solo algunos
+pueden usarse como texturas de almacenamiento.</p>
+<ul>
+<li><code class="notranslate" translate="no">rgba8(unorm/snorm/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rgba16(float/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rg32(float/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rgba32(float/sint/uint)</code></li>
+</ul>
+<p>Un formato que notarás que falta es <code class="notranslate" translate="no">bgra8unorm</code>, que cubriremos a continuación.</p>
+</li>
+<li>
+<p>Las texturas de almacenamiento no pueden usar samplers.</p>
+<p>Si usamos una textura como un <code class="notranslate" translate="no">TEXTURE_BINDING</code> normal, podemos llamar a
+funciones como <code class="notranslate" translate="no">textureSample</code>, que cargan hasta 16 téxeles (texels) a través de niveles de mip y
+los mezclan. Cuando usamos una textura como un <code class="notranslate" translate="no">STORAGE_BINDING</code>,
+solo podemos llamar a <code class="notranslate" translate="no">textureLoad</code> y/o <code class="notranslate" translate="no">textureStore</code>, que cargan
+y almacenan un solo téxel a la vez.</p>
+</li>
+</ul>
+<h2 id="el-canvas-como-textura-de-almacenamiento"><a id="canvas-as-storage-texture"></a> El Canvas como textura de almacenamiento</h2>
+<p>Puedes usar una textura de canvas como una textura de almacenamiento. Para hacerlo, configuras
+el contexto para que te dé una textura que pueda usarse como una textura de almacenamiento.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
+  context.configure({
+    device,
+    format: presentationFormat,
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p><code class="notranslate" translate="no">TEXTURE_BINDING</code> es necesario para que el propio navegador pueda renderizar la textura
+en la página. <code class="notranslate" translate="no">STORAGE_BINDING</code> nos permite usar las texturas del canvas como
+texturas de almacenamiento. Si aún quisiéramos renderizar en la textura a través de un
+render pass, como la mayoría de los ejemplos en este sitio, también añadiríamos el
+uso <code class="notranslate" translate="no">RENDER_ATTACHMENT</code>.</p>
+<p>Sin embargo, hay una complicación. Como vimos en
+<a href="webgpu-fundamentals.html">el primer artículo</a>, normalmente llamamos a
+<code class="notranslate" translate="no">navigator.gpu.getPreferredCanvasFormat</code> para obtener el formato preferido del canvas.
+<code class="notranslate" translate="no">getPreferredCanvasFormat</code> devolverá <code class="notranslate" translate="no">rgba8unorm</code> o <code class="notranslate" translate="no">bgra8unorm</code>
+dependiendo de qué formato sea más eficiente para el sistema del usuario.</p>
+<p>Pero, como mencionamos anteriormente, por defecto, no podemos usar una textura
+<code class="notranslate" translate="no">bgra8unorm</code> como textura de almacenamiento.</p>
+<p>Afortunadamente, existe una <a href="webgpu-limits-and-features.html">característica (feature)</a> llamada
+<code class="notranslate" translate="no">'bgra8unorm-storage'</code>. Habilitar esa característica permitirá usar una textura <code class="notranslate" translate="no">bgra8unorm</code> como textura de almacenamiento.
+En general, <em>debería</em> estar disponible en cualquier plataforma que informe
+<code class="notranslate" translate="no">bgra8unorm</code> como su formato de canvas preferido pero, existe la posibilidad de
+que no esté disponible. Por lo tanto, necesitamos verificar si la característica
+<code class="notranslate" translate="no">'bgra8unorm-storage'</code> existe. Si existe, la requeriremos para nuestro dispositivo y usaremos
+el formato preferido del canvas. Si no, elegiremos <code class="notranslate" translate="no">rgba8unorm</code> como nuestro
+formato de canvas.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const adapter = await navigator.gpu?.requestAdapter();
+-  const device = await adapter?.requestDevice();
++  const hasBGRA8unormStorage = adapter.features.has('bgra8unorm-storage');
++  const device = await adapter?.requestDevice({
++    requiredFeatures: hasBGRA8unormStorage
++      ? ['bgra8unorm-storage']
++      : [],
++  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+-  const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
++  const presentationFormat = hasBGRA8unormStorage
++     ? navigator.gpu.getPreferredCanvasFormat()
++     : 'rgba8unorm';
+  context.configure({
+    device,
+    format: presentationFormat,
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p>Ahora podemos usar la textura del canvas como una textura de almacenamiento. Hagamos un
+compute shader (shader de cómputo) simple para dibujar círculos concéntricos en la textura.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    label: 'circles in storage texture',
+    code: /* wgsl */ `
+      @group(0) @binding(0)
+      var tex: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+      @compute @workgroup_size(1) fn cs(
+        @builtin(global_invocation_id) id : vec3u
+      )  {
+        let size = textureDimensions(tex);
+        let center = vec2f(size) / 2.0;
+
+        // el píxel en el que vamos a escribir
+        let pos = id.xy;
+
+        // La distancia desde el centro de la textura
+        let dist = distance(vec2f(pos), center);
+
+        // Calcular franjas basadas en la distancia
+        let stripe = dist / 32.0 % 2.0;
+        let red = vec4f(1, 0, 0, 1);
+        let cyan = vec4f(0, 1, 1, 1);
+        let color = select(red, cyan, stripe &lt; 1.0);
+
+        // Escribir el color en la textura
+        textureStore(tex, pos, color);
+      }
+    `,
+  });
+</pre>
+<p>Fíjate que marcamos la textura de almacenamiento como <code class="notranslate" translate="no">write</code> (escritura) y que tuvimos que especificar
+el formato de textura exacto en el propio shader. A diferencia de los <code class="notranslate" translate="no">TEXTURE_BINDING</code>,
+los <code class="notranslate" translate="no">STORAGE_BINDING</code> necesitan conocer el formato exacto de la textura.</p>
+<p>La configuración es similar a <a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">el compute shader que escribimos en el primer artículo</a>.
+Después de crear un módulo de shader, configuramos un pipeline de computación para usarlo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createComputePipeline({
+    label: 'circles in storage texture',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+</pre>
+<p>Para renderizar, obtenemos la textura actual del canvas, creamos un bind group para
+poder pasar la textura al shader, y luego hacemos lo normal: establecer un
+pipeline, asignar los bind groups y despachar los workgroups.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    const texture = context.getCurrentTexture();
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: texture },
+      ],
+    });
+
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+    const pass = encoder.beginComputePass();
+    pass.setPipeline(pipeline);
+    pass.setBindGroup(0, bindGroup);
+    pass.dispatchWorkgroups(texture.width, texture.height);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>Y aquí está:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-storage-texture-canvas.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-storage-texture-canvas.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Usar una textura normal no cambiaría nada, excepto que llamaríamos a
+<code class="notranslate" translate="no">createTexture</code> en lugar de <code class="notranslate" translate="no">getCurrentTexture</code> para crear nuestra textura
+y pasaríamos <code class="notranslate" translate="no">STORAGE_BINDING</code> junto con cualquier otro flag de uso
+que necesitemos.</p>
+<h2 id="velocidad-y-condiciones-de-carrera-data-races">Velocidad y condiciones de carrera (data races)</h2>
+<p>Arriba, despachamos 1 workgroup por píxel. Esto es ineficiente y la
+GPU puede funcionar mucho más rápido. Optimizar el shader para la cantidad
+óptima de trabajo habría complicado el ejemplo. El objetivo era demostrar
+el uso de una textura de almacenamiento, no el shader más rápido posible.
+Puedes leer sobre algunos métodos para optimizar
+shaders de computación en <a href="webgpu-compute-shaders-histogram.html">el artículo sobre el cálculo de un histograma de imagen</a>.</p>
+<p>Del mismo modo, dado que puedes escribir en cualquier lugar de la textura de almacenamiento,
+debes tener cuidado con las condiciones de carrera (race conditions) como las que vimos en
+<a href="webgpu-compute-shaders.html">los otros artículos sobre compute shaders</a>.
+El orden en que se ejecutan las invocaciones no está garantizado.
+Depende de ti evitar las carreras y/o insertar <code class="notranslate" translate="no">textureBarriers</code> u otras cosas
+para asegurarte de que 2 o más invocaciones no interfieran entre sí.</p>
+<h2 id="ejemplos">Ejemplos</h2>
+<p><a href="https://compute.toys">compute.toys</a> es un sitio web con muchos ejemplos
+de escritura directa en una textura de almacenamiento. <strong>ADVERTENCIA</strong>: Aunque hay
+muchas cosas que aprender de los ejemplos en <a href="https://compute.toys">compute.toys</a>,
+no son necesariamente buenas prácticas. Compute toys trata de hacer
+cosas interesantes solo con compute shaders. Es un rompecabezas divertido descubrir
+cómo hacer algo creativo solo con shaders de computación, pero ten en cuenta que
+otros métodos <em>podrían</em> ser 10, 100 o 1000 veces más rápidos.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Cuando creas un bind group y especificas un buffer, opcionalmente puedes
+especificar un offset y una longitud. En el shader, la longitud del
+array se calcula a partir de la longitud del binding, no de la longitud de
+todo el buffer. Si no especificas un offset, por defecto es 0 y la
+longitud por defecto es el tamaño de todo el buffer. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Podrías pasar el ancho del buffer a través de un <a href="webgpu-uniforms.html">uniform</a>,
+otro <a href="webgpu-storage-buffers.html">storage buffer</a> o incluso como
+el primer valor en el mismo buffer. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-textures.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-textures.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-textures.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-textures.html">Русский
@@ -203,84 +529,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +627,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Texturas de almacenamiento (Storage Textures) en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

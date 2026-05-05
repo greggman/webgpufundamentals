@@ -1,14 +1,14 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createRequestAnimationFrameLoop,
-} from './resources/good-raf.js';
+} from './resources/js/good-raf.js';
 import { SVG as svg } from '../../3rdparty/svg.esm.js';
 import {
   createElem as el, select, makeTable,
-} from './resources/elem.js';
-import { clamp01, hsl, lerp, rgba, rgbaFloatFromCSS, rgba8unormFromCSS, zip } from './resources/utils.js';
+} from './resources/js/elem.js';
+import { clamp01, hsl, lerp, rgba, rgbaFloatFromCSS, rgba8unormFromCSS, zip } from './resources/js/utils.js';
 
 
 const image = [
@@ -1401,7 +1401,7 @@ renderDiagrams({
       chunksDown: 1,
       showImage: true,
       workGroupsLabel: 'workgroup',
-      code: `
+      code: /* wgsl */ `
         for (y = 0; y < size.y; y++) {
           for (x = 0; x < size.x; x++) {
             let position = vec2u(x, y);
@@ -1433,7 +1433,7 @@ renderDiagrams({
       chunksAcross: 1,
       chunksDown: 1,
       showImage: true,
-      code: `
+      code: /* wgsl */ `
         let position = global_invocation_id.xy;
         let color = textureLoad(ourTexture, position, 0);
         let v = srgbLuminance(color.rgb);
@@ -1454,7 +1454,7 @@ renderDiagrams({
       hideUI: true,
       workGroupsLabel: '',
       bottomLabel: '',
-      code: `
+      code: /* wgsl */ `
         atomicAdd(&bin[color], 1)
       `,
     });
@@ -1478,7 +1478,7 @@ renderDiagrams({
       chunksAcross: 1,
       chunksDown: 1,
       showImage: true,
-      code: `
+      code: /* wgsl */ `
         let position = global_invocation_id.xy;
         let color = textureLoad(ourTexture, position, 0);
         let v = srgbLuminance(color.rgb);
@@ -1516,7 +1516,7 @@ renderDiagrams({
       bottomLabel: 'chunks',
       workGroupsLabel: 'workgroups (3 invocations each)',
       numLinesVisible: 3,
-      code: `
+      code: /* wgsl */ `
         xy = wid * chunkSize * lid;
         color = texLoad(ourTexture, xy)
         v = srgbLuminance(color.rgb);
@@ -1547,7 +1547,7 @@ renderDiagrams({
       workGroupsLabel: 'single workgroup (3 invocations)',
       bottomLabel: 'chunks',
       showColorBin: false,
-      code: `
+      code: /* wgsl */ `
         sum = 0
         bin = lid.x;
         for (chunk = 0; chunk < numChunks; ++chunk) {
@@ -1656,7 +1656,7 @@ renderDiagrams({
       bottomLabel: 'chunks',
       showColorBin: false,
       workGroupsLabel: 'workgroups (3 invocations each)',
-      code: `
+      code: /* wgsl */ `
         sum = 0
         bin = lid.x;
         ch0 = wid.x * stride / 2;

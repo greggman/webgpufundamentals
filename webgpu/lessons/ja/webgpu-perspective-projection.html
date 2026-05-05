@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-perspective-projection.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-perspective-projection.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-perspective-projection.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-perspective-projection.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-perspective-projection.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-perspective-projection.html">Русский
@@ -228,6 +228,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU 透視投影</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -738,7 +741,7 @@ Zで-120単位移動すると、Fが錐台の内側に移動します。また�
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-perspective-projection.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-perspective-projection.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-perspective-projection.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-perspective-projection.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-perspective-projection.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-perspective-projection.html">Русский
@@ -808,6 +811,15 @@ Zで-120単位移動すると、Fが錐台の内側に移動します。また�
   <li>ポストプロセッシング</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
@@ -874,8 +886,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

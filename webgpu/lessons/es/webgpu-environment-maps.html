@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-environment-maps.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Environment Maps (reflections)">
+
+<meta name="description" content="Cómo implementar environment maps.">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-environment-maps_es.jpg">
+
+<meta property="og:title" content="Environment Maps en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to implement environment maps.">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-environment-maps_es.jpg">
+<meta property="og:description" content="Cómo implementar environment maps.">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-environment-maps.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Environment Maps (reflections)">
+<meta name="twitter:title" content="Environment Maps en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-environment-maps.html">
-<meta name="twitter:description" content="How to implement environment maps.">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Cómo implementar environment maps.">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-environment-maps_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-environment-maps.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-environment-maps_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-environment-maps.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-environment-maps.html",
+      "inLanguage":"es",
+      "name":"Environment Maps en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-environment-maps.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Environment Maps (reflections)</title>
+<title>Environment Maps en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-environment-maps.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-environment-maps.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-environment-maps.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-environment-maps.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-environment-maps.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-environment-maps.html">Русский
@@ -182,18 +227,379 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Environment Maps (reflections)</h1>
+    <h1>Environment Maps en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-environment-maps.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Este artículo continúa desde <a href="webgpu-cube-maps.html">el artículo sobre cubemaps</a>.
+Este artículo también utiliza conceptos cubiertos en <a href="webgpu-lighting-directional.html">el artículo sobre iluminación</a>.
+Si aún no has leído esos artículos, es posible que quieras leerlos primero.</p>
+<p>Un <strong>environment map</strong> (mapa de entorno) representa el entorno de los objetos que estás dibujando.
+Si estás dibujando una escena al aire libre, representaría el exterior. Si estás dibujando personas en un escenario, representaría el lugar. Si estás dibujando una escena en el espacio exterior, serían las estrellas. Podemos implementar un <strong>environment map</strong> con un <strong>cubemap</strong> si tenemos 6 imágenes que muestren el entorno desde un punto en el espacio en las 6 direcciones del cubemap.</p>
+<p>Aquí tienes un <strong>environment map</strong> del vestíbulo del Leadenhall Market en Londres.</p>
+<div class="webgpu_center">
+  <div class="side-by-side center-by-margin" style="max-width: 800px">
+    <div><img src="../../resources/images/leadenhall_market/pos-x.jpg" style="min-width: 256px; width: 256px" class="border"><div>x positivo</div></div>
+    <div><img src="../../resources/images/leadenhall_market/neg-x.jpg" style="min-width: 256px; width: 256px" class="border"><div>x negativo</div></div>
+    <div><img src="../../resources/images/leadenhall_market/pos-y.jpg" style="min-width: 256px; width: 256px" class="border"><div>y positivo</div></div>
+    <div><img src="../../resources/images/leadenhall_market/pos-z.jpg" style="min-width: 256px; width: 256px" class="border"><div>z positivo</div></div>
+    <div><img src="../../resources/images/leadenhall_market/neg-z.jpg" style="min-width: 256px; width: 256px" class="border"><div>z negativo</div></div>
+    <div><img src="../../resources/images/leadenhall_market/neg-y.jpg" style="min-width: 256px; width: 256px" class="border"><div>y negativo</div></div>
+  </div>
+</div>
+<div class="webgpu_center">
+  <a href="https://polyhaven.com/a/leadenhall_market">Leadenhall Market</a>, CC0 por: <a href="https://www.artstation.com/andreasmischok">Andreas Mischok</a>
+</div>
+<p>Basándonos en <a href="webgpu-cube-maps.html">el código del artículo anterior</a>, vamos a cargar esas 6 imágenes en lugar de los lienzos (canvases) que generamos.
+Desde <a href="webgpu-importing-textures.html">el artículo sobre importación de texturas</a>, teníamos estas dos funciones. Una para cargar un ImageBitmap y otra para crear una textura a partir de una imagen.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  async function loadImageBitmap(url) {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    return await createImageBitmap(blob, { colorSpaceConversion: 'none' });
+  }
+
+  async function createTextureFromImage(device, url, options) {
+    const imgBitmap = await loadImageBitmap(url);
+    return createTextureFromSource(device, imgBitmap, options);
+  }
+</pre>
+<p>Añadamos una para cargar múltiples imágenes:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  async function createTextureFromImages(device, urls, options) {
++    const imgBitmaps = await Promise.all(urls.map(loadImageBitmap));
++    return createTextureFromSource(device, imgBitmaps, options);
++  }
+
+  async function createTextureFromImage(device, url, options) {
+-    const imgBitmap = await loadImageBitmap(url);
+-    return createTextureFromSource(device, imgBitmap, options);
++    return createTextureFromImages(device, [url], options);
+  }
+</pre>
+<p>Ya que estábamos en ello, también cambiamos la función existente para usar la nueva. Ahora podemos usar la nueva para cargar las seis imágenes.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const texture = await createTextureFromSources(
+-      device, faceCanvases, {mips: true, flipY: false});
++  const texture = await createTextureFromImages(
++      device,
++      [
++        'resources/images/leadenhall_market/pos-x.jpg',
++        'resources/images/leadenhall_market/neg-x.jpg',
++        'resources/images/leadenhall_market/pos-y.jpg',
++        'resources/images/leadenhall_market/neg-y.jpg',
++        'resources/images/leadenhall_market/pos-z.jpg',
++        'resources/images/leadenhall_market/neg-z.jpg',
++      ],
++      {mips: true, flipY: false},
++  );
+</pre>
+<p>En el fragment shader (shader de fragmentos), queremos saber, para cada fragmento a dibujar, dado un vector desde el ojo/cámara hasta esa posición en la superficie del objeto, en qué dirección se reflejará desde esa superficie. Luego podemos usar esa dirección para obtener un color del cubemap.</p>
+<p>La fórmula para reflejar es:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">reflectionDir = eyeToSurfaceDir –
+    2 ∗ dot(surfaceNormal, eyeToSurfaceDir) ∗ surfaceNormal
+</pre>
+<p>Pensando en lo que vemos, es cierto. Recuerda de los <a href="webgpu-lighting-directional.html">artículos de iluminación</a> que el producto escalar (dot product) de 2 vectores devuelve el coseno del ángulo entre los 2 vectores. Sumar vectores nos da un nuevo vector, así que tomemos el ejemplo de un ojo mirando directamente perpendicular a una superficie plana.</p>
+<div class="webgpu_center"><img src="../resources/reflect-180-01.svg" style="width: 400px"></div>
+<p>Visualicemos la fórmula anterior. Primero recuerda que el producto escalar de 2 vectores que apuntan en direcciones exactamente opuestas es -1, así que visualmente:</p>
+<div class="webgpu_center"><img src="../resources/reflect-180-02.svg" style="width: 400px"></div>
+<p>Aplicando ese producto escalar con <span style="color:black; font-weight:bold;">eyeToSurfaceDir</span> y <span style="color:green;">normal</span> en la fórmula de reflexión nos da esto:</p>
+<div class="webgpu_center"><img src="../resources/reflect-180-03.svg" style="width: 400px"></div>
+<p>Donde multiplicar -2 por -1 lo convierte en 2 positivo.</p>
+<div class="webgpu_center"><img src="../resources/reflect-180-04.svg" style="width: 400px"></div>
+<p>Así que sumar los vectores conectándolos nos da el <span style="color: red">vector reflejado</span>:</p>
+<div class="webgpu_center"><img src="../resources/reflect-180-05.svg" style="width: 400px"></div>
+<p>Podemos ver arriba que, dadas 2 normales, una cancela completamente la dirección desde el ojo y la segunda apunta la reflexión directamente de vuelta hacia el ojo. Lo cual, si lo ponemos de nuevo en el diagrama original, es exactamente lo que esperaríamos:</p>
+<div class="webgpu_center"><img src="../resources/reflect-180-06.svg" style="width: 400px"></div>
+<p>Rotemos la superficie 45 grados a la derecha.</p>
+<div class="webgpu_center"><img src="../resources/reflect-45-01.svg" style="width: 400px"></div>
+<p>El producto escalar de 2 vectores separados por 135 grados es -0.707:</p>
+<div class="webgpu_center"><img src="../resources/reflect-45-02.svg" style="width: 400px"></div>
+<p>Así que aplicando todo en la fórmula:</p>
+<div class="webgpu_center"><img src="../resources/reflect-45-03.svg" style="width: 400px"></div>
+<p>De nuevo, multiplicar 2 negativos nos da un positivo pero el <span style="color: green">vector</span> es ahora un 30% más corto.</p>
+<div class="webgpu_center"><img src="../resources/reflect-45-04.svg" style="width: 400px"></div>
+<p>Sumar los vectores nos da el <span style="color: red">vector reflejado</span>:</p>
+<div class="webgpu_center"><img src="../resources/reflect-45-05.svg" style="width: 400px"></div>
+<p>Lo cual, si lo ponemos de nuevo en el diagrama original, parece correcto.</p>
+<div class="webgpu_center"><img src="../resources/reflect-45-06.svg" style="width: 400px"></div>
+<p>Usamos esa <span style="color: red">dirección reflejada</span> para mirar en el cubemap y colorear la superficie del objeto.</p>
+<p>Aquí tienes un diagrama donde puedes configurar la rotación de la superficie y ver las diversas partes de la ecuación. También puedes ver que los vectores de reflexión apuntan a las diferentes caras del cubemap y afectan el color de la superficie.</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram " style="width: 700px; height: 500px;" src="/webgpu/lessons/resources/environment-mapping.html"></iframe>
+</div>
+
+<p></p>
+<p>Ahora que sabemos cómo funciona la reflexión y que podemos usarla para buscar valores del cubemap, cambiemos los shaders para hacer eso.</p>
+<p>Primero, en el vertex shader (shader de vértices), calcularemos la posición del mundo y la normal orientada al mundo de los vértices y las pasaremos al fragment shader como variables inter-etapa (inter-stage variables). Esto es similar a lo que hicimos en <a href="webgpu-3d-lighting-spot.html">el artículo sobre focos (spotlights)</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+-  matrix: mat4x4f,
++  projection: mat4x4f,
++  view: mat4x4f,
++  world: mat4x4f,
++  cameraPosition: vec3f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
++  @location(1) normal: vec3f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+-  @location(0) normal: vec3f,
++  @location(0) worldPosition: vec3f,
++  @location(1) worldNormal: vec3f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+@group(0) @binding(1) var ourSampler: sampler;
+@group(0) @binding(2) var ourTexture: texture_cube&lt;f32&gt;;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+-  vsOut.position = uni.matrix * vert.position;
+-  vsOut.normal = normalize(vert.position.xyz);
++  vsOut.position = uni.projection * uni.view * uni.world * vert.position;
++  vsOut.worldPosition = (uni.world * vert.position).xyz;
++  vsOut.worldNormal = (uni.world * vec4f(vert.normal, 0)).xyz;
+  return vsOut;
+}
+</pre>
+<p>Luego, en el fragment shader, normalizamos el <code class="notranslate" translate="no">worldNormal</code> ya que se está interpolando a través de la superficie entre vértices. Basándonos en las matemáticas de matrices de <a href="webgpu-cameras.html">el artículo sobre cámaras</a>, podemos obtener la posición del mundo de la cámara obteniendo la 3ª fila de la matriz de vista y negándola, y restando eso de la posición del mundo de la superficie obtenemos el <code class="notranslate" translate="no">eyeToSurfaceDir</code>.</p>
+<p>Y finalmente usamos <code class="notranslate" translate="no">reflect</code>, que es una función integrada de WGSL que implementa la fórmula que revisamos anteriormente. Usamos el resultado para obtener un color del cubemap.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
++  let worldNormal = normalize(vsOut.worldNormal);
++  let eyeToSurfaceDir = normalize(vsOut.worldPosition - uni.cameraPosition);
++  let direction = reflect(eyeToSurfaceDir, worldNormal);
+
+-  return textureSample(ourTexture, ourSampler, normalize(vsOut.normal));
++  return textureSample(ourTexture, ourSampler, direction);
+}
+</pre>
+<p>También necesitamos normales reales para este ejemplo. Necesitamos normales reales para que las caras del cubo parezcan planas. En el ejemplo anterior, solo para ver el cubemap funcionar, reutilizamos las posiciones del cubo, pero en este caso necesitamos normales reales para un cubo como cubrimos en <a href="webgpu-lighting-directional.html">el artículo sobre iluminación</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const vertexData = new Float32Array([
+-     // front face
+-    -1,  1,  1,
+-    -1, -1,  1,
+-     1,  1,  1,
+-     1, -1,  1,
+-     // right face
+-     1,  1, -1,
+-     1,  1,  1,
+-     1, -1, -1,
+-     1, -1,  1,
+-     // back face
+-     1,  1, -1,
+-     1, -1, -1,
+-    -1,  1, -1,
+-    -1, -1, -1,
+-    // left face
+-    -1,  1,  1,
+-    -1,  1, -1,
+-    -1, -1,  1,
+-    -1, -1, -1,
+-    // bottom face
+-     1, -1,  1,
+-    -1, -1,  1,
+-     1, -1, -1,
+-    -1, -1, -1,
+-    // top face
+-    -1,  1,  1,
+-     1,  1,  1,
+-    -1,  1, -1,
+-     1,  1, -1,
++     //  posición   |  normales
++     //-------------+----------------------
++     // cara frontal     z positivo
++    -1,  1,  1,         0,  0,  1,
++    -1, -1,  1,         0,  0,  1,
++     1,  1,  1,         0,  0,  1,
++     1, -1,  1,         0,  0,  1,
++     // cara derecha     x positivo
++     1,  1, -1,         1,  0,  0,
++     1,  1,  1,         1,  0,  0,
++     1, -1, -1,         1,  0,  0,
++     1, -1,  1,         1,  0,  0,
++     // cara trasera     z negativo
++     1,  1, -1,         0,  0, -1,
++     1, -1, -1,         0,  0, -1,
++    -1,  1, -1,         0,  0, -1,
++    -1, -1, -1,         0,  0, -1,
++    // cara izquierda   x negativo
++    -1,  1,  1,        -1,  0,  0,
++    -1,  1, -1,        -1,  0,  0,
++    -1, -1,  1,        -1,  0,  0,
++    -1, -1, -1,        -1,  0,  0,
++    // cara inferior    y negativo
++     1, -1,  1,         0, -1,  0,
++    -1, -1,  1,         0, -1,  0,
++     1, -1, -1,         0, -1,  0,
++    -1, -1, -1,         0, -1,  0,
++    // cara superior    y positivo
++    -1,  1,  1,         0,  1,  0,
++     1,  1,  1,         0,  1,  0,
++    -1,  1, -1,         0,  1,  0,
++     1,  1, -1,         0,  1,  0,
+   ]);
+</pre>
+<p>Y, por supuesto, necesitamos cambiar nuestro pipeline para proporcionar las normales.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '2 attributes',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: (3) * 4, // (3) floats de 4 bytes cada uno
++          arrayStride: (3 + 3) * 4, // (6) floats de 4 bytes cada uno
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
++            {shaderLocation: 1, offset: 12, format: 'float32x3'},  // normal
+          ],
+        },
+      ],
+    },
+
+</pre>
+<p>Como de costumbre, necesitamos configurar nuestro buffer de uniformes y sus vistas.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  // matrix
+-  const uniformBufferSize = (16) * 4;
++  // projection, view, world, cameraPosition, pad
++  const uniformBufferSize = (16 + 16 + 16 + 3 + 1) * 4;
+   const uniformBuffer = device.createBuffer({
+     label: 'uniforms',
+     size: uniformBufferSize,
+     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+   });
+
+   const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+   // offsets a los diversos valores de uniformes en índices float32
+-  const kMatrixOffset = 0;
+-  const matrixValue = uniformValues.subarray(kMatrixOffset, kMatrixOffset + 16);
+   const kProjectionOffset = 0;
+   const kViewOffset = 16;
+   const kWorldOffset = 32;
++  const projectionValue = uniformValues.subarray(kProjectionOffset, kProjectionOffset + 16);
++  const viewValue = uniformValues.subarray(kViewOffset, kViewOffset + 16);
++  const worldValue = uniformValues.subarray(kWorldOffset, kWorldOffset + 16);
++  const cameraPositionValue = uniformValues.subarray(
++      kCameraPositionOffset, kCameraPositionOffset + 3);
+</pre>
+<p>Y necesitamos establecerlos en el momento del renderizado.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const aspect = canvas.clientWidth / canvas.clientHeight;
+    mat4.perspective(
+        60 * Math.PI / 180,
+        aspect,
+        0.1,      // zNear
+        10,      // zFar
+-        matrixValue,
++        projectionValue,
+    );
++    cameraPositionValue.set([0, 0, 4]);  // camera position;
+    const view = mat4.lookAt(
+-      [0, 1, 5],  // camera position
++      cameraPositionValue,
+       [0, 0, 0],  // target
+       [0, 1, 0],  // up
++      viewValue,
+    );
+-    mat4.multiply(matrixValue, view, matrixValue);
+-    mat4.rotateX(matrixValue, settings.rotation[0], matrixValue);
+-    mat4.rotateY(matrixValue, settings.rotation[1], matrixValue);
+-    mat4.rotateZ(matrixValue, settings.rotation[2], matrixValue);
++    mat4.identity(worldValue);
++    mat4.rotateX(worldValue, time * -0.1, worldValue);
++    mat4.rotateY(worldValue, time * -0.2, worldValue);
+
+    // upload the uniform values to the uniform buffer
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>Cambiemos también el renderizado a un bucle rAF.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const degToRad = d =&gt; d * Math.PI / 180;
+-
+-  const settings = {
+-    rotation: [degToRad(20), degToRad(25), degToRad(0)],
+-  };
+-
+-  const radToDegOptions = { min: -360, max: 360, step: 1, converters: GUI.converters.radToDeg };
+-
+-  const gui = new GUI();
+-  gui.onChange(render);
+-  gui.add(settings.rotation, '0', radToDegOptions).name('rotation.x');
+-  gui.add(settings.rotation, '1', radToDegOptions).name('rotation.y');
+-  gui.add(settings.rotation, '2', radToDegOptions).name('rotation.z');
+
+   let depthTexture;
+
+-  function render() {
++  function render(time) {
++    time *= 0.001;
+
+     ...
+
++    requestAnimationFrame(render);
++  }
++  requestAnimationFrame(render);
+
+   const observer = new ResizeObserver(entries =&gt; {
+     for (const entry of entries) {
+       const canvas = entry.target;
+       const width = entry.contentBoxSize[0].inlineSize;
+       const height = entry.contentBoxSize[0].blockSize;
+       canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+       canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+-      // re-render
+-      render();
+     }
+   });
+   observer.observe(canvas);
+</pre>
+<p>Y con eso obtenemos:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-environment-map-backward.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-environment-map-backward.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Si miras de cerca, podrías ver un pequeño problema.</p>
+<div class="webgpu_center"><img src="../resources/environment-map-backward.png" class="nobg" style="width: 600px;"></div>
+<h2 id="corrigiendo-la-dirección-de-reflexión"><a id="a-flipped"></a> Corrigiendo la dirección de reflexión</h2>
+<p>Nuestro cubo con un <strong>environment map</strong> aplicado representa un cubo espejado. Pero un espejo normalmente muestra las cosas invertidas horizontalmente. ¿Qué está pasando?</p>
+<p>El problema es que estamos en el interior del cubo mirando hacia afuera, pero recuerda de <a href="webgpu-cube-maps.html">el artículo anterior</a> que cuando mapeamos texturas a cada lado del cubo, se mapeaban correctamente cuando se veían desde el exterior.</p>
+<div class="webgpu_center">
+  <div data-diagram="show-cube-map" class="center-by-margin" style="width: 700px; height: 400px"></div>
+</div>
+<p>Otra forma de verlo es que, desde dentro del cubo, estamos en un “sistema de coordenadas de mano derecha con y hacia arriba”. Esto significa que el eje z positivo es hacia adelante. Mientras que todas nuestras matemáticas 3D hasta ahora utilizan un “sistema de coordenadas de mano izquierda con y hacia arriba” <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> donde el eje z negativo es hacia adelante. Una solución sencilla es invertir la coordenada Z cuando muestreamos la textura.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-  return textureSample(ourTexture, ourSampler, direction);
++  return textureSample(ourTexture, ourSampler, direction * vec3f(1, 1, -1));
+</pre>
+<p>Ahora la reflexión está invertida, tal como en un espejo.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-environment-map.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-environment-map.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>A continuación, mostremos <a href="webgpu-skybox.html">cómo usar un cubemap para un skybox</a>.</p>
+<h2 id="encontrar-y-crear-environment-maps-cubemaps">Encontrar y crear environment maps (cubemaps)</h2>
+<p>Puedes encontrar cientos de panoramas gratuitos en <a href="https://polyhaven.com/hdris">polyhaven.com</a>. Descarga un archivo jpg o png de cualquiera de ellos (haz clic en el menú ≡ en la parte superior derecha). Luego, ve a <a href="https://greggman.github.io/panorama-to-cubemap/">esta página</a> y arrastra y suelta el archivo .jpg o .png allí. Selecciona el tamaño y el formato que desees y haz clic en el botón para guardar las imágenes como caras del cubemap.</p>
+<!-- keep this at the bottom of the article -->
+<script type="module" src="../webgpu-environment-maps.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Para ser sincero, encuentro que hablar de sistemas de coordenadas “de mano izquierda” frente a “de mano derecha” es súper confuso y preferiría decir “+x a la derecha, +y arriba, -z adelante”, lo que no deja lugar a ambigüedades. Sin embargo, si quieres saber más, puedes <a href="https://www.google.com/search?q=right+handed+vs+left+handed+coordinate+system&amp;tbm=isch">buscarlo en Google</a> 😄 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-environment-maps.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-environment-maps.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-environment-maps.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-environment-maps.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-environment-maps.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-environment-maps.html">Русский
@@ -203,84 +609,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +707,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Environment Maps en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

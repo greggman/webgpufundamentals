@@ -1,0 +1,50 @@
+/* intentionally empty at the moment */
+
+.img-grid-holder {
+  width: 100%;
+  display: flex;
+  justify-content: center;  
+}
+.img-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  column-gap: 20px;
+  row-gap: 0px;
+  max-width: 100%;
+}
+
+.img-grid-item {
+  display: inline-flex;
+  flex-direction: column;
+  margin-bottom: 0.5em;
+
+  canvas {
+    max-width: 100%;
+    aspect-ratio: 2 / 1.5;
+  }
+
+  div {
+    font-size: small;
+    white-space: pre;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
+.img-grid img {
+  width: 100%;
+  border: 1px solid #888;
+}
+
+/* workaround for bug/issue with :root { color-scheme } */
+object {
+  color-scheme: initial;
+}
+
+@media (width < 840px) {
+
+  .img-grid {
+    grid-template-columns: repeat(auto-fit, 150px);
+  }
+
+}

@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-compute-shaders-histogram.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders-histogram.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Compute Shaders - Image Histogram</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>This article continues from <a href="webgpu-compute-shaders.html">the article on compute shader basics</a>.</p>
@@ -320,7 +323,7 @@ a histogram.</p>
       ++bins[bin];
     }
   }
-  return histogram;
+  return bins;
 }
 </pre>
 <p>As you can see above, we walk through each pixel. We extract r, g, and b from
@@ -543,7 +546,7 @@ It takes a texture, an <code class="notranslate" translate="no">vec2u</code> tex
 <p>then we create our shader</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
     label: 'histogram shader',
-    code: `
+    code: /* wgsl */ `
       @group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;u32&gt;;
       @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
 
@@ -604,8 +607,8 @@ our pipeline</p>
     label: 'histogram bindGroup',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: histogramBuffer }},
-      { binding: 1, resource: texture.createView() },
+      { binding: 0, resource: histogramBuffer },
+      { binding: 1, resource: texture },
     ],
   });
 </pre>
@@ -1050,7 +1053,7 @@ we could pass them in from JavaScript like this</p>
 
   const histogramChunkModule = device.createShaderModule({
     label: 'histogram chunk shader',
-    code: `
+    code: /* wgsl */ `
 -      const chunkWidth = 256;
 -      const chunkHeight = 1;
 +      ${sharedConstants}
@@ -1094,7 +1097,7 @@ fn cs(@builtin(local_invocation_id) local_invocation_id: vec3u) {
 <p>And, like before, we can inject the <code class="notranslate" translate="no">chunkWidth</code> and <code class="notranslate" translate="no">chunkHeight</code>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const chunkSumModule = device.createShaderModule({
   label: 'chunk sum shader',
-  code: `
+  code: /* wgsl */ `
 *    ${sharedConstants}
     const chunkSize = chunkWidth * chunkHeight;
     @group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
@@ -1168,9 +1171,9 @@ to the first shader and another to pass the chunks to the second shader</p>
     label: 'histogram bindGroup',
     layout: histogramChunkPipeline.getBindGroupLayout(0),
     entries: [
--      { binding: 0, resource: { buffer: histogramBuffer }},
-+      { binding: 0, resource: { buffer: chunksBuffer }},
-      { binding: 1, resource: texture.createView() },
+-      { binding: 0, resource: histogramBuffer },
++      { binding: 0, resource: chunksBuffer },
+      { binding: 1, resource: texture },
     ],
   });
 
@@ -1178,7 +1181,7 @@ to the first shader and another to pass the chunks to the second shader</p>
     label: 'sum bindGroup',
     layout: chunkSumPipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: chunksBuffer }},
+      { binding: 0, resource: chunksBuffer },
     ],
   });
 </pre>
@@ -1232,7 +1235,7 @@ chunks. If we pass in a stride of 2 then we sum every other chunk. etc…</p>
 <p>Here are the changes to our shader</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const chunkSumModule = device.createShaderModule({
   label: 'chunk sum shader',
-  code: `
+  code: /* wgsl */ `
     ${sharedConstants}
     const chunkSize = chunkWidth * chunkHeight;
 
@@ -1287,8 +1290,8 @@ for (let i = 0; i &lt; numSteps; ++i) {
   const chunkSumBindGroup = device.createBindGroup({
     layout: chunkSumPipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: chunksBuffer }},
-      { binding: 1, resource: { buffer: uniformBuffer }},
+      { binding: 0, resource: chunksBuffer },
+      { binding: 1, resource: uniformBuffer },
     ],
   });
   sumBindGroups.push(chunkSumBindGroup);
@@ -1371,7 +1374,7 @@ an image histogram.</p>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-compute-shaders-histogram.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders-histogram.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders-histogram.html">Русский
@@ -1441,6 +1444,15 @@ an image histogram.</p>
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -1516,8 +1528,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

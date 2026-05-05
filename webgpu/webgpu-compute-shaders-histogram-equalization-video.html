@@ -77,7 +77,7 @@ async function main() {
 
   const histogramChunkModule = device.createShaderModule({
     label: 'histogram chunk shader',
-    code: `
+    code: /* wgsl */ `
       ${sharedConstants}
       const chunkSize = chunkWidth * chunkHeight;
       var<workgroup> bins: array<array<atomic<u32>, 4>, chunkSize>;
@@ -164,7 +164,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
 
   const chunkSumModule = device.createShaderModule({
     label: 'chunk sum shader',
-    code: `
+    code: /* wgsl */ `
       ${sharedConstants}
       const chunkSize = chunkWidth * chunkHeight;
 
@@ -191,7 +191,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
 
   const maxModule = device.createShaderModule({
     label: 'max shader',
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         numEntries: f32,
       };
@@ -218,7 +218,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
 
   const drawHistogramModule = device.createShaderModule({
     label: 'draw histogram shader',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -273,7 +273,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
 
   const drawNewLightnessModule = device.createShaderModule({
     label: 'new lightness',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
       };
@@ -306,7 +306,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
 
   const videoModule = device.createShaderModule({
     label: 'our hardcoded external textured quad shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -355,7 +355,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
 
   const videoAdjustedModule = device.createShaderModule({
     label: 'our hardcoded external textured quad shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -653,8 +653,8 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
     const drawNewLightnessBindGroup = device.createBindGroup({
       layout: drawNewLightnessPipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: drawNewLightnessUniformBuffer }},
-        { binding: 1, resource: { buffer: newLightnessBuffer }},
+        { binding: 0, resource: drawNewLightnessUniformBuffer },
+        { binding: 1, resource: newLightnessBuffer },
       ],
     });
 
@@ -662,9 +662,9 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
       layout: maxPipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
-        { binding: 1, resource: { buffer: maxUniformBuffer }},
-        { binding: 2, resource: { buffer: scaleBuffer }},
-        { binding: 3, resource: { buffer: newLightnessBuffer }},
+        { binding: 1, resource: maxUniformBuffer },
+        { binding: 2, resource: scaleBuffer },
+        { binding: 3, resource: newLightnessBuffer },
       ],
     });
 
@@ -690,8 +690,8 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
       const chunkSumBindGroup = device.createBindGroup({
         layout: chunkSumPipeline.getBindGroupLayout(0),
         entries: [
-          { binding: 0, resource: { buffer: chunksBuffer }},
-          { binding: 1, resource: { buffer: uniformBuffer }},
+          { binding: 0, resource: chunksBuffer },
+          { binding: 1, resource: uniformBuffer },
         ],
       });
       sumBindGroups.push(chunkSumBindGroup);
@@ -737,8 +737,8 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
         layout: drawHistogramPipeline.getBindGroupLayout(0),
         entries: [
           { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
-          { binding: 1, resource: { buffer: uniformBuffer } },
-          { binding: 2, resource: { buffer: scaleBuffer }},
+          { binding: 1, resource: uniformBuffer  },
+          { binding: 2, resource: scaleBuffer },
         ],
       });
 
@@ -775,7 +775,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
           const histogramBindGroup = device.createBindGroup({
             layout: histogramChunkPipeline.getBindGroupLayout(0),
             entries: [
-              { binding: 0, resource: { buffer: chunksBuffer }},
+              { binding: 0, resource: chunksBuffer },
               { binding: 1, resource: texture },
             ],
           });
@@ -882,7 +882,7 @@ fn rgb2hsl(rgb: vec3f) -> vec3f {
           entries: addEntries([
             { binding: 0, resource: videoSampler },
             { binding: 1, resource: videoTexture },
-            { binding: 2, resource: { buffer: videoUniformBuffer }},
+            { binding: 2, resource: videoUniformBuffer },
           ]),
         });
 

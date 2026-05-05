@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-copying-data.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-copying-data.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-copying-data.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-copying-data.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Copying Data</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>In most of the articles to date, we’ve used the functions
@@ -268,7 +271,7 @@ a view of.</p>
 <h2 id="writetexture"><code class="notranslate" translate="no">writeTexture</code></h2>
 <p><code class="notranslate" translate="no">writeTexture</code> copies data from a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a> in JavaScript to a texture.</p>
 <p><code class="notranslate" translate="no">writeTexture</code> has this signature</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.writeTexture(
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeTexture(
   // details of the destination
   { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
 
@@ -307,7 +310,7 @@ this value.</p>
 <p>You can think of the copy as working like this</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">   // pseudo code
    const [x, y, z] = origin ?? [0, 0, 0];
-   const [blockWidth, blockHeight, bytesPerBlock] = 
+   const [blockWidth, blockHeight, bytesPerBlock] =
       getBlockInfoForTextureFormat(texture.format);
 
    const blocksAcross = width / blockWidth;
@@ -346,7 +349,7 @@ can either be an array of 1 to 3 numbers, or it can be an object with 1 to
 </ul>
 </blockquote>
 <blockquote>
-<p>In the same way, Anywhere an origin appears (default aa a <code class="notranslate" translate="no">GPUOrigin3D</code>), you can either have an array
+<p>In the same way, Anywhere an origin appears (default as a <code class="notranslate" translate="no">GPUOrigin3D</code>), you can either have an array
 of 3 numbers, or a object with <code class="notranslate" translate="no">x</code>, <code class="notranslate" translate="no">y</code>, <code class="notranslate" translate="no">z</code> properties. All of them default to
 0 so</p>
 <ul>
@@ -431,7 +434,7 @@ a multiple of 256!!</strong></p>
   { buffer, offset: 0, bytesPerRow, rowsPerImage },
 
   // size:
-  [ width, height, depthOrArrayLayers ]
+  [ width, height, depthOrArrayLayers ] or { width, height, depthOrArrayLayers }
 )
 </pre>
 <p>This has similar parameters to <code class="notranslate" translate="no">copyBufferToTexture</code>
@@ -456,7 +459,7 @@ must only differ by the suffix <code class="notranslate" translate="no">'-srgb'<
 
   // size:
   [ width, height, depthOrArrayLayers ] or { width, height, depthOrArrayLayers }
-);
+)
 </pre>
 <ul>
 <li>src.<code class="notranslate" translate="no">texture</code> must have a usage of <code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code></li>
@@ -478,7 +481,7 @@ you can write shaders to generate and/or copy and transfer data.</p>
 available to read or write from JavaScript.
 At least in version 1 of WebGPU,
 mappable buffers have severe restrictions, namely, a
-mappable buffer can can only be used as a temporary place
+mappable buffer can only be used as a temporary place
 to copy from or to. A mappable buffer can not be used as any
 other type of buffer (like a uniform buffer, vertex buffer,
 index buffer, storage buffer, etc…) <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
@@ -486,13 +489,13 @@ index buffer, storage buffer, etc…) <sup class="footnote-ref"><a href="#fn1" i
 of usage flags.</p>
 <ul>
 <li>
-<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_READ | GPU_BufferUsage.COPY_DST</code></p>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST</code></p>
 <p>This is a buffer you can use the copy commands above to copy
 data from another buffer or a texture, then map it to
 read the values in JavaScript</p>
 </li>
 <li>
-<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE | GPU_BufferUsage.COPY_SRC</code></p>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE | GPUBufferUsage.COPY_SRC</code></p>
 <p>This is a buffer you can map in JavaScript, you can then put
 data in it from JavaScript, and finally unmap it and use the
 and the copy commands above to copy its contents to another
@@ -578,7 +581,7 @@ in the buffer when you first create it. It’s mapped at creation, and
 after you unmap it once, it behaves like any other buffer and will only
 work for the usages you specified. In other words, if you to want to copy
 to it later you need <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> or if you want to map it
-later you need <code class="notranslate" translate="no">GPUBufferData.MAP_READ</code> or <code class="notranslate" translate="no">GPUBufferData.MAP_WRITE</code>.</p>
+later you need <code class="notranslate" translate="no">GPUBufferUsage.MAP_READ</code> or <code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE</code>.</p>
 <h2 id="efficiently-using-mappable-buffers"><a id="a-efficient"></a>Efficiently using mappable buffers</h2>
 <p>Above we saw that mapping a buffer is asynchronous. This means there’s
 an indeterminate amount of time from the point we ask for the buffer
@@ -603,7 +606,7 @@ See <a href="#a-mapped-at-creation">mappedAtCreation</a>. <a href="#fnref1" clas
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-copying-data.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-copying-data.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-copying-data.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-copying-data.html">Русский
@@ -673,6 +676,15 @@ See <a href="#a-mapped-at-creation">mappedAtCreation</a>. <a href="#fnref1" clas
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -748,8 +760,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

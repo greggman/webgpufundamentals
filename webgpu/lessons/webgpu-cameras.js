@@ -1,12 +1,12 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createElem as el
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import {
   createRequestAnimationFrameLoop,
-} from './resources/good-raf.js';
+} from './resources/js/good-raf.js';
 import { SVG as svg } from '../../3rdparty/svg.esm.js';
 import * as twgl from '../../3rdparty/twgl-full.module.js';
 

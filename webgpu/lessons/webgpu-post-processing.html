@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-post-processing.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-post-processing.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-post-processing.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-post-processing.html">Русский
@@ -229,12 +229,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Post Processing - Basic CRT Effect</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>Post Processing just means to do some processing after you’ve created the “original” image.
 Post processing can apply to a photo, a video, a 2d scene, a 3d scene. It just generally
 means you have an image and you apply some effects to that image, like choosing a filter
-in Instagram.</p>
+on Instagram.</p>
 <p>In almost every example on this site we render to the canvas texture. To do post processing
 we instead render to a different texture. Then render that texture to the canvas while
 applying some image processing effects.</p>
@@ -248,7 +251,7 @@ to the canvas.</p>
 and passes the correct UV coordinates to let as draw a texture that covers the portion of the triangle
 that fits in clip space.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VSOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -451,7 +454,7 @@ and dark using a sine wave and taking the absolute value.</p>
 </div>
 <p>Let’s add that to the code. First let’s edit the shader to apply this sine wave.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VSOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -509,7 +512,7 @@ the effect on and off so we can compare effect to no effect.</p>
       entries: [
         { binding: 0, resource: renderTargetView },
         { binding: 1, resource: postProcessSampler },
-+        { binding: 2, resource: { buffer: postProcessUniformBuffer }},
++        { binding: 2, resource: postProcessUniformBuffer },
       ],
     });
 </pre>
@@ -555,7 +558,7 @@ On CRTs those areas were generally larger than most LCDs today so
 sometimes this stuck out. Let’s add something to approximate that effect.</p>
 <p>First let’s change the shader</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">  const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VSOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -704,7 +707,7 @@ checking we can and choosing a texture format that supports it.</p>
 </pre>
 <p>We need to switch our shader to write to a storage texture</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
 -      struct VSOutput {
 -        @builtin(position) position: vec4f,
 -        @location(0) texcoord: vec2f,
@@ -793,7 +796,7 @@ no longer have <code class="notranslate" translate="no">fsInput.texcoord</code> 
 +    const outBindGroup = device.createBindGroup({
 +      layout: postProcessPipeline.getBindGroupLayout(1),
 +      entries: [
-+        { binding: 0, resource: dstTexture.createView() },
++        { binding: 0, resource: dstTexture },
 +      ],
 +    });
 
@@ -821,7 +824,7 @@ Using a workgroup size of 1 makes things easy but it’s slow.</p>
 to the texture when we’re out of bounds.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const workgroupSize = [16, 16];
   const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         effectAmount: f32,
         bandMult: f32,
@@ -901,6 +904,10 @@ Or, stick with render passes unless the algorithm you’re implementing could tr
 benefit from the shared data of workgroups and or subgroups. GPUs have been rendering
 to textures for much longer than they’ve been running compute shaders so many things
 about that process are highly optimized.</p>
+<hr>
+<p>This article introduced the concept of <em>post processing</em>.
+In the next article we’ll cover some
+<a href="webgpu-image-adjustments.html">common post processing image adjustments</a>.</p>
 <!-- keep this at the bottom of the article -->
 <link href="webgpu-post-processing.css" rel="stylesheet">
 <script type="module" src="webgpu-post-processing.js"></script>
@@ -909,7 +916,7 @@ about that process are highly optimized.</p>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-post-processing.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-post-processing.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-post-processing.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-post-processing.html">Русский
@@ -979,6 +986,15 @@ about that process are highly optimized.</p>
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -1054,8 +1070,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

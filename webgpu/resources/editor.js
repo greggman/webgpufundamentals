@@ -1093,7 +1093,7 @@ function start() {
     // window.location.href = url;
   } else {
     applySubstitutions();
-    require.config({ paths: { 'vs': '/monaco-editor/min/vs' }});
+    require.config({ paths: { vs: `${window.location.origin}/monaco-editor/min/vs` }});
     require(['vs/editor/editor.main'], main);
   }
 }

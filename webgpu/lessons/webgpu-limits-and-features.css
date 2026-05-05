@@ -15,6 +15,10 @@
 .features td:nth-child(2) {
   text-align: center;
 }
+.not-present {
+  color: var(--warning-fg-color);
+  background-color: var(--warning-bg-color);
+}
 .exceeds-limit {
   color: var(--good-fg-color);
 }

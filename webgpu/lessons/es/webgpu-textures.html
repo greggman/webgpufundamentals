@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-textures.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Textures">
+
+<meta name="description" content="Cómo usar texturas">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures_es.jpg">
+
+<meta property="og:title" content="Texturas en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use Textures">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures_es.jpg">
+<meta property="og:description" content="Cómo usar texturas">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Textures">
+<meta name="twitter:title" content="Texturas en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures.html">
-<meta name="twitter:description" content="How to use Textures">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Cómo usar texturas">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures.html",
+      "inLanguage":"es",
+      "name":"Texturas en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Textures</title>
+<title>Texturas en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-textures.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-textures.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-textures.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-textures.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-textures.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-textures.html">Русский
@@ -182,18 +227,1008 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Textures</h1>
+    <h1>Texturas en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-textures.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>En este artículo cubriremos los fundamentos de las texturas. En artículos anteriores cubrimos las otras formas principales de pasar datos a un shader. Estas fueron las <a href="webgpu-inter-stage-variables.html">variables inter-etapa (inter-stage variables)</a>, los <a href="webgpu-uniforms.html">uniforms</a>, los <a href="webgpu-storage-buffers.html">storage buffers</a> y los <a href="webgpu-vertex-buffers.html">vertex buffers</a>. La última forma principal de pasar datos a un shader son las texturas.</p>
+<p>Las texturas representan con mayor frecuencia una imagen 2D. Una imagen 2D es solo un array 2D de valores de color, por lo que te preguntarás, ¿por qué necesitamos texturas para arrays 2D? Podríamos usar simplemente storage buffers como arrays 2D. Lo que hace especiales a las texturas es que pueden ser accedidas por un hardware especial llamado <em>sampler</em>. Un sampler puede leer hasta 16 valores diferentes en una textura y mezclarlos entre sí de una manera que es útil para muchos casos de uso comunes.</p>
+<p>Como ejemplo, digamos que quiero dibujar una imagen 2D más grande que su tamaño original.</p>
+<div class="webgpu_center">
+  <div>
+    <div><img class="pixel-perfect" src="../resources/kiana.png" style="max-width: 100%; width: 128px; height: 128px; image-rendering: pixelated; image-rendering: crisp-edges;"></div>
+    <div style="text-align: center;">original</div>
+  </div>
+</div>
+<p>Si simplemente tomamos un solo píxel de la imagen original para crear cada píxel de la imagen más grande, terminaremos con el primer ejemplo a continuación. Si en cambio, para un píxel dado en la imagen más grande consideramos múltiples píxeles de la imagen original, podemos obtener resultados como la segunda imagen a continuación, que con suerte debería verse menos pixelada.</p>
+<div class="webgpu_center compare">
+  <div>
+    <div><img class="pixel-perfect" src="../resources/kiana.png" style="max-width: 100%; width: 512px; height: 512px; image-rendering: pixelated; image-rendering: crisp-edges;"></div>
+    <div>sin filtrar (un-filtered)</div>
+  </div>
+  <div>
+    <div><img class="pixel-perfect" src="../resources/kiana.png" style="max-width: 100%; width: 512px; height: 512px;"></div>
+    <div>filtrada (filtered)</div>
+  </div>
+</div>
+<p>Aunque existen funciones WGSL que obtienen un píxel individual de una textura y hay casos de uso para ello, esas funciones no son tan interesantes porque podríamos hacer lo mismo con storage buffers. Las funciones WGSL interesantes para las texturas son las que filtran y mezclan múltiples píxeles.</p>
+<p>Estas funciones WGSL toman una textura que representa esos datos, un sampler que representa cómo queremos extraer los datos de la textura, y una coordenada de textura (texture coordinate) que especifica de dónde queremos obtener un valor de la textura.</p>
+<p>Las coordenadas de textura para texturas muestreadas van de 0.0 a 1.0 a lo ancho y a lo largo de una textura, independientemente del tamaño real de la misma. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<div class="webgpu_center"><img src="../resources/texture-coordinates-diagram.svg" style="width: 500px;"></div>
+<p>Tomemos uno de nuestros ejemplos del <a href="webgpu-inter-stage-variables.html">artículo sobre variables inter-etapa</a> y modifiquémoslo para dibujar un cuadrilátero (quad, compuesto por 2 triángulos) con una textura.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurVertexShaderOutput {
+  @builtin(position) position: vec4f,
+-  @location(0) color: vec4f,
++  @location(0) texcoord: vec2f,
+};
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+-  let pos = array(
+-    vec2f( 0.0,  0.5),  // centro arriba
+-    vec2f(-0.5, -0.5),  // abajo izquierda
+-    vec2f( 0.5, -0.5)   // abajo derecha
+-  );
+-  var color = array&lt;vec4f, 3&gt;(
+-    vec4f(1, 0, 0, 1), // rojo
+-    vec4f(0, 1, 0, 1), // verde
+-    vec4f(0, 0, 1, 1), // azul
+-  );
++  let pos = array(
++    // 1er triángulo
++    vec2f( 0.0,  0.0),  // centro
++    vec2f( 1.0,  0.0),  // derecha, centro
++    vec2f( 0.0,  1.0),  // centro, arriba
++
++    // 2do triángulo
++    vec2f( 0.0,  1.0),  // centro, arriba
++    vec2f( 1.0,  0.0),  // derecha, centro
++    vec2f( 1.0,  1.0),  // derecha, arriba
++  );
+
+  var vsOutput: OurVertexShaderOutput;
+-  vsOutput.position = vec4f(pos[vertexIndex], 0.0, 1.0);
+-  vsOutput.color = color[vertexIndex];
++  let xy = pos[vertexIndex];
++  vsOutput.position = vec4f(xy, 0.0, 1.0);
++  vsOutput.texcoord = xy;
+  return vsOutput;
+}
+
++@group(0) @binding(0) var ourSampler: sampler;
++@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+-  return fsInput.color;
++  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+}
+</pre>
+<p>Arriba cambiamos de 3 vértices que dibujan un triángulo centrado a 6 vértices que dibujan un cuadrilátero en la esquina superior derecha del canvas.</p>
+<p>Cambiamos <code class="notranslate" translate="no">OurVertexShaderOutput</code> para pasar <code class="notranslate" translate="no">texcoord</code>, un <code class="notranslate" translate="no">vec2f</code>, de modo que podamos pasar coordenadas de textura al fragment shader (shader de fragmentos). Cambiamos el vertex shader (shader de vértices) para establecer <code class="notranslate" translate="no">vsOutput.texcoord</code> igual que la posición en el espacio de recorte (clip space) que extrajimos de nuestro array de posiciones estáticas. <code class="notranslate" translate="no">vsOutput.texcoord</code> se interpolará entre los 3 vértices de cada triángulo cuando se pase al fragment shader.</p>
+<p>Luego declaramos un sampler y una textura y los referenciamos en nuestro fragment shader. La función <code class="notranslate" translate="no">textureSample</code> <em>muestrea</em> una textura. El primer parámetro es la textura a muestrear. El segundo parámetro es el sampler para especificar cómo muestrear la textura. El tercero es la coordenada de textura para saber dónde muestrear.</p>
+<blockquote>
+<p>Nota: No es común pasar valores de posición como coordenadas de textura, pero en este caso particular de un cuadrilátero unitario (un cuadrilátero de una unidad de ancho y una unidad de alto) resulta que las coordenadas de textura que necesitamos coinciden con las posiciones. Hacerlo de esta manera mantiene el ejemplo más pequeño y simple. Sería mucho más común proporcionar coordenadas de textura a través de <a href="webgpu-vertex-buffers.html">vertex buffers</a>.</p>
+</blockquote>
+<p>Ahora necesitamos crear los datos de la textura. Haremos una <code class="notranslate" translate="no">F</code> de 5x7 téxeles (texels) <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kTextureWidth = 5;
+  const kTextureHeight = 7;
+  const _ = [255,   0,   0, 255];  // rojo
+  const y = [255, 255,   0, 255];  // amarillo
+  const b = [  0,   0, 255, 255];  // azul
+  const textureData = new Uint8Array([
+    b, _, _, _, _,
+    _, y, y, y, _,
+    _, y, _, _, _,
+    _, y, y, _, _,
+    _, y, _, _, _,
+    _, y, _, _, _,
+    _, _, _, _, _,
+  ].flat());
+</pre>
+<p>Con suerte puedes ver la <code class="notranslate" translate="no">F</code> allí, así como un téxel azul en la esquina superior izquierda (el primer valor).</p>
+<p>Vamos a crear una textura <code class="notranslate" translate="no">rgba8unorm</code>. <code class="notranslate" translate="no">rgba8unorm</code> significa que la textura tendrá valores de rojo, verde, azul y alfa. Cada valor será de 8 bits sin signo y se normalizará cuando se use en la textura. <code class="notranslate" translate="no">unorm</code> significa <code class="notranslate" translate="no">normalizado sin signo</code> (unsigned normalized), que es una forma elegante de decir que el valor se convertirá de un byte sin signo con valores de (0 a 255) a un valor de punto flotante con valores de (0.0 a 1.0).</p>
+<p>En otras palabras, si el valor que ponemos en la textura es <code class="notranslate" translate="no">[64, 128, 192, 255]</code>, el valor en el shader terminará siendo <code class="notranslate" translate="no">[64 / 255, 128 / 255, 192 / 255, 255 / 255]</code> o, dicho de otra forma, <code class="notranslate" translate="no">[0.25, 0.50, 0.75, 1.00]</code>.</p>
+<p>Ahora que tenemos los datos, necesitamos crear una textura.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = device.createTexture({
+    size: [kTextureWidth, kTextureHeight],
+    format: 'rgba8unorm',
+    usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+  });
+</pre>
+<p>En <code class="notranslate" translate="no">device.createTexture</code>, el parámetro <code class="notranslate" translate="no">size</code> debería ser bastante obvio. El formato es <code class="notranslate" translate="no">rgba8unorm</code> como se mencionó anteriormente. Para el <code class="notranslate" translate="no">usage</code>, <code class="notranslate" translate="no">GPUTextureUsage.TEXTURE_BINDING</code> indica que queremos poder vincular esta textura en un bind group <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> y <code class="notranslate" translate="no">COPY_DST</code> significa que queremos poder copiar datos a ella.</p>
+<p>A continuación, necesitamos hacer precisamente eso y copiar nuestros datos a ella.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  device.queue.writeTexture(
+      { texture },
+      textureData,
+      { bytesPerRow: kTextureWidth * 4 },
+      { width: kTextureWidth, height: kTextureHeight },
+  );
+</pre>
+<p>En <code class="notranslate" translate="no">device.queue.writeTexture</code>, el primer parámetro es la textura que queremos actualizar. El segundo son los datos que queremos copiar a ella. El tercero define cómo leer esos datos al copiarlos a la textura. <code class="notranslate" translate="no">bytesPerRow</code> especifica cuántos bytes obtener de una fila de los datos de origen a la siguiente fila. Finalmente, el último parámetro especifica el tamaño de la copia.</p>
+<p>También necesitamos crear un sampler.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const sampler = device.createSampler();
+</pre>
+<p>Necesitamos añadir tanto la textura como el sampler a un bind group con bindings que coincidan con los <code class="notranslate" translate="no">@binding(?)</code> que pusimos en el shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: sampler },
+      { binding: 1, resource: texture },
+    ],
+  });
+</pre>
+<p>Para actualizar nuestro renderizado, necesitamos especificar el bind group y dibujar 6 vértices para renderizar nuestro cuadrilátero que consta de 2 triángulos.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
++    pass.setBindGroup(0, bindGroup);
+-    pass.draw(3);  // llama a nuestro vertex shader 3 veces
++    pass.draw(6);  // llama a nuestro vertex shader 6 veces
+    pass.end();
+</pre>
+<p>Y al ejecutarlo obtenemos esto:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p><strong>¿Por qué la F está al revés?</strong></p>
+<p>Si regresas y consultas el diagrama de coordenadas de textura de nuevo, verás que la coordenada de textura 0,0 hace referencia al primer téxel de la textura. La posición en el centro del canvas de nuestro cuadrilátero es 0,0 y usamos ese valor como coordenada de textura, por lo que está haciendo lo que muestra el diagrama: una coordenada de textura 0,0 hace referencia al primer téxel azul.</p>
+<p>Para solucionar esto, existen 2 soluciones comunes.</p>
+<ol>
+<li>
+<p>Invertir las coordenadas de textura</p>
+<p>En este ejemplo, podríamos cambiar la coordenada de textura ya sea en el vertex shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-  vsOutput.texcoord = xy;
++  vsOutput.texcoord = vec2f(xy.x, 1.0 - xy.y);
+</pre>
+<p>o en el fragment shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
++  let texcoord = vec2f(fsInput.texcoord.x, 1.0 - fsInput.texcoord.y);
++  return textureSample(ourTexture, ourSampler, texcoord);
+</pre>
+<p>Por supuesto, si estuviéramos suministrando coordenadas de textura a través de <a href="webgpu-vertex-buffers.html">vertex buffers</a> o <a href="webgpu-storage-buffers.html">storage buffers</a>, lo ideal sería invertirlas en el origen.</p>
+</li>
+<li>
+<p>Invertir los datos de la textura</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const textureData = new Uint8Array([
+-   b, _, _, _, _,
+-   _, y, y, y, _,
+-   _, y, _, _, _,
+-   _, y, y, _, _,
+-   _, y, _, _, _,
+-   _, y, _, _, _,
+-   _, _, _, _, _,
++   _, _, _, _, _,
++   _, y, _, _, _,
++   _, y, _, _, _,
++   _, y, y, _, _,
++   _, y, _, _, _,
++   _, y, y, y, _,
++   b, _, _, _, _,
+ ].flat());
+</pre>
+<p>Una vez que hemos invertido los datos, lo que antes estaba en la parte superior ahora está en la parte inferior, y el píxel inferior izquierdo de la imagen original es ahora el primer dato en la textura y se convierte en lo que la coordenada de textura 0,0 referencia. Es por esto que a menudo se considera que las coordenadas de textura van de 0 en la parte inferior a 1 en la parte superior.</p>
+<div class="webgpu_center"><img src="../resources/texture-coordinates-y-flipped.svg" style="width: 500px;"></div>
+<p>Invertir los datos es lo suficientemente común como para que existan opciones al cargar texturas desde imágenes, videos y canvases para invertir los datos por ti.</p>
+</li>
+</ol>
+<h2 id="magfilter"><a id="a-mag-filter"></a>magFilter</h2>
+<p>En el ejemplo anterior usamos un sampler con su configuración por defecto. Dado que estamos dibujando la textura de 5x7 más grande que sus 5x7 téxeles originales, el sampler utiliza lo que se llama <code class="notranslate" translate="no">magFilter</code> (filtro de magnificación). Si lo cambiamos de <code class="notranslate" translate="no">nearest</code> (más cercano) a <code class="notranslate" translate="no">linear</code> (lineal), entonces interpolará linealmente entre 4 píxeles.</p>
+<p><a id="a-linear-interpolation"></a></p>
+<div class="webgpu_center center diagram"><div data-diagram="linear-interpolation" style="display: inline-block; width: 600px;"></div></div>
+<p>Las coordenadas de textura a menudo se llaman “UV” (pronunciado u-ve), así que, en el diagrama anterior, <code class="notranslate" translate="no">uv</code> es la coordenada de textura. Para un uv dado, se eligen los 4 píxeles más cercanos. <code class="notranslate" translate="no">t1</code> es la distancia horizontal entre el centro del píxel superior izquierdo elegido y el centro del píxel a su derecha, donde 0 significa que estamos horizontalmente en el centro del píxel izquierdo y 1 significa que estamos horizontalmente en el centro del píxel derecho elegido. <code class="notranslate" translate="no">t2</code> es similar, pero verticalmente.</p>
+<p><code class="notranslate" translate="no">t1</code> se utiliza para <em>“mezclar”</em> (mix) entre los 2 píxeles superiores para producir un color intermedio. <em>mix</em> interpola linealmente entre 2 valores, por lo que cuando <code class="notranslate" translate="no">t1</code> es 0 obtenemos solo el primer color. Cuando <code class="notranslate" translate="no">t1</code> = 1 obtenemos solo el segundo color. Los valores entre 0 y 1 producen una mezcla proporcional. Por ejemplo, 0.3 sería el 70% del primer color y el 30% del segundo. De manera similar, se calcula un segundo color intermedio para los 2 píxeles inferiores. Finalmente, <code class="notranslate" translate="no">t2</code> se utiliza para mezclar los dos colores intermedios en un color final.</p>
+<p>Otra cosa a notar: en la parte inferior del diagrama hay 2 configuraciones más del sampler, <code class="notranslate" translate="no">addressModeU</code> y <code class="notranslate" translate="no">addressModeV</code>. Podemos establecer estos en <code class="notranslate" translate="no">repeat</code> (repetir) o <code class="notranslate" translate="no">clamp-to-edge</code> (ajustar al borde) <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>. Cuando se establece en <code class="notranslate" translate="no">repeat</code>, si nuestra coordenada de textura está a menos de medio téxel del borde de la textura, “volvemos a empezar” y mezclamos con píxeles en el lado opuesto de la textura. Cuando se establece en <code class="notranslate" translate="no">clamp-to-edge</code>, para calcular qué color devolver, la coordenada de textura se ajusta para que no pueda entrar en el último medio téxel de cada borde. Esto tiene el efecto de mostrar los colores del borde para cualquier coordenada de textura fuera de ese rango.</p>
+<p>Actualicemos el ejemplo para poder dibujar el cuadrilátero con todas estas opciones.</p>
+<p>Primero, creemos un sampler para cada combinación de ajustes. También crearemos un bind group que use ese sampler.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const bindGroups = [];
++  for (let i = 0; i &lt; 8; ++i) {
+-   const sampler = device.createSampler();
++   const sampler = device.createSampler({
++      addressModeU: (i &amp; 1) ? 'repeat' : 'clamp-to-edge',
++      addressModeV: (i &amp; 2) ? 'repeat' : 'clamp-to-edge',
++      magFilter: (i &amp; 4) ? 'linear' : 'nearest',
++    });
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: sampler },
+        { binding: 1, resource: texture },
+      ],
+    });
++    bindGroups.push(bindGroup);
++  }
+</pre>
+<p>Crearemos algunos ajustes iniciales:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    addressModeU: 'repeat',
+    addressModeV: 'repeat',
+    magFilter: 'linear',
+  };
+</pre>
+<p>y en el momento del renderizado miraremos los ajustes para decidir qué bind group usar.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
++    const ndx = (settings.addressModeU === 'repeat' ? 1 : 0) +
++                (settings.addressModeV === 'repeat' ? 2 : 0) +
++                (settings.magFilter === 'linear' ? 4 : 0);
++    const bindGroup = bindGroups[ndx];
+    ...
+</pre>
+<p>Ahora todo lo que necesitamos hacer es proporcionar algo de interfaz de usuario (UI) que nos permita cambiar los ajustes y, cuando cambien, volver a renderizar. Estoy usando una librería llamada “muigui” que actualmente tiene una API similar a <a href="https://github.com/dataarts/dat.gui">dat.GUI</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import GUI from '../3rdparty/muigui-0.x.module.js';
+
+...
+
+  const settings = {
+    addressModeU: 'repeat',
+    addressModeV: 'repeat',
+    magFilter: 'linear',
+  };
+
+  const addressOptions = ['repeat', 'clamp-to-edge'];
+  const filterOptions = ['nearest', 'linear'];
+
+  const gui = new GUI();
+  gui.onChange(render);
+  Object.assign(gui.domElement.style, {right: '', left: '15px'});
+  gui.add(settings, 'addressModeU', addressOptions);
+  gui.add(settings, 'addressModeV', addressOptions);
+  gui.add(settings, 'magFilter', filterOptions);
+</pre>
+<p>El código anterior declara <code class="notranslate" translate="no">settings</code> y luego crea una UI para establecerlos y llama a <code class="notranslate" translate="no">render</code> cuando cambian.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-linear.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-linear.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Dado que nuestro fragment shader recibe coordenadas de textura interpoladas, a medida que el shader llama a <code class="notranslate" translate="no">textureSample</code> con esas coordenadas, obtiene diferentes colores mezclados según se le pida proporcionar un color para cada píxel que se está renderizando. Observa cómo con los modos de direccionamiento establecidos en <code class="notranslate" translate="no">repeat</code> podemos ver que WebGPU está “muestreando” de los téxeles en el lado opuesto de la textura.</p>
+<h2 id="minfilter"><a id="a-min-filter"></a>minFilter</h2>
+<p>También hay un ajuste, <code class="notranslate" translate="no">minFilter</code> (filtro de minificación), que realiza cálculos matemáticos similares a <code class="notranslate" translate="no">magFilter</code> para cuando la textura se dibuja a un tamaño menor que el original. Cuando se establece en <code class="notranslate" translate="no">linear</code>, también elige 4 píxeles y los mezcla siguiendo una lógica similar a la anterior.</p>
+<p>El problema es que, al elegir 4 píxeles mezclados de una textura más grande para renderizar, por ejemplo, 1 solo píxel, el color cambiará y obtendremos parpadeo (flickering).</p>
+<p>Hagámoslo para que podamos ver el problema.</p>
+<p>Primero, hagamos que nuestro canvas tenga baja resolución. Para hacer esto, necesitamos actualizar nuestro CSS para que el navegador no aplique el mismo efecto de <code class="notranslate" translate="no">magFilter: 'linear'</code> en nuestro canvas. Podemos hacerlo configurando el CSS de la siguiente manera:</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">canvas {
+  display: block;  /* hacer que el canvas actúe como un bloque */
+  width: 100%;     /* hacer que el canvas ocupe todo su contenedor */
+  height: 100%;
++  image-rendering: pixelated;
++  image-rendering: crisp-edges;
+}
+</pre>
+<p>A continuación, bajemos la resolución del canvas en nuestra función de callback de <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+-      const width = entry.contentBoxSize[0].inlineSize;
+-      const height = entry.contentBoxSize[0].blockSize;
++      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
++      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // volver a renderizar
+      render();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>Vamos a mover y escalar el cuadrilátero, así que añadiremos un uniform buffer (buffer de uniformes) igual que hicimos en el primer ejemplo del <a href="webgpu-uniforms.html">artículo sobre uniforms</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurVertexShaderOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
++struct Uniforms {
++  scale: vec2f,
++  offset: vec2f,
++};
++
++@group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+  let pos = array(
+    // 1er triángulo
+    vec2f( 0.0,  0.0),  // centro
+    vec2f( 1.0,  0.0),  // derecha, centro
+    vec2f( 0.0,  1.0),  // centro, arriba
+
+    // 2do triángulo
+    vec2f( 0.0,  1.0),  // centro, arriba
+    vec2f( 1.0,  0.0),  // derecha, centro
+    vec2f( 1.0,  1.0),  // derecha, arriba
+  );
+
+  var vsOutput: OurVertexShaderOutput;
+  let xy = pos[vertexIndex];
+-  vsOutput.position = vec4f(xy, 0.0, 1.0);
++  vsOutput.position = vec4f(xy * uni.scale + uni.offset, 0.0, 1.0);
+  vsOutput.texcoord = xy;
+  return vsOutput;
+}
+
+@group(0) @binding(0) var ourSampler: sampler;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+}
+</pre>
+<p>Ahora que tenemos uniforms, necesitamos crear un uniform buffer y añadirlo al bind group.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // crear un buffer para los valores de los uniforms
++  const uniformBufferSize =
++    2 * 4 + // scale son 2 floats de 32 bits (4 bytes cada uno)
++    2 * 4;  // offset son 2 floats de 32 bits (4 bytes cada uno)
++  const uniformBuffer = device.createBuffer({
++    label: 'uniforms para el quad',
++    size: uniformBufferSize,
++    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++  });
++
++  // crear un typedarray para contener los valores de los uniforms en JavaScript
++  const uniformValues = new Float32Array(uniformBufferSize / 4);
++
++  // desplazamientos a los diversos valores de los uniforms en índices de float32
++  const kScaleOffset = 0;
++  const kOffsetOffset = 2;
+
+  const bindGroups = [];
+  for (let i = 0; i &lt; 8; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: (i &amp; 1) ? 'repeat' : 'clamp-to-edge',
+      addressModeV: (i &amp; 2) ? 'repeat' : 'clamp-to-edge',
+      magFilter: (i &amp; 4) ? 'linear' : 'nearest',
+    });
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: sampler },
+        { binding: 1, resource: texture },
++        { binding: 2, resource: uniformBuffer },
+      ],
+    });
+    bindGroups.push(bindGroup);
+  }
+</pre>
+<p>Y necesitamos código para establecer los valores de los uniforms y subirlos a la GPU. Vamos a animar esto, por lo que también cambiaremos el código para usar <code class="notranslate" translate="no">requestAnimationFrame</code> para renderizar continuamente.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    time *= 0.001;
+    const ndx = (settings.addressModeU === 'repeat' ? 1 : 0) +
+                (settings.addressModeV === 'repeat' ? 2 : 0) +
+                (settings.magFilter === 'linear' ? 4 : 0);
+    const bindGroup = bindGroups[ndx];
+
++    // calcular una escala que dibujará nuestro quad de espacio de recorte de 0 a 1
++    // como 4x4 píxeles en el canvas.
++    const scaleX = 4 / canvas.width;
++    const scaleY = 4 / canvas.height;
++
++    uniformValues.set([scaleX, scaleY], kScaleOffset); // establecer la escala
++    uniformValues.set([Math.sin(time * 0.25) * 0.8, -0.8], kOffsetOffset); // establecer el desplazamiento
++
++    // copiar los valores de JavaScript a la GPU
++    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+    ...
+
++    requestAnimationFrame(render);
+  }
++  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
+      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+-      // volver a renderizar
+-      render();
+    }
+  });
+  observer.observe(canvas);
+}
+</pre>
+<p>El código anterior establece la escala para que dibujemos el cuadrilátero del tamaño de 4x4 píxeles en el canvas. También establece el desplazamiento de -0.8 a +0.8 usando <code class="notranslate" translate="no">Math.sin</code> para que el cuadrilátero se mueva lentamente de un lado a otro del canvas.</p>
+<p>Finalmente, añadamos <code class="notranslate" translate="no">minFilter</code> a nuestros ajustes y combinaciones:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroups = [];
+-  for (let i = 0; i &lt; 8; ++i) {
++  for (let i = 0; i &lt; 16; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: (i &amp; 1) ? 'repeat' : 'clamp-to-edge',
+      addressModeV: (i &amp; 2) ? 'repeat' : 'clamp-to-edge',
+      magFilter: (i &amp; 4) ? 'linear' : 'nearest',
++      minFilter: (i &amp; 8) ? 'linear' : 'nearest',
+    });
+
+...
+
+  const settings = {
+    addressModeU: 'repeat',
+    addressModeV: 'repeat',
+    magFilter: 'linear',
++    minFilter: 'linear',
+  };
+
+  const addressOptions = ['repeat', 'clamp-to-edge'];
+  const filterOptions = ['nearest', 'linear'];
+
+  const gui = new GUI();
+-  gui.onChange(render);
+  Object.assign(gui.domElement.style, {right: '', left: '15px'});
+  gui.add(settings, 'addressModeU', addressOptions);
+  gui.add(settings, 'addressModeV', addressOptions);
+  gui.add(settings, 'magFilter', filterOptions);
++  gui.add(settings, 'minFilter', filterOptions);
+
+  function render(time) {
+    time *= 0.001;
+    const ndx = (settings.addressModeU === 'repeat' ? 1 : 0) +
+                (settings.addressModeV === 'repeat' ? 2 : 0) +
+-                (settings.magFilter === 'linear' ? 4 : 0);
++                (settings.magFilter === 'linear' ? 4 : 0) +
++                (settings.minFilter === 'linear' ? 8 : 0);
+</pre>
+<p>Ya no necesitamos llamar a <code class="notranslate" translate="no">render</code> cuando cambia un ajuste, ya que estamos renderizando constantemente usando <code class="notranslate" translate="no">requestAnimationFrame</code> (a menudo llamado “rAF”, y este estilo de bucle de renderizado se denomina frecuentemente “rAF loop”).</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-minfilter.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-minfilter.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Puedes ver que el cuadrilátero parpadea y cambia de color. Si el <code class="notranslate" translate="no">minFilter</code> se establece en <code class="notranslate" translate="no">nearest</code>, entonces para cada uno de los 4x4 píxeles del cuadrilátero está eligiendo un píxel de nuestra textura. Si lo estableces en <code class="notranslate" translate="no">linear</code>, realiza el filtrado bilineal que mencionamos antes, pero aún así parpadea.</p>
+<p>Una razón es que el cuadrilátero se posiciona con números reales, pero los píxeles son enteros. Las coordenadas de textura se interpolan a partir de los números reales o, mejor dicho, se calculan a partir de ellos.</p>
+<p><a id="a-pixel-to-texcoords"></a></p>
+<div class="webgpu_center center diagram">
+  <div class="fit-container">
+    <div class="text-align: center">arrastra para mover</div>
+    <div class="fit-container" data-diagram="pixel-to-texcoords" style="display: inline-block; width: 600px;"></div>
+  </div>
+</div>
+<p>En el diagrama anterior, el rectángulo <span style="color: red;">rojo</span> representa el cuadrilátero que pedimos a la GPU que dibujara basándose en los valores que devolvemos de nuestro vertex shader. Cuando la GPU dibuja, calcula qué centros de píxeles están dentro de nuestro cuadrilátero (nuestros 2 triángulos). Luego, calcula qué valor de variable inter-etapa interpolado pasar al fragment shader basándose en dónde está el centro del píxel a dibujar en relación con dónde están los puntos originales. En nuestro fragment shader pasamos esa coordenada de textura a la función WGSL <code class="notranslate" translate="no">textureSample</code> y obtenemos un color muestreado, como mostraba el diagrama anterior. Con suerte, puedes ver por qué los colores parpadean. Puedes ver cómo se mezclan en diferentes colores dependiendo de qué coordenadas UV se calculan para el píxel que se está dibujando.</p>
+<p>Las texturas ofrecen una solución a este problema. Se llama mipmapping. Creo (aunque podría estar equivocado) que “mipmap” significa “multi-image-pyramid-map” (mapa de pirámide de múltiples imágenes).</p>
+<p>Tomamos nuestra textura y creamos una textura más pequeña que tiene la mitad del tamaño en cada dimensión, redondeando hacia abajo. Luego llenamos la textura más pequeña con colores mezclados de la primera textura original. Repetimos esto hasta llegar a una textura de 1x1. En nuestro ejemplo tenemos una textura de 5x7 téxeles. Dividir por 2 en cada dimensión y redondear hacia abajo nos da una textura de 2x3 téxeles. Tomamos esa y repetimos hasta terminar con una textura de 1x1 téxeles.</p>
+<div class="webgpu_center center diagram"><div data-diagram="mips" style="display: inline-block;"></div></div>
+<p>Dado un mipmap, podemos pedirle a la GPU que elija un nivel de mip (mip level) más pequeño cuando estemos dibujando algo más pequeño que el tamaño de la textura original. Esto se verá mejor porque ha sido “pre-mezclado” y representa mejor cuál sería el color de la textura al escalarla.</p>
+<p>El mejor algoritmo para mezclar los píxeles de un nivel de mip al siguiente es un tema de investigación, así como una cuestión de opinión. Como primera idea, aquí tienes un código que genera cada nivel de mip a partir del anterior mediante filtrado bilineal (como se demostró anteriormente).</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const lerp = (a, b, t) =&gt; a + (b - a) * t;
+const mix = (a, b, t) =&gt; a.map((v, i) =&gt; lerp(v, b[i], t));
+const bilinearFilter = (tl, tr, bl, br, t1, t2) =&gt; {
+  const t = mix(tl, tr, t1);
+  const b = mix(bl, br, t1);
+  return mix(t, b, t2);
+};
+
+const createNextMipLevelRgba8Unorm = ({data: src, width: srcWidth, height: srcHeight}) =&gt; {
+  // calcular el tamaño del siguiente mip
+  const dstWidth = Math.max(1, srcWidth / 2 | 0);
+  const dstHeight = Math.max(1, srcHeight / 2 | 0);
+  const dst = new Uint8Array(dstWidth * dstHeight * 4);
+
+  const getSrcPixel = (x, y) =&gt; {
+    const offset = (y * srcWidth + x) * 4;
+    return src.subarray(offset, offset + 4);
+  };
+
+  for (let y = 0; y &lt; dstHeight; ++y) {
+    for (let x = 0; x &lt; dstWidth; ++x) {
+      // calcular la coordenada de textura del centro del téxel de destino
+      const u = (x + 0.5) / dstWidth;
+      const v = (y + 0.5) / dstHeight;
+
+      // calcular la misma coordenada en el origen - 0.5 píxeles
+      const au = (u * srcWidth - 0.5);
+      const av = (v * srcHeight - 0.5);
+
+      // calcular la coordenada del téxel superior izquierdo de origen (no texcoord)
+      const tx = au | 0;
+      const ty = av | 0;
+
+      // calcular las cantidades de mezcla entre píxeles
+      const t1 = au % 1;
+      const t2 = av % 1;
+
+      // obtener los 4 píxeles
+      const tl = getSrcPixel(tx, ty);
+      const tr = getSrcPixel(tx + 1, ty);
+      const bl = getSrcPixel(tx, ty + 1);
+      const br = getSrcPixel(tx + 1, ty + 1);
+
+      // copiar el resultado "muestreado" en el destino.
+      const dstOffset = (y * dstWidth + x) * 4;
+      dst.set(bilinearFilter(tl, tr, bl, br, t1, t2), dstOffset);
+    }
+  }
+  return { data: dst, width: dstWidth, height: dstHeight };
+};
+
+const generateMips = (src, srcWidth) =&gt; {
+  const srcHeight = src.length / 4 / srcWidth;
+
+  // rellenar con el primer nivel de mip (nivel base)
+  let mip = { data: src, width: srcWidth, height: srcHeight, };
+  const mips = [mip];
+
+  while (mip.width &gt; 1 || mip.height &gt; 1) {
+    mip = createNextMipLevelRgba8Unorm(mip);
+    mips.push(mip);
+  }
+  return mips;
+};
+</pre>
+<p>Veremos cómo hacer esto en la GPU en <a href="webgpu-importing-textures.html">otro artículo</a>. Por ahora, podemos usar el código anterior para generar un mipmap.</p>
+<p>Pasamos los datos de nuestra textura a la función anterior y nos devuelve un array de datos de niveles de mip. Luego podemos crear una textura con todos los niveles de mip:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const mips = generateMips(textureData, kTextureWidth);
+
+  const texture = device.createTexture({
+    label: 'F amarilla sobre rojo',
++    size: [mips[0].width, mips[0].height],
++    mipLevelCount: mips.length,
+    format: 'rgba8unorm',
+    usage:
+      GPUTextureUsage.TEXTURE_BINDING |
+      GPUTextureUsage.COPY_DST,
+  });
+  mips.forEach(({data, width, height}, mipLevel) =&gt; {
+    device.queue.writeTexture(
+      { texture, mipLevel },
+      data,
+      { bytesPerRow: width * 4 },
+      { width, height },
+    );
+  });
+</pre>
+<p>Observa que pasamos <code class="notranslate" translate="no">mipLevelCount</code> con el número de niveles de mip. WebGPU creará entonces el nivel de mip con el tamaño correcto para cada nivel. Luego copiamos los datos a cada nivel especificando el <code class="notranslate" translate="no">mipLevel</code>.</p>
+<p>Añadamos también un ajuste de escala para que podamos ver el cuadrilátero dibujado a diferentes tamaños.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    addressModeU: 'repeat',
+    addressModeV: 'repeat',
+    magFilter: 'linear',
+    minFilter: 'linear',
++    scale: 1,
+  };
+
+  ...
+
+  const gui = new GUI();
+  Object.assign(gui.domElement.style, {right: '', left: '15px'});
+  gui.add(settings, 'addressModeU', addressOptions);
+  gui.add(settings, 'addressModeV', addressOptions);
+  gui.add(settings, 'magFilter', filterOptions);
+  gui.add(settings, 'minFilter', filterOptions);
++  gui.add(settings, 'scale', 0.5, 6);
+
+  function render(time) {
+
+    ...
+
+-    const scaleX = 4 / canvas.width;
+-    const scaleY = 4 / canvas.height;
++    const scaleX = 4 / canvas.width * settings.scale;
++    const scaleY = 4 / canvas.height * settings.scale;
+
+</pre>
+<p>Y con eso, la GPU elige el nivel de mip más pequeño para dibujar y el parpadeo desaparece.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-mipmap.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-mipmap.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Ajusta la escala y verás que, a medida que el cuadrilátero se hace más grande, el nivel de mip que se utiliza cambia. Hay una transición bastante brusca entre la escala 2.4 y la 2.5, donde la GPU cambia entre el nivel de mip 0 (el más grande) y el nivel de mip 1 (el tamaño medio). ¿Qué podemos hacer al respecto?</p>
+<h2 id="mipmapfilter"><a id="a-mipmap-filter"></a>mipmapFilter</h2>
+<p>Al igual que tenemos un <code class="notranslate" translate="no">magFilter</code> y un <code class="notranslate" translate="no">minFilter</code>, los cuales pueden ser <code class="notranslate" translate="no">nearest</code> o <code class="notranslate" translate="no">linear</code>, también hay un ajuste <code class="notranslate" translate="no">mipmapFilter</code> que también puede ser <code class="notranslate" translate="no">nearest</code> o <code class="notranslate" translate="no">linear</code>.</p>
+<p>Esto elige si mezclamos entre niveles de mip. En <code class="notranslate" translate="no">mipmapFilter: 'linear'</code>, los colores se muestrean de 2 niveles de mip, ya sea con filtrado nearest o linear basándose en los ajustes anteriores, y luego esos 2 colores se vuelven a mezclar (<code class="notranslate" translate="no">mix</code>) de forma similar.</p>
+<p>Esto surge sobre todo al dibujar cosas en 3D. Cómo dibujar en 3D se cubre en <a href="webgpu-perspective.html">otros artículos</a>, así que no voy a tratarlo aquí, pero cambiaremos nuestro ejemplo anterior para mostrar algo de 3D de modo que podamos ver mejor cómo funciona <code class="notranslate" translate="no">mipmapFilter</code>.</p>
+<p>Primero, creemos algunas texturas. Haremos una textura de 16x16 que creo que mostrará mejor el efecto de <code class="notranslate" translate="no">mipmapFilter</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const createBlendedMipmap = () =&gt; {
+    const w = [255, 255, 255, 255];
+    const r = [255,   0,   0, 255];
+    const b = [  0,  28, 116, 255];
+    const y = [255, 231,   0, 255];
+    const g = [ 58, 181,  75, 255];
+    const a = [ 38, 123, 167, 255];
+    const data = new Uint8Array([
+      w, r, r, r, r, r, r, a, a, r, r, r, r, r, r, w,
+      w, w, r, r, r, r, r, a, a, r, r, r, r, r, w, w,
+      w, w, w, r, r, r, r, a, a, r, r, r, r, w, w, w,
+      w, w, w, w, r, r, r, a, a, r, r, r, w, w, w, w,
+      w, w, w, w, w, r, r, a, a, r, r, w, w, w, w, w,
+      w, w, w, w, w, w, r, a, a, r, w, w, w, w, w, w,
+      w, w, w, w, w, w, w, a, a, w, w, w, w, w, w, w,
+      b, b, b, b, b, b, b, b, a, y, y, y, y, y, y, y,
+      b, b, b, b, b, b, b, g, y, y, y, y, y, y, y, y,
+      w, w, w, w, w, w, w, g, g, w, w, w, w, w, w, w,
+      w, w, w, w, w, w, r, g, g, r, w, w, w, w, w, w,
+      w, w, w, w, w, r, r, g, g, r, r, w, w, w, w, w,
+      w, w, w, w, r, r, r, g, g, r, r, r, w, w, w, w,
+      w, w, w, r, r, r, r, g, g, r, r, r, r, w, w, w,
+      w, w, r, r, r, r, r, g, g, r, r, r, r, r, w, w,
+      w, r, r, r, r, r, r, g, g, r, r, r, r, r, r, w,
+    ].flat());
+    return generateMips(data, 16);
+  };
+</pre>
+<p>Esto generará estos niveles de mip:</p>
+<div class="webgpu_center center diagram"><div data-diagram="blended-mips" style="display: inline-block;"></div></div>
+<p>Somos libres de poner cualquier dato en cada nivel de mip, así que otra buena forma de ver lo que está sucediendo es hacer cada nivel de mip de colores diferentes. Usemos la API 2D del canvas para crear niveles de mip.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const createCheckedMipmap = () =&gt; {
+    const ctx = document.createElement('canvas').getContext('2d', {willReadFrequently: true});
+    const levels = [
+      { size: 64, color: 'rgb(128,0,255)', },
+      { size: 32, color: 'rgb(0,255,0)', },
+      { size: 16, color: 'rgb(255,0,0)', },
+      { size:  8, color: 'rgb(255,255,0)', },
+      { size:  4, color: 'rgb(0,0,255)', },
+      { size:  2, color: 'rgb(0,255,255)', },
+      { size:  1, color: 'rgb(255,0,255)', },
+    ];
+    return levels.map(({size, color}, i) =&gt; {
+      ctx.canvas.width = size;
+      ctx.canvas.height = size;
+      ctx.fillStyle = i &amp; 1 ? '#000' : '#fff';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, size / 2, size / 2);
+      ctx.fillRect(size / 2, size / 2, size / 2, size / 2);
+      return ctx.getImageData(0, 0, size, size);
+    });
+  };
+</pre>
+<p>Este código generará estos niveles de mip.</p>
+<div class="webgpu_center center diagram"><div data-diagram="checkered-mips" style="display: inline-block;"></div></div>
+<p>Ahora que hemos creado los datos, creemos las texturas:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const createTextureWithMips = (mips, label) =&gt; {
+    const texture = device.createTexture({
+-      label: 'F amarilla sobre rojo',
++      label,
+      size: [mips[0].width, mips[0].height],
+      mipLevelCount: mips.length,
+      format: 'rgba8unorm',
+      usage:
+        GPUTextureUsage.TEXTURE_BINDING |
+        GPUTextureUsage.COPY_DST,
+    });
+    mips.forEach(({data, width, height}, mipLevel) =&gt; {
+      device.queue.writeTexture(
+          { texture, mipLevel },
+          data,
+          { bytesPerRow: width * 4 },
+          { width, height },
+      );
+    });
+    return texture;
++  };
+
++  const textures = [
++    createTextureWithMips(createBlendedMipmap(), 'blended'),
++    createTextureWithMips(createCheckedMipmap(), 'checker'),
++  ];
+</pre>
+<p>Vamos a dibujar un plano que se extiende hacia la distancia en 8 ubicaciones. Usaremos matemáticas de matrices como se cubrió en <a href="webgpu-cameras.html">la serie de artículos sobre 3D</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurVertexShaderOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
+struct Uniforms {
+-  scale: vec2f,
+-  offset: vec2f,
++  matrix: mat4x4f,
+};
+
+@group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+  let pos = array(
+    // 1er triángulo
+    vec2f( 0.0,  0.0),  // centro
+    vec2f( 1.0,  0.0),  // derecha, centro
+    vec2f( 0.0,  1.0),  // centro, arriba
+
+    // 2do triángulo
+    vec2f( 0.0,  1.0),  // centro, arriba
+    vec2f( 1.0,  0.0),  // derecha, centro
+    vec2f( 1.0,  1.0),  // derecha, arriba
+  );
+
+  var vsOutput: OurVertexShaderOutput;
+  let xy = pos[vertexIndex];
+-  vsOutput.position = vec4f(xy * uni.scale + uni.offset, 0.0, 1.0);
++  vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+  vsOutput.texcoord = xy * vec2f(1, 50);
+  return vsOutput;
+}
+
+@group(0) @binding(0) var ourSampler: sampler;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+}
+</pre>
+<p>Cada uno de los 8 planos utilizará diferentes combinaciones de <code class="notranslate" translate="no">minFilter</code>, <code class="notranslate" translate="no">magFilter</code> y <code class="notranslate" translate="no">mipmapFilter</code>. Eso significa que cada uno necesita un bind group diferente que contenga un sampler con esa combinación específica de filtros. Además, tenemos 2 texturas. Las texturas también forman parte del bind group, por lo que necesitaremos 2 bind groups por objeto, uno por cada textura. Luego podemos seleccionar cuál usar cuando rendericemos. Para dibujar el plano en 8 ubicaciones, también necesitaremos un uniform buffer por ubicación, como cubrimos en <a href="webgpu-uniforms.html">el artículo sobre uniforms</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // desplazamientos a los diversos valores de los uniforms en índices de float32
+  const kMatrixOffset = 0;
+
+  const objectInfos = [];
+  for (let i = 0; i &lt; 8; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: 'repeat',
+      addressModeV: 'repeat',
+      magFilter: (i &amp; 1) ? 'linear' : 'nearest',
+      minFilter: (i &amp; 2) ? 'linear' : 'nearest',
+      mipmapFilter: (i &amp; 4) ? 'linear' : 'nearest',
+    });
+
+    // crear un buffer para los valores de los uniforms
+    const uniformBufferSize =
+      16 * 4; // la matriz son 16 floats de 32 bits (4 bytes cada uno)
+    const uniformBuffer = device.createBuffer({
+      label: 'uniforms para el quad',
+      size: uniformBufferSize,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+
+    // crear un typedarray para contener los valores de los uniforms en JavaScript
+    const uniformValues = new Float32Array(uniformBufferSize / 4);
+    const matrix = uniformValues.subarray(kMatrixOffset, 16);
+
+    const bindGroups = textures.map(texture =&gt;
+      device.createBindGroup({
+        layout: pipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: sampler },
+          { binding: 1, resource: texture },
+          { binding: 2, resource: uniformBuffer },
+        ],
+      }));
+
+    // guardar los datos que necesitamos para renderizar este objeto.
+    objectInfos.push({
+      bindGroups,
+      matrix,
+      uniformValues,
+      uniformBuffer,
+    });
+  }
+</pre>
+<p>Al momento del renderizado, <a href="webgpu-cameras.html">calculamos una matriz vista-proyección (view-projection matrix)</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    const fov = 60 * Math.PI / 180;  // 60 grados en radianes
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const zNear  = 1;
+    const zFar   = 2000;
+    const projectionMatrix = mat4.perspective(fov, aspect, zNear, zFar);
+
+    const cameraPosition = [0, 0, 2];
+    const up = [0, 1, 0];
+    const target = [0, 0, 0];
+    const cameraMatrix = mat4.lookAt(cameraPosition, target, up);
+    const viewMatrix = mat4.inverse(cameraMatrix);
+    const viewProjectionMatrix = mat4.multiply(projectionMatrix, viewMatrix);
+
+    ...
+</pre>
+<p>Luego, para cada plano, seleccionamos un bind group basándonos en qué textura queremos mostrar y calculamos una matriz única para posicionar ese plano.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  let texNdx = 0;
+
+  function render() {
+    ...
+
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
+    objectInfos.forEach(({bindGroups, matrix, uniformBuffer, uniformValues}, i) =&gt; {
+      const bindGroup = bindGroups[texNdx];
+
+      const xSpacing = 1.2;
+      const ySpacing = 0.7;
+      const zDepth = 50;
+
+      const x = i % 4 - 1.5;
+      const y = i &lt; 4 ? 1 : -1;
+
+      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+      mat4.rotateX(matrix, 0.5 * Math.PI, matrix);
+      mat4.scale(matrix, [1, zDepth * 2, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+
+      // copiar los valores de JavaScript a la GPU
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // llama a nuestro vertex shader 6 veces
+    });
+
+    pass.end();
+</pre>
+<p>Eliminé el código de la UI existente, volví de un bucle rAF a renderizar en el callback de <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> y dejé de usar baja resolución.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function render(time) {
+-    time *= 0.001;
++  function render() {
+
+    ...
+
+-    requestAnimationFrame(render);
+  }
+-  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+-      const width = entry.contentBoxSize[0].inlineSize / 64 | 0;
+-      const height = entry.contentBoxSize[0].blockSize / 64 | 0;
++      const width = entry.contentBoxSize[0].inlineSize;
++      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
++      render();
+    }
+  });
+  observer.observe(canvas);
+</pre>
+<p>Como ya no estamos en baja resolución, podemos eliminar el CSS que impedía al navegador filtrar el propio canvas.</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">canvas {
+  display: block;  /* hacer que el canvas actúe como un bloque */
+  width: 100%;     /* hacer que el canvas ocupe todo su contenedor */
+  height: 100%;
+-  image-rendering: pixelated;
+-  image-rendering: crisp-edges;
+}
+</pre>
+<p>Y podemos hacer que, si haces clic en el canvas, cambie la textura con la que se dibuja y vuelva a renderizar:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  canvas.addEventListener('click', () =&gt; {
+    texNdx = (texNdx + 1) % textures.length;
+    render();
+  });
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-mipmapfilter.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-mipmapfilter.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Con suerte, puedes ver la progresión desde la parte superior izquierda con todos los filtros en <code class="notranslate" translate="no">nearest</code> hasta la parte inferior derecha donde todos los filtros están en <code class="notranslate" translate="no">linear</code>. En particular, como añadimos <code class="notranslate" translate="no">mipmapFilter</code> en este ejemplo, si haces clic en la imagen para mostrar la textura cuadriculada donde cada nivel de mip es de un color diferente, deberías poder ver que cada plano en la parte superior tiene <code class="notranslate" translate="no">mipmapFilter</code> en <code class="notranslate" translate="no">nearest</code>, por lo que el punto de cambio de un nivel de mip al siguiente es abrupto. En la parte inferior, cada plano tiene <code class="notranslate" translate="no">mipmapFilter</code> en <code class="notranslate" translate="no">linear</code>, por lo que se produce una mezcla entre los niveles de mip.</p>
+<p>Te preguntarás, ¿por qué no poner siempre todos los filtros en <code class="notranslate" translate="no">linear</code>? La razón obvia es el estilo. Si intentas crear una imagen de aspecto pixelado, por supuesto que no querrás filtrado. Otra razón es la velocidad. Leer 1 píxel de una textura cuando todo el filtrado está en <code class="notranslate" translate="no">nearest</code> es más rápido que leer 8 píxeles de una textura cuando todo el filtrado está en <code class="notranslate" translate="no">linear</code>.</p>
+<p>TBD: Repetición (Repeat)</p>
+<p>TBD: Filtrado anisotrópico (Anisotropic filtering)</p>
+<h2 id="tipos-de-texturas-y-vistas-de-textura">Tipos de texturas y vistas de textura</h2>
+<p>Hasta ahora solo hemos utilizado texturas 2D. Hay 3 tipos de texturas:</p>
+<ul>
+<li>“1d”</li>
+<li>“2d”</li>
+<li>“3d”</li>
+</ul>
+<p>En cierta forma, puedes considerar <em>más o menos</em> que una textura “2d” es solo una textura “3d” con una profundidad de 1. Y una textura “1d” es solo una textura “2d” con una altura de 1. Dos diferencias reales: las texturas están limitadas en sus dimensiones máximas permitidas. El límite es diferente para cada tipo de textura (“1d”, “2d” y “3d”). Hemos usado el límite de “2d” al establecer el tamaño del canvas.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+</pre>
+<p>Otra diferencia es la velocidad, al menos para una textura 3D frente a una 2D. Con todos los filtros del sampler en <code class="notranslate" translate="no">linear</code>, muestrear una textura 3D requeriría mirar 16 téxeles y mezclarlos todos. Muestrear una textura 2D solo requiere 8 téxeles. Es posible que una textura 1D solo necesite 4, pero no tengo idea de si alguna GPU optimiza realmente para texturas 1D.</p>
+<h3 id="vistas-de-textura-texture-views">Vistas de textura (Texture Views)</h3>
+<p>Hay 6 tipos de vistas de textura:</p>
+<ul>
+<li>“1d”</li>
+<li>“2d”</li>
+<li>“2d-array”</li>
+<li>“3d”</li>
+<li>“cube”</li>
+<li>“cube-array”</li>
+</ul>
+<p>Las texturas “1d” solo pueden tener una vista “1d”. Las texturas “3d” solo pueden tener una vista “3d”. Una textura “2d” puede tener una vista “2d-array”. Si una textura “2d” tiene 6 capas, puede tener una vista “cube” (cubo). Si tiene un múltiplo de 6 capas, puede tener una vista “cube-array” (array de cubos). Puedes elegir cómo ver una textura cuando llamas a <code class="notranslate" translate="no">someTexture.createView</code>. Las vistas de textura se ajustan por defecto a su propia dimensión, pero puedes pasar una dimensión diferente a <code class="notranslate" translate="no">someTexture.createView</code>.</p>
+<p>Cubriremos las texturas “3d” <a href="webgpu-3dluts.html">en el artículo sobre mapeo de tonos / 3dLUTs</a>.</p>
+<p>Una textura “cube” (cubo) es una textura que representa las 6 caras de un cubo. Las texturas de cubo se usan a menudo para dibujar skyboxes y para reflejos y mapas de entorno (environment maps). Cubriremos esto en <a href="webgpu-cube-maps.html">el artículo sobre mapas de cubo (cube maps)</a>.</p>
+<p>Un “2d-array” es un array de texturas 2D. Puedes elegir a qué textura del array acceder en tu shader. Se usan comúnmente para el renderizado de terrenos, entre otras cosas.</p>
+<p>Un “cube-array” es un array de texturas de cubo.</p>
+<p>Cada tipo de textura tiene su tipo correspondiente en WGSL.</p>
+<div class="webgpu_center data-table" style="max-width: 500px;">
+  <style>
+    .texture-type {
+      text-align: left;
+      font-size: large;
+      line-height: 1.5em;
+    }
+    .texture-type td:nth-child(1) {
+      white-space: nowrap;
+    }
+  </style>
+  <table class="texture-type">
+   <thead>
+    <tr>
+     <th>tipo</th>
+     <th>tipos WGSL</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr><td>"1d"</td><td><code class="notranslate" translate="no">texture_1d</code> o <code class="notranslate" translate="no">texture_storage_1d</code></td></tr>
+    <tr><td>"2d"</td><td><code class="notranslate" translate="no">texture_2d</code> o <code class="notranslate" translate="no">texture_storage_2d</code> o <code class="notranslate" translate="no">texture_multisampled_2d</code>, así como un caso especial en ciertas situaciones <code class="notranslate" translate="no">texture_depth_2d</code> y <code class="notranslate" translate="no">texture_depth_multisampled_2d</code></td></tr>
+    <tr><td>"2d-array"</td><td><code class="notranslate" translate="no">texture_2d_array</code> o <code class="notranslate" translate="no">texture_storage_2d_array</code> y, a veces, <code class="notranslate" translate="no">texture_depth_2d_array</code></td></tr>
+    <tr><td>"3d"</td><td><code class="notranslate" translate="no">texture_3d</code> o <code class="notranslate" translate="no">texture_storage_3d</code></td></tr>
+    <tr><td>"cube"</td><td><code class="notranslate" translate="no">texture_cube</code> y, a veces, <code class="notranslate" translate="no">texture_depth_cube</code></td></tr>
+    <tr><td>"cube-array"</td><td><code class="notranslate" translate="no">texture_cube_array</code> y, a veces, <code class="notranslate" translate="no">texture_depth_cube_array</code></td></tr>
+   </tbody>
+  </table>
+</div>
+<p>Cubriremos algo de esto en uso real, pero puede ser un poco confuso que al crear una textura (llamando a <code class="notranslate" translate="no">device.createTexture</code>) solo haya “1d”, “2d” o “3d” como opciones, y el valor por defecto es “2d”, por lo que no hemos tenido que especificar las dimensiones todavía.</p>
+<h2 id="formatos-de-textura">Formatos de textura</h2>
+<p>Por ahora, estos son los conceptos básicos de las texturas. Las texturas son un tema enorme y hay mucho más que cubrir.</p>
+<p>Hemos usado texturas <code class="notranslate" translate="no">rgba8unorm</code> a lo largo de este artículo, pero hay muchísimos formatos de textura diferentes.</p>
+<p>Aquí están los formatos de “color”, aunque por supuesto no tienes que almacenar colores en ellos.</p>
+<div class="webgpu_center data-table"><div data-diagram="color-texture-formats"></div></div>
+<p>Para leer un formato, como “rg16float”, las primeras letras son los canales soportados en la textura, por lo que “rg16float” soporta “rg” o rojo y verde (2 canales). El número, 16, significa que esos canales son de 16 bits cada uno. La palabra al final es el tipo de datos que hay en el canal. “float” son datos de punto flotante.</p>
+<p>“unorm” son datos normalizados sin signo (0 a 1), lo que significa que los datos en la textura van de 0 a N, donde N es el valor entero máximo para ese número de bits. Ese rango de enteros se interpreta luego como un rango de punto flotante de (0 a 1). En otras palabras, para una textura 8unorm, eso son 8 bits (valores de 0 a 255) que se interpretan como valores de (0 a 1).</p>
+<p>“snorm” son datos normalizados con signo (-1 a +1), por lo que el rango de datos va desde el entero más negativo representado por el número de bits hasta el más positivo. Por ejemplo, 8snorm tiene 8 bits. Como entero con signo, el número más bajo sería -128 y el más alto +127. Ese rango se convierte a (-1 a +1).</p>
+<p>“sint” son enteros con signo. “uint” es un entero sin signo. Si hay múltiples combinaciones de letras y números, se está especificando el número de bits para cada canal. Por ejemplo, “rg11b10ufloat” es “rg11”, o sea 11 bits cada uno para el rojo y el verde. “b10” son 10 bits para el azul, y todos son números de punto flotante sin signo.</p>
+<ul>
+<li>
+<p><strong>renderable</strong></p>
+<p><code class="notranslate" translate="no">True</code> significa que puedes renderizar en él (establecer su uso como <code class="notranslate" translate="no">GPUTextureUsage.RENDER_ATTACHMENT</code>).</p>
+</li>
+<li>
+<p><strong>multisample</strong></p>
+<p>Soporta <a href="webgpu-multisampling.html">multisampling</a>.</p>
+</li>
+<li>
+<p><strong>storage</strong></p>
+<p>Se puede escribir en él como una <a href="webgpu-storage-textures.html">textura de almacenamiento (storage texture)</a>.</p>
+</li>
+<li>
+<p><strong>tipo de sampler (sampler type)</strong></p>
+<p>Esto tiene implicaciones sobre qué tipo de textura necesitas declarar en WGSL y cómo vinculas un sampler a un bind group. Arriba usamos <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>, pero por ejemplo, <code class="notranslate" translate="no">sint</code> necesitaría <code class="notranslate" translate="no">texture_2d&lt;i32&gt;</code> y <code class="notranslate" translate="no">uint</code> necesitaría <code class="notranslate" translate="no">texture_2d&lt;u32&gt;</code> en WGSL.</p>
+<p>En la columna del tipo de sampler, <code class="notranslate" translate="no">unfilterable-float</code> significa que tu sampler solo puede usar <code class="notranslate" translate="no">nearest</code> para ese formato, y significa que podrías tener que crear manualmente un layout de bind group, algo que no hemos hecho antes porque hemos estado usando el layout <code class="notranslate" translate="no">'auto'</code>. Esto existe principalmente porque las GPU de escritorio generalmente pueden filtrar texturas de punto flotante de 32 bits pero, al menos a partir de 2023, la mayoría de los dispositivos móviles no pueden. Si tu adaptador soporta la <a href="webgpu-limits-and-features.html">característica</a> <code class="notranslate" translate="no">float32-filterable</code> y la habilitas al solicitar un dispositivo, entonces los formatos <code class="notranslate" translate="no">r32float</code>, <code class="notranslate" translate="no">rg32float</code> y <code class="notranslate" translate="no">rgba32float</code> cambian de <code class="notranslate" translate="no">unfilterable-float</code> a <code class="notranslate" translate="no">float</code> y estos formatos de textura funcionarán sin más cambios.</p>
+</li>
+</ul>
+<p><a id="a-depth-stencil-formats"></a>Y aquí están los formatos de profundidad (depth) y estarcido (stencil):</p>
+<div class="webgpu_center data-table"><div data-diagram="depth-stencil-texture-formats"></div></div>
+<ul>
+<li>
+<p><strong>característica (feature)</strong></p>
+<p>significa que se requiere esta <a href="webgpu-limits-and-features.html"><em>característica opcional</em></a> para usar este formato.</p>
+</li>
+<li>
+<p><strong>copy src</strong></p>
+<p>Si se te permite especificar <code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code>.</p>
+</li>
+<li>
+<p><strong>copy dst</strong></p>
+<p>Si se te permite especificar <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code>.</p>
+</li>
+</ul>
+<p>Usaremos una textura de profundidad en <a href="webgpu-orthographic-projection.html">un artículo de la serie sobre 3D</a>, así como en <a href="webgpu-shadow-maps.html">el artículo sobre mapas de sombras (shadow maps)</a>.</p>
+<p>También hay un montón de formatos de textura comprimidos que guardaremos para otro artículo.</p>
+<p>A continuación, cubriremos la <a href="webgpu-importing-textures.html">importación de texturas externas</a>.</p>
+<!-- keep this at the bottom of the article -->
+<script type="module" src="/3rdparty/pixel-perfect.js"></script>
+<script type="module" src="../webgpu-textures.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Si las coordenadas de textura van hacia arriba (0 = abajo, 1 = arriba) o hacia abajo (0 = arriba, 1 = abajo) es una cuestión de perspectiva. Lo importante es que la coordenada de textura 0,0 hace referencia al primer dato en la textura. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Un téxel (texel) es la abreviatura de “texture element” (elemento de textura), frente a un píxel, que es la abreviatura de “picture element” (elemento de imagen). Para mí, téxel y píxel son básicamente sinónimos, pero algunas personas prefieren usar la palabra <em>téxel</em> cuando hablan de texturas. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Otro uso común para una textura es <code class="notranslate" translate="no">GPUTextureUsage.RENDER_ATTACHMENT</code>, que se utiliza para una textura en la que queremos renderizar. Como ejemplo, la textura del canvas que obtenemos de <code class="notranslate" translate="no">context.getCurrentTexture()</code> tiene su uso configurado como <code class="notranslate" translate="no">GPUTextureUsage.RENDER_ATTACHMENT</code> por defecto. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>También existe un modo de direccionamiento más, <code class="notranslate" translate="no">mirror-repeat</code> (repetición en espejo). Si nuestra textura es “🟥🟩🟦”, entonces <code class="notranslate" translate="no">repeat</code> produce “🟥🟩🟦🟥🟩🟦🟥🟩🟦🟥🟩🟦” y <code class="notranslate" translate="no">mirror-repeat</code> produce “🟥🟩🟦🟦🟩🟥🟥🟩🟦🟦🟩🟥”. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-textures.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-textures.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-textures.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-textures.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-textures.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-textures.html">Русский
@@ -203,84 +1238,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +1336,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Texturas en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

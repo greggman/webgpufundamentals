@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-cube-maps.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Cubemaps">
+
+<meta name="description" content="如何在 WebGPU 中使用立方体贴图">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-cube-maps_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 立方体贴图">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use cubemaps in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-cube-maps_zh-cn.jpg">
+<meta property="og:description" content="如何在 WebGPU 中使用立方体贴图">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-cube-maps.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Cubemaps">
+<meta name="twitter:title" content="WebGPU 立方体贴图">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-cube-maps.html">
-<meta name="twitter:description" content="How to use cubemaps in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="如何在 WebGPU 中使用立方体贴图">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-cube-maps_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-cube-maps.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-cube-maps_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-cube-maps.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-cube-maps.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 立方体贴图",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-cube-maps.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Cubemaps</title>
+<title>WebGPU 立方体贴图</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-cube-maps.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-cube-maps.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-cube-maps.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-cube-maps.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-cube-maps.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-cube-maps.html">Русский
@@ -182,19 +228,426 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Cubemaps</h1>
+    <h1>WebGPU 立方体贴图</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-cube-maps.html">英文原版地址</a></p>
+      <p>本文假设你已经阅读了<a href="webgpu-textures.html">纹理相关的文章</a>以及<a href="webgpu-importing-textures.html">将图像导入纹理相关的文章</a>。本文还使用了<a href="webgpu-lighting-directional.html">方向光相关的文章</a>中介绍的概念。如果你还没有阅读这些文章，可能需要先读一下。</p>
+<p>在<a href="webgpu-textures.html">上一篇文章</a>中，我们介绍了如何使用纹理、如何使用从 0 到 1 的纹理坐标来引用纹理，以及如何通过 mip 可选地过滤纹理。</p>
+<p>另一种纹理类型是<em>立方体贴图（cubemap）</em>。立方体贴图由 6 个面组成，代表立方体的 6 个面。与传统的二维纹理坐标不同，立方体贴图使用的是法线，也就是三维方向。根据法线指向的方向，会选择立方体的 6 个面之一，然后在该面内对像素进行采样以产生颜色。</p>
+<p>让我们来制作一个简单的例子，使用二维 Canvas 来制作 6 个面中每个面所使用的图像。</p>
+<p>以下是一些用颜色和居中消息填充 Canvas 的代码</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function generateFace(size, {faceColor, textColor, text}) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = faceColor;
+  ctx.fillRect(0, 0, size, size);
+  ctx.font = `${size * 0.7}px sans-serif`;
+  ctx.fillStyle = textColor;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  const m = ctx.measureText(text);
+  ctx.fillText(
+    text,
+    (size - m.actualBoundingBoxRight + m.actualBoundingBoxLeft) / 2,
+    (size - m.actualBoundingBoxDescent + m.actualBoundingBoxAscent) / 2
+  );
+  return canvas;
+}
+</pre>
+<p>下面是调用它来生成 6 张图像的代码</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const faceSize = 128;
+const faceCanvases = [
+  { faceColor: '#F00', textColor: '#0FF', text: '+X' },
+  { faceColor: '#FF0', textColor: '#00F', text: '-X' },
+  { faceColor: '#0F0', textColor: '#F0F', text: '+Y' },
+  { faceColor: '#0FF', textColor: '#F00', text: '-Y' },
+  { faceColor: '#00F', textColor: '#FF0', text: '+Z' },
+  { faceColor: '#F0F', textColor: '#0F0', text: '-Z' },
+].map(faceInfo =&gt; generateFace(faceSize, faceInfo));
+
+// show the results
+for (const canvas of faceCanvases) {
+  document.body.appendChild(canvas);
+}
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-cube-faces.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-cube-faces.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>现在让我们使用立方体贴图将这些图像应用到立方体上。我们将从<a href="webgpu-importing-textures.html#a-texture-atlases">导入纹理文章中的纹理图集示例</a>的代码开始。</p>
+<p>首先让我们修改着色器以使用立方体贴图</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+-  @location(1) texcoord: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+-  @location(0) texcoord: vec2f,
++  @location(0) normal: vec3f,
+};
+
+...
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = uni.matrix * vert.position;
+-  vsOut.texcoord = vert.texcoord;
++  vsOut.normal = normalize(vert.position.xyz);
+  return vsOut;
+}
+</pre>
+<p>我们从着色器中移除了纹理坐标，并将阶段间变量改为向片段着色器传递法线。由于我们立方体的位置完美地以原点为中心，我们可以直接用法线。</p>
+<p>回想一下<a href="webgpu-lighting-directional.html">光照相关的文章</a>，法线是一个方向，通常用于指定某个顶点的表面方向。因为我们用法线化的位置作为法线，如果我们对其进行光照，将会在立方体上获得平滑的光照效果。</p>
+<p></p><div class="webgpu_diagram_container">
+  <iframe class="webgpu_diagram " style="width: 700px; height: 400px;" src="/webgpu/lessons/resources/cube-normals.html"></iframe>
+  <div class="webgpu_center">标准立方体法线 vs 本立方体的法线</div>
+</div>
+
+<p></p>
+<p>由于我们不再使用纹理坐标，因此可以移除所有与设置纹理坐标相关的代码。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const vertexData = new Float32Array([
+-     // front face     select the top left image
+-    -1,  1,  1,        0   , 0  ,
+-    -1, -1,  1,        0   , 0.5,
+-     1,  1,  1,        0.25, 0  ,
+-     1, -1,  1,        0.25, 0.5,
+-     // right face     select the top middle image
+-     1,  1, -1,        0.25, 0  ,
+-     1,  1,  1,        0.5 , 0  ,
+-     1, -1, -1,        0.25, 0.5,
+-     1, -1,  1,        0.5 , 0.5,
+-     // back face      select to top right image
+-     1,  1, -1,        0.5 , 0  ,
+-     1, -1, -1,        0.5 , 0.5,
+-    -1,  1, -1,        0.75, 0  ,
+-    -1, -1, -1,        0.75, 0.5,
+-     // left face       select the bottom left image
+-    -1,  1,  1,        0   , 0.5,
+-    -1,  1, -1,        0.25, 0.5,
+-    -1, -1,  1,        0   , 1  ,
+-    -1, -1, -1,        0.25, 1  ,
+-     // bottom face     select the bottom middle image
+-     1, -1,  1,        0.25, 0.5,
+-    -1, -1,  1,        0.5 , 0.5,
+-     1, -1, -1,        0.25, 1  ,
+-    -1, -1, -1,        0.5 , 1  ,
+-     // top face        select the bottom right image
+-    -1,  1,  1,        0.5 , 0.5,
+-     1,  1,  1,        0.75, 0.5,
+-    -1,  1, -1,        0.5 , 1  ,
+-     1,  1, -1,        0.75, 1  ,
++     // front face
++    -1,  1,  1,
++    -1, -1,  1,
++     1,  1,  1,
++     1, -1,  1,
++     // right face
++     1,  1, -1,
++     1,  1,  1,
++     1, -1, -1,
++     1, -1,  1,
++     // back face
++     1,  1, -1,
++     1, -1, -1,
++    -1,  1, -1,
++    -1, -1, -1,
++     // left face
++    -1,  1,  1,
++    -1,  1, -1,
++    -1, -1,  1,
++    -1, -1, -1,
++     // bottom face
++     1, -1,  1,
++    -1, -1,  1,
++     1, -1, -1,
++    -1, -1, -1,
++     // top face
++    -1,  1,  1,
++     1,  1,  1,
++    -1,  1, -1,
++     1,  1, -1,
+  ]);
+
+  ...
+
+  const pipeline = device.createRenderPipeline({
+    label: '2 attributes',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: (3 + 2) * 4, // (3+2) floats 4 bytes each
++          arrayStride: (3) * 4, // (3) floats 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
+-            {shaderLocation: 1, offset: 12, format: 'float32x2'},  // texcoord
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+    primitive: {
+      cullMode: 'back',
+    },
+    depthStencil: {
+      depthWriteEnabled: true,
+      depthCompare: 'less',
+      format: 'depth24plus',
+    },
+  });
+</pre>
+<p>在片段着色器中，我们需要使用 <code class="notranslate" translate="no">texture_cube</code> 而不是 <code class="notranslate" translate="no">texture_2d</code>，并且与 <code class="notranslate" translate="no">texture_cube</code> 一起使用时，<code class="notranslate" translate="no">textureSample</code> 接受一个 <code class="notranslate" translate="no">vec3f</code> 方向，因此我们传递法线。由于法线是一个阶段间变量，会被插值，所以我们需要对其进行归一化。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+@group(0) @binding(1) var ourSampler: sampler;
+-@group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
++@group(0) @binding(2) var ourTexture: texture_cube&lt;f32&gt;;
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+-  return textureSample(ourTexture, ourSampler, vsOut.texcoord);
++  return textureSample(ourTexture, ourSampler, normalize(vsOut.normal));
+}
+</pre>
+<p>要真正创建一个立方体贴图，我们需要创建一个包含 6 层的二维纹理。让我们修改所有辅助函数来处理多个数据源。</p>
+<h2 id="让纹理辅助函数支持多层"><a id="a-texture-helpers"></a> 让纹理辅助函数支持多层</h2>
+<p>首先，让我们把 <code class="notranslate" translate="no">createTextureFromSource</code> 改成 <code class="notranslate" translate="no">createTextureFromSources</code>，它接受一个数据源数组</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function createTextureFromSource(device, source, options = {}) {
++  function createTextureFromSources(device, sources, options = {}) {
++    // Assume are sources all the same size so just use the first one for width and height
++    const source = sources[0];
+    const texture = device.createTexture({
+      format: 'rgba8unorm',
+      mipLevelCount: options.mips ? numMipLevels(source.width, source.height) : 1,
+-      size: [source.width, source.height],
++      size: [source.width, source.height, sources.length],
+      usage: GPUTextureUsage.TEXTURE_BINDING |
+             GPUTextureUsage.COPY_DST |
+             GPUTextureUsage.RENDER_ATTACHMENT,
+    });
+-    copySourceToTexture(device, texture, source, options);
++    copySourcesToTexture(device, texture, sources, options);
+    return texture;
+  }
+</pre>
+<p>上面的代码创建了一个包含多层的纹理，每个数据源对应一层。它还假设所有数据源的大小相同。这似乎是一个合理的假设，因为同一纹理的不同层具有不同大小的情况非常罕见。</p>
+<p>现在我们需要更新 <code class="notranslate" translate="no">copySourceToTexture</code> 来处理多个数据源。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function copySourceToTexture(device, texture, source, {flipY} = {}) {
++  function copySourcesToTexture(device, texture, sources, {flipY} = {}) {
++    sources.forEach((source, layer) =&gt; {
+*      device.queue.copyExternalImageToTexture(
+*        { source, flipY, },
+-        { texture },
++        { texture, origin: [0, 0, layer] },
+*        { width: source.width, height: source.height },
+*      );
++  });
+
+    if (texture.mipLevelCount &gt; 1) {
+      generateMips(device, texture);
+    }
+  }
+</pre>
+<p>上面，唯一的主要区别是我们添加了一个循环来遍历所有数据源，并设置了一个 <code class="notranslate" translate="no">origin</code> 来指定要复制到纹理的哪个位置，这样每个数据源就被复制到对应的层中。</p>
+<p>现在我们需要更新 <code class="notranslate" translate="no">generateMips</code> 来处理多个数据源。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
+    let sampler;
+    let module;
+    const pipelineByFormat = {};
+
+    return function generateMips(device, texture) {
+      if (!module) {
+        module = device.createShaderModule({
+          label: 'textured quad shaders for mip level generation',
+          code: /* wgsl */ `
+            struct VSOutput {
+              @builtin(position) position: vec4f,
+              @location(0) texcoord: vec2f,
+            };
+
+            @vertex fn vs(
+              @builtin(vertex_index) vertexIndex : u32
+            ) -&gt; VSOutput {
+              let pos = array(
+                // 1st triangle
+                vec2f( 0.0,  0.0),  // center
+                vec2f( 1.0,  0.0),  // right, center
+                vec2f( 0.0,  1.0),  // center, top
+
+                // 2nd triangle
+                vec2f( 0.0,  1.0),  // center, top
+                vec2f( 1.0,  0.0),  // right, center
+                vec2f( 1.0,  1.0),  // right, top
+              );
+
+              var vsOutput: VSOutput;
+              let xy = pos[vertexIndex];
+              vsOutput.position = vec4f(xy * 2.0 - 1.0, 0.0, 1.0);
+              vsOutput.texcoord = vec2f(xy.x, 1.0 - xy.y);
+              return vsOutput;
+            }
+
+            @group(0) @binding(0) var ourSampler: sampler;
+            @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+            @fragment fn fs(fsInput: VSOutput) -&gt; @location(0) vec4f {
+              return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+            }
+          `,
+        });
+
+        sampler = device.createSampler({
+          minFilter: 'linear',
+          magFilter: 'linear',
+        });
+      }
+
+      if (!pipelineByFormat[texture.format]) {
+        pipelineByFormat[texture.format] = device.createRenderPipeline({
+          label: 'mip level generator pipeline',
+          layout: 'auto',
+          vertex: {
+            module,
+          },
+          fragment: {
+            module,
+            targets: [{ format: texture.format }],
+          },
+        });
+      }
+      const pipeline = pipelineByFormat[texture.format];
+
+      const encoder = device.createCommandEncoder({
+        label: 'mip gen encoder',
+      });
+
+      for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
++        for (let layer = 0; layer &lt; texture.depthOrArrayLayers; ++layer) {
+*          const bindGroup = device.createBindGroup({
+*            layout: pipeline.getBindGroupLayout(0),
+*            entries: [
+*              { binding: 0, resource: sampler },
+-              { binding: 1, resource: texture.createView({baseMipLevel-1, mipLevelCount: 1}) },
++              {
++                binding: 1,
++                resource: texture.createView({
++                  dimension: '2d',
++                  baseMipLevel: baseMipLevel - 1,
++                  mipLevelCount: 1,
++                  baseArrayLayer: layer,
++                  arrayLayerCount: 1,
++                }),
+*            ],
+*          });
+
+*          const renderPassDescriptor = {
+*            label: 'our basic canvas renderPass',
+*            colorAttachments: [
+*              {
+-                view: texture.createView({baseMipLevel, mipLevelCount: 1}),
++                view: texture.createView({
++                  dimension: '2d',
++                  baseMipLevel: baseMipLevel,
++                  mipLevelCount: 1,
++                  baseArrayLayer: layer,
++                  arrayLayerCount: 1,
++                }),
+*                loadOp: 'clear',
+*                storeOp: 'store',
+*              },
+*            ],
+*          };
+
+*          const pass = encoder.beginRenderPass(renderPassDescriptor);
+*          pass.setPipeline(pipeline);
+*          pass.setBindGroup(0, bindGroup);
+*          pass.draw(6);  // call our vertex shader 6 times
+*          pass.end();
++        }
++      }
+
+      const commandBuffer = encoder.finish();
+      device.queue.submit([commandBuffer]);
+    };
+  })();
+</pre>
+<p>我们添加了一个循环来处理纹理的每一层。我们修改了视图，使它们只选择一个层。我们还必须显式选择 <code class="notranslate" translate="no">dimension: '2d'</code>，因为默认情况下，具有多层以上的二维纹理的视图会得到 <code class="notranslate" translate="no">dimension: '2d-array'</code>，而对于生成 mipmap 来说，这不是我们想要的。</p>
+<blockquote>
+<p>注意：<a href="webgpu-compatibility-mode.html">兼容性模式的文章</a>提供了一个可在兼容性模式下工作的 <code class="notranslate" translate="no">generateMips</code> 版本。</p>
+</blockquote>
+<p>虽然我们这里不会用到它们，但原来的 <code class="notranslate" translate="no">createTextureFromSource</code> 和 <code class="notranslate" translate="no">copySourceToTexture</code> 函数可以很容易地被替换为</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function copySourceToTexture(device, texture, source, options = {}) {
+    copySourcesToTexture(device, texture, [source], options);
+  }
+
+  function createTextureFromSource(device, source, options = {}) {
+    return createTextureFromSources(device, [source], options);
+  }
+</pre>
+<p>现在我们准备好了这些函数，就可以使用文章开头创建的 6 个面了</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = await createTextureFromSources(
+      device, faceCanvases, {mips: true, flipY: false});
+</pre>
+<p>剩下的就是修改绑定组中纹理的视图</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    label: 'bind group for object',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+      { binding: 1, resource: sampler },
+-      { binding: 2, resource: texture },
++      { binding: 2, resource: texture.createView({dimension: 'cube'}) },
+    ],
+  });
+</pre>
+<p>然后就可以了</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-cube-map.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-cube-map.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>注意这些面作为纹理层的顺序</p>
+<ul>
+<li>layer 0 =&gt; 正 x</li>
+<li>layer 1 =&gt; 负 x</li>
+<li>layer 2 =&gt; 正 y</li>
+<li>layer 3 =&gt; 负 y</li>
+<li>layer 4 =&gt; 正 z</li>
+<li>layer 5 =&gt; 负 z</li>
+</ul>
+<p>另一种理解方式是，如果你调用 <code class="notranslate" translate="no">textureSample</code> 并传递相应的方向，它将返回该纹理层中心像素的颜色。</p>
+<ul>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 1, 0, 0))</code> =&gt; layer 0 的中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f(-1, 0, 0))</code> =&gt; layer 1 的中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0, 1, 0))</code> =&gt; layer 2 的中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0,-1, 0))</code> =&gt; layer 3 的中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0, 0, 1))</code> =&gt; layer 4 的中心</li>
+<li><code class="notranslate" translate="no">textureSample(tex, sampler, vec3f( 0, 0,-1))</code> =&gt; layer 5 的中心</li>
+</ul>
+<p>使用立方体贴图来给立方体贴纹理<strong>不是</strong>立方体贴图的典型用法。给立方体贴纹理的<em>正确</em>或标准方法是像我们<a href="webgpu-importing-textures.html#a-texture-atlases">之前提到的</a>那样使用纹理图集。本文的目的只是介绍立方体贴图的概念，并展示如何传递方向（法线），它就会返回该方向上立方体的颜色。</p>
+<p>现在我们学习了什么是立方体贴图以及如何设置它，立方体贴图有什么用？立方体贴图最常见的用途可能是作为<a href="webgpu-environment-maps.html"><em>环境贴图</em></a>。</p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-cube-maps.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-cube-maps.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-cube-maps.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-cube-maps.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-cube-maps.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-cube-maps.html">Русский
@@ -204,7 +657,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
@@ -214,17 +668,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">加载图像</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">高效使用视频</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">立方体贴图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
@@ -233,7 +687,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </ul>
   <li>3D数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">Translation</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">平移(Translation)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-rotation.html">Rotation</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scale.html">Scale</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-math.html">Matrix Math</a></li>
@@ -263,6 +717,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
@@ -292,13 +755,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 立方体贴图`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -103,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-compute-shaders.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders.html" selected="">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders.html">Русский
@@ -230,10 +230,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU 컴퓨트 셰이더 기초</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>이 문서는 <a href="webgpu-fundamentals.html">WebGPU 기초</a> 문서에서부터 이어집니다.
-저희는 컴퓨트 셰이더의 기초를 배우고, 실제 문제를 해결하는 예제를 살펴볼 것입니다.</p>
+컴퓨트 셰이더의 기초를 배우고, 실제 문제를 해결하는 예제를 살펴보겠습니다.</p>
 <p>이전 문서에서 숫자를 두배로 늘려주는 아주 간단한 컴퓨트 셰이더를 만들어봤습니다.</p>
 <p>아래가 바로 그 내용이었죠.</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
@@ -259,12 +262,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <img src="../resources/gpu-workgroup.svg" style="width: 500px;">
   <div>작업 그룹 내 각 스레드의 <code class="notranslate" translate="no">local_invocation_id</code></div>
 </div>
-<p><a id="a-workgroup-id"></a>만약 저희가 <code class="notranslate" translate="no">pass.dispatchWorkgroups(4, 3, 2)</code>를 호출한다면, 24개의 스레드를 가진 한 작업 그룹을 총 4 * 3 * 2번 (24번), 총 576개의 스레드로 실행합니다.</p>
+<p><a id="a-workgroup-id"></a>만약 <code class="notranslate" translate="no">pass.dispatchWorkgroups(4, 3, 2)</code>를 호출한다면, 24개의 스레드를 가진 한 작업 그룹을 총 4 * 3 * 2번 (24번), 총 576개의 스레드로 실행합니다.</p>
 <div class="webgpu_center">
   <img src="../resources/gpu-workgroup-dispatch.svg" style="width: 500px;">
   <div>디스패치된 작업 그룹의 <code class="notranslate" translate="no">workgroup_id</code></div>
 </div>
-<p>저희가 만든 컴퓨트 셰이더의 각 "실행(invocation)"에서는 다음과 같은 빌트인 변수들을 사용할 수 있습니다.</p>
+<p>컴퓨트 셰이더의 각 "실행(invocation)"에서는 다음과 같은 빌트인 변수들을 사용할 수 있습니다.</p>
 <ul>
 <li>
 <p><code class="notranslate" translate="no">local_invocation_id</code>: 작업 그룹 내 스레드의 고유한 ID입니다.</p>
@@ -288,7 +291,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <p><code class="notranslate" translate="no">local_invocation_index</code>: 스레드의 선형화된(linearized) ID입니다.</p>
 <p>이는 다음과 같이 생각할 수 있습니다.</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">rowSize = workgroup_size.x
-sliceSize = rowWidth * workgroup_size.y
+sliceSize = rowSize * workgroup_size.y
 local_invocation_index =
       local_invocation_id.x +
       local_invocation_id.y * rowSize +
@@ -342,7 +345,7 @@ const code = `
   globalResult[global_invocation_index] = global_invocation_id;
 `;
 </pre>
-<p>여기서는 JavaScript의 템플릿 리터럴을 사용하여 <code class="notranslate" translate="no">workgroupSize</code> 변수를 통해 작업 그룹의 크기를 설정했습니다.
+<p>JavaScript 변수 <code class="notranslate" translate="no">workgroupSize</code> 와 JavaScript 템플릿 리터럴을 이용해서 워크그룹의 크기를 지정했습니다.
 이는 결국 셰이더에 하드코딩됩니다.</p>
 <p>이제 셰이더가 생겼으니, 그 결과를 저장할 3개의 버퍼를 만들 수 있습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numWorkgroups = arrayProd(dispatchCount);
@@ -365,9 +368,9 @@ const code = `
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: workgroupBuffer }},
-      { binding: 1, resource: { buffer: localBuffer }},
-      { binding: 2, resource: { buffer: globalBuffer }},
+      { binding: 0, resource: workgroupBuffer },
+      { binding: 1, resource: localBuffer },
+      { binding: 2, resource: globalBuffer },
     ],
   });
 </pre>
@@ -440,7 +443,7 @@ function log(...args) {
 
 <p></p>
 <p>이 빌트인 변수들은 일반적으로 <code class="notranslate" translate="no">pass.dispatchWorkgroups</code>의 호출마다 컴퓨트 셰이더의 각 스레드에 대해 변경되는 유일한 입력값입니다.
-따라서 주어지는 <code class="notranslate" translate="no">...id</code> 빌트인들을 입력값으로 사용하여 원하는 작업을 수행하는 컴퓨트 셰이더 함수를 설계하는 방법을 파악해야 합니다.</p>
+따라서 주어지는 <code class="notranslate" translate="no">..._id</code> 빌트인들을 입력값으로 사용하여 원하는 작업을 수행하는 컴퓨트 셰이더 함수를 설계하는 방법을 파악해야 합니다.</p>
 <h2 id="작업-그룹의-크기">작업 그룹의 크기</h2>
 <p>작업 그룹의 크기는 어떻게 정해야 할까요? 이는 종종 나오는 질문입니다.
 그냥 항상 <code class="notranslate" translate="no">@workgroup_size(1, 1, 1)</code>을 사용하고, <code class="notranslate" translate="no">pass.dispatchWorkgroups</code>의 매개변수들만으로 실행할 반복 횟수를 결정하면 더 쉽지 않을까요?</p>
@@ -458,7 +461,7 @@ function log(...args) {
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">   @workgroup_size(256, 1, 1)   // ok
    @workgroup_size(128, 2, 1)   // ok
    @workgroup_size(16, 16, 1)   // ok
-   @workgroup_size(16, 16, 2)   // bad 16 * 16 * 2 = 512
+   @workgroup_size(16, 16, 2)   // 안됨. 16 * 16 * 2 = 512
 </pre>
 <p>안타깝게도, "완벽한 크기"는 GPU에 따라 다르며, WebGPU는 이를 제공할 수 없습니다.
 다른 크기를 선택해야 하는 특별한 이유가 없는 한, <strong>WebGPU는 일반적으로 작업 그룹 크기를 64로 선택할 것을 권장</strong>합니다.
@@ -508,13 +511,13 @@ for (let i = 0; i &lt; 32; ++i) {
 </blockquote>
 <p>추후 예제를 통해 이 문제를 처리하는 몇 가지 방법을 살펴보겠습니다.
 지금까지의 두 예제들은 모두 각 컴퓨트 셰이더의 반복이 다른 반복에 영향을 받지 않는 작업을 수행하기 때문에 경쟁 상태가 발생하지 않습니다.</p>
-<p>추가 예제: TBD</p>
+<p>다음 글: <a href="webgpu-compute-shaders-histogram.html">컴퓨트 셰이더 - 이미지 히스토그램</a></p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-compute-shaders.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders.html" selected="">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders.html">Русский
@@ -532,22 +535,22 @@ for (let i = 0; i &lt; 32; ++i) {
 <li><a href="/webgpu/lessons/ko/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-vertex-buffers.html">정점 버퍼</a></li>
-  <li>Textures</li>
+  <li>텍스처</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-textures.html">텍스처</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-importing-textures.html">이미지 로딩</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-textures-external-video.html">비디오 사용하기</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">스토리지 텍스처</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">멀티 샘플링 / MSAA</a></li>
         </ul>
 <li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">바인드 그룹 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-timing.html">타이밍 성능</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
@@ -564,13 +567,13 @@ for (let i = 0; i &lt; 32; ++i) {
 <li><a href="/webgpu/lessons/ko/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-scene-graphs.html">Scene Graphs</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>조명</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-lighting-directional.html">Directional Lighting</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-lighting-point.html">Point Lighting</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-lighting-spot.html">Spot Lighting</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>기법</li>
         <ul>
             <li>2D</li>
         <ul>
@@ -581,16 +584,25 @@ for (let i = 0; i &lt; 32; ++i) {
           <li><a href="/webgpu/lessons/ko/webgpu-environment-maps.html">Environment maps</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>후처리</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>컴퓨트 셰이더</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-compute-shaders.html">컴퓨트 셰이더 기초</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">이미지 히스토그램</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">이미지 히스토그램 Part 2</a></li>
         </ul>
   <li>기타</li>
         <ul>
@@ -598,9 +610,9 @@ for (let i = 0; i &lt; 32; ++i) {
 <li><a href="/webgpu/lessons/ko/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-optimization.html">속도와 최적화</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-debugging.html">디버깅과 에러</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-resources.html">리소스 / 참고자료</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -660,8 +672,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

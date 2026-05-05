@@ -60,7 +60,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'our hardcoded textured quad shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -248,7 +248,7 @@ async function main() {
         entries: [
           { binding: 0, resource: sampler },
           { binding: 1, resource: texture },
-          { binding: 2, resource: { buffer: uniformBuffer }},
+          { binding: 2, resource: uniformBuffer },
         ],
       });
 
@@ -261,7 +261,7 @@ async function main() {
 
       mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
       mat4.rotateX(matrix, 0.25 * Math.PI * Math.sign(y), matrix);
-      mat4.scale(matrix, [1, -1, 1], matrix);
+      mat4.scale(matrix, [-1, -1, 1], matrix);
       mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
 
       // copy the values from JavaScript to the GPU

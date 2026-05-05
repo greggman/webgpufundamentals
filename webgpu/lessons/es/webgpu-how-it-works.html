@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-how-it-works.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU How It Works">
+
+<meta name="description" content="Cómo funciona WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_es.jpg">
+
+<meta property="og:title" content="Cómo funciona WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How WebGPU works">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_es.jpg">
+<meta property="og:description" content="Cómo funciona WebGPU">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-how-it-works.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU How It Works">
+<meta name="twitter:title" content="Cómo funciona WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-how-it-works.html">
-<meta name="twitter:description" content="How WebGPU works">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Cómo funciona WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-how-it-works.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-how-it-works_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-how-it-works.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-how-it-works.html",
+      "inLanguage":"es",
+      "name":"Cómo funciona WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-how-it-works.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU How It Works</title>
+<title>Cómo funciona WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-how-it-works.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-how-it-works.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-how-it-works.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-how-it-works.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-how-it-works.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-how-it-works.html">Русский
@@ -182,18 +227,437 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU How It Works</h1>
+    <h1>Cómo funciona WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-how-it-works.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Intentemos explicar WebGPU implementando algo similar a lo que hace la GPU
+con los vertex shaders (shaders de vértices) y fragment shaders (shaders de fragmentos), pero en JavaScript. Esperemos que esto te dé
+una sensación intuitiva de lo que realmente está sucediendo.</p>
+<p>Si estás familiarizado con
+<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array.map</a>,
+si entrecierras mucho los ojos puedes hacerte una idea de cómo funcionan estos dos tipos diferentes de
+funciones de shader. Con <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a>, proporcionas una función para transformar un valor.</p>
+<p>Ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const shader = v =&gt; v * 2;  // duplica la entrada
+const input = [1, 2, 3, 4];
+const output = input.map(shader);   // resultado [2, 4, 6, 8]
+</pre>
+<p>Arriba, nuestro “shader” para <code class="notranslate" translate="no">array.map</code> es solo una función que, dado un número, devuelve
+su doble. Esa es probablemente la analogía más cercana en JavaScript a lo que significa “shader”.
+Es una función que devuelve o genera valores. No la llamas
+directamente. En su lugar, la especificas y luego el sistema la llama por ti.</p>
+<p>Para un vertex shader de GPU, no mapeas sobre un array de entrada. En su lugar, simplemente
+especificas un conteo de cuántas veces quieres que se llame a la función.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function draw(count, vertexShaderFn) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+    internalBuffer[i] = vertexShaderFn(i);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+</pre>
+<p>Una consecuencia es que, a diferencia de <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a>, ya no necesitamos un array de origen para hacer algo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const shader = v =&gt; v * 2;
+const count = 4;
+draw(count, shader);
+// imprime [0, 2, 4, 6]
+</pre>
+<p>Lo que hace que el trabajo de la GPU sea complicado es que estas funciones se ejecutan en un sistema
+separado en tu computadora: la GPU. Esto significa que todos los datos que creas y referencias
+deben ser enviados de alguna manera a la GPU y luego debes comunicarle al shader
+dónde pusiste esos datos y cómo acceder a ellos.</p>
+<p>Los vertex shaders y fragment shaders pueden recibir datos de 6 maneras: Uniforms, Attributes (atributos), Buffers, Texturas, Variables entre etapas (inter-stage variables) y Constantes.</p>
+<ol>
+<li>
+<p>Uniforms</p>
+<p>Los uniforms son valores que son los mismos para cada iteración del shader. Piensa
+en ellos como variables globales constantes. Puedes configurarlos antes de que se ejecute un shader
+pero, mientras se usa el shader, permanecen constantes o, para decirlo de
+otra manera, permanecen <em>uniformes</em>.</p>
+<p>Cambiemos <code class="notranslate" translate="no">draw</code> para pasar uniforms a un shader. Para hacer esto
+crearemos un array llamado <code class="notranslate" translate="no">bindings</code> y lo usaremos para pasar los uniforms.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function draw(count, vertexShaderFn, bindings) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+    internalBuffer[i] = vertexShaderFn(i, bindings);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+</pre>
+<p>Y luego cambiemos nuestro shader para usar los uniforms:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vertexShader = (v, bindings) =&gt; {
+  const uniforms = bindings[0];
+  return v * uniforms.multiplier;
+};
+const count = 4;
+const uniforms1 = {multiplier: 3};
+const uniforms2 = {multiplier: 5};
+const bindings1 = [uniforms1];
+const bindings2 = [uniforms2];
+draw(count, vertexShader, bindings1);
+// imprime [0, 3, 6, 9]
+draw(count, vertexShader, bindings2);
+// imprime [0, 5, 10, 15]
+</pre>
+<p>Así que, el concepto de uniforms esperemos que parezca bastante sencillo. La
+indirección a través de <code class="notranslate" translate="no">bindings</code> está ahí porque es “similar” a cómo se
+hacen las cosas en WebGPU. Como se mencionó anteriormente, accedemos a las cosas, en este caso
+los uniforms, por ubicación/índice. Aquí se encuentran en <code class="notranslate" translate="no">bindings[0]</code>.</p>
+</li>
+<li>
+<p>Attributes (solo vertex shaders)</p>
+<p>Los atributos (attributes) proporcionan datos por cada iteración del shader. En el ejemplo de <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map"><code class="notranslate" translate="no">Array.map</code></a> anterior,
+el valor <code class="notranslate" translate="no">v</code> se extraía de <code class="notranslate" translate="no">input</code> y se proporcionaba automáticamente
+a la función. Esto es muy similar a un atributo en un shader.</p>
+<p>La diferencia es que no estamos mapeando sobre la entrada, sino que,
+como solo estamos contando, debemos indicarle a WebGPU
+cuáles son estas entradas y cómo extraer datos de ellas.</p>
+<p>Imagina que actualizamos <code class="notranslate" translate="no">draw</code> de esta manera:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function draw(count, vertexShaderFn, bindings, attribsSpec) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+    const attribs = getAttribs(attribsSpec, i);
+    internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+  }
+  console.log(JSON.stringify(internalBuffer));
+}
+
+function getAttribs(attribs, ndx) {
+  return attribs.map(({source, offset, stride}) =&gt; source[ndx * stride + offset]);
+}
+</pre>
+<p>Entonces podríamos llamarlo así:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [0, 1, 2, 3, 4, 5, 6, 7];
+const buffer2 = [11, 22, 33, 44];
+const attribsSpec = [
+  { source: buffer1, offset: 0, stride: 2, },
+  { source: buffer1, offset: 1, stride: 2, },
+  { source: buffer2, offset: 0, stride: 1, },
+];
+const vertexShader = (v, bindings, attribs) =&gt; (attribs[0] + attribs[1]) * attribs[2];
+const bindings = [];
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// imprime [11, 110, 297, 572]
+</pre>
+<p>Como puedes ver arriba, <code class="notranslate" translate="no">getAttribs</code> usa <code class="notranslate" translate="no">offset</code> (desplazamiento) y <code class="notranslate" translate="no">stride</code> (salto/paso) para
+calcular los índices en el buffer <code class="notranslate" translate="no">source</code> correspondiente y extrae los valores.
+Los valores extraídos se envían luego al shader. En cada iteración,
+<code class="notranslate" translate="no">attribs</code> será diferente.</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no"> iteración |  attribs
+ ----------+-------------
+     0     | [0, 1, 11]
+     1     | [2, 3, 22]
+     2     | [4, 5, 33]
+     3     | [6, 7, 44]
+</pre>
+</li>
+<li>
+<p>Buffers de datos (Raw Buffers)</p>
+<p>Los buffers son efectivamente arrays; de nuevo, para nuestra analogía hagamos una versión
+de <code class="notranslate" translate="no">draw</code> que use buffers. Pasaremos estos buffers a través de <code class="notranslate" translate="no">bindings</code>
+como hicimos con los uniforms.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [0, 1, 2, 3, 4, 5, 6, 7];
+const buffer2 = [11, 22, 33, 44];
+const attribsSpec = [];
+const bindings = [
+  buffer1,
+  buffer2,
+];
+const vertexShader = (ndx, bindings, attribs) =&gt; 
+    (bindings[0][ndx * 2] + bindings[0][ndx * 2 + 1]) * bindings[1][ndx];
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// imprime [11, 110, 297, 572]
+</pre>
+<p>Aquí obtuvimos el mismo resultado que con los atributos, excepto que esta vez,
+en lugar de que el sistema extrajera los valores de los buffers por nosotros,
+calculamos nuestros propios índices dentro de los buffers vinculados. Esto es más flexible que
+los atributos, ya que básicamente tenemos acceso aleatorio a los arrays. Pero es
+potencialmente más lento por esa misma razón. Dada la forma en que funcionan los atributos, la
+GPU sabe que los valores se accederán en orden, lo que puede aprovechar para optimizar.
+Por ejemplo, el acceso en orden suele ser amigable con la memoria caché. Cuando calculamos nuestros
+propios índices, la GPU no tiene idea de qué parte de un buffer vamos a acceder
+hasta que realmente intentamos hacerlo.</p>
+</li>
+<li>
+<p>Texturas</p>
+<p>Las texturas son arrays de datos de 1D, 2D o 3D. Por supuesto, podríamos implementar
+nuestros propios arrays 2D o 3D usando buffers. Lo especial de las texturas
+es que pueden ser muestreadas (sampled). Muestrear significa que podemos pedirle a la GPU que calcule
+un valor entre los valores que suministramos. Cubriremos lo que esto significa en
+<a href="webgpu-textures.html">el artículo sobre texturas</a>. Por ahora, hagamos
+una analogía en JavaScript de nuevo.</p>
+<p>Primero crearemos una función <code class="notranslate" translate="no">textureSample</code> que <em>muestrea</em> (samples) un array
+entre valores.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function textureSample(texture, ndx) {
+  const startNdx = ndx | 0;  // redondea hacia abajo a un entero
+  const fraction = ndx % 1;  // obtiene la parte fraccionaria entre índices
+  const start = texture[startNdx];
+  const end = texture[startNdx + 1];
+  return start + (end - start) * fraction;  // calcula el valor entre el inicio y el final
+}
+</pre>
+<p>Una función similar a esa ya existe en la GPU.</p>
+<p>Ahora usemos eso en un shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const texture = [10, 20, 30, 40, 50, 60, 70, 80];
+const attribsSpec = [];
+const bindings = [
+  texture,
+];
+const vertexShader = (ndx, bindings, attribs) =&gt;
+    textureSample(bindings[0], ndx * 1.75);
+const count = 4;
+draw(count, vertexShader, bindings, attribsSpec);
+// imprime [10, 27.5, 45, 62.5]
+</pre>
+<p>Cuando <code class="notranslate" translate="no">ndx</code> es <code class="notranslate" translate="no">3</code>, pasaremos <code class="notranslate" translate="no">3 * 1.75</code> o <code class="notranslate" translate="no">5.25</code> a <code class="notranslate" translate="no">textureSample</code>.
+Eso calculará un <code class="notranslate" translate="no">startNdx</code> de <code class="notranslate" translate="no">5</code>. Así que extraeremos los índices <code class="notranslate" translate="no">5</code> y <code class="notranslate" translate="no">6</code>,
+que son <code class="notranslate" translate="no">60</code> y <code class="notranslate" translate="no">70</code>. <code class="notranslate" translate="no">fraction</code> se convierte en <code class="notranslate" translate="no">0.25</code>, por lo que obtendremos
+<code class="notranslate" translate="no">60 + (70 - 60) * 0.25</code>, que es <code class="notranslate" translate="no">62.5</code>.</p>
+<p>Mirando el código anterior, podríamos escribir <code class="notranslate" translate="no">textureSample</code> nosotros mismos en nuestra función
+de shader. Podríamos extraer manualmente los 2 valores e interpolar entre ellos.
+La razón por la que la GPU tiene esta funcionalidad especial es que puede hacerlo mucho más rápido
+y, dependiendo de la configuración, puede leer hasta dieciséis valores de 4 flotantes
+para producir un solo valor de 4 flotantes para nosotros. Eso sería mucho trabajo para hacerlo manualmente.</p>
+</li>
+<li>
+<p>Variables entre etapas (solo fragment shaders)</p>
+<p>Las variables entre etapas (inter-stage variables) son salidas de un vertex shader hacia un fragment shader. Como se mencionó
+anteriormente, un vertex shader genera posiciones que se utilizan para dibujar/rasterizar puntos,
+líneas y triángulos.</p>
+<p>Imaginemos que estamos dibujando una línea. Digamos que nuestro vertex shader se ejecutó
+dos veces: la primera vez generó el equivalente a <code class="notranslate" translate="no">5,0</code> y la segunda vez
+el equivalente a <code class="notranslate" translate="no">25,4</code>. Dados esos 2 puntos, la GPU dibujará una línea desde
+<code class="notranslate" translate="no">5,0</code> hasta <code class="notranslate" translate="no">25,4</code> (excluyente). Para hacer esto, llamará a nuestro fragment shader 20
+veces, una por cada uno de los píxeles de esa línea. Cada vez que llama a nuestro
+fragment shader, depende de nosotros decidir qué color devolver.</p>
+<p>Supongamos que tenemos un par de funciones que nos ayudan a dibujar una línea entre
+2 puntos. La primera función calcula cuántos píxeles necesitamos dibujar y algunos
+valores para ayudar a dibujarlos. La segunda toma esa información más un número de píxel
+y nos da una posición de píxel. Ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const line = calcLine([10, 10], [13, 13]);
+for (let i = 0; i &lt; line.numPixels; ++i) {
+  const p = calcLinePoint(line, i);
+  console.log(p);
+}
+// imprime
+// 10,10
+// 11,11
+// 12,12
+</pre>
+<p>Nota: Cómo funcionan <code class="notranslate" translate="no">calcLine</code> y <code class="notranslate" translate="no">calcLinePoint</code> no es importante; lo que
+importa es que funcionan y permiten que el bucle anterior proporcione
+las posiciones de los píxeles para una línea. <strong>Aunque si tienes curiosidad, consulta el ejemplo de
+código en vivo cerca de la parte inferior del artículo.</strong></p>
+<p>Entonces, cambiemos nuestro vertex shader para que devuelva 2 valores por iteración. Podríamos hacer eso de muchas maneras. Aquí hay una:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
+];
+const bindings = [];
+const dest = new Array(2);
+const vertexShader = (ndx, bindings, attribs) =&gt; [attribs[0], attribs[1]];
+const count = 2;
+draw(count, vertexShader, bindings, attribsSpec);
+// imprime [[5, 0], [25, 4]]
+</pre>
+<p>Ahora escribamos algo de código que recorra los puntos de 2 en 2 y
+llame a <code class="notranslate" translate="no">rasterizeLines</code> para rasterizar una línea.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function rasterizeLines(dest, destWidth, inputs, fragShaderFn, bindings) {
+  for (let ndx = 0; ndx &lt; inputs.length - 1; ndx += 2) {
+    const p0 = inputs[ndx    ];
+    const p1 = inputs[ndx + 1];
+    const line = calcLine(p0, p1);
+    for (let i = 0; i &lt; line.numPixels; ++i) {
+      const p = calcLinePoint(line, i);
+      const offset = p[1] * destWidth + p[0];  // y * ancho + x
+      dest[offset] = fragShaderFn(bindings);
+    }
+  }
+}
+</pre>
+<p>Podemos actualizar <code class="notranslate" translate="no">draw</code> para usar ese código así:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function draw(dest, destWidth,
+              count, vertexShaderFn, fragmentShaderFn,
+              bindings, attribsSpec,
+) {
+  const internalBuffer = [];
+  for (let i = 0; i &lt; count; ++i) {
+    const attribs = getAttribs(attribsSpec, i);
+    internalBuffer[i] = vertexShaderFn(i, bindings, attribs);
+  }
+  rasterizeLines(dest, destWidth, internalBuffer,
+                 fragmentShaderFn, bindings);
+}
+</pre>
+<p>¡Ahora realmente estamos usando <code class="notranslate" translate="no">internalBuffer</code> 😃!</p>
+<p>Actualicemos el código que llama a <code class="notranslate" translate="no">draw</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
+];
+const bindings = [];
+const vertexShader = (ndx, bindings, attribs) =&gt; [attribs[0], attribs[1]];
+const count = 2;
+
+const ancho = 30;
+const alto = 5;
+const pixels = new Array(ancho * alto).fill(0);
+const fragShader = (bindings) =&gt; 6;
+
+draw(
+   pixels, ancho,
+   count, vertexShader, fragShader,
+   bindings, attribsSpec);
+</pre>
+<p>Si imprimimos <code class="notranslate" translate="no">pixels</code> como un rectángulo donde <code class="notranslate" translate="no">0</code> se convierte en <code class="notranslate" translate="no">.</code> obtendríamos esto:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">.....666......................
+........66666.................
+.............66666............
+..................66666.......
+.......................66.....
+</pre>
+<p>Desafortunadamente, nuestro fragment shader no recibe ninguna entrada que cambie en cada iteración, por lo que
+no hay forma de devolver algo diferente para cada píxel. Aquí es donde
+entran en juego las variables entre etapas (inter-stage variables). Cambiemos nuestro primer shader para devolver un valor extra.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer1 = [5, 0, 25, 4];
+const buffer2 = [9, 3];
+const attribsSpec = [
+  {source: buffer1, offset: 0, stride: 2},
+  {source: buffer1, offset: 1, stride: 2},
+  {source: buffer2, offset: 0, stride: 1},
+];
+const bindings = [];
+const dest = new Array(2);
+const vertexShader = (ndx, bindings, attribs) =&gt; 
+    [[attribs[0], attribs[1]], [attribs[2]]];
+</pre>
+<p>Si no cambiáramos nada más, después del bucle dentro de <code class="notranslate" translate="no">draw</code>, <code class="notranslate" translate="no">internalBuffer</code> tendría estos valores:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> [ 
+   [[ 5, 0], [9]],
+   [[25, 4], [3]],
+ ]
+</pre>
+<p>Podemos calcular fácilmente un valor de 0.0 a 1.0 que represente qué tan avanzados
+estamos en la línea. Podemos usar esto para interpolar el valor extra que acabamos de
+añadir.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function rasterizeLines(dest, destWidth, inputs, fragShaderFn, bindings) {
+  for(let ndx = 0; ndx &lt; inputs.length - 1; ndx += 2) {
+    const p0 = inputs[ndx    ][0];
+    const p1 = inputs[ndx + 1][0];
+    const v0 = inputs[ndx    ].slice(1);  // todo menos el primer valor
+    const v1 = inputs[ndx + 1].slice(1);
+    const line = calcLine(p0, p1);
+    for (let i = 0; i &lt; line.numPixels; ++i) {
+      const p = calcLinePoint(line, i);
+      const t = i / line.numPixels;
+      const interStageVariables = interpolateArrays(v0, v1, t);
+      const offset = p[1] * destWidth + p[0];  // y * ancho + x
+      dest[offset] = fragShaderFn(bindings, interStageVariables);
+    }
+  }
+}
+
+// interpolateArrays([[1,2]], [[3,4]], 0.25) =&gt; [[1.5, 2.5]]
+function interpolateArrays(v0, v1, t) {
+  return v0.map((array0, ndx) =&gt; {
+    const array1 = v1[ndx];
+    return interpolateValues(array0, array1, t);
+  });
+}
+
+// interpolateValues([1,2], [3,4], 0.25) =&gt; [1.5, 2.5]
+function interpolateValues(array0, array1, t) {
+  return array0.map((a, ndx) =&gt; {
+    const b = array1[ndx];
+    return a + (b - a) * t;
+  });
+}
+</pre>
+<p>Ahora podemos usar esas variables entre etapas en nuestro fragment shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const fragShader = (bindings, interStageVariables) =&gt; 
+    interStageVariables[0] | 0; // convierte a entero
+</pre>
+<p>Si lo ejecutáramos ahora, veríamos resultados como este:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">.....988......................
+........87776.................
+.............66655............
+..................54443.......
+.......................33.....
+</pre>
+<p>La primera iteración del vertex shader devolvió <code class="notranslate" translate="no">[[5,0], [9]]</code> y
+la segunda iteración devolvió <code class="notranslate" translate="no">[[25,4], [3]]</code> y puedes ver que,
+conforme se llamó al fragment shader, el segundo valor de cada uno de ellos
+se interpoló entre los dos valores.</p>
+<p>Podríamos crear otra función <code class="notranslate" translate="no">mapTriangle</code> que, dados 3 puntos,
+rasterizara un triángulo llamando a la función del fragment shader para cada
+punto dentro del triángulo. Interpolaríamos las variables entre etapas
+a partir de 3 puntos en lugar de 2.</p>
+</li>
+</ol>
+<p>Aquí tienes todos los ejemplos anteriores ejecutándose en vivo, por si te resulta
+útil jugar con ellos para entenderlos.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-javascript-analogies.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-javascript-analogies.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Lo que sucede en el código JavaScript anterior es una analogía. Los detalles
+de cómo se interpolan realmente las variables entre etapas, cómo se dibujan las líneas, cómo
+se accede a los buffers, cómo se muestrean las texturas, cómo se especifican los uniforms y atributos,
+etc., son diferentes en WebGPU, pero los conceptos son muy similares, por lo que
+espero que esta analogía en JavaScript haya servido de ayuda para obtener un modelo
+mental de lo que está sucediendo.</p>
+<p>¿Por qué es así? Bueno, si miras <code class="notranslate" translate="no">draw</code> y <code class="notranslate" translate="no">rasterizeLines</code>,
+notarás que cada iteración es completamente independiente de
+las demás iteraciones. Otra forma de decir esto es que podrías procesar
+cada iteración en cualquier orden. En lugar de 0, 1, 2, 3, 4 podrías
+procesarlas como 3, 1, 4, 0, 2 y obtendrías exactamente el mismo resultado.
+El hecho de que sean independientes significa que cada iteración puede ser
+ejecutada en paralelo por un procesador diferente. Las GPUs de gama alta modernas de 2021
+tienen 10,000 o más procesadores. Eso significa que se pueden ejecutar hasta 10,000 cosas
+en paralelo. De ahí proviene el poder de usar la GPU.
+Al seguir estos patrones, el sistema puede paralelizar masivamente
+el trabajo.</p>
+<p>Las mayores limitaciones son:</p>
+<ol>
+<li>
+<p>Una función de shader solo puede referenciar
+sus entradas (atributos, buffers, texturas, uniforms, variables entre etapas).</p>
+</li>
+<li>
+<p>Un shader no puede asignar memoria.</p>
+</li>
+<li>
+<p>Un shader debe tener cuidado si referencia cosas en las que escribe, es decir, aquello para lo
+que está generando valores.</p>
+<p>Si lo piensas, esto tiene sentido. Imagina que <code class="notranslate" translate="no">fragShader</code>
+intentara referenciar <code class="notranslate" translate="no">dest</code> directamente. Eso significaría que, al
+tratar de paralelizar las cosas, sería imposible coordinarlas.
+¿Qué iteración iría primero? Si la tercera iteración referenciara <code class="notranslate" translate="no">dest[0]</code>,
+entonces la iteración 0 tendría que ejecutarse primero; pero si la iteración 0
+referenciara <code class="notranslate" translate="no">dest[3]</code>, entonces la tercera iteración tendría que ejecutarse primero.</p>
+<p>Diseñar en torno a esta limitación también ocurre con las CPUs y los múltiples
+hilos o procesos, pero en el mundo de las GPUs, con hasta 10,000 procesadores funcionando
+a la vez, requiere una coordinación especial. Intentaremos cubrir algunas de estas
+técnicas en otros artículos.</p>
+</li>
+</ol>
+<p class="copyright" data-fill-with="copyright">  <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-how-it-works.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-how-it-works.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-how-it-works.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-how-it-works.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-how-it-works.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-how-it-works.html">Русский
@@ -203,84 +667,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +765,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Cómo funciona WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

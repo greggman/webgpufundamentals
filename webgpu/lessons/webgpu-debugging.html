@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-debugging.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-debugging.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-debugging.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-debugging.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-debugging.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-debugging.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Debugging and Errors</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>Some tips on debugging WebGPU and dealing with errors.</p>
@@ -262,7 +265,7 @@ should get an error.</p>
   });
 
   device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       this shader won't compile
     `,
   });
@@ -290,7 +293,7 @@ errors until you call certain functions. One such function is
   });
 
   device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       this shader won't compile
     `,
   });
@@ -333,7 +336,7 @@ time you popped.</p>
 
 +  device.pushErrorScope('validation');
   device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       this shader won't compile
     `,
   });
@@ -343,7 +346,7 @@ time you popped.</p>
 +  }
 
 +  device.createShaderModule({
-+    code: `
++    code: /* wgsl */ `
 +      also, this shader won't compile
 +    `,
 +  });
@@ -379,7 +382,7 @@ Above we use <code class="notranslate" translate="no">await</code> to wait for t
 probably more common to use <code class="notranslate" translate="no">then</code> as in:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  device.pushErrorScope('validation');
   device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       this shader won't compile
     `,
   });
@@ -428,7 +431,7 @@ happen immediately and throw an exception where as device timeline errors happen
 asynchronously.</p>
 <h2 id="wgsl-errors">WGSL errors</h2>
 <p>If you get an error compiling a shader module you can ask for more
-detailed info by calling <code class="notranslate" translate="no">getComplicationInfo</code>.</p>
+detailed info by calling <code class="notranslate" translate="no">getCompilationInfo</code>.</p>
 <p>Example:</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  device.pushErrorScope('validation');
   const code = `
@@ -541,7 +544,7 @@ just a terse error message. (the default)</p>
 will attempt to capture all of your WebGPU commands and can let you
 inspect buffers, textures, calls, and generally try to see what’s
 happening in your WebGPU code.</p>
-<div class="webgpu_center"><img src="https://github.com/brendan-duncan/webgpu_inspector/raw/main/docs/images/frame_capture_commands.png"></div>
+<div class="webgpu_center"><img src="resources/images/frame_capture_commands.jpg" style="width: 1200px;"></div>
 <h2 id="tips-for-debugging-shaders">Tips for debugging shaders</h2>
 <h3 id="simplify">Simplify:</h3>
 <p>Get your shader to a working state by cutting out as much as possible.
@@ -709,7 +712,7 @@ in the render pipeline descriptor.</p>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-debugging.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-debugging.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-debugging.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-debugging.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-debugging.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-debugging.html">Русский
@@ -779,6 +782,15 @@ in the render pipeline descriptor.</p>
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -854,8 +866,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

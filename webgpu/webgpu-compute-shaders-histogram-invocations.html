@@ -40,7 +40,7 @@ async function main() {
     .join('\n');
   const module = device.createShaderModule({
     label: 'histogram shader',
-    code: `
+    code: /* wgsl */ `
       ${sharedConstants}
       @group(0) @binding(0) var<storage, read_write> bins: array<atomic<u32>>;
       @group(0) @binding(1) var ourTexture: texture_2d<f32>;
@@ -92,8 +92,8 @@ async function main() {
     label: 'histogram bindGroup',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: histogramBuffer }},
-      { binding: 1, resource: texture.createView() },
+      { binding: 0, resource: histogramBuffer },
+      { binding: 1, resource: texture },
     ],
   });
 

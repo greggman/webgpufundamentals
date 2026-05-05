@@ -1,6 +1,6 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import { SVG as svg } from '../../3rdparty/svg.esm.js';
 
 function createCircleVertices({

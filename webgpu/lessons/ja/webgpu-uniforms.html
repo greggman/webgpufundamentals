@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-uniforms.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-uniforms.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-uniforms.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-uniforms.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-uniforms.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-uniforms.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU ユニフォーム</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
@@ -237,7 +240,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <p><a href="webgpu-fundamentals.html">最初の記事</a>の三角形の例から始めて、いくつかのユニフォームを使用するように変更します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
     label: 'triangle shaders with uniforms',
-    code: `
+    code: /* wgsl */ `
 +      struct OurStruct {
 +        color: vec4f,
 +        scale: vec2f,
@@ -325,7 +328,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: uniformBuffer }},
+      { binding: 0, resource: uniformBuffer },
     ],
   });
 </pre>
@@ -436,7 +439,7 @@ const rand = (min, max) =&gt; {
 +      label: `bind group for obj: ${i}`,
 +      layout: pipeline.getBindGroupLayout(0),
 +      entries: [
-+        { binding: 0, resource: { buffer: uniformBuffer }},
++        { binding: 0, resource: uniformBuffer },
 +      ],
 +    });
 +
@@ -501,7 +504,7 @@ device.queue.submit([commandBuffer]);
 <p>ここで、もう1つ説明します。シェーダーで複数のユニフォームバッファを参照できます。上記の例では、描画するたびにスケールを更新し、<code class="notranslate" translate="no">writeBuffer</code>を呼び出してそのオブジェクトの<code class="notranslate" translate="no">uniformValues</code>を対応するユニフォームバッファにアップロードします。しかし、スケールのみが更新され、色とオフセットは更新されないため、色とオフセットをアップロードする時間を無駄にしています。</p>
 <p>ユニフォームを、一度設定する必要があるユニフォームと、描画するたびに更新されるユニフォームに分割できます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct OurStruct {
         color: vec4f,
 -        scale: vec2f,
@@ -593,8 +596,8 @@ device.queue.submit([commandBuffer]);
       label: `bind group for obj: ${i}`,
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: staticUniformBuffer }},
-+        { binding: 1, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: staticUniformBuffer },
++        { binding: 1, resource: uniformBuffer },
       ],
     });
 
@@ -623,7 +626,7 @@ device.queue.submit([commandBuffer]);
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-uniforms.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-uniforms.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-uniforms.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-uniforms.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-uniforms.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-uniforms.html">Русский
@@ -693,6 +696,15 @@ device.queue.submit([commandBuffer]);
   <li>ポストプロセッシング</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
@@ -759,8 +771,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

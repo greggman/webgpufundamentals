@@ -14,3 +14,56 @@
 #func-toc a {
   text-decoration: none;
 }
+.data-table {
+  pre {
+    white-space: pre;
+  }
+  
+  p {
+    margin-block-end: 0;
+  }
+
+  td:nth-child(2) {
+    white-space: pre-line;
+  }
+
+  td.full-description {
+    padding-top: 1em;
+    border-top: 3px solid var(--byte-border-color);
+
+    .builtin {
+      font-size: medium;
+    }
+  }
+
+  .data {
+    margin: 0 2em 0 2em;
+
+    td:nth-child(2) {
+      white-space: normal;
+    }
+  }
+
+  /* special cases */
+  #builtin-atomic-compare-exchange-weak pre, 
+  #builtin-workgroupUniformLoad-builtin pre, 
+  #builtin-bitcast-builtin pre,
+  #builtin-frexp-builtin pre,
+  #builtin-modf-builtin pre {
+    white-space: normal;
+  }
+  table#functions-atomic-builtin-functions>thead>tr>th:nth-child(2),
+  table#functions-atomic-builtin-functions>tbody>tr>td:nth-child(2),
+  table#functions-pack-builtin-functions>thead>tr>th:nth-child(2),
+  table#functions-pack-builtin-functions>tbody>tr>td:nth-child(2),
+  table#functions-unpack-builtin-functions>thead>tr>th:nth-child(2),
+  table#functions-unpack-builtin-functions>tbody>tr>td:nth-child(2),
+  table#functions-subgroup-builtin-functions>thead>tr>th:nth-child(2),
+  table#functions-subgroup-builtin-functions>tbody>tr>td:nth-child(2),
+  table#functions-quad-builtin-functions>thead>tr>th:nth-child(2),
+  table#functions-quad-builtin-functions>tbody>tr>td:nth-child(2),
+  table#functions-texture-builtin-functions>thead>tr>th:nth-child(3),
+  table#functions-texture-builtin-functions>tbody>tr>td:nth-child(3) {
+    display: none;
+  }
+}

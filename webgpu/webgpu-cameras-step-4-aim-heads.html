@@ -35,7 +35,7 @@ canvas {
 import GUI from '../3rdparty/muigui-0.x.module.js';
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
 import {vec3 as v3} from '../3rdparty/wgpu-matrix.module.js';
-import headData from './resources/head-data.js';
+import headData from './resources/js/head-data.js';
 
 function createHeadVertices() {
   const {positions, normals} = headData;
@@ -433,7 +433,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         matrix: mat4x4f,
       };
@@ -514,7 +514,7 @@ async function main() {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: uniformBuffer },
       ],
     });
 

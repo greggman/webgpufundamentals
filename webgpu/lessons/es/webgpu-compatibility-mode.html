@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-compatibility-mode.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Compatibility Mode">
+
+<meta name="description" content="Ejecución en máquinas más antiguas">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compatibility-mode_es.jpg">
+
+<meta property="og:title" content="Modo de compatibilidad de WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Running on older machines">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compatibility-mode_es.jpg">
+<meta property="og:description" content="Ejecución en máquinas más antiguas">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compatibility-mode.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Compatibility Mode">
+<meta name="twitter:title" content="Modo de compatibilidad de WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compatibility-mode.html">
-<meta name="twitter:description" content="Running on older machines">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Ejecución en máquinas más antiguas">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compatibility-mode_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compatibility-mode.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compatibility-mode_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compatibility-mode.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compatibility-mode.html",
+      "inLanguage":"es",
+      "name":"Modo de compatibilidad de WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compatibility-mode.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Compatibility Mode</title>
+<title>Modo de compatibilidad de WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-compatibility-mode.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-compatibility-mode.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compatibility-mode.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compatibility-mode.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compatibility-mode.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compatibility-mode.html">Русский
@@ -182,18 +227,927 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Compatibility Mode</h1>
+    <h1>Modo de compatibilidad de WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-compatibility-mode.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>El modo de compatibilidad de WebGPU (WebGPU Compatibility mode) es una versión de WebGPU que,
+con algunos límites, puede ejecutarse en dispositivos más antiguos. La idea es que,
+si puedes hacer que tu aplicación funcione dentro de algunos límites y
+restricciones adicionales, entonces puedes solicitar un adaptador de compatibilidad de WebGPU
+y hacer que tu aplicación funcione en más lugares.</p>
+<blockquote>
+<p>Nota: El modo de compatibilidad se lanza en Chrome 146 (2026-02-23). Es posible que esté disponible en
+tu navegador como experimento. En <a href="https://www.google.com/chrome/canary/">Chrome Canary</a>,
+a partir de la versión 136.0.7063.0
+(2025-03-11), puedes permitir el modo de compatibilidad habilitando el flag
+“enable-unsafe-webgpu” yendo a
+<code class="notranslate" translate="no">chrome://flags/#enable-unsafe-webgpu</code>.</p>
+</blockquote>
+<p>Para dar una idea de lo que puedes hacer en el modo de compatibilidad,
+efectivamente <em>casi</em> todos los programas de WebGL2 podrían convertirse para
+ejecutarse en el modo de compatibilidad.</p>
+<p>Aquí tienes cómo hacerlo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu.requestAdapter({
+  featureLevel: 'compatibility',
+});
+const device = await adapter.requestDevice();
+</pre>
+<p>¡Simple! Ten en cuenta que cualquier aplicación que siga todos los
+límites del modo de compatibilidad es una aplicación “core” de WebGPU
+válida y funcionará en cualquier lugar donde WebGPU ya esté
+funcionando.</p>
+<h1 id="principales-límites-y-restricciones">Principales límites y restricciones</h1>
+<h2 id="posiblemente-0-storage-buffers-en-vertex-shaders">Posiblemente 0 storage buffers en vertex shaders.</h2>
+<p>La restricción principal que es más probable que afecte a las aplicaciones WebGPU es que aproximadamente el 45%
+de estos dispositivos antiguos no admiten storage buffers (buffers de almacenamiento) en los vertex shaders (shaders de vértices).</p>
+<p>Usamos esta característica en <a href="webgpu-storage-buffers.html">el artículo sobre storage buffers</a>,
+que es el tercer artículo de este sitio. Después de ese artículo,
+<a href="webgpu-vertex-buffers.html">cambiamos a usar vertex buffers</a>.
+Usar vertex buffers (buffers de vértices) es común y funciona en todas partes, pero ciertas soluciones son más fáciles
+con storage buffers. Un ejemplo es
+<a href="https://webgpu.github.io/webgpu-samples/?sample=wireframe">este ejemplo de dibujo de wireframes</a>.
+Utiliza storage buffers para generar triángulos a partir de datos de vértices.</p>
+<p>Con los datos de vértices almacenados en storage buffers, podemos acceder aleatoriamente a los datos de
+los vértices. Con los datos de vértices en un vertex buffer, no podemos. Por supuesto, siempre hay
+otras soluciones.</p>
+<h2 id="límites-y-restricciones-de-nivel-medio">Límites y restricciones de nivel medio</h2>
+<h2 id="solo-se-permite-una-única-dimensión-de-vista-para-una-textura-como-texture_binding">Solo se permite una única dimensión de vista para una textura como <code class="notranslate" translate="no">TEXTURE_BINDING</code></h2>
+<p>En WebGPU normal, puedes crear una textura 2D así:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const miTextura = device.createTexture({
+  size: [ancho, alto, 6],
+  usage: ...
+  format: ...
+});
+</pre>
+<p>Luego puedes verla con 3 dimensiones de vista diferentes:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// una vista de miTextura como un array 2D con 6 capas
+const comoArray2D = miTextura.createView();
+
+// ver la capa 3 de miTextura como una textura 2D
+const como2D = miTextura.createView({
+  dimension: '2d',
+  baseArrayLayer: 3,
+  arrayLayerCount: 1,
+});
+
+// vista de miTextura como un cubemap (mapa de cubo)
+const comoCube = miTextura.createView({
+  dimension: 'cube',
+});
+</pre>
+<p>En el modo de compatibilidad, solo puedes usar una dimensión de vista y tienes que
+elegir qué dimensión de vista al crear la textura. Una textura 2D con
+1 capa por defecto solo se puede usar como una vista <code class="notranslate" translate="no">'2d'</code>. Una textura 2D con
+más de 1 capa por defecto solo se puede usar como una vista <code class="notranslate" translate="no">'2d-array'</code>.
+Si quieres algo diferente al valor por defecto, debes indicárselo a WebGPU. Por ejemplo,
+si quieres un cubemap, debes decírselo a WebGPU cuando crees la textura.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const cubeTexture = device.createTexture({
+  size: [ancho, alto, 6],
+  usage: ...
+  format: ...
+  textureBindingViewDimension: 'cube', 
+});
+</pre>
+<p>Nota: este parámetro adicional se llama <code class="notranslate" translate="no">textureBindingViewDimension</code> porque
+se refiere al uso de la textura con el uso <code class="notranslate" translate="no">TEXTURE_BINDING</code>. Aún puedes
+usar una sola capa de un cubemap o de un array 2D como una textura 2D como <code class="notranslate" translate="no">RENDER_ATTACHMENT</code>.</p>
+<p>Dicho de otra manera, debes usar esta misma dimensión de vista al usar la
+textura en un bind group. Todavía puedes usar la dimensión <code class="notranslate" translate="no">2d</code>, incluso si la
+<code class="notranslate" translate="no">textureBindingViewDimension</code> es <code class="notranslate" translate="no">2d-array</code> o <code class="notranslate" translate="no">cube</code>, cuando uses la textura
+como un objetivo de renderizado (render target).</p>
+<p>En el modo de compatibilidad, usar la textura en un bind group con otro tipo de vista
+generará un error de validación.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// una vista de cubeTexture como un array 2D con 6 capas
+const bindGroup = device.createBindGroup({
+  ...
+  entries: [
+    {
+      binding,
+      // ERROR en modo de compatibilidad: la textura es un cubemap, no un array 2D
+      // (el valor por defecto para una textura con más de 1 capa)
+      resource: cubeTexture,
+    },
+  ],
+})
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// ver la capa 3 de cubeTexture como una textura 2D
+const bindGroup = device.createBindGroup({
+  ...
+  entries: [
+    {
+      binding,
+      // ERROR en modo de compatibilidad: la textura es un cubemap, no 2D
+      resource: cubeTexture.createView({
+        viewDimension: '2d',
+        baseArrayLayer: 3,
+        arrayLayerCount: 1,
+      }),
+    },
+  ]
+});
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// vista de cubeTexture como un cubemap
+const bindGroup = device.createBindGroup({
+  ...
+  entries: [
+    {
+      binding,
+      // ¡BIEN!
+      resource: cubeTexture.createView({
+        viewDimension: 'cube',
+      }),
+    },
+  ],
+});
+</pre>
+<p>Esta restricción no es para tanto.
+Pocos programas quieren usar una textura con diferentes tipos de vistas.</p>
+<h2 id="al-llamar-a-texturecreateview-no-puedes-seleccionar-un-subconjunto-de-capas-en-un-bindgroup">Al llamar a <code class="notranslate" translate="no">texture.createView</code>, no puedes seleccionar un subconjunto de capas en un bindGroup</h2>
+<p>En el núcleo (core) de WebGPU, podemos crear una textura con algunas capas:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const textura = device.createTexture({
+  size: [64, 128, 8],   // 8 capas,
+  ...
+});
+</pre>
+<p>Luego podemos seleccionar un subconjunto de capas:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroup = device.createBindGroup({
+  ...
+  entries: [
+    {
+      binding,
+      // ERROR en modo de compatibilidad - seleccionar capas 3 y 4
+      resource: cubeTexture.createView({
+        baseArrayLayer: 3,
+        arrayLayerCount: 2,
+      }),
+    },
+  ],
+});
+</pre>
+<p>Esta restricción tampoco es para tanto. Pocos programas
+quieren seleccionar un subconjunto de capas de una textura.</p>
+<h2 id="generar-mipmaps-en-modo-de-compatibilidad"><a id="a-generating-mipmaps"></a> Generar mipmaps en modo de compatibilidad.</h2>
+<p>Sin embargo, hay un lugar donde aparecen ambas restricciones: al generar
+mipmaps, que es un caso de uso común.</p>
+<p>Recuerda que creamos un generador de mipmaps basado en GPU en
+<a href="webgpu-importing-textures.html#a-generating-mips-on-the-gpu">el artículo sobre la importación de imágenes en texturas</a>.
+Modificamos esa función para generar mipmaps para arrays 2D y cubemaps en
+<a href="webgpu-cube-maps.html#a-texture-helpers">el artículo sobre cube maps</a>. En esa versión,
+siempre vemos cada capa de la textura con una dimensión <code class="notranslate" translate="no">'2d'</code> para referenciar
+solo una capa de la textura.
+Esto no funcionará en el modo de compatibilidad por las razones mencionadas anteriormente. No podemos usar una vista
+<code class="notranslate" translate="no">'2d'</code> de una textura <code class="notranslate" translate="no">'2d-array'</code> o <code class="notranslate" translate="no">'cube'</code>. Tampoco podemos seleccionar capas individuales
+en un bind group para elegir de qué capa leer.</p>
+<p>Para que el código funcione en el modo de compatibilidad, tenemos que trabajar con texturas
+con la misma dimensión de vista con la que fueron creadas, y necesitamos pasar la textura
+con acceso a todas las capas y seleccionar la capa que queremos en el propio shader, en lugar
+de seleccionar la capa a través de <code class="notranslate" translate="no">createView</code> como estábamos haciendo.</p>
+<p>¡Así que hagámoslo! Empezaremos con el código de <code class="notranslate" translate="no">generateMips</code> del <a href="webgpu-cube-maps.html#a-texture-helpers">artículo sobre cubemaps</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
+    let sampler;
+    let module;
+    const pipelineByFormat = {};
+
+    return function generateMips(device, texture) {
+      if (!module) {
+        module = device.createShaderModule({
+          label: 'textured quad shaders for mip level generation',
+          code: /* wgsl */ `
+            struct VSOutput {
+              @builtin(position) position: vec4f,
+              @location(0) texcoord: vec2f,
+            };
+
+            @vertex fn vs(
+              @builtin(vertex_index) vertexIndex : u32
+            ) -&gt; VSOutput {
+              let pos = array(
+
+                vec2f( 0.0,  0.0),  // centro
+                vec2f( 1.0,  0.0),  // derecha, centro
+                vec2f( 0.0,  1.0),  // centro, arriba
+
+                // 2do triángulo
+                vec2f( 0.0,  1.0),  // centro, arriba
+                vec2f( 1.0,  0.0),  // derecha, centro
+                vec2f( 1.0,  1.0),  // derecha, arriba
+              );
+
+              var vsOutput: VSOutput;
+              let xy = pos[vertexIndex];
+              vsOutput.position = vec4f(xy * 2.0 - 1.0, 0.0, 1.0);
+              vsOutput.texcoord = vec2f(xy.x, 1.0 - xy.y);
+              return vsOutput;
+            }
+
+            @group(0) @binding(0) var ourSampler: sampler;
+            @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+            @fragment fn fs(fsInput: VSOutput) -&gt; @location(0) vec4f {
+              return textureSample(ourTexture, ourSampler, fsInput.texcoord);
+            }
+          `,
+        });
+
+        sampler = device.createSampler({
+          minFilter: 'linear',
+          magFilter: 'linear',
+        });
+      }
+
+      if (!pipelineByFormat[texture.format]) {
+        pipelineByFormat[texture.format] = device.createRenderPipeline({
+          label: 'mip level generator pipeline',
+          layout: 'auto',
+          vertex: {
+            module,
+          },
+          fragment: {
+            module,
+            targets: [{ format: texture.format }],
+          },
+        });
+      }
+      const pipeline = pipelineByFormat[texture.format];
+
+      const encoder = device.createCommandEncoder({
+        label: 'mip gen encoder',
+      });
+
+      for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
+        for (let layer = 0; layer &lt; texture.depthOrArrayLayers; ++layer) {
+          const bindGroup = device.createBindGroup({
+            layout: pipeline.getBindGroupLayout(0),
+            entries: [
+              { binding: 0, resource: sampler },
+              {
+                binding: 1,
+                resource: texture.createView({
+                  dimension: '2d',
+                  baseMipLevel: baseMipLevel - 1,
+                  mipLevelCount: 1,
+                  baseArrayLayer: layer,
+                  arrayLayerCount: 1,
+                }),
+              },
+            ],
+          });
+
+          const renderPassDescriptor = {
+            label: 'our basic canvas renderPass',
+            colorAttachments: [
+              {
+                view: texture.createView({
+                  dimension: '2d',
+                  baseMipLevel: baseMipLevel,
+                  mipLevelCount: 1,
+                  baseArrayLayer: layer,
+                  arrayLayerCount: 1,
+                }),
+                loadOp: 'clear',
+                storeOp: 'store',
+              },
+            ],
+          };
+
+          const pass = encoder.beginRenderPass(renderPassDescriptor);
+          pass.setPipeline(pipeline);
+          pass.setBindGroup(0, bindGroup);
+          pass.draw(6);  // llama a nuestro vertex shader 6 veces
+          pass.end();
+        }
+      }
+
+      const commandBuffer = encoder.finish();
+      device.queue.submit([commandBuffer]);
+    };
+  })();
+</pre>
+<p>Necesitamos cambiar el WGSL para que, para cada tipo de textura (2d, 2d-array, cube, etc.),
+usemos un fragment shader diferente y necesitemos poder pasar una capa desde la que leer.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const faceMat = array(
+  mat3x3f( 0,  0,  -2,  0, -2,   0,  1,  1,   1),   // pos-x
+  mat3x3f( 0,  0,   2,  0, -2,   0, -1,  1,  -1),   // neg-x
+  mat3x3f( 2,  0,   0,  0,  0,   2, -1,  1,  -1),   // pos-y
+  mat3x3f( 2,  0,   0,  0,  0,  -2, -1, -1,   1),   // neg-y
+  mat3x3f( 2,  0,   0,  0, -2,   0, -1,  1,   1),   // pos-z
+  mat3x3f(-2,  0,   0,  0, -2,   0,  1,  1,  -1));  // neg-z
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+  @location(1) @interpolate(flat, either) baseArrayLayer: u32,
+};
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32,
+  @builtin(instance_index) baseArrayLayer: u32,
+) -&gt; VSOutput {
+  var pos = array&lt;vec2f, 3&gt;(
+    vec2f(-1.0, -1.0),
+    vec2f(-1.0,  3.0),
+    vec2f( 3.0, -1.0),
+  );
+
+  var vsOutput: VSOutput;
+  let xy = pos[vertexIndex];
+  vsOutput.position = vec4f(xy, 0.0, 1.0);
+  vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+  vsOutput.baseArrayLayer = baseArrayLayer;
+  return vsOutput;
+}
+
+@group(0) @binding(0) var ourSampler: sampler;
+
+@group(0) @binding(1) var ourTexture2d: texture_2d&lt;f32&gt;;
+@fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+  return textureSample(ourTexture2d, ourSampler, fsInput.texcoord);
+}
+
+@group(0) @binding(1) var ourTexture2dArray: texture_2d_array&lt;f32&gt;;
+@fragment fn fs2darray(fsInput: VSOutput) -&gt; @location(0) vec4f {
+  return textureSample(
+    ourTexture2dArray,
+    ourSampler,
+    fsInput.texcoord,
+    fsInput.baseArrayLayer);
+}
+
+@group(0) @binding(1) var ourTextureCube: texture_cube&lt;f32&gt;;
+@fragment fn fscube(fsInput: VSOutput) -&gt; @location(0) vec4f {
+  return textureSample(
+    ourTextureCube,
+    ourSampler,
+    faceMat[fsInput.baseArrayLayer] * vec3f(fract(fsInput.texcoord), 1));
+}
+</pre>
+<p>Este código tiene 3 fragment shaders, uno para cada una de las dimensiones: <code class="notranslate" translate="no">'2d'</code>, <code class="notranslate" translate="no">'2d-array'</code>, <code class="notranslate" translate="no">'cube'</code>.
+Utiliza la técnica del <a href="webgpu-large-triangle-to-cover-clip-space.html">triángulo grande para cubrir el espacio de recorte</a>
+<a href="webgpu-large-triangle-to-cover-clip-space.html">tratada en otro lugar</a> para dibujar.
+También utiliza <code class="notranslate" translate="no">@builtin(instance_index)</code> para seleccionar la capa. Esta es una forma interesante y rápida
+de pasar un único valor entero a un shader sin tener que usar un uniform buffer.
+Cuando llamamos a <code class="notranslate" translate="no">draw</code>, el cuarto parámetro es la primera instancia (<code class="notranslate" translate="no">firstInstance</code>), que se pasará
+al shader como <code class="notranslate" translate="no">@builtin(instance_index)</code>. Pasamos eso del vertex shader al fragment
+shader a través de <code class="notranslate" translate="no">VSOutput.baseArrayLayer</code>, que podemos referenciar como <code class="notranslate" translate="no">fsInput.baseArrayLayer</code>
+en el fragment shader.</p>
+<p>El código del cubemap convierte una capa de un array 2D y una coordenada UV normalizada en una
+coordenada 3D de cubemap. Necesitamos esto porque, de nuevo, en el modo de compatibilidad, un cubemap
+solo se puede ver como un cubemap.</p>
+<p>Volviendo a nuestro JavaScript, necesitamos leer la propiedad <code class="notranslate" translate="no">textureBindingViewDimension</code>
+de la textura. Ten en cuenta que este valor es <code class="notranslate" translate="no">undefined</code> si <strong>no</strong> estamos en el modo de
+compatibilidad. Pero podemos simplemente asumir <code class="notranslate" translate="no">'2d-array'</code> en ese caso, ya que en el WebGPU “core” normal,
+<code class="notranslate" translate="no">'2d-array'</code> siempre debería funcionar.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
+    let sampler;
+    let module;
+    const pipelineByFormat = {};
+
+    return function generateMips(device, texture) {
+      // Si la textura no tiene una textureBindingViewDimension, usar '2d-array'
+      const textureBindingViewDimension = texture.textureBindingViewDimension ?? '2d-array';
+      if (!module) {
+        module = device.createShaderModule({
+          label: 'textured quad shaders for mip level generation',
+          code: /* wgsl */ `
+            const faceMat = array(
+              mat3x3f( 0,  0,  -2,  0, -2,   0,  1,  1,   1),   // pos-x
+              mat3x3f( 0,  0,   2,  0, -2,   0, -1,  1,  -1),   // neg-x
+              mat3x3f( 2,  0,   0,  0,  0,   2, -1,  1,  -1),   // pos-y
+              mat3x3f( 2,  0,   0,  0,  0,  -2, -1, -1,   1),   // neg-y
+              mat3x3f( 2,  0,   0,  0, -2,   0, -1,  1,   1),   // pos-z
+              mat3x3f(-2,  0,   0,  0, -2,   0,  1,  1,  -1));  // neg-z
+
+            struct VSOutput {
+              @builtin(position) position: vec4f,
+              @location(0) texcoord: vec2f,
+              @location(1) @interpolate(flat, either) baseArrayLayer: u32,
+            };
+
+            @vertex fn vs(
+              @builtin(vertex_index) vertexIndex : u32,
+              @builtin(instance_index) baseArrayLayer: u32,
+            ) -&gt; VSOutput {
+              var pos = array&lt;vec2f, 3&gt;(
+                vec2f(-1.0, -1.0),
+                vec2f(-1.0,  3.0),
+                vec2f( 3.0, -1.0),
+              );
+
+              var vsOutput: VSOutput;
+              let xy = pos[vertexIndex];
+              vsOutput.position = vec4f(xy, 0.0, 1.0);
+              vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+              vsOutput.baseArrayLayer = baseArrayLayer;
+              return vsOutput;
+            }
+
+            @group(0) @binding(0) var ourSampler: sampler;
+
+            @group(0) @binding(1) var ourTexture2d: texture_2d&lt;f32&gt;;
+            @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+              return textureSample(ourTexture2d, ourSampler, fsInput.texcoord);
+            }
+
+            @group(0) @binding(1) var ourTexture2dArray: texture_2d_array&lt;f32&gt;;
+            @fragment fn fs2darray(fsInput: VSOutput) -&gt; @location(0) vec4f {
+              return textureSample(
+                ourTexture2dArray,
+                ourSampler,
+                fsInput.texcoord,
+                fsInput.baseArrayLayer);
+            }
+
+            @group(0) @binding(1) var ourTextureCube: texture_cube&lt;f32&gt;;
+            @fragment fn fscube(fsInput: VSOutput) -&gt; @location(0) vec4f {
+              return textureSample(
+                ourTextureCube,
+                ourSampler,
+                faceMat[fsInput.baseArrayLayer] * vec3f(fract(fsInput.texcoord), 1));
+            }
+          `,
+        });
+
+        sampler = device.createSampler({
+          minFilter: 'linear',
+          magFilter: 'linear',
+        });
+      }
+
+    ...
+</pre>
+<p>Antes hacíamos el seguimiento de un pipeline por cada formato, de modo que podíamos reutilizar el pipeline para
+texturas del mismo formato. Necesitamos actualizar eso para que sea un pipeline por formato
+y por <code class="notranslate" translate="no">viewDimension</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
+    let sampler;
+    let module;
+    const pipelineByFormatAndView = {};
+
+    return function generateMips(device, texture, textureBindingViewDimension) {
+      // Si la textura no tiene una textureBindingViewDimension, usar '2d-array'.
+      // Esto será true en el modo webgpu core.
+      const textureBindingViewDimension = texture.textureBindingViewDimension ?? '2d-array';
+      let module = moduleByViewDimension[textureBindingViewDimension];
+      if (!module) {
+        ...
+      }
+
+      const id = `${texture.format}.${textureBindingViewDimension}`;
+
+      if (!pipelineByFormatAndView[id]) {
+        // elegir un fragment shader basado en el viewDimension (elimina el '-' de 2d-array y cube-array)
+        const entryPoint = `fs${textureBindingViewDimension.replace(/[\W]/, '')}`;
+        pipelineByFormatAndView[id] = device.createRenderPipeline({
+          label: `mip level generator pipeline for ${textureBindingViewDimension}, format: ${texture.format}`,
+          layout: 'auto',
+          vertex: {
+            module,
+          },
+          fragment: {
+            module,
+            entryPoint,
+            targets: [{ format: texture.format }],
+          },
+        });
+      }
+      const pipeline = pipelineByFormatAndView[id];
+
+      ...
+}
+</pre>
+<p>Luego, nuestro bucle para generar el mipmap debe cambiar para usar las capas completas, ya que
+el modo de compatibilidad no permite un subrango de capas. También necesitamos usar
+nuestra capacidad de pasar el índice de instancia a través de <code class="notranslate" translate="no">draw</code> para seleccionar la capa de la que queremos leer.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
+
+      ...
+
+      const pipeline = pipelineByFormatAndView[id];
+
+      for (let baseMipLevel = 1; baseMipLevel &lt; texture.mipLevelCount; ++baseMipLevel) {
+        for (let layer = 0; layer &lt; texture.depthOrArrayLayers; ++layer) {
+          const bindGroup = device.createBindGroup({
+            layout: pipeline.getBindGroupLayout(0),
+            entries: [
+              { binding: 0, resource: sampler },
+              {
+                binding: 1,
+                resource: texture.createView({
+                  dimension: textureBindingViewDimension,
+                  baseMipLevel: baseMipLevel - 1,
+                  mipLevelCount: 1,
+                }),
+              },
+            ],
+          });
+
+          const renderPassDescriptor = {
+            label: 'our basic canvas renderPass',
+            colorAttachments: [
+              {
+                view: texture.createView({
+                  dimension: '2d',
+                  baseMipLevel,
+                  mipLevelCount: 1,
+                  baseArrayLayer: layer,
+                  arrayLayerCount: 1,
+                }),
+                loadOp: 'clear',
+                storeOp: 'store',
+              },
+            ],
+          };
+
+          const pass = encoder.beginRenderPass(renderPassDescriptor);
+          pass.setPipeline(pipeline);
+          pass.setBindGroup(0, bindGroup);
+          // dibujar 3 vértices, 1 instancia, primera instancia (instance_index) = layer
+          pass.draw(3, 1, 0, layer);
+          pass.end();
+        }
+      }
+
+      const commandBuffer = encoder.finish();
+      device.queue.submit([commandBuffer]);
+    };
+  })();
+</pre>
+<p>Con eso, nuestro código de generación de mipmaps funciona en el modo de compatibilidad, y sigue
+funcionando en el núcleo de WebGPU.</p>
+<p>Sin embargo, tenemos algunas otras cosas que actualizar para que el ejemplo funcione.</p>
+<p>Tenemos una función <code class="notranslate" translate="no">createTextureFromSources</code> a la que le pasamos orígenes (sources)
+y crea una textura. Siempre creaba una textura <code class="notranslate" translate="no">'2d'</code>,
+ya que en el modo core podemos ver una textura <code class="notranslate" translate="no">'2d'</code> con 6 capas como un cubemap.
+En su lugar, necesitamos hacer que podamos pasar una <code class="notranslate" translate="no">textureBindingViewDimension</code> y/o
+una dimensión para que, cuando creemos la textura, podamos indicarle al modo de
+compatibilidad cómo la veremos.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function textureViewDimensionToDimension(viewDimension) {
+   switch (viewDimension) {
+      case '1d': return '1d';
+      case '3d': return '3d';
+      default: return '2d';
+    }
+  }
+
+  function createTextureFromSources(device, sources, options = {}) {
+    const viewDimension = options.dimension ??
+      getDefaultViewDimensionForTexture(options.textureBindingViewDimension);
+    const dimension = options.dimension ?? textureViewDimensionToDimension(viewDimension);
+    // Asumir que todos los orígenes tienen el mismo tamaño, así que solo usamos el primero para el ancho y el alto
+    const source = sources[0];
+    const texture = device.createTexture({
+      format: 'rgba8unorm',
+      mipLevelCount: options.mips ? numMipLevels(source.width, source.height) : 1,
+      size: [source.width, source.height, sources.length],
+      usage: GPUTextureUsage.TEXTURE_BINDING |
+             GPUTextureUsage.COPY_DST |
+             GPUTextureUsage.RENDER_ATTACHMENT,
+      dimension,
+      textureBindingViewDimension: options.textureBindingViewDimension,
+    });
+    copySourcesToTexture(device, texture, sources, options);
+    return texture;
+  }
+</pre>
+<p>Y necesitamos actualizar nuestra llamada a <code class="notranslate" translate="no">createTextureFromSources</code> para indicarle de antemano
+que queremos un cubemap.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = await createTextureFromSources(
+      device, faceCanvases, {mips: true, flipY: false, textureBindingViewDimension: 'cube'});
+</pre>
+<p>Para que el ejemplo se ejecute en el modo de compatibilidad, debemos solicitarlo como explicamos
+al principio de este artículo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter({
+    featureLevel: 'compatibility',
+  });
+  const device = await adapter?.requestDevice();
+
+  ...
+</pre>
+<p>Y con eso, nuestro ejemplo de cube map funciona en el modo de compatibilidad.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compatibility-mode-generatemips.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compatibility-mode-generatemips.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Ahora tienes una función <code class="notranslate" translate="no">generateMips</code> amigable con el modo de compatibilidad que podrías
+usar en cualquiera de los ejemplos de este sitio. Funciona tanto en el modo core como en el de compatibilidad.
+En el modo de compatibilidad debes pasar una <code class="notranslate" translate="no">textureBindingViewDimension</code> si quieres un cube map o si
+quieres un array 2D de 1 capa. En el núcleo de WebGPU puedes pasar una o no; no importa.</p>
+<h1 id="restricciones-y-límites-menores">Restricciones y límites menores</h1>
+<p>Los siguientes son límites y restricciones con los que es poco probable que se topen <em>la mayoría</em> de los programas:</p>
+<ul>
+<li>
+<h2 id="el-blending-de-color-debe-coincidir-en-todos-los-color-targets">El blending de color debe coincidir en todos los color targets.</h2>
+<p>En el modo core, cuando creas un render pipeline, cada color target (objetivo de color)
+puede especificar ajustes de blending (mezcla). Usamos ajustes de blending en
+<a href="webgpu-transparency.html">el artículo sobre blending y transparencia</a>.
+En el modo de compatibilidad, todos los ajustes en todos los color targets
+de un mismo pipeline deben ser iguales.</p>
+</li>
+<li>
+<h2 id="copytexturetobuffer-y-copytexturetotexture-no-funcionan-con-texturas-comprimidas"><code class="notranslate" translate="no">copyTextureToBuffer</code> y <code class="notranslate" translate="no">copyTextureToTexture</code> no funcionan con texturas comprimidas.</h2>
+</li>
+<li>
+<h2 id="copytexturetotexture-no-funciona-con-texturas-multisampleadas-multisampled"><code class="notranslate" translate="no">copyTextureToTexture</code> no funciona con texturas multisampleadas (multisampled).</h2>
+</li>
+<li>
+<h2 id="cube-array-no-está-admitido"><code class="notranslate" translate="no">cube-array</code> no está admitido.</h2>
+</li>
+<li>
+<h2 id="las-vistas-de-una-textura-no-pueden-diferir-en-aspecto-o-niveles-de-mip-en-una-sola-llamada-de-drawdispatch">Las vistas de una textura no pueden diferir en aspecto o niveles de mip en una sola llamada de draw/dispatch.</h2>
+<p>En el núcleo de WebGPU, puedes crear múltiples vistas de una textura para diferentes
+niveles de mip Y usarlas en la misma llamada de dibujo. Esto es poco común. Ten en cuenta que esta
+restricción se aplica al uso de <code class="notranslate" translate="no">TEXTURE_BINDING</code>, es decir, al usar una textura a través de un bindGroup. Todavía
+puedes usar una vista diferente como <code class="notranslate" translate="no">RENDER_ATTACHMENT</code>, como hicimos en el código de generación
+de mipmaps anterior.</p>
+</li>
+<li>
+<h2 id="builtinsample_mask-y-builtinsample_index-no-están-admitidos"><code class="notranslate" translate="no">@builtin(sample_mask)</code> y <code class="notranslate" translate="no">@builtin(sample_index)</code> no están admitidos.</h2>
+</li>
+<li>
+<h2 id="los-formatos-de-textura-rg32uint-rg32sint-y-rg32float-no-pueden-usarse-como-storage-textures-texturas-de-almacenamiento">Los formatos de textura <code class="notranslate" translate="no">rg32uint</code>, <code class="notranslate" translate="no">rg32sint</code> y <code class="notranslate" translate="no">rg32float</code> no pueden usarse como storage textures (texturas de almacenamiento).</h2>
+</li>
+<li>
+<h2 id="depthclampbias-debe-ser-0"><code class="notranslate" translate="no">depthClampBias</code> debe ser 0.</h2>
+<p>Este es un ajuste que se utiliza al crear un render pipeline.</p>
+</li>
+<li>
+<h2 id="interpolationlinear-y-interpolation-sample-no-están-admitidos"><code class="notranslate" translate="no">@interpolation(linear)</code> y <code class="notranslate" translate="no">@interpolation(..., sample)</code> no están admitidos.</h2>
+<p>Estos se mencionaron brevemente en <a href="webgpu-inter-stage-variables.html#a-interpolate">el artículo sobre variables entre etapas</a>.</p>
+</li>
+<li>
+<h2 id="interpolateflat-y-interpolateflat-first-no-están-admitidos"><a id="flat"></a> <code class="notranslate" translate="no">@interpolate(flat)</code> y <code class="notranslate" translate="no">@interpolate(flat, first)</code> no están admitidos.</h2>
+<p>En el modo de compatibilidad debes usar <code class="notranslate" translate="no">@interpolate(flat, either)</code> cuando quieras
+interpolación plana (flat). <code class="notranslate" translate="no">either</code> significa que el valor pasado al fragment shader
+podría ser el valor del primer o del último vértice del triángulo o línea
+que se está dibujando. Depende de la implementación.</p>
+<p>Es habitual que esto no importe. Los casos de uso más comunes para pasar algo
+con interpolación plana del vertex shader al fragment shader suelen ser valores de tipo
+por modelo, por material o por instancia. Por ejemplo, el código de generación de mipmaps
+anterior usó interpolación plana para pasar el <code class="notranslate" translate="no">instance_index</code>
+al fragment shader. Será el mismo para todos los vértices de un triángulo y,
+por tanto, funciona perfectamente con <code class="notranslate" translate="no">@interpolate(flat, either)</code>.</p>
+</li>
+<li>
+<h2 id="los-formatos-de-textura-no-pueden-ser-reinterpretados">Los formatos de textura no pueden ser reinterpretados.</h2>
+<p>En el núcleo de WebGPU, puedes crear una textura <code class="notranslate" translate="no">'rgba8unorm'</code> y verla como una textura
+<code class="notranslate" translate="no">'rgba8unorm-srgb'</code> y viceversa, así como otros formatos <code class="notranslate" translate="no">'-srgb'</code> y sus correspondientes
+formatos que no son <code class="notranslate" translate="no">'-srgb'</code>. El modo de compatibilidad no permite esto. El formato en que
+creas la textura es el único formato con el que se puede usar.</p>
+</li>
+<li>
+<h2 id="bgra8unorm-srgb-no-está-admitido"><code class="notranslate" translate="no">bgra8unorm-srgb</code> no está admitido.</h2>
+</li>
+<li>
+<h2 id="las-texturas-rgba16float-y-r32float-no-pueden-ser-multisampleadas">Las texturas <code class="notranslate" translate="no">rgba16float</code> y <code class="notranslate" translate="no">r32float</code> no pueden ser multisampleadas.</h2>
+</li>
+<li>
+<h2 id="todos-los-formatos-de-textura-de-enteros-no-pueden-ser-multisampleados">Todos los formatos de textura de enteros no pueden ser multisampleados.</h2>
+</li>
+<li>
+<h2 id="depthorarraylayers-debe-ser-compatible-con-texturebindingviewdimension"><code class="notranslate" translate="no">depthOrArrayLayers</code> debe ser compatible con <code class="notranslate" translate="no">textureBindingViewDimension</code>.</h2>
+<p>Esto significa que una textura marcada con <code class="notranslate" translate="no">textureBindingViewDimension: '2d'</code> debe
+tener un <code class="notranslate" translate="no">depthOrArrayLayers: 1</code> (el valor por defecto). Una textura marcada con <code class="notranslate" translate="no">textureBindingViewDimension: 'cube'</code>
+debe tener <code class="notranslate" translate="no">depthOrArrayLayers: 6</code>.</p>
+</li>
+<li>
+<h2 id="textureload-no-funciona-con-texturas-de-profundidad-depth-textures"><code class="notranslate" translate="no">textureLoad</code> no funciona con texturas de profundidad (depth textures).</h2>
+<p>Una “textura de profundidad” es una textura referenciada en WGSL con <code class="notranslate" translate="no">texture_depth</code>,
+<code class="notranslate" translate="no">texture_depth_2d_array</code> o <code class="notranslate" translate="no">texture_depth_cube</code>. Estas no pueden usarse con
+<code class="notranslate" translate="no">textureLoad</code> en el modo de compatibilidad.</p>
+<p>Por otro lado, <code class="notranslate" translate="no">textureLoad</code> puede usarse con <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>, <code class="notranslate" translate="no">texture_2d_array&lt;f32&gt;</code> y
+<code class="notranslate" translate="no">texture_cube&lt;f32&gt;</code>, y una textura que tenga un formato de profundidad puede vincularse a estos bindings.</p>
+</li>
+<li>
+<h2 id="las-texturas-de-profundidad-no-pueden-usarse-con-samplers-que-no-sean-de-comparación">Las texturas de profundidad no pueden usarse con samplers que no sean de comparación.</h2>
+<p>De nuevo, una “textura de profundidad” es una textura referenciada en WGSL con <code class="notranslate" translate="no">texture_depth</code>,
+<code class="notranslate" translate="no">texture_depth_2d_array</code> o <code class="notranslate" translate="no">texture_depth_cube</code>. Estas no pueden usarse
+con un sampler que no sea de comparación en el modo de compatibilidad.</p>
+<p>Esto significa efectivamente que <code class="notranslate" translate="no">texture_depth</code>, <code class="notranslate" translate="no">texture_depth_2d_array</code> y <code class="notranslate" translate="no">texture_depth_cube</code>
+solo pueden usarse con <code class="notranslate" translate="no">textureSampleCompare</code>, <code class="notranslate" translate="no">textureSampleCompareLevel</code> y <code class="notranslate" translate="no">textureGatherCompare</code>
+en el modo de compatibilidad.</p>
+<p>Por otro lado, puedes vincular una textura que use un formato de profundidad a un binding de <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>, <code class="notranslate" translate="no">texture_2d_array&lt;f32&gt;</code> y <code class="notranslate" translate="no">texture_cube&lt;f32&gt;</code>,
+sujeto a la restricción normal de que debe usar un sampler sin filtrado (non-filtering sampler).</p>
+</li>
+<li>
+<h2 id="las-derivadas-finas-fine-derivatives-no-están-admitidas">Las derivadas finas (fine derivatives) no están admitidas.</h2>
+<p>Las funciones de WGSL <code class="notranslate" translate="no">dpdxFine</code>, <code class="notranslate" translate="no">dpdyFine</code> y <code class="notranslate" translate="no">fwidthFine</code> no están admitidas en el modo de compatibilidad.
+Aún puedes usar <code class="notranslate" translate="no">dpdx</code>, <code class="notranslate" translate="no">dpdxCoarse</code>, <code class="notranslate" translate="no">dpdy</code>, <code class="notranslate" translate="no">dpdyCoarse</code>, <code class="notranslate" translate="no">fwidth</code> y <code class="notranslate" translate="no">fwidthCoarse</code>.</p>
+</li>
+<li>
+<h2 id="las-combinaciones-de-textura--sampler-están-más-limitadas">Las combinaciones de textura + sampler están más limitadas.</h2>
+<p>En el modo core, puedes vincular más de 16 texturas y más de 16 samplers y luego, en tu shader,
+puedes usar todas las más de 256 combinaciones.</p>
+<p>En el modo de compatibilidad, solo puedes usar 16 combinaciones en total en una sola etapa.</p>
+<p>La regla real es un poco más complicada. Aquí se detalla en pseudocódigo:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">maxCombinacionesPorEtapa =
+   min(device.limits.maxSampledTexturesPerShaderStage, device.limits.maxSamplersPerShaderStage)
+para cada etapa del pipeline:
+  suma = 0
+  para cada binding de textura en el pipeline layout que sea visible para esa etapa:
+    suma += max(1, número de combinaciones de textura y sampler para ese binding de textura)
+  para cada binding de textura externa en el pipeline layout que sea visible para esa etapa:
+    suma += 1 // para textura LUT + sampler LUT
+    suma += 3 * max(1, número de combinaciones de external_texture y sampler) // para Y+U+V
+  si suma &gt; maxCombinacionesPorEtapa
+    generar un error de validación.
+</pre>
+</li>
+<li>
+<h2 id="algunos-de-los-límites-por-defecto-son-más-bajos-en-el-modo-de-compatibilidad">Algunos de los límites por defecto son más bajos en el modo de compatibilidad</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">límite</th>
+<th style="text-align:right">compat</th>
+<th style="text-align:right">núcleo (core)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxColorAttachments</code></td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">8</td>
+</tr>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxComputeInvocationsPerWorkgroup</code></td>
+<td style="text-align:right">128</td>
+<td style="text-align:right">256</td>
+</tr>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxComputeWorkgroupSizeX</code></td>
+<td style="text-align:right">128</td>
+<td style="text-align:right">256</td>
+</tr>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxComputeWorkgroupSizeY</code></td>
+<td style="text-align:right">128</td>
+<td style="text-align:right">256</td>
+</tr>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxInterStageShaderVariables</code></td>
+<td style="text-align:right">15</td>
+<td style="text-align:right">16</td>
+</tr>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxTextureDimension1D</code></td>
+<td style="text-align:right">4096</td>
+<td style="text-align:right">8192</td>
+</tr>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxTextureDimension2D</code></td>
+<td style="text-align:right">4096</td>
+<td style="text-align:right">8192</td>
+</tr>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxUniformBufferBindingSize</code></td>
+<td style="text-align:right">16384</td>
+<td style="text-align:right">65536</td>
+</tr>
+<tr>
+<td style="text-align:left"><code class="notranslate" translate="no">maxVertexAttributes</code></td>
+<td style="text-align:right">16<sup>a</sup></td>
+<td style="text-align:right">16</td>
+</tr>
+</tbody>
+</table>
+<p>(a) En el modo de compatibilidad, usar <code class="notranslate" translate="no">@builtin(vertex_index)</code> y/o <code class="notranslate" translate="no">@builtin(instance_index)</code> cuenta cada uno como un atributo.</p>
+<p>Por supuesto, el adaptador puede admitir límites más altos para cualquiera de estos.</p>
+</li>
+<li>
+<h2 id="hay-4-nuevos-límites">Hay 4 nuevos límites.</h2>
+<ul>
+<li><code class="notranslate" translate="no">maxStorageBuffersInVertexStage</code> (por defecto 0)</li>
+<li><code class="notranslate" translate="no">maxStorageTexturesInVertexStage</code> (por defecto 0)</li>
+<li><code class="notranslate" translate="no">maxStorageBuffersInFragmentStage</code> (por defecto 4)</li>
+<li><code class="notranslate" translate="no">maxStorageTexturesInFragmentStage</code> (por defecto 4)</li>
+</ul>
+<p>Como con otros límites, puedes verificar qué admite el adaptador cuando solicites uno y requerir
+valores más altos que los predeterminados si necesitas más.</p>
+<p>Como se mencionó anteriormente, aproximadamente el 45% de los dispositivos admiten <code class="notranslate" translate="no">0</code>
+storage buffers y storage textures (texturas de almacenamiento) en los vertex shaders.</p>
+</li>
+</ul>
+<h1 id="actualizar-del-modo-de-compatibilidad-al-modo-core">Actualizar del modo de compatibilidad al modo core</h1>
+<p>El modo de compatibilidad fue diseñado para que tú elijas usarlo (opt-in). Si
+puedes diseñar tu aplicación para que conviva con las restricciones anteriores,
+entonces solicitas el modo de compatibilidad. Si no, solicitas el modo core (el
+predeterminado); si el dispositivo no puede manejar el modo core, no devolverá
+un adaptador.</p>
+<p>Por otro lado, también puedes diseñar tu aplicación para que funcione
+en el modo de compatibilidad, pero aproveche todas las características del núcleo (core)
+si el usuario tiene un dispositivo que admita WebGPU core.</p>
+<p>Para hacerlo, solicita un adaptador de modo de compatibilidad y luego verifica
+y habilita la característica <code class="notranslate" translate="no">core-features-and-limits</code>. Si
+existe en el adaptador Y la requieres en el dispositivo, el
+dispositivo será un dispositivo core y ninguna de las restricciones anteriores
+se aplicará.</p>
+<p>Ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu.requestAdapter({
+  featureLevel: 'compatibility',
+});
+const tieneCore = adapter.features.has('core-features-and-limits');
+const device = await adapter.requestDevice({
+  requiredFeatures: [
+    ...(tieneCore ? ['core-features-and-limits'] : []),
+  ],
+});
+</pre>
+<p>Si <code class="notranslate" translate="no">tieneCore</code> es true, entonces no se aplicará ninguna de las restricciones y límites anteriores.</p>
+<p>Ten en cuenta que otro código que quiera verificar si el dispositivo es core o de
+compatibilidad debe verificar las características (<code class="notranslate" translate="no">features</code>) del dispositivo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const esCore = device.features.has('core-features-and-limits');
+</pre>
+<p>Esto siempre será true en un dispositivo core.</p>
+<h1 id="probar-el-modo-de-compatibilidad">Probar el modo de compatibilidad</h1>
+<p>En un navegador que admita el modo de compatibilidad, puedes probar si tu
+aplicación sigue las restricciones NO solicitando <code class="notranslate" translate="no">'core-features-and-limits'</code> (como hicimos al principio).
+Es posible que quieras verificar que realmente tienes un dispositivo de
+compatibilidad para saber que las restricciones y los límites se están
+aplicando.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu.requestAdapter({
+  featureLevel: 'compatibility',
+});
+const device = await adapter.requestDevice();
+
+const esModoCompatibilidad = !device.features.has('core-features-and-limits');
+</pre>
+<p>Esta es una buena forma de probar si tu aplicación funcionará en estos dispositivos más antiguos.</p>
+<h1 id="prueba-rápida-mediante-webgpu-dev-extension">Prueba rápida mediante webgpu-dev-extension</h1>
+<p>Usando <a href="https://github.com/greggman/webgpu-dev-extension">webgpu-dev-extension</a> puedes
+forzar a tu aplicación a usar el modo de compatibilidad como una prueba rápida sin cambios en tu aplicación.
+También puedes probar si una aplicación que se actualiza automáticamente a WebGPU core funciona cuando recibe el modo de compatibilidad.</p>
+<p>Pasos:</p>
+<ol>
+<li>
+<p>Abre las herramientas de desarrollo (devtools) y ejecuta tu aplicación.</p>
+</li>
+<li>
+<p>En Devtools, abre los ajustes (settings).</p>
+</li>
+<li>
+<p>Activa ‘Custom Formatters’.</p>
+</li>
+<li>
+<p>En WebGPU-Dev-Extension, selecciona estas opciones:</p>
+<div class="webgpu_left"><img src="../resources/images/webgpu-dev-extension-compat.png" style="width: 274px"></div>
+<ul>
+<li>
+<h3 id="force-mode-compatibility-mode">Force Mode: ‘compatibility-mode’</h3>
+<p>Esto hace que la aplicación ejecute <code class="notranslate" translate="no">navigator.gpu.requestAdapter({ featureLevel: 'compatibility' });</code>.</p>
+<p>Déjalo en el valor por defecto si tu aplicación ya admite el modo de compatibilidad.</p>
+</li>
+<li>
+<h3 id="block-features-core-features-and-limits">Block Features ‘core-features-and-limits’</h3>
+<p>Esto hace que la aplicación no pueda solicitar el modo core.</p>
+</li>
+<li>
+<h3 id="devtools-custom-formatters">DevTools Custom Formatters</h3>
+<p>Esto hace que, si inspeccionas el dispositivo en devtools, muestre
+<code class="notranslate" translate="no">device.features</code> como un array de cadenas de texto. Sin esto, devtools muestra un
+objeto opaco y no puedes ver las características.</p>
+</li>
+<li>
+<h3 id="show-adapter-info">Show Adapter Info</h3>
+<p>Esta opción hace que se ejecute <code class="notranslate" translate="no">console.log(adapter)</code> y <code class="notranslate" translate="no">console.log(device)</code> cada vez
+que se crea un nuevo adaptador o dispositivo. Esto te permite verificar que el dispositivo está en
+el modo de compatibilidad. Puedes comprobar <code class="notranslate" translate="no">device.features</code> y ver que no tiene
+<code class="notranslate" translate="no">'core-features-and-limits'</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Refresca la página.</p>
+</li>
+<li>
+<p>Verifica que tu aplicación se está ejecutando en el modo de compatibilidad.</p>
+<p>En la consola de JavaScript deberías ver algo como esto:</p>
+</li>
+</ol>
+<div class="webgpu_center"><img src="../resources/images/webgpu-compat-verification.png" style="width: 1100px" class="nobg"></div>
+<p>Busca <code class="notranslate" translate="no">webgpu-dev-extension: custom-formatters</code> cerca de la parte superior para verificar que los formateadores
+fueron inyectados en la página.</p>
+<p>Luego, busca <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUDevice"><code class="notranslate" translate="no">GPUDevice</code></a> y expande las <code class="notranslate" translate="no">features</code>. Asegúrate de que <strong>NO VES</strong>
+<code class="notranslate" translate="no">"core-features-and-limits"</code>.</p>
+<h1 id="ejemplos">Ejemplos:</h1>
+<p>A partir del 2026-02-01, todos los ejemplos locales en <a href="https://webgpu.github.io/webgpu-samples">webgpu-samples</a>
+funcionan, y 185 de los 193 ejemplos de WebGPU en <a href="https://threejs.org/examples/">threejs.org/examples</a>
+funcionan en el modo de compatibilidad. Los 8 restantes podrían actualizarse para que también funcionen en el modo de compatibilidad en
+el futuro con ajustes menores.</p>
+<p class="copyright" data-fill-with="copyright">  <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document" rel="license">permissive document license</a> rules apply. </p>
+<!-- keep this at the bottom of the article -->
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-compatibility-mode.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-compatibility-mode.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compatibility-mode.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compatibility-mode.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compatibility-mode.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compatibility-mode.html">Русский
@@ -203,84 +1157,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +1255,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Modo de compatibilidad de WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

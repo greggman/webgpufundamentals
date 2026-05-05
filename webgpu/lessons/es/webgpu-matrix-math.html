@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-matrix-math.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Matrix Math">
+
+<meta name="description" content="Las matemáticas de matrices lo simplifican todo">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-matrix-math_es.jpg">
+
+<meta property="og:title" content="Matemáticas de matrices en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Matrix Math Simplifies everything">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-matrix-math_es.jpg">
+<meta property="og:description" content="Las matemáticas de matrices lo simplifican todo">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-matrix-math.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Matrix Math">
+<meta name="twitter:title" content="Matemáticas de matrices en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-matrix-math.html">
-<meta name="twitter:description" content="Matrix Math Simplifies everything">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Las matemáticas de matrices lo simplifican todo">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-matrix-math_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-matrix-math.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-matrix-math_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-matrix-math.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-matrix-math.html",
+      "inLanguage":"es",
+      "name":"Matemáticas de matrices en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-matrix-math.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Matrix Math</title>
+<title>Matemáticas de matrices en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-matrix-math.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-matrix-math.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-matrix-math.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-matrix-math.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-matrix-math.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-matrix-math.html">Русский
@@ -182,18 +227,1033 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Matrix Math</h1>
+    <h1>Matemáticas de matrices en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-matrix-math.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Este artículo es el cuarto de una serie que esperamos que te enseñe sobre matemáticas 3D. Cada uno se basa en la lección anterior, por lo que es posible que te resulten más fáciles de entender leyéndolos en orden.</p>
+<ol>
+<li><a href="webgpu-translation.html">Traslación</a></li>
+<li><a href="webgpu-rotation.html">Rotación</a></li>
+<li><a href="webgpu-scale.html">Escalado</a></li>
+<li><a href="webgpu-matrix-math.html">Matemáticas de matrices</a> ⬅ estás aquí</li>
+<li><a href="webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="webgpu-cameras.html">Cámaras</a></li>
+<li><a href="webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="webgpu-scene-graphs.html">Grafos de escena</a></li>
+</ol>
+<p>En las últimas 3 publicaciones repasamos cómo <a href="webgpu-translation.html">trasladar</a>, <a href="webgpu-rotation.html">rotar</a> y <a href="webgpu-scale.html">escalar</a> las posiciones de los vértices. La traslación, la rotación y el escalado se consideran tipos de <em>transformación</em>. Cada una de estas transformaciones requirió cambios en el shader y cada una de las 3 transformaciones dependía del orden.</p>
+<p>En <a href="webgpu-scale.html">nuestro ejemplo anterior</a>, escalamos, luego rotamos y después trasladamos. Si aplicáramos esas operaciones en un orden diferente, obtendríamos un resultado distinto.</p>
+<p>Por ejemplo, aquí tienes un escalado de 2, 1, una rotación de 30 grados y una traslación de 100, 0.</p>
+<img src="../resources/f-scale-rotation-translation.svg" class="webgpu_center" width="400">
+<p>Y aquí una traslación de 100, 0, una rotación de 30 grados y un escalado de 2, 1.</p>
+<img src="../resources/f-translation-rotation-scale.svg" class="webgpu_center" width="400">
+<p>Los resultados son completamente diferentes. Peor aún, si necesitáramos el segundo ejemplo, tendríamos que escribir un shader diferente que aplicara la traslación, rotación y escalado en nuestro nuevo orden deseado.</p>
+<p>Bueno, algunas personas inteligentes descubrieron una forma de hacer todo lo mismo con matemáticas de matrices (matrix math). Para 2D usamos una matriz de 3x3. Una matriz de 3x3 es como una cuadrícula con 9 celdas:</p>
+<div class="glocal-center">
+  <table class="glocal-center-content glocal-mat">
+    <tbody><tr>
+      <td class="m11">1</td>
+      <td class="m12">4</td>
+      <td class="m13">7</td>
+    </tr>
+    <tr>
+      <td class="m21">2</td>
+      <td class="m22">5</td>
+      <td class="m23">8</td>
+    </tr>
+    <tr>
+      <td class="m31">3</td>
+      <td class="m32">6</td>
+      <td class="m33">9</td>
+    </tr>
+  </tbody></table>
+</div>
+<p>Para hacer el cálculo, multiplicamos la posición a lo largo de las filas de la matriz y sumamos los resultados.</p>
+<div class="webgpu_center"><img src="../resources/matrix-vector-math.svg" class="noinvertdark" style="width: 1000px;"></div>
+<p>Nuestras posiciones solo tienen 2 valores, x e y, pero para hacer este cálculo necesitamos 3 valores, así que usaremos 1 para el tercer valor.</p>
+<p>En este caso, nuestro resultado sería:</p>
+<div class="glocal-center">
+  <p>nuevoX = x * <span class="m11">1</span> + y * <span class="m12">4</span> + 1 * <span class="m13">7</span></p>
+  <p>nuevoY = x * <span class="m21">2</span> + y * <span class="m22">5</span> + 1 * <span class="m23">8</span></p>
+  <p>nuevoZ = x * <span class="m31">3</span> + y * <span class="m32">6</span> + 1 * <span class="m33">9</span></p>
+</div>
+<p>Probablemente estés mirando eso y pensando “¿PARA QUÉ SIRVE?”. Bueno, supongamos que tenemos una traslación. Llamaremos tx y ty a la cantidad que queremos trasladar. Hagamos una matriz como esta:</p>
+<div class="glocal-center">
+  <table class="glocal-center-content glocal-mat">
+    <tbody><tr>
+      <td class="m11">1</td>
+      <td class="m12">0</td>
+      <td class="m13">tx</td>
+    </tr>
+    <tr>
+      <td class="m21">0</td>
+      <td class="m22">1</td>
+      <td class="m23">ty</td>
+    </tr>
+    <tr>
+      <td class="m31">0</td>
+      <td class="m32">0</td>
+      <td class="m33">1</td>
+    </tr>
+  </tbody></table>
+</div>
+<p>Y ahora compruébalo:</p>
+<div class="glocal-center">
+  <div class="eq">
+    <div>nuevoX = x * <span class="m11">1</span> + y * <span class="m12">0</span> + 1 * <span class="m13">tx</span></div>
+    <div>nuevoY = x * <span class="m21">0</span> + y * <span class="m22">1</span> + 1 * <span class="m23">ty</span></div>
+    <div>nuevoZ = x * <span class="m31">0</span> + y * <span class="m32">0</span> + 1 * <span class="m33">1</span></div>
+  </div>
+</div>
+<p>Si recuerdas tu álgebra, podemos eliminar cualquier lugar que multiplique por cero. Multiplicar por 1 efectivamente no hace nada, así que simplifiquemos para ver qué está pasando:</p>
+<div class="glocal-center">
+  <div class="eq">
+    <div>nuevoX = x <div class="blk">* <span class="m11">1</span></div> + <div class="blk">y * <span class="m12">0</span> + 1 * </div><span class="m13">tx</span></div>
+    <div>nuevoY = <div class="blk">x * <span class="m21">0</span> +</div> y <div class="blk">* <span class="m22">1</span></div> + <div class="blk">1 * </div><span class="m23">ty</span></div>
+    <div>nuevoZ = <div class="blk">x * <span class="m31">0</span> + y * <span class="m32">0</span> +</div> 1 <div class="blk">* <span class="m33">1</span></div></div>
+  </div>
+</div>
+<p>o de forma más sucinta:</p>
+<div class="webgpu_center"><pre class="webgpu_math">nuevoX = x + tx;
+nuevoY = y + ty;
+</pre></div>
+<p>Y nuevoZ realmente no nos importa.</p>
+<p>Eso se parece sorprendentemente al <a href="webgpu-translation.html">código de traslación de nuestro ejemplo de traslación</a>.</p>
+<p>Del mismo modo, hagamos la rotación. Como señalamos en la publicación sobre rotación, solo necesitamos el seno y el coseno del ángulo al que queremos rotar, así que:</p>
+<div class="webgpu_center"><pre class="webgpu_math">s = Math.sin(ánguloEnRadianes);
+c = Math.cos(ánguloEnRadianes);
+</pre></div>
+<p>Y construimos una matriz como esta:</p>
+<div class="glocal-center">
+  <table class="glocal-center-content glocal-mat">
+    <tbody><tr>
+      <td class="m11">c</td>
+      <td class="m12">-s</td>
+      <td class="m13">0</td>
+    </tr>
+    <tr>
+      <td class="m21">s</td>
+      <td class="m22">c</td>
+      <td class="m23">0</td>
+    </tr>
+    <tr>
+      <td class="m31">0</td>
+      <td class="m32">0</td>
+      <td class="m33">1</td>
+    </tr>
+  </tbody></table>
+</div>
+<p>Aplicando la matriz obtenemos esto:</p>
+<div class="glocal-center">
+  <div class="eq">
+    <div>nuevoX = x * <span class="m11">c</span> + y * <span class="m12">-s</span> + 1 * <span class="m13">0</span></div>
+    <div>nuevoY = x * <span class="m21">s</span> + y * <span class="m22">c</span> + 1 * <span class="m23">0</span></div>
+    <div>nuevoZ = x * <span class="m31">0</span> + y * <span class="m32">0</span> + 1 * <span class="m33">1</span></div>
+  </div>
+</div>
+<p>Tachando todas las multiplicaciones por 0 y 1 obtenemos:</p>
+<div class="glocal-center">
+  <div class="eq">
+    <div>nuevoX = x * <span class="m11">c</span> + y * <span class="m12">-s</span><div class="blk"> + 1 * <span class="m13">0</span></div></div>
+    <div>nuevoY = x * <span class="m21">s</span> + y * <span class="m22">c</span><div class="blk"> + 1 * <span class="m23">0</span></div></div>
+    <div>nuevoZ = <div class="blk">x * <span class="m31">0</span> + y * <span class="m32">0</span> +</div> 1 <div class="blk">* <span class="m33">1</span></div></div>
+  </div>
+</div>
+<p>Y simplificando obtenemos:</p>
+<div class="webgpu_center">
+<pre class="webgpu_math">nuevoX = x * c - y * s;
+nuevoY = x * s + y * c;
+</pre>
+</div>
+<p>Que es exactamente lo que teníamos en nuestro <a href="webgpu-rotation.html">ejemplo de rotación</a>.</p>
+<p>Y por último, el escalado. Llamaremos sx y sy a nuestros 2 factores de escala.</p>
+<p>Y construimos una matriz como esta:</p>
+<div class="glocal-center">
+  <table class="glocal-center-content glocal-mat">
+    <tbody><tr>
+      <td class="m11">sx</td>
+      <td class="m12">0</td>
+      <td class="m13">0</td>
+    </tr>
+    <tr>
+      <td class="m21">0</td>
+      <td class="m22">sy</td>
+      <td class="m23">0</td>
+    </tr>
+    <tr>
+      <td class="m31">0</td>
+      <td class="m32">0</td>
+      <td class="m33">1</td>
+    </tr>
+  </tbody></table>
+</div>
+<p>Aplicando la matriz obtenemos esto:</p>
+<div class="glocal-center">
+  <div class="eq">
+    <div>nuevoX = x * <span class="m11">sx</span> + y * <span class="m12">0</span> + 1 * <span class="m13">0</span></div>
+    <div>nuevoY = x * <span class="m21">0</span> + y * <span class="m22">sy</span> + 1 * <span class="m23">0</span></div>
+    <div>nuevoZ = x * <span class="m31">0</span> + y * <span class="m32">0</span> + 1 * <span class="m33">1</span></div>
+  </div>
+</div>
+<p>que es realmente:</p>
+<div class="glocal-center">
+  <div class="eq">
+    <div>nuevoX = x * <span class="m11">sx</span><div class="blk"> + y * <span class="m12">0</span> + 1 * <span class="m13">0</span></div></div>
+    <div>nuevoY = <div class="blk">x * <span class="m21">0</span> +</div> y * <span class="m22">sy</span><div class="blk"> + 1 * <span class="m23">0</span></div></div>
+    <div>nuevoZ = <div class="blk">x * <span class="m31">0</span> + y * <span class="m32">0</span> +</div> 1 <div class="blk">* <span class="m33">1</span></div></div>
+  </div>
+</div>
+<p>que simplificado es:</p>
+<div class="webgpu_center">
+<pre class="webgpu_math">nuevoX = x * sx;
+nuevoY = y * sy;
+</pre>
+</div>
+<p>Que es lo mismo que nuestro <a href="webgpu-scale.html">ejemplo de escalado</a>.</p>
+<p>Ahora estoy seguro de que todavía podrías estar pensando “¿Y qué? ¿Cuál es el punto?”. Eso parece mucho trabajo solo para hacer lo mismo que ya estábamos haciendo.</p>
+<p>Aquí es donde entra la magia. Resulta que podemos multiplicar matrices entre sí y aplicar todas las transformaciones a la vez. Supongamos que tenemos una función, <code class="notranslate" translate="no">mat3.multiply</code>, que toma dos matrices, las multiplica y devuelve el resultado.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat3 = {
+  multiply: function(a, b) {
+    const a00 = a[0 * 3 + 0];
+    const a01 = a[0 * 3 + 1];
+    const a02 = a[0 * 3 + 2];
+    const a10 = a[1 * 3 + 0];
+    const a11 = a[1 * 3 + 1];
+    const a12 = a[1 * 3 + 2];
+    const a20 = a[2 * 3 + 0];
+    const a21 = a[2 * 3 + 1];
+    const a22 = a[2 * 3 + 2];
+    const b00 = b[0 * 3 + 0];
+    const b01 = b[0 * 3 + 1];
+    const b02 = b[0 * 3 + 2];
+    const b10 = b[1 * 3 + 0];
+    const b11 = b[1 * 3 + 1];
+    const b12 = b[1 * 3 + 2];
+    const b20 = b[2 * 3 + 0];
+    const b21 = b[2 * 3 + 1];
+    const b22 = b[2 * 3 + 2];
+
+    return [
+      b00 * a00 + b01 * a10 + b02 * a20,
+      b00 * a01 + b01 * a11 + b02 * a21,
+      b00 * a02 + b01 * a12 + b02 * a22,
+      b10 * a00 + b11 * a10 + b12 * a20,
+      b10 * a01 + b11 * a11 + b12 * a21,
+      b10 * a02 + b11 * a12 + b12 * a22,
+      b20 * a00 + b21 * a10 + b22 * a20,
+      b20 * a01 + b21 * a11 + b22 * a21,
+      b20 * a02 + b21 * a12 + b22 * a22,
+    ];
+  }
+}
+</pre>
+<p>Para que las cosas queden más claras, hagamos funciones para construir matrices de traslación, rotación y escalado.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat3 = {
+  multiply(a, b) {
+    ...
+  },
+  translation([tx, ty]) {
+    return [
+      1, 0, 0,
+      0, 1, 0,
+      tx, ty, 1,
+    ];
+  },
+
+  rotation(angleInRadians) {
+    const c = Math.cos(angleInRadians);
+    const s = Math.sin(angleInRadians);
+    return [
+      c, s, 0,
+      -s, c, 0,
+      0, 0, 1,
+    ];
+  },
+
+  scaling([sx, sy]) {
+    return [
+      sx, 0, 0,
+      0, sy, 0,
+      0, 0, 1,
+    ];
+  },
+};
+</pre>
+<p>Ahora cambiemos nuestro shader para usar una matriz:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  color: vec4f,
+  resolution: vec2f,
+-  translation: vec2f,
+-  rotation: vec2f,
+-  scale: vec2f,
++  matrix: mat3x3f,
+};
+
+...
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+
+-  // Escalar la posición
+-  let scaledPosition = vert.position * uni.scale;
+-
+-  // Rotar la posición
+-  let rotatedPosition = vec2f(
+-    scaledPosition.x * uni.rotation.x - scaledPosition.y * uni.rotation.y,
+-    scaledPosition.x * uni.rotation.y + scaledPosition.y * uni.rotation.x
+-  );
+-
+-  // Añadir la traslación
+-  let position = rotatedPosition + uni.translation;
++  // Multiplicar por una matriz
++  let position = (uni.matrix * vec3f(vert.position, 1)).xy;
+
+  ...
+</pre>
+<p>Como puedes ver arriba, pasamos 1 para z. Multiplicamos la posición por la matriz y luego nos quedamos solo con x e y del resultado.</p>
+<p>Nuevamente necesitamos actualizar el tamaño y los offsets de nuestro buffer de uniform:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  // color, resolution, translation, rotation, scale
+-  const uniformBufferSize = (4 + 2 + 2 + 2 + 2) * 4;
++  // color, resolution, padding, matrix
++  const uniformBufferSize = (4 + 2 + 2 + 12) * 4;
+   const uniformBuffer = device.createBuffer({
+     label: 'uniforms',
+     size: uniformBufferSize,
+     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+   });
+
+   const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+   // offsets a los diversos valores de uniform en índices float32
+   const kColorOffset = 0;
+   const kResolutionOffset = 4;
+   const kMatrixOffset = 8;
+
+   const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+   const resolutionValue = uniformValues.subarray(kResolutionOffset, kResolutionOffset + 2);
+-  const translationValue = uniformValues.subarray(kTranslationOffset, kTranslationOffset + 2);
+-  const rotationValue = uniformValues.subarray(kRotationOffset, kRotationOffset + 2);
+-  const scaleValue = uniformValues.subarray(kScaleOffset, kScaleOffset + 2);
++  const matrixValue = uniformValues.subarray(kMatrixOffset, kMatrixOffset + 12);
+</pre>
+<p>Y finalmente necesitamos hacer algunas <em>matemáticas de matrices</em> en el momento del renderizado:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   function render() {
+     ...
++    const translationMatrix = mat3.translation(settings.translation);
++    const rotationMatrix = mat3.rotation(settings.rotation);
++    const scaleMatrix = mat3.scaling(settings.scale);
++
++    let matrix = mat3.multiply(translationMatrix, rotationMatrix);
++    matrix = mat3.multiply(matrix, scaleMatrix);
+
+     // Establecer los valores de uniform en nuestro Float32Array del lado de JavaScript
+     resolutionValue.set([canvas.width, canvas.height]);
+-    translationValue.set(settings.translation);
+-    rotationValue.set([
+-        Math.cos(settings.rotation),
+-        Math.sin(settings.rotation),
+-    ]);
+-    scaleValue.set(settings.scale);
++    matrixValue.set([
++      ...matrix.slice(0, 3), 0,
++      ...matrix.slice(3, 6), 0,
++      ...matrix.slice(6, 9), 0,
++    ]);
+</pre>
+<p>Aquí está usando nuestro nuevo código. Los deslizadores son los mismos: traslación, rotación y escalado. Pero la forma en que se usan en el shader es mucho más simple.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-math-transform-trs-3x3.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-math-transform-trs-3x3.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="las-columnas-son-filas"><a id="a-columns-are-rows"></a> Las columnas son filas</h2>
+<p>En la descripción de cómo funciona una matriz hablamos de multiplicar por columnas. Como ejemplo, mostramos esta matriz como un ejemplo de una matriz de traslación:</p>
+<div class="glocal-center">
+  <table class="glocal-center-content glocal-mat">
+    <tbody><tr>
+      <td class="m11">1</td>
+      <td class="m12">0</td>
+      <td class="m13">tx</td>
+    </tr>
+    <tr>
+      <td class="m21">0</td>
+      <td class="m22">1</td>
+      <td class="m23">ty</td>
+    </tr>
+    <tr>
+      <td class="m31">0</td>
+      <td class="m32">0</td>
+      <td class="m33">1</td>
+    </tr>
+  </tbody></table>
+</div>
+<p>Pero cuando realmente construimos la matriz en el código hicimos esto:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  translation([tx, ty]) {
+    return [
+      1, 0, 0,
+      0, 1, 0,
+      tx, ty, 1,
+    ];
+  },
+</pre>
+<p>La parte <code class="notranslate" translate="no">tx, ty, 1</code> está en la fila inferior, no en la última columna.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  translation([tx, ty]) {
+    return [
+      1, 0, 0,   // &lt;-- 1ª columna
+      0, 1, 0,   // &lt;-- 2ª columna
+      tx, ty, 1, // &lt;-- 3ª columna
+    ];
+  },
+</pre>
+<p>La forma en que algunos expertos en gráficos resuelven esto es llamándolas columnas. Lamentablemente, es algo a lo que simplemente tienes que acostumbrarte. Los libros de matemáticas y los artículos de matemáticas en la red mostrarán las matrices como el diagrama anterior, donde <code class="notranslate" translate="no">tx, ty, 1</code> están en la última columna, pero cuando las ponemos en código, al menos en WebGPU, las especificamos como se muestra arriba.</p>
+<h2 id="las-matemáticas-de-matrices-son-flexibles">Las matemáticas de matrices son flexibles</h2>
+<p>Aun así, podrías estar preguntando, ¿y qué? Eso no parece un gran beneficio. El beneficio es que ahora, si queremos cambiar el orden de las operaciones, no tenemos que escribir un shader nuevo. Simplemente podemos cambiar el cálculo en JavaScript:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    let matrix = mat3.multiply(translationMatrix, rotationMatrix);
+-    matrix = mat3.multiply(matrix, scaleMatrix);
++    let matrix = mat3.multiply(scaleMatrix, rotationMatrix);
++    matrix = mat3.multiply(matrix, translationMatrix);
+</pre>
+<p>Arriba cambiamos de aplicar traslación→rotación→escalado a escalado→rotación→traslación.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-math-transform-srt-3x3.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-math-transform-srt-3x3.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Juega con los deslizadores y verás que ahora reaccionan de manera diferente al componer las matrices en un orden distinto. Por ejemplo, la traslación está ocurriendo después de la rotación.</p>
+<div class="webgpu_center compare" style="justify-content: space-evenly;">
+  <div style="flex: 0 0 auto;">
+    <div>traslación→rotación→escalado</div>
+    <div><div data-diagram="trs"></div></div>
+  </div>
+  <div style="flex: 0 0 auto;">
+    <div>escalado→rotación→traslación</div>
+    <div><div data-diagram="srt"></div></div>
+  </div>
+</div>
+<p>La de la izquierda podría describirse como una F escalada y rotada, trasladada de izquierda a derecha. Mientras que la de la derecha podría describirse mejor como que la propia traslación ha sido rotada y escalada. El movimiento no es izquierda↔derecha, sino diagonal. Además, la F de la derecha no se mueve tanto porque la propia traslación ha sido escalada.</p>
+<p>Esta flexibilidad es la razón por la que las matemáticas de matrices son un componente fundamental de casi todos los gráficos por computadora.</p>
+<p>Ser capaz de aplicar matrices así es especialmente importante para la animación jerárquica, como los brazos y las piernas de un cuerpo, las lunas alrededor de un planeta alrededor de un sol, o las ramas de un árbol. Para un ejemplo simple de aplicación jerárquica de matrices, dibujemos la ‘F’ cinco veces, pero cada vez empezando con la matriz de la ‘F’ anterior.</p>
+<p>Para hacer esto necesitamos 5 buffers de uniform, 5 valores de uniform y 5 bindGroups:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const numObjects = 5;
++  const objectInfos = [];
++  for (let i = 0; i &lt; numObjects; ++i) {
+     // color, resolution, padding, matrix
+     const uniformBufferSize = (4 + 2 + 2 + 12) * 4;
+     const uniformBuffer = device.createBuffer({
+       label: 'uniforms',
+       size: uniformBufferSize,
+       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+     });
+
+     const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+     // offsets a los diversos valores de uniform en índices float32
+     const kColorOffset = 0;
+     const kResolutionOffset = 4;
+     const kMatrixOffset = 8;
+
+     const colorValue = uniformValues.subarray(kColorOffset, kColorOffset + 4);
+     const resolutionValue = uniformValues.subarray(kResolutionOffset, kResolutionOffset + 2);
+     const matrixValue = uniformValues.subarray(kMatrixOffset, kMatrixOffset + 12);
+
+     // El color no cambiará, así que vamos a establecerlo una vez al inicializar
+     colorValue.set([Math.random(), Math.random(), Math.random(), 1]);
+
+     const bindGroup = device.createBindGroup({
+       label: 'bind group for object',
+       layout: pipeline.getBindGroupLayout(0),
+       entries: [
+         { binding: 0, resource: uniformBuffer },
+       ],
+     });
+
++    objectInfos.push({
++      uniformBuffer,
++      uniformValues,
++      resolutionValue,
++      matrixValue,
++      bindGroup,
++    });
++  }
+</pre>
+<p>En el momento del renderizado, recorremos los objetos y multiplicamos la matriz anterior por nuestras matrices de traslación, rotación y escalado.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
+  ...
+
+  const translationMatrix = mat3.translation(settings.translation);
+  const rotationMatrix = mat3.rotation(settings.rotation);
+  const scaleMatrix = mat3.scaling(settings.scale);
+
+-  let matrix = mat3.multiply(translationMatrix, rotationMatrix);
+-  matrix = mat3.multiply(matrix, scaleMatrix);
+
++  // Matriz inicial.
++  let matrix = mat3.identity();
++
++  for (const {
++    uniformBuffer,
++    uniformValues,
++    resolutionValue,
++    matrixValue,
++    bindGroup,
++  } of objectInfos) {
++    matrix = mat3.multiply(matrix, translationMatrix)
++    matrix = mat3.multiply(matrix, rotationMatrix);
++    matrix = mat3.multiply(matrix, scaleMatrix);
+
+     // Establecer los valores de uniform en nuestro Float32Array del lado de JavaScript
+     resolutionValue.set([canvas.width, canvas.height]);
+     matrixValue.set([
+       ...matrix.slice(0, 3), 0,
+       ...matrix.slice(3, 6), 0,
+       ...matrix.slice(6, 9), 0,
+     ]);
+
+     // subir los valores de uniform al buffer de uniform
+     device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+     pass.setBindGroup(0, bindGroup);
+     pass.drawIndexed(numVertices);
++  }
+
+   pass.end();
+</pre>
+<p>Para que esto funcione, introdujimos la función <code class="notranslate" translate="no">mat3.identity</code>, que crea una matriz identidad. Una matriz identidad es una matriz que efectivamente representa el valor 1.0, de modo que si multiplicas por la identidad no ocurre nada. Al igual que:</p>
+<div class="webgpu_center"><div class="webgpu_math">X * 1 = X</div></div>
+<p>así también:</p>
+<div class="webgpu_center"><div class="webgpu_math">matrizX * identidad = matrizX</div></div>
+<p>Aquí tienes el código para crear una matriz identidad:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat3 = {
+  ...
+  identity() {
+    return [
+      1, 0, 0,
+      0, 1, 0,
+      0, 0, 1,
+    ];
+  },
+
+  ...
+</pre>
+<p>Aquí están las cinco Fs:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-math-transform-five-fs-3x3.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-math-transform-five-fs-3x3.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Arrastra los deslizadores y observa cómo cada ‘F’ subsiguiente se dibuja en relación con el tamaño y la orientación de la ‘F’ anterior. Así es como funciona un brazo en un humano generado por computadora, donde la rotación del brazo afecta al antebrazo, y la rotación del antebrazo afecta a la mano, y la rotación de la mano afecta a los dedos, etc…</p>
+<h2 id="cambiar-el-centro-de-rotación-o-escalado">Cambiar el centro de rotación o escalado</h2>
+<p>Veamos un ejemplo más. En todos los ejemplos hasta ahora, nuestra ‘F’ rota alrededor de su esquina superior izquierda (bueno, excepto en el ejemplo donde invertimos el orden arriba). Esto se debe a que las matemáticas que estamos usando siempre rotan alrededor del origen y la esquina superior izquierda de nuestra ‘F’ está en el origen, (0, 0).</p>
+<p>Pero ahora, como podemos hacer matemáticas de matrices y podemos elegir el orden en que se aplican las transformaciones, podemos mover el origen.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const translationMatrix = mat3.translation(settings.translation);
+    const rotationMatrix = mat3.rotation(settings.rotation);
+    const scaleMatrix = mat3.scaling(settings.scale);
++    // crear una matriz que mueva el origen de la 'F' a su centro.
++    const moveOriginMatrix = mat3.translation([-50, -75]);
+
+    let matrix = mat3.multiply(translationMatrix, rotationMatrix);
+    matrix = mat3.multiply(matrix, scaleMatrix);
++    matrix = mat3.multiply(matrix, moveOriginMatrix);
+</pre>
+<p>Arriba aplicamos una traslación para mover la F -50, -75. Esto mueve todos sus puntos para que 0,0 esté en el centro de la F. Arrastra los deslizadores y observa cómo la F rota y se escala alrededor de su centro.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-math-transform-move-origin-3x3.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-math-transform-move-origin-3x3.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Usando esa técnica, puedes rotar o escalar desde cualquier punto. Ahora ya sabes cómo tu programa favorito de edición de imágenes te permite mover el punto de rotación.</p>
+<h2 id="añadir-la-proyección">Añadir la proyección</h2>
+<p>Vamos a volvernos aún más locos. Quizás recuerdes que tenemos código en el shader para convertir de píxeles a espacio de recorte que se ve así:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">// convertir la posición de píxeles a un valor de 0.0 a 1.0
+let zeroToOne = position / uni.resolution;
+
+// convertir de 0 &lt;-&gt; 1 a 0 &lt;-&gt; 2
+let zeroToTwo = zeroToOne * 2.0;
+
+// convertir de 0 &lt;-&gt; 2 a -1 &lt;-&gt; +1 (espacio de recorte)
+let flippedClipSpace = zeroToTwo - 1.0;
+
+// invertir Y
+let clipSpace = flippedClipSpace * vec2f(1, -1);
+
+vsOut.position = vec4f(clipSpace, 0.0, 1.0);
+</pre>
+<p>Si miras cada uno de esos pasos a la vez:</p>
+<p>El primer paso, “convertir la posición de píxeles a un valor de 0.0 a 1.0”, es realmente una operación de escalado. <code class="notranslate" translate="no">zeroToOne = position / uni.resolution</code> es lo mismo que <code class="notranslate" translate="no">zeroToOne = position * (1 / uni.resolution)</code>, lo cual es escalar.</p>
+<p>El segundo paso, <code class="notranslate" translate="no">let zeroToTwo = zeroToOne * 2.0;</code>, también es una operación de escalado. Es escalar por 2.</p>
+<p>El tercer paso, <code class="notranslate" translate="no">flippedClipSpace = zeroToTwo - 1.0;</code>, es una traslación.</p>
+<p>El cuarto paso, <code class="notranslate" translate="no">clipSpace = flippedClipSpace * vec2f(1, -1);</code>, es un escalado.</p>
+<p>Entonces, podríamos añadir esto a nuestro cálculo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const scaleBy1OverResolutionMatrix = mat3.scaling([1 / canvas.width, 1 / canvas.height]);
++  const scaleBy2Matrix = mat3.scaling([2, 2]);
++  const translateByMinus1 = mat3.translation([-1, -1]);
++  const scaleBy1Minus1 = mat3.scaling([1, -1]);
+
+   const translationMatrix = mat3.translation(settings.translation);
+   const rotationMatrix = mat3.rotation(settings.rotation);
+   const scaleMatrix = mat3.scaling(settings.scale);
+
+-  let matrix = mat3.multiply(translationMatrix, rotationMatrix);
++  let matrix = mat3.multiply(scaleBy1Minus1, translateByMinus1);
++  matrix = mat3.multiply(matrix, scaleBy2Matrix);
++  matrix = mat3.multiply(matrix, scaleBy1OverResolutionMatrix);
++  matrix = mat3.multiply(matrix, translationMatrix);
++  matrix = mat3.multiply(matrix, rotationMatrix);
+   matrix = mat3.multiply(matrix, scaleMatrix);
+</pre>
+<p>Entonces nuestro shader podría cambiar a esto:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  color: vec4f,
+-  resolution: vec2f,
+   matrix: mat3x3f,
+};
+
+struct Vertex {
+  @location(0) position: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(vert: Vertex) -&gt; VSOutput {
+  var vsOut: VSOutput;
+
+-  let position = (uni.matrix * vec3f(vert.position, 1)).xy;
+-
+-  // convertir la posición de píxeles a un valor de 0.0 a 1.0
+-  let zeroToOne = position / uni.resolution;
+-
+-  // convertir de 0 &lt;-&gt; 1 a 0 &lt;-&gt; 2
+-  let zeroToTwo = zeroToOne * 2.0;
+-
+-  // convertir de 0 &lt;-&gt; 2 a -1 &lt;-&gt; +1 (espacio de recorte)
+-  let flippedClipSpace = zeroToTwo - 1.0;
+-
+-  // invertir Y
+-  let clipSpace = flippedClipSpace * vec2f(1, -1);
+-
+-  vsOut.position = vec4f(clipSpace, 0.0, 1.0);
++  let clipSpace = (uni.matrix * vec3f(vert.position, 1)).xy;
++
++  vsOut.position = vec4f(clipSpace, 0.0, 1.0);
+   return vsOut;
+ }
+
+ @fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+   return uni.color;
+ }
+</pre>
+<p>Nuestro shader es súper simple ahora y no hemos perdido ninguna funcionalidad. ¡De hecho, se ha vuelto más flexible! Ya no estamos limitados por código a representar píxeles. Podríamos elegir diferentes unidades desde fuera del shader. Todo porque estamos usando matemáticas de matrices.</p>
+<p>Sin embargo, en lugar de crear esas 4 matrices adicionales, podríamos simplemente crear una función que genere el mismo resultado:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat3 = {
+  projection(width, height) {
+    // Nota: Esta matriz invierte el eje Y para que 0 esté en la parte superior.
+    return [
+      2 / width, 0, 0,
+      0, -2 / height, 0,
+      -1, 1, 1,
+    ];
+  },
+
+  ...
+</pre>
+<p>Y nuestro JavaScript cambiaría a esto:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const scaleBy1OverResolutionMatrix = mat3.scaling([1 / canvas.width, 1 / canvas.height]);
+-  const scaleBy2Matrix = mat3.scaling([2, 2]);
+-  const translateByMinus1 = mat3.translation([-1, -1]);
+-  const scaleBy1Minus1 = mat3.scaling([1, -1]);
+   const projectionMatrix = mat3.projection(canvas.clientWidth, canvas.clientHeight);
+   const translationMatrix = mat3.translation(settings.translation);
+   const rotationMatrix = mat3.rotation(settings.rotation);
+   const scaleMatrix = mat3.scaling(settings.scale);
+
+-  let matrix = mat3.multiply(scaleBy1Minus1, translateByMinus1);
+-  matrix = mat3.multiply(matrix, scaleBy2Matrix);
+-  matrix = mat3.multiply(matrix, scaleBy1OverResolutionMatrix);
+-  matrix = mat3.multiply(matrix, translationMatrix);
+   let matrix = mat3.multiply(projectionMatrix, translationMatrix);
+   matrix = mat3.multiply(matrix, rotationMatrix);
+   matrix = mat3.multiply(matrix, scaleMatrix);
+   matrix = mat3.multiply(matrix, moveOriginMatrix);
+</pre>
+<p>También eliminamos el código que reservaba espacio para la resolución en nuestro buffer de uniform y el código que la establecía. Con este último paso hemos pasado de un shader bastante complicado con 6-7 pasos a un shader muy simple con solo 1 paso que es más flexible, todo gracias a la magia de las matemáticas de matrices.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-math-transform-just-matrix-3x3.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-math-transform-just-matrix-3x3.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="multiplicación-de-matrices-sobre-la-marcha">Multiplicación de matrices sobre la marcha</h2>
+<p>Antes de seguir adelante, simplifiquemos un poco. Aunque es común generar varias matrices y multiplicarlas por separado, también es común simplemente multiplicarlas sobre la marcha (as we go). Efectivamente, podríamos escribir funciones como estas:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat3 = {
+
+  ...
+
+  translate: function(m, translation) {
+    return mat3.multiply(m, mat3.translation(translation));
+  },
+
+  rotate: function(m, angleInRadians) {
+    return mat3.multiply(m, mat3.rotation(angleInRadians));
+  },
+
+  scale: function(m, scale) {
+    return mat3.multiply(m, mat3.scaling(scale));
+  },
+
+  ...
+
+};
+</pre>
+<p>Esto nos permitiría cambiar 7 líneas de código de matrices anteriores a solo 4 líneas como estas:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const projectionMatrix = mat3.projection(canvas.clientWidth, canvas.clientHeight);
+-const translationMatrix = mat3.translation(settings.translation);
+-const rotationMatrix = mat3.rotation(settings.rotation);
+-const scaleMatrix = mat3.scaling(settings.scale);
+-
+-let matrix = mat3.multiply(projectionMatrix, translationMatrix);
+-matrix = mat3.multiply(matrix, rotationMatrix);
+-matrix = mat3.multiply(matrix, scaleMatrix);
++let matrix = mat3.translate(projectionMatrix, settings.translation);
++matrix = mat3.rotate(matrix, settings.rotation);
++matrix = mat3.scale(matrix, settings.scale);
+</pre>
+<h2 id="mat3x3-son-3-vec3fs-con-padding">mat3x3 son 3 vec3fs con padding</h2>
+<p>Como se señaló en el <a href="../webgpu-memory-layout.md">artículo sobre la disposición de memoria (memory layout)</a>, los <code class="notranslate" translate="no">vec3f</code> a menudo ocupan el espacio de 4 floats, no de 3.</p>
+<p>Así es como se ve una <code class="notranslate" translate="no">mat3x3f</code> en memoria:</p>
+<div class="webgpu_center" data-diagram="mat3x3f"></div>
+<p>Esta es la razón por la que necesitábamos este código para copiarla en los valores de uniform:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    matrixValue.set([
+      ...matrix.slice(0, 3), 0,
+      ...matrix.slice(3, 6), 0,
+      ...matrix.slice(6, 9), 0,
+    ]);
+</pre>
+<p>Podríamos solucionar eso cambiando las funciones de matriz para que esperen o manejen el padding (relleno).</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat3 = {
+  projection(width, height) {
+    // Nota: Esta matriz invierte el eje Y para que 0 esté en la parte superior.
+    return [
+-      2 / width, 0, 0,
+-      0, -2 / height, 0,
+-      -1, 1, 1,
++      2 / width, 0, 0, 0,
++      0, -2 / height, 0, 0,
++      -1, 1, 1, 0,
+    ];
+  },
+  identity() {
+    return [
+-      1, 0, 0,
+-      0, 1, 0,
+-      0, 0, 1,
++      1, 0, 0, 0,
++      0, 1, 0, 0,
++      0, 0, 1, 0,
+    ];
+  },
+  multiply(a, b) {
+-    const a00 = a[0 * 3 + 0];
+-    const a01 = a[0 * 3 + 1];
+-    const a02 = a[0 * 3 + 2];
+-    const a10 = a[1 * 3 + 0];
+-    const a11 = a[1 * 3 + 1];
+-    const a12 = a[1 * 3 + 2];
+-    const a20 = a[2 * 3 + 0];
+-    const a21 = a[2 * 3 + 1];
+-    const a22 = a[2 * 3 + 2];
+-    const b00 = b[0 * 3 + 0];
+-    const b01 = b[0 * 3 + 1];
+-    const b02 = b[0 * 3 + 2];
+-    const b10 = b[1 * 3 + 0];
+-    const b11 = b[1 * 3 + 1];
+-    const b12 = b[1 * 3 + 2];
+-    const b20 = b[2 * 3 + 0];
+-    const b21 = b[2 * 3 + 1];
+-    const b22 = b[2 * 3 + 2];
++    const a00 = a[0 * 4 + 0];
++    const a01 = a[0 * 4 + 1];
++    const a02 = a[0 * 4 + 2];
++    const a10 = a[1 * 4 + 0];
++    const a11 = a[1 * 4 + 1];
++    const a12 = a[1 * 4 + 2];
++    const a20 = a[2 * 4 + 0];
++    const a21 = a[2 * 4 + 1];
++    const a22 = a[2 * 4 + 2];
++    const b00 = b[0 * 4 + 0];
++    const b01 = b[0 * 4 + 1];
++    const b02 = b[0 * 4 + 2];
++    const b10 = b[1 * 4 + 0];
++    const b11 = b[1 * 4 + 1];
++    const b12 = b[1 * 4 + 2];
++    const b20 = b[2 * 4 + 0];
++    const b21 = b[2 * 4 + 1];
++    const b22 = b[2 * 4 + 2];
+
+    return [
+      b00 * a00 + b01 * a10 + b02 * a20,
+      b00 * a01 + b01 * a11 + b02 * a21,
+      b00 * a02 + b01 * a12 + b02 * a22,
++      0,
+      b10 * a00 + b11 * a10 + b12 * a20,
+      b10 * a01 + b11 * a11 + b12 * a21,
+      b10 * a02 + b11 * a12 + b12 * a22,
++      0,
+      b20 * a00 + b21 * a10 + b22 * a20,
+      b20 * a01 + b21 * a11 + b22 * a21,
+      b20 * a02 + b21 * a12 + b22 * a22,
++      0,
+    ];
+  },
+  translation([tx, ty]) {
+    return [
+-      1, 0, 0,
+-      0, 1, 0,
+-      tx, ty, 1,
++      1, 0, 0, 0,
++      0, 1, 0, 0, 
++      tx, ty, 1, 0,
+    ];
+  },
+
+  rotation(angleInRadians) {
+    const c = Math.cos(angleInRadians);
+    const s = Math.sin(angleInRadians);
+    return [
+-      c, s, 0,
+-      -s, c, 0,
+-      0, 0, 1,
++      c, s, 0, 0,
++      -s, c, 0, 0,
++      0, 0, 1, 0,
+    ];
+  },
+
+  scaling([sx, sy]) {
+    return [
+-      sx, 0, 0,
+-      0, sy, 0,
+-      0, 0, 1,
++      sx, 0, 0, 0, 
++      0, sy, 0, 0,
++      0, 0, 1, 0,
+    ];
+  },
+};
+</pre>
+<p>Ahora podemos cambiar la parte que establece nuestra matriz:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    matrixValue.set([
+-      ...matrix.slice(0, 3), 0,
+-      ...matrix.slice(3, 6), 0,
+-      ...matrix.slice(6, 9), 0,
+-    ]);
++    matrixValue.set(matrix);
+</pre>
+<h2 id="actualizar-matrices-in-place">Actualizar matrices in-place</h2>
+<p>Otra cosa que podemos hacer es permitir pasar una matriz a nuestras funciones de matriz. Esto nos permitiría actualizar una matriz in-place (en el mismo objeto), en lugar de copiarla. Es útil tener ambas opciones, así que haremos que si no se pasa una matriz de destino (destination matrix), crearemos una nueva. De lo contrario, usaremos la que se pasó.</p>
+<p>Para tomar 3 ejemplos:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mat3 = {
+-  multiply(a, b) {
++  multiply(a, b, dst) {
++    dst = dst || new Float32Array(12);
+     const a00 = a[0 * 4 + 0];
+     const a01 = a[0 * 4 + 1];
+     const a02 = a[0 * 4 + 2];
+     const a10 = a[1 * 4 + 0];
+     const a11 = a[1 * 4 + 1];
+     const a12 = a[1 * 4 + 2];
+     const a20 = a[2 * 4 + 0];
+     const a21 = a[2 * 4 + 1];
+     const a22 = a[2 * 4 + 2];
+     const b00 = b[0 * 4 + 0];
+     const b01 = b[0 * 4 + 1];
+     const b02 = b[0 * 4 + 2];
+     const b10 = b[1 * 4 + 0];
+     const b11 = b[1 * 4 + 1];
+     const b12 = b[1 * 4 + 2];
+     const b20 = b[2 * 4 + 0];
+     const b21 = b[2 * 4 + 1];
+     const b22 = b[2 * 4 + 2];
+
+-    return [
+-      b00 * a00 + b01 * a10 + b02 * a20,
+-      b00 * a01 + b01 * a11 + b02 * a21,
+-      b00 * a02 + b01 * a12 + b02 * a22,
+-      0,
+-      b10 * a00 + b11 * a10 + b12 * a20,
+-      b10 * a01 + b11 * a11 + b12 * a21,
+-      b10 * a02 + b11 * a12 + b12 * a22,
+-      0,
+-      b20 * a00 + b21 * a10 + b22 * a20,
+-      b20 * a01 + b21 * a11 + b22 * a21,
+-      b20 * a02 + b21 * a12 + b22 * a22,
+-      0,
+-    ];
++    dst[ 0] = b00 * a00 + b01 * a10 + b02 * a20;
++    dst[ 1] = b00 * a01 + b01 * a11 + b02 * a21;
++    dst[ 2] = b00 * a02 + b01 * a12 + b02 * a22;
++
++    dst[ 4] = b10 * a00 + b11 * a10 + b12 * a20;
++    dst[ 5] = b10 * a01 + b11 * a11 + b12 * a21;
++    dst[ 6] = b10 * a02 + b11 * a12 + b12 * a22;
++
++    dst[ 8] = b20 * a00 + b21 * a10 + b22 * a20;
++    dst[ 9] = b20 * a01 + b21 * a11 + b22 * a21;
++    dst[10] = b20 * a02 + b21 * a12 + b22 * a22;
++    return dst;
+   },
+-  translation([tx, ty]) {
++  translation([tx, ty], dst) {
++    dst = dst || new Float32Array(12);
+-    return [
+-      1, 0, 0, 0,
+-      0, 1, 0, 0,
+-      tx, ty, 1, 0,
+-    ];
++    dst[0] = 1;   dst[1] = 0;   dst[ 2] = 0;
++    dst[4] = 0;   dst[5] = 1;   dst[ 6] = 0;
++    dst[8] = tx;  dst[9] = ty;  dst[10] = 1;
++    return dst;
+   },
+-  translate(m, translation) {
+-    return mat3.multiply(m, mat3.translation(m));
++  translate(m, translation, dst) {
++    return mat3.multiply(m, mat3.translation(translation), dst);
+   }
+
+   ...
+</pre>
+<p>Haciendo lo mismo para las otras funciones, ahora nuestro código puede cambiar a esto:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    const projectionMatrix = mat3.projection(canvas.clientWidth, canvas.clientHeight);
+-    let matrix = mat3.translate(projectionMatrix, settings.translation);
+-    matrix = mat3.rotate(matrix, settings.rotation);
+-    matrix = mat3.scale(matrix, settings.scale);
+-    matrixValue.set(matrix);
++    mat3.projection(canvas.clientWidth, canvas.clientHeight, matrixValue);
++    mat3.translate(matrixValue, settings.translation, matrixValue);
++    mat3.rotate(matrixValue, settings.rotation, matrixValue);
++    mat3.scale(matrixValue, settings.scale, matrixValue);
+</pre>
+<p>Ya no necesitamos copiar la matriz en <code class="notranslate" translate="no">matrixValue</code>. En su lugar, podemos operar directamente sobre ella.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-matrix-math-transform-trs.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-matrix-math-transform-trs.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="transformar-los-puntos-frente-a-transformar-el-espacio">Transformar los puntos frente a transformar el espacio</h2>
+<p>Una última cosa: vimos arriba que el orden importa. En el primer ejemplo teníamos:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">traslación * rotación * escalado
+</pre>
+<p>y en el segundo teníamos:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">escalado * rotación * traslación
+</pre>
+<p>Y vimos cómo son diferentes.</p>
+<p>Hay 2 formas de ver las matrices. Dada la expresión:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">proyeccionMat * traslacionMat * rotacionMat * escalaMat * posicion
+</pre>
+<p>La primera forma, que a muchas personas les resulta natural, es empezar por la derecha y trabajar hacia la izquierda.</p>
+<p>Primero multiplicamos la posición por la matriz de escala para obtener una posición escalada:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">posicionEscalada = escalaMat * posicion
+</pre>
+<p>Luego multiplicamos la posicionEscalada por la matriz de rotación para obtener una posicionEscaladaRotada:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">posicionEscaladaRotada = rotacionMat * posicionEscalada
+</pre>
+<p>Luego multiplicamos la posicionEscaladaRotada por la matriz de traslación para obtener una posicionEscaladaRotadaTrasladada:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">posicionEscaladaRotadaTrasladada = traslacionMat * posicionEscaladaRotada
+</pre>
+<p>Y finalmente multiplicamos eso por la matriz de proyección para obtener las posiciones en el espacio de recorte:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">posicionEspacioRecorte = proyeccionMat * posicionEscaladaRotadaTrasladada
+</pre>
+<p>La segunda forma de ver las matrices es leer de izquierda a derecha. En ese caso, cada matriz cambia el <em>espacio</em> representado por la textura en la que estamos dibujando. La textura comienza representando el espacio de recorte (-1 a +1) en cada dirección. Cada matriz aplicada de izquierda a derecha cambia el espacio representado por el canvas.</p>
+<p>Paso 1: sin matriz (o la matriz identidad)</p>
+<blockquote>
+<div data-diagram="space-change-0" data-caption="espacio de recorte (clip space)"></div>
+<p>El área blanca es la textura. El azul está fuera de la textura. Estamos en el espacio de recorte. Las posiciones pasadas deben estar en el espacio de recorte. El área verde en la parte superior derecha es la esquina superior izquierda de la F. Está al revés porque en el espacio de recorte +Y es hacia arriba, pero la F fue diseñada en el espacio de píxeles, que es +Y hacia abajo. Además, el espacio de recorte solo muestra unidades de 2x2, pero la F tiene un tamaño de 100x150 unidades, así que solo vemos el valor de una unidad.</p>
+</blockquote>
+<p>Paso 2: <code class="notranslate" translate="no">mat3.projection(canvas.clientWidth, canvas.clientHeight, matrixValue);</code></p>
+<blockquote>
+<div data-diagram="space-change-1" data-caption="del espacio de recorte al espacio de píxeles"></div>
+<p>Ahora estamos en el espacio de píxeles. X = 0 hasta el ancho de la textura, Y = 0 hasta el alto de la textura, con 0,0 en la parte superior izquierda. Las posiciones pasadas usando esta matriz deben estar en el espacio de píxeles. El destello que ves es cuando el espacio se invierte de Y positiva = arriba a Y positiva = abajo.</p>
+</blockquote>
+<p>Paso 3: <code class="notranslate" translate="no">mat3.translate(matrixValue, settings.translation, matrixValue);</code></p>
+<blockquote>
+<div data-diagram="space-change-2" data-caption="mover el origen a tx, ty"></div>
+<p>El origen del espacio se ha movido ahora a tx, ty (150, 100).</p>
+</blockquote>
+<p>Paso 4: <code class="notranslate" translate="no">mat3.rotate(matrixValue, settings.rotation, matrixValue);</code></p>
+<blockquote>
+<div data-diagram="space-change-3" data-caption="rotar 33 grados"></div>
+<p>El espacio ha sido rotado alrededor de tx, ty.</p>
+</blockquote>
+<p>Paso 5: <code class="notranslate" translate="no">mat3.scale(matrixValue, settings.scale, matrixValue);</code></p>
+<blockquote>
+<div data-diagram="space-change-4" data-caption="escalar el espacio"></div>
+<p>El espacio previamente rotado con su centro en tx, ty ha sido escalado 2 en x, 1.5 en y.</p>
+</blockquote>
+<p>En el shader luego hacemos <code class="notranslate" translate="no">clipSpace = uni.matrix * vert.position;</code>. Los valores de <code class="notranslate" translate="no">vert.position</code> se aplican efectivamente en este espacio final.</p>
+<p>Usa la forma que te resulte más fácil de entender.</p>
+<p>Espero que estos artículos hayan ayudado a desmitificar las matemáticas de matrices. A continuación, <a href="webgpu-orthographic-projection.html">pasaremos a las 3D</a>. En 3D, las matemáticas de matrices siguen los mismos principios y uso. Empezamos con 2D para que, con suerte, fuera sencillo de entender.</p>
+<p>Además, si realmente quieres convertirte en un experto en matemáticas de matrices, <a href="https://www.youtube.com/watch?v=kjBOesZCoqc&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">mira este increíble vídeo</a>.</p>
+<div class="webgpu_bottombar">
+<h3>¿Qué son <code class="notranslate" translate="no">clientWidth</code> y <code class="notranslate" translate="no">clientHeight</code>?</h3>
+<p>Hasta este punto, siempre que nos referíamos a las dimensiones del canvas usábamos <code class="notranslate" translate="no">canvas.width</code> y <code class="notranslate" translate="no">canvas.height</code>, pero arriba, cuando llamamos a <code class="notranslate" translate="no">mat3.projection</code>, usamos en su lugar <code class="notranslate" translate="no">canvas.clientWidth</code> y <code class="notranslate" translate="no">canvas.clientHeight</code>. ¿Por qué?</p>
+<p>Las matrices de proyección se encargan de tomar el espacio de recorte (-1 a +1 en cada dimensión) y convertirlo de nuevo a píxeles. Pero, en el navegador, hay 2 tipos de píxeles con los que estamos tratando. Uno es el número de píxeles en el propio canvas. Por ejemplo, un canvas definido así:</p>
+<pre class="prettyprint">  &lt;canvas width="400" height="300"&gt;&lt;/canvas&gt;
+</pre>
+<p>o uno definido así:</p>
+<pre class="prettyprint">  const canvas = document.createElement("canvas");
+  canvas.width = 400;
+  canvas.height = 300;
+</pre>
+<p>ambos contienen una imagen de 400 píxeles de ancho por 300 píxeles de alto. Pero ese tamaño es independiente del tamaño con el que el navegador realmente muestra ese canvas de 400x300 píxeles. CSS define el tamaño con el que se muestra el canvas. Por ejemplo, si hiciéramos un canvas como este:</p>
+<pre class="prettyprint">  &lt;style&gt;
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  &lt;/style&gt;
+  ...
+  &lt;canvas width="400" height="300"&gt;&lt;/canvas&gt;
+</pre>
+<p>El canvas se mostrará al tamaño que tenga su contenedor. Es probable que no sea 400x300.</p>
+<p>Aquí hay dos ejemplos que establecen el tamaño de visualización CSS del canvas al 100%, de modo que el canvas se estira para llenar la página. El primero usa <code class="notranslate" translate="no">canvas.width</code> y <code class="notranslate" translate="no">canvas.height</code> al llamar a <code class="notranslate" translate="no">mat3.projection</code>. Ábrelo en una ventana nueva y cambia el tamaño de la ventana. Observa cómo la 'F' no tiene la relación de aspecto (aspect ratio) correcta. Se distorsiona. Tampoco está en el lugar correcto. El código dice que la esquina superior izquierda debería estar en 150, 25, pero a medida que el canvas se estira y se encoge, la posición donde queremos que aparezca algo en 150, 25 se mueve.</p>
+<div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style="width:  500px; height: 150px;" src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-canvas-width-height.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-canvas-width-height.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+
+<p>Este segundo ejemplo usa <code class="notranslate" translate="no">canvas.clientWidth</code> y <code class="notranslate" translate="no">canvas.clientHeight</code> al llamar a <code class="notranslate" translate="no">mat3.projection</code>. <code class="notranslate" translate="no">canvas.clientWidth</code> y <code class="notranslate" translate="no">canvas.clientHeight</code> informan del tamaño al que el navegador está mostrando realmente el canvas, por lo que en este caso, aunque el canvas todavía solo tenga 400x300 píxeles, como estamos definiendo nuestra relación de aspecto basándonos en el tamaño al que se muestra el canvas, la <code class="notranslate" translate="no">F</code> siempre se ve correcta y está en el lugar adecuado.</p>
+<div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style="width:  500px; height: 150px;" src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-canvas-clientwidth-clientheight.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-canvas-clientwidth-clientheight.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+
+<p>La mayoría de las aplicaciones que permiten que sus canvas cambien de tamaño intentan que <code class="notranslate" translate="no">canvas.width</code> y <code class="notranslate" translate="no">canvas.height</code> coincidan con <code class="notranslate" translate="no">canvas.clientWidth</code> y <code class="notranslate" translate="no">canvas.clientHeight</code> porque quieren que haya un píxel en el canvas por cada píxel mostrado por el navegador. Pero, como hemos visto arriba, esa no es la única opción. Eso significa que, en casi todos los casos, es más técnicamente correcto calcular la relación de aspecto de una matriz de proyección usando <code class="notranslate" translate="no">canvas.clientHeight</code> y <code class="notranslate" translate="no">canvas.clientWidth</code>.</p>
+</div>
+<!-- keep this at the bottom of the article -->
+<link href="../webgpu-matrix-math.css" rel="stylesheet">
+<script type="module" src="../webgpu-matrix-math.js"></script>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-matrix-math.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-matrix-math.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-matrix-math.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-matrix-math.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-matrix-math.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-matrix-math.html">Русский
@@ -203,84 +1263,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +1361,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Matemáticas de matrices en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

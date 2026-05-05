@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-constants.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Shader Constants">
+
+<meta name="description" content="Los fundamentos de WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-constants_es.jpg">
+
+<meta property="og:title" content="Constantes de Shader en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="The fundamentals of WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-constants_es.jpg">
+<meta property="og:description" content="Los fundamentos de WebGPU">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-constants.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Shader Constants">
+<meta name="twitter:title" content="Constantes de Shader en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-constants.html">
-<meta name="twitter:description" content="The fundamentals of WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Los fundamentos de WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-constants_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-constants.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-constants_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-constants.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-constants.html",
+      "inLanguage":"es",
+      "name":"Constantes de Shader en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-constants.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Shader Constants</title>
+<title>Constantes de Shader en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-constants.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-constants.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-constants.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-constants.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-constants.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-constants.html">Русский
@@ -182,18 +227,268 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Shader Constants</h1>
+    <h1>Constantes de Shader en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-constants.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>No estoy seguro de si este tema merece ser considerado una entrada para el shader.
+Pero, desde cierto punto de vista lo es, así que vamos a cubrirlo.</p>
+<p>Las constantes, o más formalmente, las <em>constantes de pipeline modificables</em> (pipeline-overridable constants) son un tipo de constante que declaras en tu shader pero que puedes cambiar cuando usas ese shader para crear un pipeline.</p>
+<p>Un ejemplo sencillo sería algo como esto:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">override red = 0.0;
+override green = 0.0;
+override blue = 0.0;
+
+@fragment fn fs() -&gt; @location(0) vec4f {
+  return vec4f(red, green, blue, 1.0);
+}
+</pre>
+<p>Usando este fragment shader (shader de fragmentos) con el vertex shader (shader de vértices) del <a href="webgpu-fundamentals.html">artículo sobre los conceptos básicos</a>:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; @builtin(position) vec4f {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // centro arriba
+    vec2f(-0.5, -0.5),  // abajo izquierda
+    vec2f( 0.5, -0.5)   // abajo derecha
+  );
+
+  return vec4f(pos[vertexIndex], 0.0, 1.0);
+}
+</pre>
+<p>Ahora, si usamos este shader tal cual, obtendremos un triángulo negro:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Pero podemos cambiar esas constantes, o “modificarlas” (override), cuando especificamos el pipeline.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'nuestro pipeline de triángulo hardcodeado',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
++      constants: {
++        red: 1,
++        green: 0.5,
++        blue: 1,
++      },
+    },
+  });
+</pre>
+<p>Y ahora obtenemos un color rosado.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants-override.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants-override.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Las constantes de pipeline modificables solo pueden ser valores escalares, es decir, booleanos (true/false), enteros o números de punto flotante. No pueden ser vectores ni matrices.</p>
+<p>Si no especificas un valor en el shader, entonces <strong>debes</strong> proporcionar uno en el pipeline. También puedes asignarles un ID numérico y luego referirte a ellas por su ID.</p>
+<p>Ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">override red: f32;             // Debe especificarse en el pipeline
+@id(123) override green = 0.0; // Puede especificarse por 'green' o por 123
+override blue = 0.0;
+
+@fragment fn fs() -&gt; @location(0) vec4f {
+  return vec4f(red, green, blue, 1.0);
+}
+</pre>
+<p>Quizás te preguntes, ¿cuál es el punto? Podría hacer esto con la misma facilidad cuando creo el WGSL. Por ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const red = 0.5;
+const blue = 0.7;
+const green = 1.0;
+
+const code = `
+const red = ${red};
+const green = ${green};
+const blue = ${blue};
+
+@fragment fn fs() -&gt; @location(0) vec4f {
+  return vec4f(red, green, blue, 1.0);
+}
+`;
+</pre>
+<p>Or incluso más directamente:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const red = 0.5;
+const blue = 0.7;
+const green = 1.0;
+
+const code = `
+@fragment fn fs() -&gt; @location(0) vec4f {
+  return vec4f(${red}, ${green}, ${blue}, 1.0);
+}
+`;
+</pre>
+<p>La diferencia es que las constantes de pipeline modificables se pueden aplicar DESPUÉS de que se haya creado el shader module (módulo de shader), lo que las hace técnicamente más rápidas de aplicar que crear un nuevo módulo de shader. Sin embargo, crear un pipeline no es una operación rápida, por lo que no está claro cuánto tiempo ahorra esto en el proceso general de creación de un pipeline. No obstante, es posible que la implementación de WebGPU pueda usar información de la primera vez que creaste un pipeline con ciertas constantes para que, la próxima vez que lo crees con constantes diferentes, se realice mucho menos trabajo.</p>
+<p>En cualquier caso, es una forma de introducir una pequeña cantidad de datos en un shader.</p>
+<h2 id="los-entry-points-se-evalúan-de-forma-independiente">Los entry points se evalúan de forma independiente</h2>
+<p>También es importante recordar que los entry points (puntos de entrada) se evalúan de forma aislada, como se cubrió parcialmente en <a href="webgpu-inter-stage-variables.html#a-builtin-position">el artículo sobre variables entre etapas</a>.</p>
+<p>Es como si el código pasado a <code class="notranslate" translate="no">createShaderModule</code> fuera despojado de todo lo que no sea relevante para el punto de entrada actual. Se aplican las constantes de modificación del pipeline y, luego, se crea el shader para ese punto de entrada.</p>
+<p>Ampliemos nuestro ejemplo anterior. Cambiaremos el shader para que tanto la etapa de vértice (vertex stage) como la de fragmento (fragment stage) usen las constantes. Pasaremos el valor de la etapa de vértice a la etapa de fragmento. Luego, dibujaremos cada otra franja vertical de 50 píxeles con un valor u otro.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VOut {
++  @builtin(position) pos: vec4f,
++  @location(0) color: vec4f,
++}
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+-) -&gt; @builtin(position) vec4f {
++) -&gt; VOut {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // centro arriba
+    vec2f(-0.5, -0.5),  // abajo izquierda
+    vec2f( 0.5, -0.5)   // abajo derecha
+  );
+
+-  return vec4f(pos[vertexIndex], 0.0, 1.0);
++  return VOut(
++    vec4f(pos[vertexIndex], 0.0, 1.0),
++    vec4f(red, green, blue, 1),
++  );
+}
+
+override red = 0.0;
+override green = 0.0;
+override blue = 0.0;
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return vec4f(red, green, blue, 1.0);
++@fragment fn fs(v: VOut) -&gt; @location(0) vec4f {
++  let colorFromVertexShader = v.color;
++  let colorFromFragmentShader = vec4f(red, green, blue, 1.0);
++  // seleccionamos un color u otro cada 50 píxeles
++  return select(
++    colorFromVertexShader,
++    colorFromFragmentShader,
++    v.pos.x % 100.0 &gt; 50.0);
+}
+</pre>
+<p>Ahora pasaremos constantes diferentes a cada punto de entrada:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'nuestro pipeline de triángulo hardcodeado',
+    layout: 'auto',
+    vertex: {
+      module,
++      constants: {
++        red: 1,
++        green: 1,
++        blue: 0,
++      },
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+      constants: {
+        red: 1,
+        green: 0.5,
+        blue: 1,
+      },
+    },
+  });
+</pre>
+<p>El resultado muestra que las constantes fueron diferentes en cada etapa:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants-override-set-entry-points.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants-override-set-entry-points.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Nuevamente, funcionalmente, el hecho de que hayamos usado un módulo de shader con un único <code class="notranslate" translate="no">code</code> WGSL es solo una conveniencia. El código anterior es funcionalmente equivalente a:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const vertexModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VOut {
+        @builtin(position) pos: vec4f,
+        @location(0) color: vec4f,
+      }
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; VOut {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // centro arriba
+          vec2f(-0.5, -0.5),  // abajo izquierda
+          vec2f( 0.5, -0.5)   // abajo derecha
+        );
+
+        return VOut(
+          vec4f(pos[vertexIndex], 0.0, 1.0),
+          vec4f(red, green, blue, 1),
+        );
+      }
+
+      override red = 0.0;
+      override green = 0.0;
+      override blue = 0.0;
+    `,
+  });
+
+  const fragmentModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VOut {
+        @builtin(position) pos: vec4f,
+        @location(0) color: vec4f,
+      }
+
+      override red = 0.0;
+      override green = 0.0;
+      override blue = 0.0;
+
+      @fragment fn fs(v: VOut) -&gt; @location(0) vec4f {
+        let colorFromVertexShader = v.color;
+        let colorFromFragmentShader = vec4f(red, green, blue, 1.0);
+        // seleccionamos un color u otro cada 50 píxeles
+        return select(
+          colorFromVertexShader,
+          colorFromFragmentShader,
+          v.pos.x % 100.0 &gt; 50.0);
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: 'nuestro pipeline de triángulo hardcodeado',
+    layout: 'auto',
+    vertex: {
+*      module: vertexModule,
+      constants: {
+        red: 1,
+        green: 1,
+        blue: 0,
+      },
+    },
+    fragment: {
+*      module: fragmentModule,
+      targets: [{ format: presentationFormat }],
+      constants: {
+        red: 1,
+        green: 0.5,
+        blue: 1,
+      },
+    },
+  });
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants-override-separate-modules.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants-override-separate-modules.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Nota: <strong>No</strong> es común usar constantes de pipeline modificables para pasar un color. Usamos un color porque es fácil de entender y para mostrar los resultados.</p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-constants.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-constants.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-constants.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-constants.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-constants.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-constants.html">Русский
@@ -203,84 +498,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +596,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Constantes de Shader en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

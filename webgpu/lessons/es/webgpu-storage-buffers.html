@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-storage-buffers.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Storage Buffers">
+
+<meta name="description" content="Pasando grandes cantidades de datos a los shaders">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-buffers_es.jpg">
+
+<meta property="og:title" content="Storage Buffers en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Passing Large Data to Shaders">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-buffers_es.jpg">
+<meta property="og:description" content="Pasando grandes cantidades de datos a los shaders">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-buffers.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Storage Buffers">
+<meta name="twitter:title" content="Storage Buffers en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-buffers.html">
-<meta name="twitter:description" content="Passing Large Data to Shaders">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Pasando grandes cantidades de datos a los shaders">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-buffers_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-buffers.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-buffers_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-buffers.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-buffers.html",
+      "inLanguage":"es",
+      "name":"Storage Buffers en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-storage-buffers.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Storage Buffers</title>
+<title>Storage Buffers en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-buffers.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-buffers.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-buffers.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-buffers.html">Русский
@@ -182,18 +227,411 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Storage Buffers</h1>
+    <h1>Storage Buffers en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-storage-buffers.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Este artículo trata sobre los storage buffers y continúa donde lo dejó el <a href="webgpu-uniforms.html">artículo anterior</a>.</p>
+<p>Los storage buffers son similares a los uniform buffers en muchos sentidos. Si todo lo que hiciéramos fuera cambiar <code class="notranslate" translate="no">UNIFORM</code> por <code class="notranslate" translate="no">STORAGE</code> en nuestro JavaScript y <code class="notranslate" translate="no">var&lt;uniform&gt;</code> por <code class="notranslate" translate="no">var&lt;storage, read&gt;</code> en nuestro WGSL, los ejemplos de la página anterior simplemente funcionarían.</p>
+<p>De hecho, aquí están las diferencias, sin renombrar las variables para que tengan nombres más apropiados.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const staticUniformBuffer = device.createBuffer({
+      label: `static uniforms for obj: ${i}`,
+      size: staticUniformBufferSize,
+-      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+
+
+...
+
+    const uniformBuffer = device.createBuffer({
+      label: `changing uniforms for obj: ${i}`,
+      size: uniformBufferSize,
+-      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++      usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+</pre>
+<p>y en nuestro WSGL</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">-@group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+-@group(0) @binding(1) var&lt;uniform&gt; otherStruct: OtherStruct;
++@group(0) @binding(0) var&lt;storage, read&gt; ourStruct: OurStruct;
++@group(0) @binding(1) var&lt;storage, read&gt; otherStruct: OtherStruct;
+</pre>
+<p>Y sin ningún otro cambio funciona, exactamente como antes.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-storage-split-minimal-changes.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-storage-split-minimal-changes.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="diferencias-entre-uniform-buffers-y-storage-buffers">Diferencias entre uniform buffers y storage buffers</h2>
+<p>Las principales diferencias entre los uniform buffers y los storage buffers son:</p>
+<ol>
+<li>
+<p>Los uniform buffers pueden ser más rápidos para su caso de uso típico.</p>
+<p>Realmente depende del caso de uso. Una aplicación típica necesitará dibujar muchas cosas diferentes. Digamos que es un juego 3D. La aplicación podría dibujar coches, edificios, rocas, arbustos, personas, etc. Cada uno de ellos requerirá pasar orientaciones y propiedades de materiales similares a lo que pasa nuestro ejemplo anterior. En este caso, usar un uniform buffer es la solución recomendada.</p>
+</li>
+<li>
+<p>Los storage buffers pueden ser mucho más grandes que los uniform buffers.</p>
+<ul>
+<li>Por defecto, el tamaño máximo de un uniform buffer es 64 kiB (65536 bytes).</li>
+<li>Por defecto, el tamaño máximo de un storage buffer es 128 MiB (134217728 bytes).</li>
+</ul>
+<p>Se requiere que todas las implementaciones soporten al menos estos tamaños. Cubriremos cómo verificar y solicitar límites más grandes en detalle en <a href="webgpu-limits-and-features.html">otro artículo</a>.</p>
+</li>
+<li>
+<p>Los storage buffers pueden ser de lectura/escritura (read/write), mientras que los uniform buffers son de solo lectura.</p>
+<p>Vimos un ejemplo de escritura en un storage buffer en el ejemplo de compute shader (shader de cómputo) en el <a href="webgpu-fundamentals.html">primer artículo</a>.</p>
+</li>
+</ol>
+<h2 id="instanciado-instancing-con-storage-buffers"><a id="a-instancing"></a>Instanciado (Instancing) con Storage Buffers</h2>
+<p>Dados los dos primeros puntos anteriores, tomemos nuestro último ejemplo y cambiémoslo para dibujar los 100 triángulos en una sola llamada de dibujo. Este es un caso de uso que <em>podría</em> encajar con los storage buffers. Digo podría porque, de nuevo, WebGPU es similar a otros lenguajes de programación. Hay muchas formas de lograr lo mismo. <code class="notranslate" translate="no">array.forEach</code> frente a <code class="notranslate" translate="no">for (const elem of array)</code> frente a <code class="notranslate" translate="no">for (let i = 0; i &lt; array.length; ++i)</code>. Cada uno tiene sus usos. Lo mismo ocurre con WebGPU. Cada cosa que intentamos hacer tiene múltiples formas de lograrlo. Cuando se trata de dibujar triángulos, a WebGPU solo le importa que devolvamos un valor para <code class="notranslate" translate="no">builtin(position)</code> desde el vertex shader (shader de vértices) y que devolvamos un color/valor para <code class="notranslate" translate="no">location(0)</code> desde el fragment shader (shader de fragmentos).<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>Lo primero que haremos es cambiar nuestras declaraciones de storage por arrays de tamaño dinámico.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+-@group(0) @binding(1) var&lt;uniform&gt; otherStruct: OtherStruct;
++@group(0) @binding(0) var&lt;storage, read&gt; ourStructs: array&lt;OurStruct&gt;;
++@group(0) @binding(1) var&lt;storage, read&gt; otherStructs: array&lt;OtherStruct&gt;;
+</pre>
+<p>Luego cambiaremos el shader para usar estos valores.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32,
++  @builtin(instance_index) instanceIndex: u32
+) -&gt; @builtin(position) {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
+
++  let otherStruct = otherStructs[instanceIndex];
++  let ourStruct = ourStructs[instanceIndex];
+
+   return vec4f(
+     pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+}
+</pre>
+<p>Añadimos un nuevo parámetro a nuestro vertex shader llamado <code class="notranslate" translate="no">instanceIndex</code> y le dimos el atributo <code class="notranslate" translate="no">@builtin(instance_index)</code>, lo que significa que obtiene su valor de WebGPU para cada “instancia” dibujada. Cuando llamamos a <code class="notranslate" translate="no">draw</code>, podemos pasar un segundo argumento para el <em>número de instancias</em> y, para cada instancia dibujada, el número de la instancia que se está procesando se pasará a nuestra función.</p>
+<p>Usando <code class="notranslate" translate="no">instanceIndex</code>, podemos obtener elementos de struct específicos de nuestros arrays de structs.</p>
+<p>También necesitamos obtener el color del elemento de array correcto y usarlo en nuestro fragment shader (shader de fragmentos). El fragment shader no tiene acceso a <code class="notranslate" translate="no">@builtin(instance_index)</code> porque no tendría sentido. Podríamos pasarlo como una <a href="webgpu-inter-stage-variables.html">variable de etapa intermedia (inter-stage variable)</a>, pero sería más común buscar el color en el vertex shader y simplemente pasar el color.</p>
+<p>Para hacer esto, usaremos otro struct como hicimos en el <a href="webgpu-inter-stage-variables.html">artículo sobre variables de etapa intermedia</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VSOutput {
++  @builtin(position) position: vec4f,
++  @location(0) color: vec4f,
++}
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32,
+  @builtin(instance_index) instanceIndex: u32
+-) -&gt; @builtin(position) vec4f {
++) -&gt; VSOutput {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
+
+  let otherStruct = otherStructs[instanceIndex];
+  let ourStruct = ourStructs[instanceIndex];
+
+-  return vec4f(
+-    pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++  var vsOut: VSOutput;
++  vsOut.position = vec4f(
++      pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++  vsOut.color = ourStruct.color;
++  return vsOut;
+}
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return ourStruct.color;
++@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
++  return vsOut.color;
+}
+
+</pre>
+<p>Ahora que hemos modificado nuestros shaders WGSL, actualicemos el JavaScript.</p>
+<p>Aquí está la configuración.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumObjects = 100;
+  const objectInfos = [];
+
+  // crea 2 storage buffers
+  const staticUnitSize =
+    4 * 4 + // color son 4 floats de 32 bits (4 bytes cada uno)
+    2 * 4 + // offset son 2 floats de 32 bits (4 bytes cada uno)
+    2 * 4;  // padding (relleno)
+  const changingUnitSize =
+    2 * 4;  // scale son 2 floats de 32 bits (4 bytes cada uno)
+  const staticStorageBufferSize = staticUnitSize * kNumObjects;
+  const changingStorageBufferSize = changingUnitSize * kNumObjects;
+
+  const staticStorageBuffer = device.createBuffer({
+    label: 'static storage for objects',
+    size: staticStorageBufferSize,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+
+  const changingStorageBuffer = device.createBuffer({
+    label: 'changing storage for objects',
+    size: changingStorageBufferSize,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+
+  // offsets a los diversos valores uniform en índices de float32
+  const kColorOffset = 0;
+  const kOffsetOffset = 4;
+
+  const kScaleOffset = 0;
+
+  {
+    const staticStorageValues = new Float32Array(staticStorageBufferSize / 4);
+    for (let i = 0; i &lt; kNumObjects; ++i) {
+      const staticOffset = i * (staticUnitSize / 4);
+
+      // Estos solo se establecen una vez, así que establécelos ahora
+      staticStorageValues.set([rand(), rand(), rand(), 1], staticOffset + kColorOffset);        // establece el color
+      staticStorageValues.set([rand(-0.9, 0.9), rand(-0.9, 0.9)], staticOffset + kOffsetOffset);      // establece el offset
+
+      objectInfos.push({
+        scale: rand(0.2, 0.5),
+      });
+    }
+    device.queue.writeBuffer(staticStorageBuffer, 0, staticStorageValues);
+  }
+
+  // un typed array que podemos usar para actualizar el changingStorageBuffer
+  const storageValues = new Float32Array(changingStorageBufferSize / 4);
+
+  const bindGroup = device.createBindGroup({
+    label: 'bind group for objects',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: staticStorageBuffer },
+      { binding: 1, resource: changingStorageBuffer },
+    ],
+  });
+</pre>
+<p>Arriba creamos 2 storage buffers. Uno para un array de <code class="notranslate" translate="no">OurStruct</code> y el otro para un array de <code class="notranslate" translate="no">OtherStruct</code>.</p>
+<p>Luego rellenamos los valores para el array de <code class="notranslate" translate="no">OurStruct</code> con offsets y colores, y después subimos esos datos al <code class="notranslate" translate="no">staticStorageBuffer</code>.</p>
+<p>Creamos solo un bind group que hace referencia a ambos buffers.</p>
+<p>El nuevo código de renderizado es:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    // Obtén la textura actual del contexto del canvas y
+    // establécela como la textura sobre la que renderizar.
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
+    // Establece los valores uniform en nuestro Float32Array del lado de JavaScript
+    const aspect = canvas.width / canvas.height;
+
+-    for (const {scale, bindGroup, uniformBuffer, uniformValues} of objectInfos) {
+-      uniformValues.set([scale / aspect, scale], kScaleOffset); // establece la escala
+-      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+-
+-      pass.setBindGroup(0, bindGroup);
+-      pass.draw(3);  // llama a nuestro vertex shader 3 veces
+-    }
+
++    // establece las escalas para cada objeto
++    objectInfos.forEach(({scale}, ndx) =&gt; {
++      const offset = ndx * (changingUnitSize / 4);
++      storageValues.set([scale / aspect, scale], offset + kScaleOffset); // establece la escala
++    });
++    // sube todas las escalas a la vez
++    device.queue.writeBuffer(changingStorageBuffer, 0, storageValues);
++
++    pass.setBindGroup(0, bindGroup);
++    pass.draw(3, kNumObjects);  // llama a nuestro vertex shader 3 veces por cada instancia
+
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>El código anterior va a dibujar <code class="notranslate" translate="no">kNumObjects</code> instancias. Para cada instancia, WebGPU llamará al vertex shader 3 veces con <code class="notranslate" translate="no">vertex_index</code> establecido en 0, 1, 2 e <code class="notranslate" translate="no">instance_index</code> establecido en 0 ~ kNumObjects - 1.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-storage-buffer-split.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-storage-buffer-split.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Logramos dibujar los 100 triángulos, cada uno con una escala, color y offset diferentes, con una sola llamada de dibujo. Para situaciones en las que quieras dibujar muchas instancias del mismo objeto, esta es una forma de hacerlo.</p>
+<h2 id="usando-storage-buffers-para-datos-de-vértices">Usando storage buffers para datos de vértices</h2>
+<p>Hasta este punto, hemos usado un triángulo hard-coded (grabado a fuego) directamente en nuestro shader. Un caso de uso de los storage buffers es almacenar datos de vértices. Al igual que indexamos los storage buffers actuales por <code class="notranslate" translate="no">instance_index</code> en nuestro ejemplo anterior, podríamos indexar otro storage buffer con <code class="notranslate" translate="no">vertex_index</code> para obtener datos de vértices.</p>
+<p>¡Hagámoslo!</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurStruct {
+  color: vec4f,
+  offset: vec2f,
+};
+
+struct OtherStruct {
+  scale: vec2f,
+};
+
++struct Vertex {
++  position: vec2f,
++};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;storage, read&gt; ourStructs: array&lt;OurStruct&gt;;
+@group(0) @binding(1) var&lt;storage, read&gt; otherStructs: array&lt;OtherStruct&gt;;
++@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32,
+  @builtin(instance_index) instanceIndex: u32
+) -&gt; VSOutput {
+-  let pos = array(
+-    vec2f( 0.0,  0.5),  // top center
+-    vec2f(-0.5, -0.5),  // bottom left
+-    vec2f( 0.5, -0.5)   // bottom right
+-  );
+
+  let otherStruct = otherStructs[instanceIndex];
+  let ourStruct = ourStructs[instanceIndex];
+
+  var vsOut: VSOutput;
+  vsOut.position = vec4f(
+-      pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++      pos[vertexIndex].position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+  vsOut.color = ourStruct.color;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vsOut.color;
+}
+</pre>
+<p>Ahora necesitamos configurar un storage buffer más con algunos datos de vértices. Primero, hagamos una función para generar algunos datos de vértices. Hagamos un círculo.
+<a id="a-create-circle"></a></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCircleVertices({
+  radius = 1,
+  numSubdivisions = 24,
+  innerRadius = 0,
+  startAngle = 0,
+  endAngle = Math.PI * 2,
+} = {}) {
+  // 2 triángulos por subdivisión, 3 vértices por tri, 2 valores (xy) cada uno.
+  const numVertices = numSubdivisions * 3 * 2;
+  const vertexData = new Float32Array(numSubdivisions * 2 * 3 * 2);
+
+  let offset = 0;
+  const addVertex = (x, y) =&gt; {
+    vertexData[offset++] = x;
+    vertexData[offset++] = y;
+  };
+
+  // 2 triángulos por subdivisión
+  //
+  // 0--1 4
+  // | / /|
+  // |/ / |
+  // 2 3--5
+  for (let i = 0; i &lt; numSubdivisions; ++i) {
+    const angle1 = startAngle + (i + 0) * (endAngle - startAngle) / numSubdivisions;
+    const angle2 = startAngle + (i + 1) * (endAngle - startAngle) / numSubdivisions;
+
+    const c1 = Math.cos(angle1);
+    const s1 = Math.sin(angle1);
+    const c2 = Math.cos(angle2);
+    const s2 = Math.sin(angle2);
+
+    // primer triángulo
+    addVertex(c1 * radius, s1 * radius);
+    addVertex(c2 * radius, s2 * radius);
+    addVertex(c1 * innerRadius, s1 * innerRadius);
+
+    // segundo triángulo
+    addVertex(c1 * innerRadius, s1 * innerRadius);
+    addVertex(c2 * radius, s2 * radius);
+    addVertex(c2 * innerRadius, s2 * innerRadius);
+  }
+
+  return {
+    vertexData,
+    numVertices,
+  };
+}
+</pre>
+<p>El código anterior crea un círculo a partir de triángulos como este.</p>
+<div class="webgpu_center"><div class="center"><div data-diagram="circle" style="width: 300px;"></div></div></div>
+<p>Así que podemos usar eso para llenar un storage buffer con los vértices para un círculo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // configura un storage buffer con datos de vértices
+  const { vertexData, numVertices } = createCircleVertices({
+    radius: 0.5,
+    innerRadius: 0.25,
+  });
+  const vertexStorageBuffer = device.createBuffer({
+    label: 'storage buffer vertices',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexStorageBuffer, 0, vertexData);
+</pre>
+<p>Y luego necesitamos añadirlo a nuestro bind group.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    label: 'bind group for objects',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: staticStorageBuffer },
+      { binding: 1, resource: changingStorageBuffer },
++      { binding: 2, resource: vertexStorageBuffer },
+    ],
+  });
+</pre>
+<p>y finalmente, en el momento del renderizado, necesitamos pedir que se rendericen todos los vértices del círculo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    pass.draw(3, kNumObjects);  // llama a nuestro vertex shader 3 veces para varias instancias
++    pass.draw(numVertices, kNumObjects);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-storage-buffer-vertices.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-storage-buffer-vertices.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Arriba usamos:</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">struct Vertex {
+  pos: vec2f;
+};
+
+@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
+</pre>
+<p>podríamos haberlo hecho con la misma facilidad sin struct y simplemente usando directamente un <code class="notranslate" translate="no">vec2f</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
++@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;vec2f&gt;;
+...
+-pos[vertexIndex].position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
+</pre>
+<p>Pero, al hacerlo un struct, ¿podría decirse que sería más fácil añadir datos por vértice más adelante?</p>
+<p>Pasar vértices a través de storage buffers está ganando popularidad. Sin embargo, me han dicho que para algunos dispositivos más antiguos, es más lento que la forma <em>clásica</em>, que cubriremos a continuación en un artículo sobre <a href="webgpu-vertex-buffers.html">vertex buffers</a>.</p>
+<!-- keep this at the bottom of the article -->
+<script type="module" src=".././webgpu-storage-buffers.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Podemos tener múltiples color attachments y entonces necesitaremos devolver más colores/valores para <code class="notranslate" translate="no">location(1)</code>, <code class="notranslate" translate="no">location(2)</code>, etc. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-buffers.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-buffers.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-buffers.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-buffers.html">Русский
@@ -203,84 +641,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +739,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Storage Buffers en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

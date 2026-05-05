@@ -1,9 +1,9 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createElem as el
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import {mat4} from '../../3rdparty/wgpu-matrix.module.js';
 import {createTextureFromSource} from '../../3rdparty/webgpu-utils-1.x.module.js';
 
@@ -76,7 +76,7 @@ const deviceP = navigator.gpu?.requestAdapter()
 const drawBlendResultsP = deviceP.then(device => {
   const module = device.createShaderModule({
     label: 'our hardcoded textured quad shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -162,8 +162,8 @@ const drawBlendResultsP = deviceP.then(device => {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTexture.createView() },
-      { binding: 2, resource: { buffer: uniformBuffer }},
+      { binding: 1, resource: srcTexture },
+      { binding: 2, resource: uniformBuffer },
     ],
   });
 
@@ -171,8 +171,8 @@ const drawBlendResultsP = deviceP.then(device => {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTexture.createView() },
-      { binding: 2, resource: { buffer: uniformBuffer }},
+      { binding: 1, resource: dstTexture },
+      { binding: 2, resource: uniformBuffer },
     ],
   });
 

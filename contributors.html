@@ -249,61 +249,91 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   {
     "@type": "ListItem",
     "position": 38,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-image-adjustments.html"
   },
   {
     "@type": "ListItem",
     "position": 39,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-1dlut.html"
   },
   {
     "@type": "ListItem",
     "position": 40,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-3dlut.html"
   },
   {
     "@type": "ListItem",
     "position": 41,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-highlighting.html"
   },
   {
     "@type": "ListItem",
     "position": 42,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-camera-controls.html"
   },
   {
     "@type": "ListItem",
     "position": 43,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-points.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-picking.html"
   },
   {
     "@type": "ListItem",
     "position": 44,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-from-webgl.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders.html"
   },
   {
     "@type": "ListItem",
     "position": 45,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-optimization.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html"
   },
   {
     "@type": "ListItem",
     "position": 46,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-debugging.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html"
   },
   {
     "@type": "ListItem",
     "position": 47,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-resources.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html"
   },
   {
     "@type": "ListItem",
     "position": 48,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html"
   },
   {
     "@type": "ListItem",
     "position": 49,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-points.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 50,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-from-webgl.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 51,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-optimization.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 52,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-debugging.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 53,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-resources.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 54,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 55,
     "url": "https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html"
   }
 ]
@@ -325,7 +355,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/contributors.html">English
-    </option><option value="/webgpu/lessons/es/contributors.html">Spanish
+    </option><option value="/webgpu/lessons/es/contributors.html">Español
     </option><option value="/webgpu/lessons/ja/contributors.html">日本語
     </option><option value="/webgpu/lessons/ko/contributors.html">한국어
     </option><option value="/webgpu/lessons/ru/contributors.html">Русский
@@ -337,6 +367,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   </div>
 </div>
+<div id="need-newer-webgpu" style="display: none">
+  <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+</div>
 <div class="container">
   <div class="lesson">
     <div class="lesson-main">
@@ -344,7 +377,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       <div class="home-lang">
         <select class="language">
     <option value="/webgpu/lessons/contributors.html">English
-    </option><option value="/webgpu/lessons/es/contributors.html">Spanish
+    </option><option value="/webgpu/lessons/es/contributors.html">Español
     </option><option value="/webgpu/lessons/ja/contributors.html">日本語
     </option><option value="/webgpu/lessons/ko/contributors.html">한국어
     </option><option value="/webgpu/lessons/ru/contributors.html">Русский
@@ -480,7 +513,7 @@ const settings = {
 </script>
 <script src="/contributors.js"></script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

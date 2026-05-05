@@ -21,7 +21,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'add elements compute module',
-    code: `
+    code: /* wgsl */ `
       @group(0) @binding(0) var<storage, read_write> a: array<f32>;
       @group(0) @binding(1) var<storage, read_write> b: array<f32>;
       @group(0) @binding(2) var<storage, read_write> dst: array<f32>;

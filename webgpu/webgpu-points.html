@@ -39,7 +39,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Vertex {
         @location(0) position: vec2f,
       };

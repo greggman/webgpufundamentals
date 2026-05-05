@@ -1,9 +1,9 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createElem as el,
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import {
   createTextureFromSources,
 } from '../../3rdparty/webgpu-utils.module.js';
@@ -108,7 +108,7 @@ async function showCube(canvas, uiDiv) {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         matrix: mat4x4f,
       };
@@ -210,7 +210,7 @@ async function showCube(canvas, uiDiv) {
     label: 'bind group for object',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: uniformBuffer }},
+      { binding: 0, resource: uniformBuffer },
       { binding: 1, resource: sampler },
       { binding: 2, resource: texture.createView({dimension: 'cube'}) },
     ],

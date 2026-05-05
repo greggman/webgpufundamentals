@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-multiple-canvases.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Multiple Canvases">
+
+<meta name="description" content="Múltiples Canvas">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multiple-canvases_es.jpg">
+
+<meta property="og:title" content="Múltiples Canvas en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Multiple Canvases">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multiple-canvases_es.jpg">
+<meta property="og:description" content="Múltiples Canvas">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-multiple-canvases.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Multiple Canvases">
+<meta name="twitter:title" content="Múltiples Canvas en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-multiple-canvases.html">
-<meta name="twitter:description" content="Multiple Canvases">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Múltiples Canvas">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multiple-canvases_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-multiple-canvases.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-multiple-canvases_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-multiple-canvases.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-multiple-canvases.html",
+      "inLanguage":"es",
+      "name":"Múltiples Canvas en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-multiple-canvases.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Multiple Canvases</title>
+<title>Múltiples Canvas en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-multiple-canvases.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-multiple-canvases.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-multiple-canvases.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-multiple-canvases.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-multiple-canvases.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-multiple-canvases.html">Русский
@@ -182,18 +227,508 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Multiple Canvases</h1>
+    <h1>Múltiples Canvas en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-multiple-canvases.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Dibujar en múltiples canvas en WebGPU es súper fácil. En <a href="webgpu-fundamentals.html">el artículo sobre los fundamentos</a> buscamos un canvas, luego llamamos a <code class="notranslate" translate="no">getContext</code> y configuramos el contexto (context).</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Obtén un contexto de WebGPU del canvas y configúralo
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+</pre>
+<p>Para dibujar en el canvas, usamos ese contexto para obtener una textura para el canvas y establecimos esa textura como el primer <code class="notranslate" translate="no">colorAttachment</code> de un render pass.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const renderPassDescriptor = {
+    label: 'nuestro renderPass básico de canvas',
+    colorAttachments: [
+      {
+*        // view: &lt;- se rellenará cuando rendericemos
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };  
+
+  function render() {
+    // Obtén la textura actual del contexto del canvas y
+    // establécela como la textura en la que renderizar.
+*    renderPassDescriptor.colorAttachments[0].view =
+*        context.getCurrentTexture().createView();
+
+    // crea un encoder de comandos para empezar a codificar comandos
+    const encoder = device.createCommandEncoder({ label: 'nuestro encoder' });
+
+    // crea un encoder de render pass para codificar comandos específicos de renderizado
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+</pre>
+<p>Todo lo que tenemos que hacer para dibujar en un canvas diferente es seguir los mismos pasos para ese canvas:</p>
+<ol>
+<li>Buscar el canvas (o crearlo).</li>
+<li>Obtener un contexto “webgpu”.</li>
+<li>Configurar el contexto.</li>
+<li>Cuando queramos renderizar en ese canvas, llamar a <code class="notranslate" translate="no">context.getCurrentTexture</code> y usar esa textura como un <code class="notranslate" translate="no">colorAttachment</code> en un render pass.</li>
+</ol>
+<p>Tomemos nuestro primer ejemplo y rendericemos en 3 canvas.</p>
+<p>Primero, añadamos 2 canvas más:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">  &lt;body&gt;
+    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;canvas&gt;&lt;/canvas&gt;
+  &lt;/body&gt;
+</pre>
+<p>A continuación, obtengamos los contextos y configuremos todos los canvas:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Obtén un contexto de WebGPU para cada canvas y configúralo
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  const infos = [];
+  for (const canvas of document.querySelectorAll('canvas')) {
+    const context = canvas.getContext('webgpu');
+    context.configure({
+      device,
+      format: presentationFormat,
+    });
+    infos.push({ context });
+  }
+</pre>
+<p>Y finalmente, rendericemos en todos ellos:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+*    // crea un encoder de comandos para empezar a codificar comandos
+*    const encoder = device.createCommandEncoder({ label: 'nuestro encoder' });
+
++    for (const {context} of infos) {
+      // Obtén la textura actual del contexto del canvas y
+      // establécela como la textura en la que renderizar.
+      renderPassDescriptor.colorAttachments[0].view =
+          context.getCurrentTexture().createView();
+
+      // crea un encoder de render pass para codificar comandos específicos de renderizado
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
+      pass.draw(3);  // llama a nuestro vertex shader 3 veces.
+      pass.end();
++    }
+
+*    const commandBuffer = encoder.finish();
+*    device.queue.submit([commandBuffer]);
+  }
+
+  render();
+</pre>
+<p>Los cambios que hicimos son: (1) dónde creamos nuestro encoder de comandos para que pueda ser compartido para renderizar en los 3 canvas. (2) iterar sobre los contextos.</p>
+<p>Y con eso, hemos renderizado en 3 canvas.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multiple-canvases.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multiple-canvases.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Nota: No es estrictamente necesario crear un único encoder de comandos, pero es ligeramente más eficiente.</p>
+<p>Entonces, ¿qué más queda?</p>
+<h2 id="optimizando-muchos-canvas">Optimizando muchos canvas</h2>
+<p>Supongamos que queremos mostrar productos girando. Para simplificarlo, sigamos con nuestro triángulo codificado a piñón, pero hagámoslo girar pasando una matriz <a href="webgpu-matrix-math.html">como cubrimos en los artículos sobre matemáticas de matrices</a>. También pasaremos un color para que cada uno pueda verse ligeramente diferente.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+  struct Uniforms {
++    matrix: mat4x4f,
++    color: vec4f,
++  };
++
++  @group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+   @vertex fn vs(
+     @builtin(vertex_index) vertexIndex : u32
+   ) -&gt; @builtin(position) vec4f {
+     let pos = array(
+       vec2f( 0.0,  0.5),  // centro superior
+       vec2f(-0.5, -0.5),  // inferior izquierda
+       vec2f( 0.5, -0.5)   // inferior derecha
+     );
+
+-    return vec4f(pos[vertexIndex], 0.0, 1.0);
++    return uni.matrix * vec4f(pos[vertexIndex], 0.0, 1.0);
+   }
+
+   @fragment fn fs() -&gt; @location(0) vec4f {
+-    return vec4f(1, 0, 0, 1);
++    return uni.color;
+   }
+</pre>
+<p>Necesitaremos un <a href="webgpu-uniforms.html">uniform buffer</a> para cada uno, así como un bind group y cosas relacionadas.</p>
+<p>Vamos a crear 200 canvas y configurarlos para WebGPU:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const infos = [];
+  const numProducts = 200;
+  for (let i = 0; i &lt; numProducts; ++i) {
+    // creando esto:
+    // &lt;div class="product size?"&gt;
+    //   &lt;canvas&gt;&lt;/canvas&gt;
+    //   &lt;div&gt;Product#: ?&lt;/div&gt;
+    // &lt;/div&gt;
+    const canvas = document.createElement('canvas');
+
+    const container = document.createElement('div');
+    container.className = `product size${i % 4}`;
+
+    const description = document.createElement('div');
+    description.textContent = `producto#: ${i + 1}`;
+
+    container.appendChild(canvas);
+    container.appendChild(description);
+    document.body.appendChild(container);
+
+    // Obtén un contexto de WebGPU y configúralo.
+    const context = canvas.getContext('webgpu');
+    context.configure({
+      device,
+      format: presentationFormat,
+    });
+
+    infos.push({
+      context,
+    });
+  }
+</pre>
+<p>Necesitaremos algo de CSS para acompañar esto:</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">  .product {
+    display: inline-block;
+    padding: 1em;
+    background: #888;
+    margin: 1em;
+  }
+  .size0&gt;canvas {
+    width: 200px;
+    height: 200px;
+  }
+  .size1&gt;canvas {
+    width: 250px;
+    height: 200px;
+  }
+  .size2&gt;canvas {
+    width: 300px;
+    height: 200px;
+  }
+  .size3&gt;canvas {
+    width: 100px;
+    height: 200px;
+  }
+</pre>
+<p>Los 4 tamaños son solo para asegurarnos de que estamos haciendo las cosas correctamente. Si los hiciéramos todos del mismo tamaño, podríamos ocultar algún error.</p>
+<p>Necesitamos un uniform buffer y un bind group para cada uno. No cambiaremos el color más tarde, así que elegiremos uno ahora. También elijamos un <code class="notranslate" translate="no">clearValue</code> aleatorio (¿por qué no? 🤷‍♂️).</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function randomColor() {
++    return [Math.random(), Math.random(), Math.random(), 1];
++  }
+
+   const infos = [];
+   const numProducts = 200;
+   for (let i = 0; i &lt; numProducts; ++i) {
+     ...
+
++    // Crea un uniform buffer y vistas de array de tipos
++    // para nuestros uniforms.
++    const uniformValues = new Float32Array(16 + 4);
++    const uniformBuffer = device.createBuffer({
++      size: uniformValues.byteLength,
++      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
++    });
++    const kMatrixOffset = 0;
++    const kColorOffset = 16;
++    const matrixValue = uniformValues.subarray(
++        kMatrixOffset, kMatrixOffset + 16);
++    const colorValue = uniformValues.subarray(
++        kColorOffset, kColorOffset + 4);
++    colorValue.set(randomColor());
++
++    // Crea un bind group para este uniform
++    const bindGroup = device.createBindGroup({
++      layout: pipeline.getBindGroupLayout(0),
++      entries: [
++        { binding: 0, resource: uniformBuffer },
++      ],
++    });
+
+     infos.push({
+       context,
++      clearValue: randomColor(),
++      matrixValue,
++      uniformValues,
++      uniformBuffer,
++      bindGroup,
+     });
+
+</pre>
+<p>Añadamos también un <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> para <a href="webgpu-fundamentals.html#a-resizing">redimensionar cada canvas</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const resizeObserver = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+    }
+  });
+
+  ...
+
+  const infos = [];
+  const numProducts = 200;
+  for (let i = 0; i &lt; numProducts; ++i) {
+    // creando esto:
+    // &lt;div class="product size?"&gt;
+    //   &lt;canvas&gt;&lt;/canvas&gt;
+    //   &lt;div&gt;Product#: ?&lt;/div&gt;
+    // &lt;/div&gt;
+    const canvas = document.createElement('canvas');
+    resizeObserver.observe(canvas);
+
+    ...
+</pre>
+<p>Al renderizar, usaremos un bucle de requestAnimationFrame (rAF) para animar.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function render(time) {
++    time *= 0.001; // convertir a segundos
+
+     ...
+
++    requestId = requestAnimationFrame(render);
++  }
+
+-  render();
++  requestAnimationFrame(render);
+</pre>
+<p>Y necesitamos actualizar la matriz de cada canvas, subir los nuevos valores al uniform buffer y establecer el bind group.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    time *= 0.001; // convertir a segundos
+
+    // crea un encoder de comandos para empezar a codificar comandos
+    const encoder = device.createCommandEncoder({ label: 'nuestro encoder' });
+
+    for (const {
+      context,
+      uniformBuffer,
+      uniformValues,
+      matrixValue,
+      bindGroup,
+      clearValue,
+    } of infos) {
+      // Obtén la textura actual del contexto del canvas y
+      // establécela como la textura en la que renderizar.
+      renderPassDescriptor.colorAttachments[0].view =
+          context.getCurrentTexture().createView();
++      renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
++
++      const { canvas } = context;
++      const aspect = canvas.clientWidth / canvas.clientHeight;
++      mat4.ortho(-aspect, aspect, -1, 1, -1, 1, matrixValue);
++      mat4.rotateZ(matrixValue, time * 0.1, matrixValue);
++
++      // Sube nuestros valores uniform.
++      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      // crea un encoder de render pass para codificar comandos específicos de renderizado
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
++      pass.setBindGroup(0, bindGroup);
+      pass.draw(3);  // llama a nuestro vertex shader 3 veces.
+      pass.end();
+    }
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+</pre>
+<p>Añadamos algunas cosas más. Veremos por qué a continuación.</p>
+<p>Añadamos una forma de detener e iniciar todo el proceso. Primero, añadiremos un botón:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">  &lt;body&gt;
++    &lt;button type="button" id="stop"&gt;Stop/Start&lt;/button&gt;
+  &lt;/body&gt;
+</pre>
+<p>Y algo de CSS para él:</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">  #stop {
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin: 0.5em;
+    z-index: 1;
+  }
+</pre>
+<p>Luego cambiemos el código para iniciar y detener la animación:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let requestId;
+   function render(time) {
+     ...
+
+-    requestAnimationFrame(render);
++    requestId = requestAnimationFrame(render);
+   }
+
+-  requestAnimationFrame(render);
+
++  function toggleAnimation() {
++    if (requestId) {
++      cancelAnimationFrame(requestId);
++      requestId = undefined;
++    } else {
++      requestId = requestAnimationFrame(render);
++    }
++  }
++
++  toggleAnimation();
++  document.querySelector('#stop')
++      .addEventListener('click', toggleAnimation);
+
+</pre>
+<p>Esto funcionaría pero, todos los objetos darían un salto después de pausar y volver a reanudar. Esto se debe a que, aunque detuvimos el renderizado, el valor de <code class="notranslate" translate="no">time</code> es el tiempo transcurrido desde que se cargó la página, que se utiliza para calcular nuestra rotación.</p>
+<p>Así que, vamos a arreglarlo manteniendo nuestro propio tiempo que solo avance cuando estemos animando.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let time = 0;
++  let then = 0;
+   let requestId;
+-  function render(time) {
+-    time *= 0.001
++  function render(now) {
++    now *= 0.001; // convertir a segundos;
++    const deltaTime = now - then;
++    time += deltaTime;
++    then = now;
+
+   ...
+
+     requestId = requestAnimationFrame(render);
+   }
+
+   function toggleAnimation() {
+     if (requestId) {
+       cancelAnimationFrame(requestId);
+       requestId = undefined;
+     } else {
+       requestId = requestAnimationFrame(render);
++      then = performance.now() * 0.001;
+     }
+   }
+</pre>
+<p>Y ahora tenemos 200 canvas.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multiple-canvases-x200.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multiple-canvases-x200.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>¡Podrías notar que este ejemplo es MUY PESADO! El problema es que estamos renderizando los 200 canvas aunque solo unos pocos sean visibles. Sería mucho, mucho peor si estuviéramos dibujando modelos de productos detallados en lugar de solo un triángulo por canvas. Por eso añadimos el botón de stop/start. Esta página podría ser demasiado pesada si el ejemplo está en ejecución, así que quizás quieras detenerlo ahora antes de continuar.</p>
+<blockquote>
+<p>Nota: Este sitio intenta que los ejemplos solo se rendericen y animen si el ejemplo en sí es visible.</p>
+</blockquote>
+<p>Una forma en la que potencialmente podemos resolver este problema es usando <a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a>.</p>
+<h2 id="usar-intersectionobserver"><a id="a-intersection-observer"></a> Usar <a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a></h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a> fue diseñado específicamente para este tipo de situaciones. Un <a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a> hace lo que dice: observa intersecciones. Por defecto, observa la intersección de un elemento con la ventana del navegador. Usando esto, podemos mantener un conjunto de cuáles canvas son realmente visibles y solo renderizar esos.</p>
+<p>Aquí está el código.</p>
+<p>Primero, creamos un <a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a>. Al igual que <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>, recibe una función que se llama cuando un elemento observado comienza o deja de intersecarse con la ventana.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const visibleCanvasSet = new Set();
+  const intersectionObserver = new IntersectionObserver((entries) =&gt; {
+    for (const { target, isIntersecting } of entries) {
+      if (isIntersecting) {
+        visibleCanvasSet.add(target);
+      } else {
+        visibleCanvasSet.delete(target);
+      }
+    }
+  });
+</pre>
+<p>Puedes ver arriba que llama a nuestro callback con un array de entradas (<code class="notranslate" translate="no">entries</code>). Cada entrada indica si está intersecando o no. Lo usamos para mantener un <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set"><code class="notranslate" translate="no">Set</code></a> de qué canvas son visibles.</p>
+<p>Necesitamos decirle que observe cada canvas. También necesitamos una forma de pasar de un canvas a la información de ese canvas. En este caso, esa información es el contexto, el uniform buffer, el bind group, etc. Usaremos un <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"><code class="notranslate" translate="no">Map</code></a> para pasar de un canvas a esa información.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const infos = [];
++  const canvasToInfoMap = new Map();
+   const numProducts = 200;
+   for (let i = 0; i &lt; numProducts; ++i) {
+     // creando esto:
+     // &lt;div class="product size?"&gt;
+     //   &lt;canvas&gt;&lt;/canvas&gt;
+     //   &lt;div&gt;Product#: ?&lt;/div&gt;
+     // &lt;/div&gt;
+     const canvas = document.createElement('canvas');
+     resizeObserver.observe(canvas);
++    intersectionObserver.observe(canvas);
+
+     ...
+
+-    infos.push({
++    canvasToInfoMap.set(canvas, {
+       context,
+       clearValue: randomColor(),
+       matrixValue,
+       uniformValues,
+       uniformBuffer,
+       bindGroup,
+       rotation: Math.random() * Math.PI * 2,
+     });
+   }
+</pre>
+<p>En nuestra función de renderizado, podemos renderizar solo los canvas visibles:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(now) {
+    ...
+
+    // crea un encoder de comandos para empezar a codificar comandos
+    const encoder = device.createCommandEncoder({ label: 'nuestro encoder' });
+
+-    for (const {
++    visibleCanvasSet.forEach(canvas =&gt; {
++      const {
++       context,
++       uniformBuffer,
++       uniformValues,
++       matrixValue,
++       bindGroup,
++       clearValue,
++       rotation,
+-    } of infos) {
++      } = canvasToInfoMap.get(canvas);
+
+       // Obtén la textura actual del contexto del canvas y
+       // establécela como la textura en la que renderizar.
+       renderPassDescriptor.colorAttachments[0].view =
+           context.getCurrentTexture().createView();
+       renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
+
+-      const { canvas } = context;
+       const aspect = canvas.clientWidth / canvas.clientHeight;
+       mat4.ortho(-aspect, aspect, -1, 1, -1, 1, matrixValue);
+       mat4.rotateZ(matrixValue, time * 0.1 + rotation, matrixValue);
+
+       // Sube nuestros valores uniform.
+       device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+       // crea un encoder de render pass para codificar comandos específicos de renderizado
+       const pass = encoder.beginRenderPass(renderPassDescriptor);
+       pass.setPipeline(pipeline);
+       pass.setBindGroup(0, bindGroup);
+       pass.draw(3);  // llama a nuestro vertex shader 3 veces.
+       pass.end();
+-    }
++    });
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestId = requestAnimationFrame(render);
+  }
+</pre>
+<p>Y con eso, solo estamos dibujando los canvas que son realmente visibles, lo que con suerte debería ser mucho más ligero.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-multiple-canvases-x200-optimized.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-multiple-canvases-x200-optimized.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"><code class="notranslate" translate="no">IntersectionObserver</code></a> probablemente no cubrirá todos los casos. Si estás dibujando cosas muy pesadas en cada canvas, es posible que solo quieras animar los canvas que el usuario seleccione. En cualquier caso, espero que tengas una herramienta más en tu caja de herramientas.</p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-multiple-canvases.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-multiple-canvases.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-multiple-canvases.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-multiple-canvases.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-multiple-canvases.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-multiple-canvases.html">Русский
@@ -203,84 +738,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +836,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Múltiples Canvas en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

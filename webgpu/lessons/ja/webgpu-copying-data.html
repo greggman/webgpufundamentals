@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-copying-data.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-copying-data.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-copying-data.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-copying-data.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU データのコピー</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
@@ -295,7 +298,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <p>コピーは次のように機能すると考えることができます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">   // 擬似コード
    const [x, y, z] = origin ?? [0, 0, 0];
-   const [blockWidth, blockHeight, bytesPerBlock] = 
+   const [blockWidth, blockHeight, bytesPerBlock] =
       getBlockInfoForTextureFormat(texture.format);
 
    const blocksAcross = width / blockWidth;
@@ -446,11 +449,11 @@ device.queue.writeTexture({ texture }, data, { bytesPerRow }, texture); // !!!
 <p>2つの使用法フラグの組み合わせでマップ可能なバッファを作成できます。</p>
 <ul>
 <li>
-<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_READ | GPU_BufferUsage.COPY_DST</code></p>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST</code></p>
 <p>これは、上記のコピーコマンドを使用して別のバッファまたはテクスチャからデータをコピーし、それをマップしてJavaScriptで値を読み取ることができるバッファです。</p>
 </li>
 <li>
-<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE | GPU_BufferUsage.COPY_SRC</code></p>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE | GPUBufferUsage.COPY_SRC</code></p>
 <p>これは、JavaScriptでマップできるバッファです。JavaScriptからデータを入れ、最後にマップを解除して、上記のコピーコマンドを使用してその内容を別のバッファまたはテクスチャにコピーできます。</p>
 </li>
 </ul>
@@ -506,7 +509,7 @@ console.log(f32[0]); // undefinedを出力します
  new Float32Array(buffer.getMappedRange(0, buffer.size)).set([1, 2, 3, 4]);
  buffer.unmap();
 </pre>
-<p><code class="notranslate" translate="no">mappedAtCreation: true</code>で作成されたバッファには、自動的にフラグが設定されないことに注意してください。これは、最初に作成するときにバッファにデータを入れるための便宜上のものです。作成時にマップされ、一度マップを解除すると、他のバッファと同様に動作し、指定した使用法に対してのみ機能します。つまり、後でコピーしたい場合は<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>が必要であり、後でマップしたい場合は<code class="notranslate" translate="no">GPUBufferData.MAP_READ</code>または<code class="notranslate" translate="no">GPUBufferData.MAP_WRITE</code>が必要です。</p>
+<p><code class="notranslate" translate="no">mappedAtCreation: true</code>で作成されたバッファには、自動的にフラグが設定されないことに注意してください。これは、最初に作成するときにバッファにデータを入れるための便宜上のものです。作成時にマップされ、一度マップを解除すると、他のバッファと同様に動作し、指定した使用法に対してのみ機能します。つまり、後でコピーしたい場合は<code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>が必要であり、後でマップしたい場合は<code class="notranslate" translate="no">GPUBufferUsage.MAP_READ</code>または<code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE</code>が必要です。</p>
 <h2 id="マップ可能なバッファを効率的に使用する"><a id="a-efficient"></a>マップ可能なバッファを効率的に使用する</h2>
 <p>上記で、バッファのマッピングが非同期であることがわかりました。つまり、<code class="notranslate" translate="no">mapAsync</code>を呼び出してバッファのマッピングを要求してから、マップされて<code class="notranslate" translate="no">getMappedRange</code>を呼び出すことができるようになるまで、不確定な時間がかかります。</p>
 <p>これを回避する一般的な方法は、常にマップされたバッファのセットを保持することです。すでにマップされているため、すぐに使用できます。1つ使用してマップを解除し、バッファを使用するコマンドを送信したらすぐに、再度マップするように要求します。プロミスが解決されると、すでにマップされたバッファのプールに戻します。マップされたバッファが必要で、利用可能なものがない場合は、新しいものを作成してプールに追加します。</p>
@@ -522,7 +525,7 @@ console.log(f32[0]); // undefinedを出力します
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-copying-data.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-copying-data.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-copying-data.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-copying-data.html">Русский
@@ -592,6 +595,15 @@ console.log(f32[0]); // undefinedを出力します
   <li>ポストプロセッシング</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
@@ -658,8 +670,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

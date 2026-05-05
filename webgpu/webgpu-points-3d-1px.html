@@ -60,7 +60,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Vertex {
         @location(0) position: vec4f,
       };
@@ -142,7 +142,7 @@ async function main() {
   const bindGroup = device.createBindGroup({
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: uniformBuffer }},
+      { binding: 0, resource: uniformBuffer },
     ],
   });
 

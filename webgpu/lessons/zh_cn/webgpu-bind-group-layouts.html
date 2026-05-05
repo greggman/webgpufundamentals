@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-bind-group-layouts.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Bind Group Layouts">
+
+<meta name="description" content="显式绑定组布局">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bind-group-layouts_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 绑定组布局 (Bind Group Layouts)">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Explicit Bind Group Layouts">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bind-group-layouts_zh-cn.jpg">
+<meta property="og:description" content="显式绑定组布局">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Bind Group Layouts">
+<meta name="twitter:title" content="WebGPU 绑定组布局 (Bind Group Layouts)">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">
-<meta name="twitter:description" content="Explicit Bind Group Layouts">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="显式绑定组布局">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bind-group-layouts_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-bind-group-layouts_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 绑定组布局 (Bind Group Layouts)",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Bind Group Layouts</title>
+<title>WebGPU 绑定组布局 (Bind Group Layouts)</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-bind-group-layouts.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-bind-group-layouts.html">Русский
@@ -182,19 +228,503 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Bind Group Layouts</h1>
+    <h1>WebGPU 绑定组布局 (Bind Group Layouts)</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-bind-group-layouts.html">英文原版地址</a></p>
+      <p>绑定组布局用于使 WebGPU 能够简单高效地将绑定组与计算和渲染管线进行匹配。</p>
+<h2 id="工作原理">工作原理</h2>
+<p>管线（如 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUComputePipeline"><code class="notranslate" translate="no">GPUComputePipeline</code></a> 或 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPURenderPipeline"><code class="notranslate" translate="no">GPURenderPipeline</code></a>）使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>，它定义了 0 个或多个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a>。每个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> 被分配到特定的组索引。</p>
+<div class="webgpu_center"><img src="../resources/webgpu-bind-group-layouts.svg" style="width: 900px;"></div>
+<p>绑定组（Bind Groups）也是使用特定的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> 创建的。</p>
+<p>当你调用 <code class="notranslate" translate="no">draw</code> 或 <code class="notranslate" translate="no">dispatchWorkgroups</code> 时，WebGPU 只需要检查：当前管线的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a> 上每个组索引的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> 是否与通过 <code class="notranslate" translate="no">setBindGroup</code> 设置的当前绑定组匹配？这个检查非常简单。大多数详细检查发生在创建绑定组时。这样，当实际绘制或计算时，几乎不需要再进行检查。</p>
+<p>如果你使用 <code class="notranslate" translate="no">layout: 'auto'</code> 创建管线（本网站上的大多数示例都是这样做的），管线会自动生成自己的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a> 并用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> 填充它。</p>
+<p>有 2 个主要原因<strong>不使用</strong> <code class="notranslate" translate="no">layout: 'auto'</code>。</p>
+<ol>
+<li>
+<p><strong>你想要一个与默认 <code class="notranslate" translate="no">'auto'</code> 布局不同的布局</strong></p>
+<p>例如，你想使用 <code class="notranslate" translate="no">rgba32float</code> 纹理，但尝试时会出错。（见下文）</p>
+</li>
+<li>
+<p><strong>你想在多个管线中使用同一个绑定组</strong></p>
+<p>你不能将在 <code class="notranslate" translate="no">layout: 'auto'</code> 的管线中创建的绑定组布局生成的绑定组用于另一个不同的管线。</p>
+</li>
+</ol>
+<h2 id="使用与-layout-auto-不同的绑定组布局--rgba32float"><a id="a-rgba32float"></a> 使用与 <code class="notranslate" translate="no">layout: 'auto'</code> 不同的绑定组布局 —— <code class="notranslate" translate="no">'rgba32float'</code></h2>
+<p>绑定组布局的自动创建规则在<a href="https://www.w3.org/TR/webgpu/#abstract-opdef-default-pipeline-layout">规范中有详细说明</a>，但举一个例子……</p>
+<p>假设我们想使用 <code class="notranslate" translate="no">rgba32float</code> 纹理。让我们以<a href="webgpu-textures.html">纹理文章中第一个使用纹理的示例</a>为例，该示例绘制了一个倒置的 5x7 纹素的字母 ‘F’。让我们更新它以使用 <code class="notranslate" translate="no">rgba32float</code> 纹理。</p>
+<p>以下是更改的内容。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kTextureWidth = 5;
+  const kTextureHeight = 7;
+-  const _ = [255,   0,   0, 255];  // red
+-  const y = [255, 255,   0, 255];  // yellow
+-  const b = [  0,   0, 255, 255];  // blue
+-  const textureData = new Uint8Array([
++  const _ = [1, 0, 0, 1];  // red
++  const y = [1, 1, 0, 1];  // yellow
++  const b = [0, 0, 1, 1];  // blue
++  const textureData = new Float32Array([
+    b, _, _, _, _,
+    _, y, y, y, _,
+    _, y, _, _, _,
+    _, y, y, _, _,
+    _, y, _, _, _,
+    _, y, _, _, _,
+    _, _, _, _, _,
+  ].flat());
+
+  const texture = device.createTexture({
+    label: 'yellow F on red',
+    size: [kTextureWidth, kTextureHeight],
+-    format: 'rgba8unorm',
++    format: 'rgba32float',
+    usage:
+      GPUTextureUsage.TEXTURE_BINDING |
+      GPUTextureUsage.COPY_DST,
+  });
+  device.queue.writeTexture(
+      { texture },
+      textureData,
+-      { bytesPerRow: kTextureWidth * 4 },
++      { bytesPerRow: kTextureWidth * 4 * 4 },
+      { width: kTextureWidth, height: kTextureHeight },
+  );
+
+</pre>
+<p>运行时会得到一个错误。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-rgba32float-broken.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-rgba32float-broken.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>我在测试的浏览器中得到的错误是：</p>
+<blockquote>
+<ul>
+<li>WebGPU GPUValidationError: None of the supported sample types (UnfilterableFloat) of [Texture “yellow F on red”] match the expected sample types (Float).`<br></li>
+<li>While validating entries[1] as a Sampled Texture. Expected entry layout: {sampleType: TextureSampleType::Float, viewDimension: 2, multisampled: 0}`<br></li>
+<li>While validating [BindGroupDescriptor] against [BindGroupLayout (unlabeled)]`<br></li>
+<li>While calling [Device].CreateBindGroup([BindGroupDescriptor])`</li>
+</ul>
+</blockquote>
+<p>这是怎么回事？原来 <code class="notranslate" translate="no">rgba32float</code>（以及所有 <code class="notranslate" translate="no">xxx32float</code>）纹理默认是不可过滤的。有一个<a href="webgpu-limits-and-features.html">可选特性</a>可以使它们可过滤，但该特性可能并非在所有地方都可用。至少在 2024 年，在移动设备上特别可能出现这种情况。</p>
+<p>默认情况下，当你像这样声明绑定时：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+</pre>
+<p>当你使用 <code class="notranslate" translate="no">layout: 'auto'</code> 创建管线时，WebGPU 会创建一个专门要求可过滤纹理的绑定组布局。如果你尝试绑定一个不可过滤的纹理，就会出错。</p>
+<p>如果你想使用不能被过滤的纹理，则需要手动创建绑定组布局。</p>
+<p>有一个工具<a href="../resources/wgsl-offset-computer.html">在这里</a>，如果你粘贴着色器代码，它会为你生成自动布局。将上面示例中的着色器粘贴进去，它会生成：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayoutDescriptors = [
+  {
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.FRAGMENT,
+        sampler: {
+          type: "filtering",
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.FRAGMENT,
+        texture: {
+          sampleType: "float",
+          viewDimension: "2d",
+          multisampled: false,
+        },
+      },
+    ],
+  },
+];
+</pre>
+<p>这是一个 <a href="https://www.w3.org/TR/webgpu/#dictdef-gpubindgrouplayoutdescriptor"><code class="notranslate" translate="no">GPUBindGroupLayoutDescriptor</code></a> 数组。从上面可以看到，绑定组使用 <code class="notranslate" translate="no">sampleType: "float"</code>。这是 <code class="notranslate" translate="no">'rgba8unorm'</code> 的类型，但不是 <code class="notranslate" translate="no">'rgba32float'</code> 的类型。你可以在<a href="https://www.w3.org/TR/webgpu/#texture-format-caps">规范的这个表格</a>中阅读特定纹理格式支持的采样类型。</p>
+<p>要修复这个示例，我们需要同时调整纹理绑定和采样器绑定。采样器绑定需要改为 <code class="notranslate" translate="no">'non-filtering'</code> 采样器。纹理绑定需要改为 <code class="notranslate" translate="no">'unfilterable-float'</code>。</p>
+<p>首先，我们需要创建一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.FRAGMENT,
+        sampler: {
+*          type: 'non-filtering',
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.FRAGMENT,
+        texture: {
+*          sampleType: 'unfilterable-float',
+          viewDimension: '2d',
+          multisampled: false,
+        },
+      },
+    ],
+  });
+</pre>
+<p>上面的两个更改已标记。</p>
+<p>然后，我们需要创建一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>，它是一个管线使用的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> 数组。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+</pre>
+<p><code class="notranslate" translate="no">createPipelineLayout</code> 接受一个包含 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> 数组的对象。它们按组索引排序，因此第一个条目成为 <code class="notranslate" translate="no">@group(0)</code>，第二个条目成为 <code class="notranslate" translate="no">@group(1)</code>，以此类推。如果你需要跳过某个索引，需要添加一个空元素或 undefined。</p>
+<p>最后，当我们创建管线时，传入管线布局</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'hardcoded textured quad pipeline',
+-    layout: 'auto',
++    layout: pipelineLayout,
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>这样，我们的示例又可以工作了，但现在它使用的是 <code class="notranslate" translate="no">rgba32float</code> 纹理。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-rgba32float-fixed.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-rgba32float-fixed.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>注意：该示例能工作是因为我们做了上述工作来创建一个接受 unfilterable-float 的绑定组布局，但同时也因为该示例使用的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUSampler"><code class="notranslate" translate="no">GPUSampler</code></a> 仅使用 <code class="notranslate" translate="no">'nearest'</code> 过滤。如果我们设置任何过滤器 <code class="notranslate" translate="no">magFilter</code>、<code class="notranslate" translate="no">minFilter</code> 或 <code class="notranslate" translate="no">mipmapFilter</code> 为 <code class="notranslate" translate="no">'linear'</code>，就会得到错误，说我们尝试在 <code class="notranslate" translate="no">'non-filtering'</code> 采样器绑定上使用 <code class="notranslate" translate="no">'filtering'</code> 采样器。</p>
+<h2 id="使用与-layout-auto-不同的绑定组布局--动态偏移">使用与 <code class="notranslate" translate="no">layout: 'auto'</code> 不同的绑定组布局 —— 动态偏移</h2>
+<p>默认情况下，当你创建绑定组并绑定 uniform 或存储缓冲区时，整个缓冲区都会被绑定。你也可以在创建绑定组时传入偏移量和长度。但在两种情况下，一旦设置，它们都不能更改。</p>
+<p>WebGPU 提供了一个选项，让你在调用 <code class="notranslate" translate="no">setBindGroup</code> 时更改偏移量。要使用此特性，你必须手动创建绑定组布局，并为每个你希望稍后设置的绑定设置 <code class="notranslate" translate="no">hasDynamicOffsets: true</code>。</p>
+<p>为了保持简单，让我们使用<a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">基础文章中的简单计算示例</a>。我们将修改它，从同一缓冲区中添加 2 组值，并使用动态偏移量来选择使用哪一组。</p>
+<p>首先让我们将着色器更改为这样</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; a: array&lt;f32&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; b: array&lt;f32&gt;;
+@group(0) @binding(2) var&lt;storage, read_write&gt; dst: array&lt;f32&gt;;
+
+@compute @workgroup_size(1) fn computeSomething(
+  @builtin(global_invocation_id) id: vec3u
+) {
+  let i = id.x;
+  dst[i] = a[i] + b[i];
+}
+</pre>
+<p>可以看到，它只是将 <code class="notranslate" translate="no">a</code> 加到 <code class="notranslate" translate="no">b</code> 并写入 <code class="notranslate" translate="no">dst</code>。</p>
+<p>接下来让我们创建绑定组布局</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+      {
+        binding: 1,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+      {
+        binding: 2,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          hasDynamicOffset: true,
+        },
+      },
+    ],
+  });
+</pre>
+<p>所有条目都标记为 <code class="notranslate" translate="no">hasDynamicStorage: true</code></p>
+<p>现在让我们使用它来创建管线</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+
+  const pipeline = device.createComputePipeline({
+-    label: 'double compute pipeline',
+-    layout: 'auto',
++    label: 'add elements compute pipeline',
++    layout: pipelineLayout,
+    compute: {
+      module,
+    },
+  });
+</pre>
+<p>让我们设置缓冲区。偏移量必须是 256 的倍数 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>，所以让我们创建一个 256 * 3 字节大小的缓冲区，这样我们至少有 3 个有效的偏移量：0、256 和 512。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const input = new Float32Array([1, 3, 5]);
++  const input = new Float32Array(64 * 3);
++  input.set([1, 3, 5]);
++  input.set([11, 12, 13], 64);
+
+  // create a buffer on the GPU to hold our computation
+  // input and output
+  const workBuffer = device.createBuffer({
+    label: 'work buffer',
+    size: input.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
+  });
+  // Copy our input data to that buffer
+  device.queue.writeBuffer(workBuffer, 0, input);
+</pre>
+<p>上面的代码创建了一个 <code class="notranslate" translate="no">64 * 3</code> 个 32 位浮点数的数组，即 768 字节。</p>
+<p>由于我们的原始示例读取和写入同一个缓冲区，我们只需将同一个缓冲区绑定 3 次。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Setup a bindGroup to tell the shader which
+  // buffers to use for the computation
+  const bindGroup = device.createBindGroup({
+    label: 'bindGroup for work buffer',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+-      { binding: 0, resource: workBuffer  },
++      { binding: 0, resource: { buffer: workBuffer, size: 256 } },
++      { binding: 1, resource: { buffer: workBuffer, size: 256 } },
++      { binding: 2, resource: { buffer: workBuffer, size: 256 } },
+    ],
+  });
+</pre>
+<p>注意，我们必须指定大小，否则它将默认为整个缓冲区的大小。如果我们将偏移量设置为 &gt; 0，就会出错，因为我们将指定超出范围的缓冲区部分。</p>
+<p>在 <code class="notranslate" translate="no">setBindGroup</code> 中，我们现在为每个具有动态偏移量的缓冲区传入 1 个偏移量。由于我们将绑定组布局中的所有 3 个条目都标记为 <code class="notranslate" translate="no">hasDynamicOffset: true</code>，我们需要在绑定槽的顺序中提供 3 个偏移量。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
+  pass.setPipeline(pipeline);
+-  pass.setBindGroup(0, bindGroup);
++  pass.setBindGroup(0, bindGroup, [0, 256, 512]);
+  pass.dispatchWorkgroups(3);
+  pass.end();
+</pre>
+<p>最后，我们需要更改代码来显示结果</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  console.log(input);
+-  console.log(result);
++  console.log('a', input.slice(0, 3));
++  console.log('b', input.slice(64, 64 + 3));
++  console.log('dst', result.slice(128, 128 + 3));
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-dynamic-offsets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-dynamic-offsets.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>注意，使用动态偏移量比使用非动态偏移量要慢一些。原因是，使用非动态偏移量时，偏移量和大小是否在缓冲区范围内是在创建绑定组时检查的。使用动态偏移量时，该检查要到调用 <code class="notranslate" translate="no">setBindGroup</code> 时才能进行。如果你只调用 <code class="notranslate" translate="no">setBindGroup</code> 几百次，这种差异可能无关紧要。如果你调用 <code class="notranslate" translate="no">setBindGroup</code> 数千次，可能就会更明显。</p>
+<h2 id="在多个管线中使用同一个绑定组"><a id="a-sharing-bind-groups"></a> 在多个管线中使用同一个绑定组</h2>
+<p>手动创建绑定组布局的另一个原因是可以让我们在多个管线中使用同一个绑定组。</p>
+<p>一个你可能想重用绑定组的常见场景是带有阴影的基本 3D 场景渲染器。</p>
+<p>在基本的 3D 场景渲染器中，通常将绑定分为</p>
+<ul>
+<li>全局变量（如透视矩阵和视图矩阵）</li>
+<li>材质（纹理、颜色）</li>
+<li>局部变量（如模型矩阵）</li>
+</ul>
+<p>然后像这样渲染</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">setBindGroup(0, globalsBG)
+for each material
+  setBindGroup(1, materialBG)
+  for each object that uses material
+    setBindGroup(2, localBG)
+    draw(...)
+</pre>
+<p>当你添加<a href="webgpu-shadows.html">阴影</a>时，需要先用阴影图管线绘制阴影图。与其分别为处理绘制管线的绑定组和处理阴影图渲染的绑定组创建各自的一组绑定，不如只创建一组绑定组并在两种情况下都使用同一组，这样会更方便。</p>
+<p>要写一个展示绑定组共享的完整示例相当冗长。虽然<a href="webgpu-shadows.html">阴影文章</a>使用了共享绑定组，但我们还是以<a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">基础文章</a>中的简单计算示例为例，让它使用 2 个计算管线和一个绑定组。</p>
+<p>首先，让我们添加另一个将值加 3 的着色器模块</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const module = device.createShaderModule({
++  const moduleTimes2 = device.createShaderModule({
+    label: 'doubling compute module',
+    code: /* wgsl */ `
+      @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
+
+      @compute @workgroup_size(1) fn computeSomething(
+        @builtin(global_invocation_id) id: vec3u
+      ) {
+        let i = id.x;
+        data[i] = data[i] * 2.0;
+      }
+    `,
+  });
+
++  const modulePlus3 = device.createShaderModule({
++    label: 'adding 3 compute module',
++    code: /* wgsl */ `
++      @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
++
++      @compute @workgroup_size(1) fn computeSomething(
++        @builtin(global_invocation_id) id: vec3u
++      ) {
++        let i = id.x;
++        data[i] = data[i] + 3.0;
++      }
++    `,
++  });
+</pre>
+<p>然后，让我们创建一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> 和 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUPipelineLayout"><code class="notranslate" translate="no">GPUPipelineLayout</code></a>，我们可以用它们让 2 个管线共享同一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroup"><code class="notranslate" translate="no">GPUBindGroup</code></a>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE,
+        buffer: {
+          type: 'storage',
+          minBindingSize: 0,
+        },
+      },
+    ],
+  });
+
+  const pipelineLayout = device.createPipelineLayout({
+    bindGroupLayouts: [ bindGroupLayout ],
+  });
+</pre>
+<p>现在让我们在创建管线时使用它们。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const pipeline = device.createComputePipeline({
++  const pipelineTimes2 = device.createComputePipeline({
+    label: 'doubling compute pipeline',
+-    layout: 'auto',
++    layout: pipelineLayout,
+    compute: {
+      module: moduleTimes2,
+    },
+  });
+
++  const pipelinePlus3 = device.createComputePipeline({
++    label: 'plus 3 compute pipeline',
++    layout: pipelineLayout,
++    compute: {
++      module: modulePlus3,
++    },
++  });
+</pre>
+<p>当我们设置绑定组时，让我们直接使用 <code class="notranslate" translate="no">bindGroupLayout</code></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Setup a bindGroup to tell the shader which
+  // buffer to use for the computation
+  const bindGroup = device.createBindGroup({
+    label: 'bindGroup for work buffer',
+-    layout: pipeline.getBindGroupLayout(0),
++    layout: bindGroupLayout,
+    entries: [
+      { binding: 0, resource: workBuffer  },
+    ],
+  });
+</pre>
+<p>最后，让我们使用这两个管线</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Encode commands to do the computation
+  const encoder = device.createCommandEncoder();
+  const pass = encoder.beginComputePass();
+-  pass.setPipeline(pipeline);
++  pass.setPipeline(pipelineTimes2);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(input.length);
++  pass.setPipeline(pipelinePlus3);
++  pass.dispatchWorkgroups(input.length);
+  pass.end();
+</pre>
+<p>结果是，我们用一个绑定组实现了乘以 2 再加 3。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-bind-group-layouts-multiple-pipelines.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-bind-group-layouts-multiple-pipelines.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>虽然不是很激动人心，但至少这是一个可行且简单的示例。</p>
+<p>何时手动创建绑定组布局，何时不创建，这完全取决于你。在上面的示例中，其实也可以更简单地创建 2 个绑定组，每个管线一个。</p>
+<p>在简单情况下，通常不需要手动创建绑定组布局，但是随着你的 WebGPU 程序变得越来越复杂，创建绑定组布局很可能成为一种你会用到的技术。</p>
+<h2 id="绑定组布局注意事项："><a id="a-bind-group-layout-notes"></a> 绑定组布局注意事项：</h2>
+<p>创建 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUBindGroupLayout"><code class="notranslate" translate="no">GPUBindGroupLayout</code></a> 时需要注意的一些事项：</p>
+<ul>
+<li>
+<h2 id="每个入口entry必须声明它是为哪个-binding-设置的">每个入口(entry)必须声明它是为哪个 <code class="notranslate" translate="no">binding</code> 设置的</h2>
+</li>
+<li>
+<h2 id="每个入口必须声明它将在哪些阶段可见。">每个入口必须声明它将在哪些阶段可见。</h2>
+<p>在上面的示例中，我们只声明了一个可见性。
+例如，如果我们希望绑定组在顶点和片段着色器中都可以引用，我们将使用：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   visibility: GPUShaderStage.FRAGMENT | GPUShaderStage.VERTEX
+</pre>
+<p>或者所有 3 个阶段：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   visibility: GPUShaderStage.COMPUTE |
+               GPUShaderStage.FRAGMENT | 
+               GPUShaderStage.VERTEX
+</pre>
+</li>
+<li>
+<h2 id="有几个默认值：">有几个默认值：</h2>
+<p>对于 <code class="notranslate" translate="no">texture:</code> 绑定，默认值是：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
+  sampleType: 'float',
+  viewDimension: '2d',
+  multisampled: false,
+}
+</pre>
+<p>对于 <code class="notranslate" translate="no">sampler:</code> 绑定，默认值是：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
+  type: 'filtering',
+}
+</pre>
+<p>这意味着，在最常见的采样器和纹理用法中，你可以像这样声明采样器和纹理条目</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayout = device.createBindGroupLayout({
+  entries: [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.FRAGMENT,
+      sampler: {},  // use the defaults
+    },
+    {
+      binding: 1,
+      visibility: GPUShaderStage.FRAGMENT,
+      texture: {},  // use the defaults
+    },
+  ],
+});
+</pre>
+</li>
+<li>
+<h2 id="buffer-入口应尽可能声明-minbindingsize。">buffer 入口应尽可能声明 <code class="notranslate" translate="no">minBindingSize</code>。</h2>
+<p>当你声明缓冲区绑定时，可以指定 <code class="notranslate" translate="no">minBindingSize</code>。</p>
+<p>一个好的例子是你为 uniform 创建了一个结构。例如，在<a href="webgpu-uniforms.html">uniforms 文章</a>中，我们有这个结构：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurStruct {
+  color: vec4f,
+  scale: vec2f,
+  offset: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+</pre>
+<p>它需要 32 字节，所以，我们应该像这样声明它的 <code class="notranslate" translate="no">minBindingSize</code>：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bindGroupLayout = device.createBindGroupLayout({
+  entries: [
+    {
+      binding: 0,
+      visibility: GPUShaderStage.COMPUTE,
+      buffer: {
+        type: 'uniform',
+        minBindingSize: 32,
+      },
+    },
+  ],
+});
+</pre>
+<p>声明 <code class="notranslate" translate="no">minBindingSize</code> 的原因是它让 WebGPU 在调用 <code class="notranslate" translate="no">createBindGroup</code> 时检查你的缓冲区大小/偏移量是否正确。如果你没有设置 <code class="notranslate" translate="no">minBindingSize</code>，那么 WebGPU 必须在 draw/dispatchWorkgroups 时检查缓冲区是否与管线的正确大小匹配。每次 draw 调用时都进行检查比在创建绑定组时检查一次要慢。</p>
+<p>另一方面，在我们上面使用存储缓冲区来加倍数字等的示例中，我们没有声明 <code class="notranslate" translate="no">minBindingSize</code>。这是因为，由于存储缓冲区声明为一个 <code class="notranslate" translate="no">array</code>，它能够根据你传入的值数量绑定不同大小的缓冲区。</p>
+</li>
+</ul>
+<p><a href="https://www.w3.org/TR/webgpu/#dictdef-gpubindgrouplayoutentry">规范的这一部分</a>详细介绍了创建绑定组布局的所有选项。</p>
+<p><a href="https://toji.dev/webgpu-best-practices/bind-groups">这篇文章</a>也有一些关于绑定组和绑定组布局的建议。</p>
+<p><a href="https://greggman.github.io/webgpu-utils">这个库</a>可以为你计算结构大小和默认绑定组布局。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>你的设备可能支持更小的偏移量。请参阅<a href="webgpu-limits-and-features.html">限制和特性</a>中的 <code class="notranslate" translate="no">minStorageBufferOffsetAlignment</code> 或 <code class="notranslate" translate="no">minUniformBufferOffsetAlignment</code>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-bind-group-layouts.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-bind-group-layouts.html">Русский
@@ -204,7 +734,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
@@ -214,17 +745,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">加载图像</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">高效使用视频</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">立方体贴图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
@@ -233,7 +764,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </ul>
   <li>3D数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">Translation</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">平移(Translation)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-rotation.html">Rotation</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scale.html">Scale</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-math.html">Matrix Math</a></li>
@@ -263,6 +794,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
@@ -292,13 +832,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 绑定组布局 (Bind Group Layouts)`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

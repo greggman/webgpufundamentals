@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <meta name="keywords" content="webgpu graphics">
 <meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
 
-<meta property="og:title" content="Fundamentos de WebGPU">
+<meta property="og:title" content="Fundamentos sobre WebGPU">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
 <meta property="og:description" content="Aprende WebGPU">
@@ -52,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <meta name="twitter:description" content="Aprende WebGPU">
 <meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
 
-<title>Fundamentos de WebGPU</title>
+<title>Fundamentos sobre WebGPU</title>
 
 <link rel="alternate" type="application/atom+xml" title="webgpu fundamentals" href="https://webgpufundamentals.org/atom.xml">
 <script type="application/ld+json">
@@ -249,61 +249,91 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   {
     "@type": "ListItem",
     "position": 38,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-image-adjustments.html"
   },
   {
     "@type": "ListItem",
     "position": 39,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders-histogram.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-1dlut.html"
   },
   {
     "@type": "ListItem",
     "position": 40,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-3dlut.html"
   },
   {
     "@type": "ListItem",
     "position": 41,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resizing-the-canvas.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-highlighting.html"
   },
   {
     "@type": "ListItem",
     "position": 42,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-multiple-canvases.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-camera-controls.html"
   },
   {
     "@type": "ListItem",
     "position": 43,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-points.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-picking.html"
   },
   {
     "@type": "ListItem",
     "position": 44,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-from-webgl.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders.html"
   },
   {
     "@type": "ListItem",
     "position": 45,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-optimization.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders-histogram.html"
   },
   {
     "@type": "ListItem",
     "position": 46,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-debugging.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html"
   },
   {
     "@type": "ListItem",
     "position": 47,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resources.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resizing-the-canvas.html"
   },
   {
     "@type": "ListItem",
     "position": 48,
-    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-wgsl-function-reference.html"
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-multiple-canvases.html"
   },
   {
     "@type": "ListItem",
     "position": 49,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-points.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 50,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-from-webgl.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 51,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-optimization.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 52,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-debugging.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 53,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resources.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 54,
+    "url": "https://webgpufundamentals.org/webgpu/lessons/es/webgpu-wgsl-function-reference.html"
+  },
+  {
+    "@type": "ListItem",
+    "position": 55,
     "url": "https://webgpufundamentals.org/webgpu/lessons/resources/wgsl-offset-computer.html"
   }
 ]
@@ -324,7 +354,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/">English
-    </option><option value="/webgpu/lessons/es/" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/" selected="">Español
     </option><option value="/webgpu/lessons/ja/">日本語
     </option><option value="/webgpu/lessons/ko/">한국어
     </option><option value="/webgpu/lessons/ru/">Русский
@@ -336,14 +366,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   </div>
 </div>
+<div id="need-newer-webgpu" style="display: none">
+  <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+</div>
 <div class="container">
   <div class="lesson">
     <div class="lesson-main">
-      <h1>Fundamentos de WebGPU <span class="rss"><a href="http://webgpufundamentals.org/atom.xml"><img src="/webgpu/lessons/resources/rss-icon.svg" alt="rss"></a></span></h1>
+      <h1>Fundamentos sobre WebGPU <span class="rss"><a href="http://webgpufundamentals.org/atom.xml"><img src="/webgpu/lessons/resources/rss-icon.svg" alt="rss"></a></span></h1>
       <div class="home-lang">
         <select class="language">
     <option value="/">English
-    </option><option value="/webgpu/lessons/es/" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/" selected="">Español
     </option><option value="/webgpu/lessons/ja/">日本語
     </option><option value="/webgpu/lessons/ko/">한국어
     </option><option value="/webgpu/lessons/ru/">Русский
@@ -354,85 +387,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
       </div>
-      <p>Aprende WebGPU a través de los siguientes artículos!</p>
-<p></p><ul>  <li>Conceptos básicos</li>
+      <p>Artículos de ayuda para aprender WebGPU</p>
+<p></p><ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -568,7 +610,7 @@ const settings = {
 </script>
 <script src="/contributors.js"></script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -111,7 +111,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'our hardcoded textured quad shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -193,7 +193,7 @@ async function main() {
       if (!module) {
         module = device.createShaderModule({
           label: 'textured quad shaders for mip level generation',
-          code: `
+          code: /* wgsl */ `
             struct VSOutput {
               @builtin(position) position: vec4f,
               @location(0) texcoord: vec2f,
@@ -357,7 +357,7 @@ async function main() {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTextureUnpremultipliedAlpha.createView() },
+      { binding: 1, resource: srcTextureUnpremultipliedAlpha },
       { binding: 2, resource: { buffer: srcUniform.buffer }},
     ],
   });
@@ -366,7 +366,7 @@ async function main() {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTextureUnpremultipliedAlpha.createView() },
+      { binding: 1, resource: dstTextureUnpremultipliedAlpha },
       { binding: 2, resource: { buffer: dstUniform.buffer }},
     ],
   });
@@ -375,7 +375,7 @@ async function main() {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: srcTexturePremultipliedAlpha.createView() },
+      { binding: 1, resource: srcTexturePremultipliedAlpha },
       { binding: 2, resource: { buffer: srcUniform.buffer }},
     ],
   });
@@ -384,7 +384,7 @@ async function main() {
     layout: bindGroupLayout,
     entries: [
       { binding: 0, resource: sampler },
-      { binding: 1, resource: dstTexturePremultipliedAlpha.createView() },
+      { binding: 1, resource: dstTexturePremultipliedAlpha },
       { binding: 2, resource: { buffer: dstUniform.buffer }},
     ],
   });

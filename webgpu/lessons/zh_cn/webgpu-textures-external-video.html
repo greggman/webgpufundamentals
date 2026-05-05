@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-textures-external-video.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Using Video Efficiently">
+
+<meta name="description" content="如何在 WebGPU 中高效地使用视频">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures-external-video_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 高效使用视频">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use video in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures-external-video_zh-cn.jpg">
+<meta property="og:description" content="如何在 WebGPU 中高效地使用视频">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Using Video Efficiently">
+<meta name="twitter:title" content="WebGPU 高效使用视频">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">
-<meta name="twitter:description" content="How to use video in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="如何在 WebGPU 中高效地使用视频">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures-external-video_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-textures-external-video.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures-external-video_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-textures-external-video.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-textures-external-video.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 高效使用视频",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-textures-external-video.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Using Video Efficiently</title>
+<title>WebGPU 高效使用视频</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-textures-external-video.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-textures-external-video.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-textures-external-video.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-textures-external-video.html">Русский
@@ -182,19 +228,331 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Using Video Efficiently</h1>
+    <h1>WebGPU 高效使用视频</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-textures-external-video.html">英文原版地址</a></p>
+      <p>在<a href="webgpu-importing-textures.html">上一篇文章</a>中，我们介绍了如何将图像、Canvas 和视频加载到纹理中。本文将介绍一种在 WebGPU 中更高效地使用视频的方法。</p>
+<p>在上一篇文章中，我们通过调用 <code class="notranslate" translate="no">copyExternalImageToTexture</code> 将视频数据加载到 WebGPU 纹理中。这个函数会将视频的当前帧从视频本身复制到我们预先创建的纹理中。</p>
+<p>WebGPU 还有另一种使用视频的方法。它叫做 <code class="notranslate" translate="no">importExternalTexture</code>，顾名思义，它会提供一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUExternalTexture"><code class="notranslate" translate="no">GPUExternalTexture</code></a>。这个外部纹理直接表示视频中的数据，不会进行复制。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> 你只需要将视频传递给 <code class="notranslate" translate="no">importExternalTexture</code>，它就会返回一个可直接使用的纹理。</p>
+<p>使用 <code class="notranslate" translate="no">importExternalTexture</code> 获取的纹理有几个重要的限制。</p>
+<ul>
+<li>
+<h2 id="纹理仅在当前-javascript-任务结束前有效">纹理仅在当前 JavaScript 任务结束前有效</h2>
+<p>对于大多数 WebGPU 应用来说，这意味着纹理只存在于你的 <code class="notranslate" translate="no">requestAnimationCallback</code> 函数结束之前。或者无论你在哪个事件中进行渲染——<code class="notranslate" translate="no">requestVideoFrameCallback</code>、<code class="notranslate" translate="no">setTimeout</code>、<code class="notranslate" translate="no">mouseMove</code> 等……当你的函数退出时，纹理就会失效。要再次使用视频，必须再次调用 <code class="notranslate" translate="no">importExternalTexture</code>。</p>
+<p>这意味着你每次调用 <code class="notranslate" translate="no">importExternalTexture</code> 时都必须创建一个新的绑定组<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，以便将新的纹理传递给着色器。</p>
+</li>
+<li>
+<h2 id="你必须在着色器中使用-texture_external">你必须在着色器中使用 <code class="notranslate" translate="no">texture_external</code></h2>
+<p>在之前所有的纹理示例中，我们一直使用 <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>，但从 <code class="notranslate" translate="no">importExternalTexture</code> 获取的纹理只能绑定到使用 <code class="notranslate" translate="no">texture_external</code> 的绑定点上。</p>
+</li>
+<li>
+<h2 id="你必须在着色器中使用-texturesamplebaseclamptoedge">你必须在着色器中使用 <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code></h2>
+<p>在之前所有的纹理示例中，我们一直使用 <code class="notranslate" translate="no">textureSample</code>，但从 <code class="notranslate" translate="no">importExternalTexture</code> 获取的纹理只能使用 <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code>。<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> 顾名思义，<code class="notranslate" translate="no">textureSampleBaseClampToEdge</code> 只会采样纹理的 base mip level（level 0）。换句话说，外部纹理不能有 mipmap。此外，该函数会钳制到边缘，这意味着将采样器设置为 <code class="notranslate" translate="no">addressModeU: 'repeat'</code> 将被忽略。</p>
+<p>注意，你可以通过使用 <code class="notranslate" translate="no">fract</code> 来实现自己的重复采样：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let color = textureSampleBaseClampToEdge(
+   someExternalTexture,
+   someSampler,
+   fract(texcoord)
+);`
+</pre>
+</li>
+</ul>
+<p>如果这些限制不满足你的需求，那么你需要像<a href="webgpu-importing-textures.html">上一篇文章</a>中介绍的那样使用 <code class="notranslate" translate="no">copyExternalImageToTexture</code>。</p>
+<p>让我们使用 <code class="notranslate" translate="no">importExternalTexture</code> 来制作一个可用的示例。先看一段视频</p>
+<div class="webgpu_center">
+  <div>
+     <video muted="" controls="" src="../../resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4" style="width: 320px" ;=""></video>
+     <div class="copyright"><a href="https://www.pexels.com/video/dog-walking-outside-the-house-5534310/">by Anna Bondarenko</a></div>
+  </div>
+</div>
+<p>以下是相对于上一个示例所需的改动。</p>
+<p>首先，我们需要更新着色器。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurVertexShaderOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
+struct Uniforms {
+  matrix: mat4x4f,
+};
+
+@group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+  let pos = array(
+    // 1st triangle
+    vec2f( 0.0,  0.0),  // center
+    vec2f( 1.0,  0.0),  // right, center
+    vec2f( 0.0,  1.0),  // center, top
+
+    // 2nd triangle
+    vec2f( 0.0,  1.0),  // center, top
+    vec2f( 1.0,  0.0),  // right, center
+    vec2f( 1.0,  1.0),  // right, top
+  );
+
+  var vsOutput: OurVertexShaderOutput;
+  let xy = pos[vertexIndex];
+  vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+-  vsOutput.texcoord = xy * vec2f(1, 50);
++  vsOutput.texcoord = xy;
+  return vsOutput;
+}
+
+@group(0) @binding(0) var ourSampler: sampler;
+-@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
++@group(0) @binding(1) var ourTexture: texture_external;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+-  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
++  return textureSampleBaseClampToEdge(
++      ourTexture,
++      ourSampler,
++      fsInput.texcoord,
++  );
+}
+</pre>
+<p>上面我们不再将纹理坐标乘以 50，因为那只是为了展示纹理重复功能，而外部纹理不能重复。</p>
+<p>我们还做了上面提到的必需更改。<code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code> 变成了 <code class="notranslate" translate="no">texture_external</code>，<code class="notranslate" translate="no">textureSample</code> 变成了 <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code>。</p>
+<p>我们删除了所有与创建纹理和生成 mip 级别相关的代码。</p>
+<p>当然，我们需要指向我们的视频</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  video.src = 'resources/videos/Golden_retriever_swimming_the_doggy_paddle-360-no-audio.webm';
++  video.src = 'resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4';
+</pre>
+<p>由于我们不能有 mip 级别，所以也不需要创建会使用 mip 级别的采样器。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const objectInfos = [];
+-  for (let i = 0; i &lt; 8; ++i) {
++  for (let i = 0; i &lt; 4; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: 'repeat',
+      addressModeV: 'repeat',
+      magFilter: (i &amp; 1) ? 'linear' : 'nearest',
+      minFilter: (i &amp; 2) ? 'linear' : 'nearest',
+-      mipmapFilter: (i &amp; 4) ? 'linear' : 'nearest',
+    });
+
+  ...
+</pre>
+<p>由于在调用 <code class="notranslate" translate="no">importExternalTexture</code> 之前我们无法获得纹理，所以无法提前创建绑定组，因此我们需要保存以后创建它们所需的信息。<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const objectInfos = [];
+  for (let i = 0; i &lt; 4; ++i) {
+
+    ...
+
+-    const bindGroups = textures.map(texture =&gt;
+-      device.createBindGroup({
+-        layout: pipeline.getBindGroupLayout(0),
+-        entries: [
+-          { binding: 0, resource: sampler },
+-          { binding: 1, resource: texture },
+-          { binding: 2, resource: uniformBuffer },
+-        ],
+-      }));
+
+    // 保存渲染该对象所需的数据
+    objectInfos.push({
+-      bindGroups,
++     sampler,
+      matrix,
+      uniformValues,
+      uniformBuffer,
+    });
+</pre>
+<p>在渲染时我们会调用 <code class="notranslate" translate="no">importExternalTexture</code> 并创建绑定组</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+-    copySourceToTexture(device, texture, video);
+    ...
+
+    const encoder = device.createCommandEncoder({
+      label: 'render quad encoder',
+    });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
++    const texture = device.importExternalTexture({source: video});
+
+    objectInfos.forEach(({sampler, matrix, uniformBuffer, uniformValues}, i) =&gt; {
++      const bindGroup = device.createBindGroup({
++        layout: pipeline.getBindGroupLayout(0),
++        entries: [
++          { binding: 0, resource: sampler },
++          { binding: 1, resource: texture },
++          { binding: 2, resource: uniformBuffer },
++        ],
++      });
+
+      ...
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // 调用顶点着色器 6 次
+    });
+</pre>
+<p>此外，鉴于纹理不能重复，让我们调整矩阵计算，使绘制的四边形更可见，而不是像之前那样被拉伸成 50:1 的比例。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    ...
+    objectInfos.forEach(({bindGroups, matrix, uniformBuffer, uniformValues}, i) =&gt; {
+      const bindGroup = bindGroups[texNdx];
+
+      const xSpacing = 1.2;
+-      const ySpacing = 0.7;
+-      const zDepth = 50;
++      const ySpacing = 0.5;
++      const zDepth = 1;
+
+-      const x = i % 4 - 1.5;
+-      const y = i &lt; 4 ? 1 : -1;
++      const x = i % 2 - .5;
++      const y = i &lt; 2 ? 1 : -1;
+
+      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+-      mat4.rotateX(matrix, 0.5 * Math.PI, matrix);
+-      mat4.scale(matrix, [1, zDepth * 2, 1], matrix);
++      mat4.rotateX(matrix, 0.25 * Math.PI * Math.sign(y), matrix);
++      mat4.scale(matrix, [1, -1, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+
+      // 将 uniform 值从 JavaScript 复制到 GPU
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // 调用顶点着色器 6 次
+    });
+
+</pre>
+<p>这样我们就得到了一个零复制的 WebGPU 视频纹理</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-external-video.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-external-video.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<h2 id="为什么是-texture_external？">为什么是 <code class="notranslate" translate="no">texture_external</code>？</h2>
+<p>你们中的一些人可能会注意到，这种使用视频的方式使用 <code class="notranslate" translate="no">texture_external</code> 而不是更常见的 <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>，并且使用 <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code> 而不是 <code class="notranslate" translate="no">textureSample</code>。这意味着，如果你想使用这种方式使用纹理，并将其与渲染的其他部分混合，你就需要不同的着色器。使用静态纹理时用 <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>，使用视频时用 <code class="notranslate" translate="no">texture_external</code>。</p>
+<p>我认为理解这里底层发生的事情很重要。</p>
+<p>视频通常以视频的亮度部分（每个像素的亮度）与色度部分（每个像素的颜色）分开的方式传输。颜色的分辨率通常低于亮度部分。一种常见的分离和编码方式是 <a href="https://en.wikipedia.org/wiki/Y%E2%80%B2UV">YUV</a>，其中数据被分离为亮度（Y）和（UV）颜色信息。这种表示方式通常也能更好地压缩。</p>
+<p>WebGPU 对外部纹理的目标是直接使用视频提供的格式。为了做到这一点，它<em>假装</em>存在一个视频纹理，但在实际实现中可能有多个纹理。例如，一个包含亮度值（Y）的纹理和一个包含 UV 值的独立纹理。而且，这些 UV 值可能以特殊的方式分离。不是像下面这样每像素 2 个值交叉排列的纹理</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+</pre>
+<p>它们可能是这样排列的</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+vvvvvvvv
+vvvvvvvv
+vvvvvvvv
+vvvvvvvv
+vvvvvvvv
+vvvvvvvv
+</pre>
+<p>在一个纹理区域中每个像素一个（u）值，在另一个区域中每个像素一个（v）值。同样，以这种方式排列数据通常可以更好地压缩。</p>
+<p>当你将 <code class="notranslate" translate="no">texture_external</code> 和 <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code> 添加到着色器时，WebGPU 在幕后会向你的着色器注入代码，将这些视频数据转换回 RGBA 值。它可能会从多个纹理采样，或者进行纹理坐标计算，以便从 2 个、3 个或更多位置提取正确的数据并转换为 RGB。</p>
+<p>上面视频的 Y、U 和 V 通道如下</p>
+<div class="webgpu_center">
+  <div class="side-by-side">
+    <div class="separate">
+      <img src="../../resources/videos/pexels-anna-bordarenko-5534310-y-channel.png" style="width: 300px;">
+      <div>Y 通道（亮度）</div>
+    </div>
+    <div class="separate">
+      <div class="side-by-side">
+        <div class="separate">
+          <img src="../../resources/videos/pexels-anna-bordarenko-5534310-u-channel.png" style="width: 150px;">
+          <div>U 通道<br>（红 ↔ 黄）</div>
+        </div>
+        <div class="separate">
+          <img src="../../resources/videos/pexels-anna-bordarenko-5534310-v-channel.png" style="width: 150px;">
+          <div>V 通道<br>（蓝 ↔ 黄）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p>WebGPU 在这里实际上是在提供一种优化。在传统图形库中，这需要你自己来完成。你要么自己编写从 YUV 到 RGB 的转换代码，要么请求操作系统来完成。你会将数据复制到 RGBA 纹理中，然后将该 RGBA 纹理用作 <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>。这种方式更灵活——你不需要为视频和静态纹理编写不同的着色器。但是，它更慢，因为转换必须从 YUV 纹理发生，再到 RGBA 纹理。</p>
+<p>这种更慢但更灵活的方法在 WebGPU 中仍然可用，我们已经在<a href="webgpu-importing-textures.html#a-loading-video">上一篇文章</a>中介绍过。如果你需要灵活性——如果你想在任何地方使用视频而不需要为视频和静态图像使用不同的着色器——那么请使用那种方法。</p>
+<p>WebGPU 为 <code class="notranslate" translate="no">texture_external</code> 提供这种优化的原因之一是因为这是 Web。浏览器支持的视频格式会随着时间变化。WebGPU 会为你处理这些，而如果你必须自己编写从 YUV 到 RGB 的着色器，你还必须知道视频格式不会改变——但这是 Web 无法保证的事情。</p>
+<p>使用本文描述的 <code class="notranslate" translate="no">texture_external</code> 方法最明显的场景是视频相关功能，比如会议、Zoom、FB Messenger 相关功能，比如在进行面部识别以添加可视化效果或背景分离时。另一个可能的应用是 WebXR 支持 WebGPU 后的 VR 视频。</p>
+<h2 id="使用摄像头"><a id="a-web-camera"></a> 使用摄像头</h2>
+<p>实际上，让我们使用摄像头。这只需要很小的改动。</p>
+<p>首先，我们不指定要播放的视频。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const video = document.createElement('video');
+-  video.muted = true;
+-  video.loop = true;
+-  video.preload = 'auto';
+-  video.src = 'resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4'; /* webgpufundamentals: url */
+  await waitForClick();
+  await startPlayingAndWaitForVideo(video);
+</pre>
+<p>然后，当用户点击播放时，我们调用 <code class="notranslate" translate="no">getUserMedia</code> 请求摄像头。将生成的流应用到视频。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function waitForClick() {
+    return new Promise(resolve =&gt; {
+      window.addEventListener(
+        'click',
+-        () =&gt; {
++        async() =&gt; {
+          document.querySelector('#start').style.display = 'none';
+-          resolve();
++          try {
++            const stream = await navigator.mediaDevices.getUserMedia({
++              video: true,
++            });
++            video.srcObject = stream;
++            resolve();
++          } catch (e) {
++            fail(`could not access camera: ${e.message ?? ''}`);
++          }
+        },
+        { once: true });
+    });
+  }
+</pre>
+<p>根据你的用例，你可能需要镜像图像，使其看起来像镜子中的效果。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+      mat4.rotateX(matrix, 0.25 * Math.PI * Math.sign(y), matrix);
+-      mat4.scale(matrix, [1, -1, 1], matrix);
++      mat4.scale(matrix, [-1, -1, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+</pre>
+<p>不需要其他更改。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-external-video-camera.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-external-video-camera.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>如果需要更灵活的 <code class="notranslate" translate="no">texture&lt;f32&gt;</code> 类型纹理而不是更高效的 <code class="notranslate" translate="no">texture_external</code> 类型纹理，我们可以对<a href="webgpu-importing-textures.html#a-loading-video">上一篇文章</a>中的视频示例进行类似的修改，以获取摄像头图像。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>实际发生什么取决于浏览器的实现。WebGPU 规范的制定初衷是希望浏览器不需要进行复制。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>规范实际上说实现可以返回相同的纹理，但不是必须的。如果你想检查是否获得了相同的纹理，可以将新纹理与之前的纹理进行比较，代码如下：</p><pre class="prettyprint showlinemods notranslate notranslate" translate="no">const newTexture = device.importExternalTexture(…);<br>const same = oldTexture === newTexture;</pre> 如果是相同的纹理，则可以复用现有的绑定组和 <code class="notranslate" translate="no">oldTexture</code>。 <a href="#fnref2" class="footnote-backref">↩︎</a><p></p>
+</li>
+<li id="fn3" class="footnote-item"><p>你也可以使用 <code class="notranslate" translate="no">textureLoad</code> 来处理外部纹理。 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>我们可以将绑定组拆分为两个——一个持有采样器和 uniformBuffer，可以提前创建；另一个只引用外部纹理，在渲染时创建。这是否值得这样做取决于你的具体需求。 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-textures-external-video.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-textures-external-video.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-textures-external-video.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-textures-external-video.html">Русский
@@ -204,7 +562,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
@@ -214,17 +573,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">加载图像</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">高效使用视频</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">立方体贴图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
@@ -233,7 +592,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </ul>
   <li>3D数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">Translation</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">平移(Translation)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-rotation.html">Rotation</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scale.html">Scale</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-math.html">Matrix Math</a></li>
@@ -263,6 +622,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
@@ -292,13 +660,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 高效使用视频`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

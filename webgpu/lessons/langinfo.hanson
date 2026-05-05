@@ -22,6 +22,7 @@ Sorry this article has not been translated yet.
 [Here's the original English article for now]({{{origLink}}}).
   `,
   contribTemplate: 'Thank you <a href="${html_url}"><img src="${avatar_url}"> ${login}</a><br>for <a href="https://github.com/${owner}/${repo}/commits?author=${login}">${contributions} contributions</a>',
+  needNewWebGPU: 'This browser is missing a few WebGPU features. Please update your browser.',
   toc: 'Table of Contents',
   categoryMapping: {
     'basics': 'Basics',
@@ -35,6 +36,7 @@ Sorry this article has not been translated yet.
     'lighting': 'Lighting',
     'compute-shaders': 'Compute Shaders',
     'post-processing': 'Post Processing',
+    'editor': 'Editor',
   },
 }
 

@@ -1,0 +1,1616 @@
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-camera-controls.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
+
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--><html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Controlando la cámara">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-camera-controls_es.jpg">
+
+<meta property="og:title" content="Controles de cámara en WebGPU">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-camera-controls_es.jpg">
+<meta property="og:description" content="Controlando la cámara">
+<meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-camera-controls.html">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@greggman">
+<meta name="twitter:creator" content="@greggman">
+<meta name="twitter:domain" content="webgpufundamentals.org">
+<meta name="twitter:title" content="Controles de cámara en WebGPU">
+<meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-camera-controls.html">
+<meta name="twitter:description" content="Controlando la cámara">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-camera-controls_es.jpg">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-camera-controls.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-camera-controls_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-camera-controls.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-camera-controls.html",
+      "inLanguage":"es",
+      "name":"Controles de cámara en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-camera-controls.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
+
+<title>Controles de cámara en WebGPU</title>
+<link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
+</head>
+<body>
+<div class="webgpu_navbar">
+  <div>
+    <select class="language">
+    <option value="/webgpu/lessons/webgpu-camera-controls.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-camera-controls.html" selected="">Español
+    </option><option value="/webgpu/lessons/ja/webgpu-camera-controls.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-camera-controls.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-camera-controls.html">Русский
+    </option><option value="/webgpu/lessons/tr/webgpu-camera-controls.html">Türkçe
+    </option><option value="/webgpu/lessons/uk/webgpu-camera-controls.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">简体中文
+</option></select>
+
+
+    <a href="#toc">Índice</a>
+    <input type="search" placeholder="?" id="search">
+  </div>
+</div>
+<div class="webgpu_header">
+  <h1><a href="/webgpu/lessons/es/">webgpufundamentals.org</a></h1>
+<style>
+#forkongithub>div {
+    background: #000;
+    color: #fff;
+    font-family: arial,sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    position: relative;
+    transition: 0.5s;
+    display: block;
+    width: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(160px) rotate(45deg) translate(10px,70px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.8);
+    pointer-events: auto;
+}
+#forkongithub a {
+  text-decoration: none;
+  color: #fff;
+}
+#forkongithub>div:hover {
+    background: #c11;
+    color: #fff;
+}
+#forkongithub .contributors {
+  font-size: 0.75rem;
+  background: rgba(255,255,255,0.2);
+  line-height: 1.2;
+  padding: 0.1em;
+}
+#forkongithub>div::before,#forkongithub>div::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+}
+#forkongithub>div::after {
+    bottom: 1px;
+    top: auto;
+}
+
+#forkongithub{
+    z-index: 9999;
+    /* needed for firefox */
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+}
+#forkongithub svg{
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+}
+#forkongithub img {
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    #forkongithub>div {
+        line-height: 1.2rem;
+    }
+}
+@media (max-width: 700px) {
+  #forkongithub {
+    display: none;
+  }
+}
+@media (max-width: 410px) {
+    #forkongithub>div {
+        font-size: 0.7rem;
+        transform: translateX(150px) rotate(45deg) translate(20px,40px);
+    }
+}
+
+</style>
+<div id="forkongithub">
+  <div>
+    <div><a href="https://github.com/webgpu/webgpufundamentals">Fix, Fork, Contribute <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg width="100%" height="100%" viewBox="0 0 136 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(3.92891,0,0,3.92891,67.867,129.125)">
+        <path d="M0,-31.904C-8.995,-31.904 -16.288,-24.611 -16.288,-15.614C-16.288,-8.417 -11.621,-2.312 -5.148,-0.157C-4.333,-0.008 -4.036,-0.511 -4.036,-0.943C-4.036,-1.329 -4.05,-2.354 -4.058,-3.713C-8.589,-2.729 -9.545,-5.897 -9.545,-5.897C-10.286,-7.779 -11.354,-8.28 -11.354,-8.28C-12.833,-9.29 -11.242,-9.27 -11.242,-9.27C-9.607,-9.155 -8.747,-7.591 -8.747,-7.591C-7.294,-5.102 -4.934,-5.821 -4.006,-6.238C-3.858,-7.29 -3.438,-8.008 -2.972,-8.415C-6.589,-8.826 -10.392,-10.224 -10.392,-16.466C-10.392,-18.244 -9.757,-19.698 -8.715,-20.837C-8.883,-21.249 -9.442,-22.905 -8.556,-25.148C-8.556,-25.148 -7.188,-25.586 -4.076,-23.478C-2.777,-23.84 -1.383,-24.02 0.002,-24.026C1.385,-24.02 2.779,-23.84 4.08,-23.478C7.19,-25.586 8.555,-25.148 8.555,-25.148C9.444,-22.905 8.885,-21.249 8.717,-20.837C9.761,-19.698 10.392,-18.244 10.392,-16.466C10.392,-10.208 6.583,-8.831 2.954,-8.428C3.539,-7.925 4.06,-6.931 4.06,-5.411C4.06,-3.234 4.04,-1.477 4.04,-0.943C4.04,-0.507 4.333,0 5.16,-0.159C11.628,-2.318 16.291,-8.419 16.291,-15.614C16.291,-24.611 8.997,-31.904 0,-31.904" style="fill:white;"></path>
+    </g>
+</svg>
+</a></div>
+  </div>
+</div>
+
+</div>
+
+
+<div class="container">
+  <div class="lesson-title">
+    <h1>Controles de cámara en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
+  <div class="lesson">
+    <div class="lesson-main">
+      <p>Este artículo es el segundo de una breve serie sobre cómo crear partes para un editor 3D. Cada uno se basa en la lección anterior, por lo que te resultará más fácil entenderlos si los lees en orden.</p>
+<ol>
+<li><a href="webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="webgpu-camera-controls.html">Controles de cámara</a> ⬅ estás aquí</li>
+<li><a href="webgpu-picking.html">Picking (Selección)</a></li>
+</ol>
+<h1 id="cámara-de-órbita-orbit-camera">Cámara de órbita (Orbit Camera)</h1>
+<p>Una cámara de órbita es la que utilizan la mayoría de los paquetes de modelado 3D como Blender, Unity, Maya, 3DSMax o Unreal en sus editores. Puedes presionar algún icono o mantener pulsada una tecla y luego arrastrar el puntero para orbitar alrededor de algún punto del mundo.</p>
+<p>Existen algunos términos que, hasta donde sé, provienen del cine y otros de la aviación:</p>
+<ul>
+<li>
+<p><strong>“Pan”</strong> (Panorámica) consiste en girar la cámara a izquierda y derecha desde su ubicación actual.</p>
+<p>Cuando haces una foto panorámica con tu teléfono, estás “paneando” la cámara.</p>
+</li>
+<li>
+<p><strong>“Tilt”</strong> (Inclinación) consiste en girar la cámara hacia arriba y hacia abajo.</p>
+<p>Si estás de pie, podrías inclinar la cámara hacia abajo para fotografiar una flor, o hacia arriba para fotografiar un avión.</p>
+</li>
+<li>
+<p><strong>“Roll”</strong> (Rotación longitudinal) es como inclinar la cabeza hacia la izquierda o la derecha.</p>
+<p>El horizonte deja de estar plano.</p>
+</li>
+<li>
+<p><strong>“Dolly”</strong> consiste en acercar o alejar la cámara.</p>
+<p>A menudo se confunde con “hacer zoom”, pero el zoom con una lente de cámara cambia el campo de visión, mientras que “dollying” mueve físicamente la cámara más cerca o más lejos del objetivo.</p>
+</li>
+<li>
+<p><strong>“Track”</strong> consiste en mover la cámara perpendicularmente a la dirección en la que está mirando.</p>
+<p>Supongo que esto viene de <a href="https://en.wikipedia.org/wiki/Tracking_shot">tener realmente una vía (track) sobre la que desplazar la cámara de cine</a>.</p>
+</li>
+</ul>
+<p>En cualquier caso, una forma de resolver muchos problemas de este tipo es construir un “rig”. Un “rig” en términos de 3D generalmente se refiere a una jerarquía de nodos de un grafo de escena, potencialmente con algunas restricciones añadidas.</p>
+<p>Podríamos construir una jerarquía como esta:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">+-camTarget (ancla el centro de rotación)
+  +-camPan (nos permite "panear" alrededor del objetivo)
+    +-camTilt (nos permite inclinar la cámara por encima o por debajo del objetivo)
+      +-camExtend (nos permite alejar o acercar la cámara al objetivo)
+        +-cam (nos da la matriz de cámara)
+</pre>
+<p>Casi puedes imaginar esto como un rig mecánico real hecho de piezas físicas. No sé si es una buena analogía, pero si tuvieras un tanque militar, el tanque mismo sería el <code class="notranslate" translate="no">camTarget</code>. La torreta que gira sobre el tanque sería el <code class="notranslate" translate="no">camPan</code>. La pieza que permite que el cañón suba y baje es el <code class="notranslate" translate="no">camTilt</code>. El cañón mismo es el <code class="notranslate" translate="no">camExtend</code>. Idealmente, imagina un cañón telescópico que puede cambiar de longitud. Luego acoplas la cámara al final del cañón <strong>apuntando de vuelta hacia el tanque</strong>.</p>
+<div class="webgpu_center">
+  <div data-diagram="camera-rig" style="width: 600px;"></div>
+</div>
+<p>En el diagrama de arriba:</p>
+<ul>
+<li>la base azul es el <code class="notranslate" translate="no">camTarget</code></li>
+<li>la cabeza verde es el <code class="notranslate" translate="no">camPan</code></li>
+<li>la bisagra roja es el <code class="notranslate" translate="no">camTilt</code></li>
+<li>el cañón rosa/morado es el <code class="notranslate" translate="no">camExtend</code></li>
+<li>el frustum blanco representa una cámara en <code class="notranslate" translate="no">cam</code> mirando hacia el <code class="notranslate" translate="no">camTarget</code></li>
+</ul>
+<p>Por defecto, las piezas en el diagrama están apiladas para que sean fáciles de ver, pero en nuestro rig real estarían todas una encima de otra. Marca “collapse” para ponerlas donde deberían estar.</p>
+<p>En cualquier caso, vamos a crear ese rig de cámara.</p>
+<p>Primero, unos pequeños ajustes en la interfaz de usuario. Como eventualmente queremos que el usuario pueda arrastrar sobre la escena para actualizar la cámara, hagamos que los controles se parezcan más a un editor 3D donde, en lugar de flotar sobre la escena, ocupen un espacio a la derecha. También haremos que si el usuario cierra los controles, la escena se expanda para llenar el espacio.</p>
+<p>Primero, algunos cambios en el HTML:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">+&lt;div id="split"&gt;
+*  &lt;canvas&gt;&lt;/canvas&gt;
++  &lt;div id="ui"&gt;&lt;/div&gt;
++&lt;/div&gt;
+</pre>
+<p>y el CSS correspondiente:</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">#split {
+  display: flex;
+  height: 100%;
+}
+#ui {
+  border-left: 1px solid #888;
+}
+#ui.hide-ui {
+  right: 0;
+  position: absolute;
+}
+#split &gt; :nth-child(1) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+</pre>
+<p>Finalmente, moveremos la interfaz dentro de este div <code class="notranslate" translate="no">#ui</code> y actualizaremos las clases CSS del div según el estado de la interfaz.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const gui = new GUI();
+-  gui.onChange(render);
++  const uiElem = document.querySelector('#ui');
++  const gui = new GUI({
++    parent: uiElem,
++  });
++  gui.onChange(() =&gt; {
++    uiElem.classList.toggle('hide-ui', !gui.isOpen());
++    render();
++  });
+</pre>
+<p>Ahora empecemos a crear una cámara de órbita basada en nodos del grafo de escena.</p>
+<p>Aquí tienes nuestro rig de cámara de órbita:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  class OrbitCamera {
+    #camTarget;
+    #camPan;
+    #camTilt;
+    #camExtend;
+    #cam;
+
+    constructor() {
+      // Create the Camera Rig
+      this.#camTarget = addTRSSceneGraphNode('cam-target');
+      this.#camPan = addTRSSceneGraphNode('cam-pan', this.#camTarget);
+      this.#camTilt = addTRSSceneGraphNode('cam-tilt', this.#camPan);
+      this.#camExtend = addTRSSceneGraphNode('cam-extend', this.#camTilt);
+      this.#cam = addTRSSceneGraphNode('cam', this.#camExtend);
+    }
+
+    setParent(parent) {
+      this.#camTarget.setParent(parent);
+    }
+
+    getCameraMatrix() {
+      return this.#cam.worldMatrix;
+    }
+
+    get pan() { return this.#camPan.source.rotation[1]; }
+    set pan(v) { this.#camPan.source.rotation[1] = v; }
+    get tilt() { return this.#camTilt.source.rotation[0]; }
+    set tilt(v) { this.#camTilt.source.rotation[0] = v; }
+    get radius() { return this.#camExtend.source.translation[2]; }
+    set radius(v) { this.#camExtend.source.translation[2] = v; }
+    get target() { return vec3.copy(this.#camTarget.source.translation); }
+    set target(v) { vec3.copy(v, this.#camTarget.source.translation); }
+  }
+</pre>
+<p>Necesitamos añadir <code class="notranslate" translate="no">vec3.copy</code>, que no habíamos necesitado hasta ahora:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
++  copy(src, dst) {
++    dst = dst || new Float32Array(3);
++    dst.set(src);
++    return dst;
++  },
+
+    ...
+</pre>
+<p>luego necesitamos usar la <code class="notranslate" translate="no">OrbitCamera</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const orbitCamera = new OrbitCamera();
++  orbitCamera.setParent(root);
++  orbitCamera.target = [120, 80, 0];
++  orbitCamera.tilt = Math.PI * -0.2;
++  orbitCamera.radius = 300;
+
+  ...
+
+  const settings = {
+-    cameraRotation: degToRad(-45),
+    showMeshNodes: false,
+    showAllTRS: false,
+  };
+
+-  const cameraRadToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
+
+  const uiElem = document.querySelector('#ui');
+  const gui = new GUI({
+    parent: uiElem,
+  });
+  gui.onChange(() =&gt; {
+    uiElem.classList.toggle('hide-ui', !gui.isOpen());
+  });
+-  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
+
+  ...
+
+  function render() {
+
+    ...
+
+-    // Obtenemos la posición de la cámara a partir de la matriz que calculamos
+-    const cameraMatrix = mat4.identity();
+-    mat4.translate(cameraMatrix, [120, 100, 0], cameraMatrix);
+-    mat4.rotateY(cameraMatrix, settings.cameraRotation, cameraMatrix);
+-    mat4.translate(cameraMatrix, [60, 0, 300], cameraMatrix);
+-
+-    // Calculamos una matriz de vista
+-    const viewMatrix = mat4.inverse(cameraMatrix);
+
++    root.updateWorldMatrix();
++
++    // make a view matrix from the camera's
++    const viewMatrix = mat4.inverse(orbitCamera.getCameraMatrix());
+
+    // combine the view and projection matrixes
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
+    const encoder = device.createCommandEncoder();
+    {
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
+
+      const ctx = { pass, viewProjectionMatrix };
+-      root.updateWorldMatrix();
+      for (const mesh of meshes) {
+        drawMesh(ctx, mesh);
+      }
+
+      pass.end();
+    }
+</pre>
+<p>Observa que ha desaparecido un montón de matemáticas. No hay matemáticas en el código de <code class="notranslate" translate="no">OrbitCamera</code>, solo nodos del rig. Esto se debe a que todas las matemáticas han quedado enterradas en el propio rig.</p>
+<p>Podríamos ejecutarlo tal cual, pero sería difícil cambiar cualquier ajuste de la cámara ya que nuestra interfaz, por defecto, muestra solo la traslación x,y,z O bien los 9 ajustes de traslación, rotación y escala por nodo.</p>
+<p>Vamos a “hackear” la interfaz para que los nodos del rig de la cámara muestren solo los ajustes relevantes. Lo haremos añadiendo un mapa de nodos del grafo de escena a ajustes; para mantenerlo simple, proporcionaremos un array de controles por índice que queremos que aparezcan, donde 0, 1, 2 son traslación x, y, z; 3, 4, 5 son rotación x, y, z; y 6, 7, 8 son escala. Si no existen ajustes para el nodo, seguirán las reglas existentes.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const nodeToUISettings = new Map();
+
+  class OrbitCamera {
+    #camTarget;
+    #camPan;
+    #camTilt;
+    #camExtend;
+    #cam;
+
+    constructor() {
+      // Create the Camera Rig
+      this.#camTarget = addTRSSceneGraphNode('cam-target');
+      this.#camPan = addTRSSceneGraphNode('cam-pan', this.#camTarget);
+      this.#camTilt = addTRSSceneGraphNode('cam-tilt', this.#camPan);
+      this.#camExtend = addTRSSceneGraphNode('cam-extend', this.#camTilt);
+      this.#cam = addTRSSceneGraphNode('cam', this.#camExtend);
+
++      nodeToUISettings.set(this.#camTarget, { trs: [0, 1, 2] });
++      nodeToUISettings.set(this.#camPan, { trs: [4] });
++      nodeToUISettings.set(this.#camTilt, { trs: [3] });
++      nodeToUISettings.set(this.#camExtend, { trs: [2] });
++      nodeToUISettings.set(this.#cam, { trs: [] });
+    }
+
+    ...
+  }
+
+  ...
+
++  let currentNode;
+  function setCurrentSceneGraphNode(node) {
++    currentNode = node;
+    trsUIHelper.setTRS(node.source);
+    trsFolder.name(`orientación: ${node.name}`);
+    trsFolder.updateDisplay();
+
++   showTRS();
+
+    // Marcamos qué nodo está seleccionado.
+    for (const b of nodeButtons) {
+      const name = b.button.getName().replace(prefixRE, '');
+      b.button.name(`${b.node === node ? kSelected : kUnelected}${name}`);
+    }
+
+    selectedMeshes = meshes.filter(mesh =&gt; meshUsesNode(mesh, node));
+
+    render();
+  }
+
+  ...
+
+  const alwaysShow = new Set([0, 1, 2]);
+-  function showTRS(show) {
++  function showTRS() {
++    const ui = nodeToUISettings.get(currentNode);
+    trsControls.forEach((trs, i) =&gt; {
+-      trs.show(show || alwaysShow.has(i));
++      const showThis = ui
++        ? ui.trs?.indexOf(i) &gt;= 0
++        : (settings.showAllTRS || alwaysShow.has(i));
++      trs.show(showThis);
+    });
+  }
+=  showTRS(false);
+</pre>
+<p>Con esos cambios hemos reemplazado el viejo código de cámara por nuestra nueva <code class="notranslate" translate="no">OrbitCamera</code>, hemos eliminado un montón de matemáticas y hemos hecho que los nodos del rig de la cámara aparezcan en la interfaz con sus ajustes visibles y editables.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-scene-graph-step-01.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-scene-graph-step-01.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Ahora que tenemos lo básico en su lugar, añadamos algunos controles de puntero.</p>
+<h2 id="pan-y-tilt"><a id="a-pan-and-tilt"></a> Pan y Tilt</h2>
+<p>Ajustemos el pan y el tilt cuando arrastres el puntero.</p>
+<p>Primero, necesitamos hacer un pequeño ajuste en el CSS para que al arrastrar no se seleccione el canvas, entre otras cosas.</p>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
++  touch-action: none;
+}
+</pre>
+<p>Luego, añadamos algo de código a la cámara para encapsular un poco estos cambios. Crearemos una función <code class="notranslate" translate="no">getUpdateHelper</code> que registre parte del estado relevante (pero privado) de la cámara, y el ayudante proporcionará funciones para modificar el estado de la cámara mediante deltas que el código de la interfaz le pasará.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  class OrbitCamera {
+
+   ...
+
++    getUpdateHelper() {
++      const startTilt = this.tilt;
++      const startPan = this.pan;
++
++      return {
++        panAndTilt: (deltaPan, deltaTilt) =&gt; {
++          this.tilt = startTilt - deltaTilt;
++          this.pan = startPan - deltaPan;
++        },
++      };
++    }
+
+   ...
+
+  }
+</pre>
+<p>Entonces podemos añadir una función para conectar la entrada del puntero, crear el ayudante y pasarle los deltas.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addOrbitCameraEventListeners(cam, elem) {
+    let startX;
+    let startY;
+    let camHelper;
+
+    const updateStartPosition = (e) =&gt; {
+      startX = e.clientX;
+      startY = e.clientY;
+      camHelper = cam.getUpdateHelper();
+    };
+
+    const onMove = (e) =&gt; {
+      if (!canvas.hasPointerCapture(e.pointerId)) {
+        return;
+      }
+
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      camHelper.panAndTilt(deltaX * 0.01, deltaY * 0.01);
+      render();
+    };
+
+    const onUp = (e) =&gt; {
+      canvas.releasePointerCapture(e.pointerId);
+    };
+
+    const onDown = (e) =&gt; {
+      canvas.setPointerCapture(e.pointerId);
+      updateStartPosition(e);
+    };
+
+    elem.addEventListener('pointerup', onUp);
+    elem.addEventListener('pointercancel', onUp);
+    elem.addEventListener('lostpointercapture', onUp);
+    elem.addEventListener('pointerdown', onDown);
+    elem.addEventListener('pointermove', onMove);
+
+    return () =&gt; {
+      elem.removeEventListener('pointerup', onUp);
+      elem.removeEventListener('pointercancel', onUp);
+      elem.removeEventListener('lostpointercapture', onUp);
+      elem.removeEventListener('pointerdown', onDown);
+      elem.removeEventListener('pointermove', onMove);
+    };
+  }
+
+  addOrbitCameraEventListeners(orbitCamera, canvas);
+</pre>
+<p>El código es bastante directo. En <code class="notranslate" translate="no">pointerdown</code> llamamos a <code class="notranslate" translate="no">cam.getUpdateHelper</code>, que registra el <code class="notranslate" translate="no">pan</code> y <code class="notranslate" translate="no">tilt</code> actuales. También registramos la posición actual del puntero. En <code class="notranslate" translate="no">pointermove</code> calculamos el delta desde donde empezó el puntero y lo pasamos al ayudante para ajustar <code class="notranslate" translate="no">pan</code> y <code class="notranslate" translate="no">tilt</code>. Eso es básicamente todo. <code class="notranslate" translate="no">addOrbitCameraEventListeners</code> también devuelve una función para eliminar los escuchadores si fuera necesario.</p>
+<p>Un pequeño cambio más: hagamos que la interfaz de usuario (GUI) compruebe si hay actualizaciones en los valores. De esta forma, cuando hagamos <code class="notranslate" translate="no">pan</code> y <code class="notranslate" translate="no">tilt</code> arrastrando el puntero, los valores en la interfaz se actualizarán automáticamente.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const trsFolder = gui.addFolder('orientation');
++  const trsFolder = gui.addFolder('orientation').listen();
+</pre>
+<p>Pruébalo, arrastra el dedo por el canvas. Puedes seleccionar los nodos <code class="notranslate" translate="no">cam-tilt</code> o <code class="notranslate" translate="no">cam-pan</code> y verás cómo cambian los valores al arrastrar.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-scene-graph-step-02.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-scene-graph-step-02.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="tracking"><a id="a-track"></a> Tracking</h2>
+<p>Es común que si mantienes pulsada alguna tecla modificadora, como Shift, mientras arrastras, en lugar de ajustar el pan o el tilt, realices un “track” de la cámara (la traslades).</p>
+<p>Vamos a añadirlo. Primero, necesitamos algunas funciones matemáticas nuevas:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
++  create() {
++    return new Float32Array(3);
++  },
+
+  ...
+
++  add(a, b, dst) {
++      dst = dst || new Float32Array(3);
++
++      dst[0] = a[0] + b[0];
++      dst[1] = a[1] + b[1];
++      dst[2] = a[2] + b[2];
++
++      return dst;
++  },
++
++  transformMat3(v, m, dst) {
++    dst = dst ?? new Float32Array(3);
++
++    const x = v[0];
++    const y = v[1];
++    const z = v[2];
++
++    dst[0] = x * m[0] + y * m[4] + z * m[8];
++    dst[1] = x * m[1] + y * m[5] + z * m[9];
++    dst[2] = x * m[2] + y * m[6] + z * m[10];
++
++    return dst;
++  },
+}
+</pre>
+<p><code class="notranslate" translate="no">create</code> simplemente crea un vec3 con 3 ceros. <code class="notranslate" translate="no">add</code> suma dos vec3. Finalmente, <code class="notranslate" translate="no">transformMat3</code> multiplica un vector por una matriz 3x3. Esto se mencionó <a href="webgpu-lighting-directional.html#a-normals">cuando cubrimos las normales para la iluminación</a>. Allí multiplicamos una normal (vec3f) por una matriz normal (mat3x3f) en WGSL. Aquí estamos haciendo esencialmente lo mismo pero en JavaScript; en lugar de reorientar una normal, estamos reorientando el movimiento del puntero.</p>
+<p>Ahora podemos actualizar el ayudante:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  class OrbitCamera {
+
+    ...
+
+    getUpdateHelper() {
+      const startTilt = this.tilt;
+      const startPan = this.pan;
++      const startCameraMatrix = mat4.copy(this.getCameraMatrix());
++      const startTarget = vec3.copy(this.target);
+
+      return {
+        panAndTilt: (deltaPan, deltaTilt) =&gt; {
+          this.tilt = startTilt - deltaTilt;
+          this.pan = startPan - deltaPan;
+        },
++        track: (deltaX, deltaY) =&gt; {
++          const direction = vec3.transformMat3([deltaX, deltaY, 0], startCameraMatrix);
++          this.target = vec3.add(startTarget, direction);
++        },
+      };
+    }
+</pre>
+<p><code class="notranslate" translate="no">track</code> toma un delta xy y lo multiplica por la matriz 3x3 superior izquierda de nuestra matriz de cámara. Esto tiene el efecto de orientar la dirección de forma perpendicular a donde apunta la cámara. Luego simplemente sumamos eso a nuestro objetivo (target).</p>
+<p>Después ejecutamos <code class="notranslate" translate="no">track</code> desde el código del evento de puntero:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addOrbitCameraEventListeners(cam, elem) {
+    let startX;
+    let startY;
++    let lastMode;
+    let camHelper;
+
+    const updateStartPosition = (e) =&gt; {
+      startX = e.clientX;
+      startY = e.clientY;
+      camHelper = cam.getUpdateHelper();
+    };
+
+    const onMove = (e) =&gt; {
+      if (!canvas.hasPointerCapture(e.pointerId)) {
+        return;
+      }
+
++      const mode = e.shiftKey
++        ? 'track'
++        : 'panAndTilt';
++
++      if (mode !== lastMode) {
++        lastMode = mode;
++        updateStartPosition(e);
++      }
+
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
++      switch (mode) {
++        case 'track': {
++          const s = cam.radius * 0.001;
++          camHelper.track(-deltaX * s, deltaY * s);
++          break;
++        }
++        case 'panAndTilt':
++          camHelper.panAndTilt(deltaX * 0.01, deltaY * 0.01);
++          break;
++      }
+
+      render();
+    };
+
+    const onUp = (e) =&gt; {
+      canvas.releasePointerCapture(e.pointerId);
+    };
+
+    const onDown = (e) =&gt; {
+      canvas.setPointerCapture(e.pointerId);
+      updateStartPosition(e);
+    };
+
+    elem.addEventListener('pointerup', onUp);
+    elem.addEventListener('pointercancel', onUp);
+    elem.addEventListener('lostpointercapture', onUp);
+    elem.addEventListener('pointerdown', onDown);
+    elem.addEventListener('pointermove', onMove);
+
+    return () =&gt; {
+      elem.removeEventListener('pointerup', onUp);
+      elem.removeEventListener('pointercancel', onUp);
+      elem.removeEventListener('lostpointercapture', onUp);
+      elem.removeEventListener('pointerdown', onDown);
+      elem.removeEventListener('pointermove', onMove);
+    };
+  }
+</pre>
+<p>Nuestro código de evento arriba calcula un modo basándose en si el usuario mantiene pulsada la tecla Shift o no. Si el modo cambia, registramos los valores iniciales. Luego actúa según el modo.</p>
+<p>Nuestro modo <code class="notranslate" translate="no">'track'</code> pasa el delta del puntero a la función <code class="notranslate" translate="no">track</code> del ayudante. Escalamos el delta por el radio (nuestra distancia al objetivo), de modo que nos moveremos en pasos más pequeños si estamos muy cerca.</p>
+<p>También podemos hacer que realice un track si el usuario usa el botón central del ratón:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-      const mode = e.shiftKey
++      const mode = e.shiftKey || (e.buttons &amp; 4) !== 0
+         ? 'track'
+         : 'panAndTilt';
+</pre>
+<p>Ahora también puedes mantener presionada la rueda del ratón y moverlo para realizar un track.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-scene-graph-step-03.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-scene-graph-step-03.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="dolly-mediante-la-rueda-del-ratón"><a id="a-dolly-by-wheel"></a> Dolly mediante la rueda del ratón</h2>
+<p>A continuación, añadamos el zoom o “dolly” con la rueda de desplazamiento, lo cual es muy común.</p>
+<p>Primero, actualicemos nuestro ayudante:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  class OrbitCamera {
+    ...
+
+    getUpdateHelper() {
+      const startTilt = this.tilt;
+      const startPan = this.pan;
++      const startRadius = this.radius;
+      const startCameraMatrix = mat4.copy(this.getCameraMatrix());
+      const startTarget = vec3.copy(this.target);
+
+      return {
+        panAndTilt: (deltaPan, deltaTilt) =&gt; {
+          this.tilt = startTilt - deltaTilt;
+          this.pan = startPan - deltaPan;
+        },
+        track: (deltaX, deltaY) =&gt; {
+          const direction = vec3.transformMat3([deltaX, deltaY, 0], startCameraMatrix);
+          this.target = vec3.add(startTarget, direction);
+        },
++        dolly: (delta) =&gt; {
++          this.radius = startRadius + delta;
++        },
+      };
+    }
+
+    ...
+  }
+</pre>
+<p>Y luego usémoslo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addOrbitCameraEventListeners(cam, elem) {
+
+  ...
+
+
++    // Dolly when the user uses the wheel
++    const onWheel = (e) =&gt; {
++      e.preventDefault();
++      const helper = cam.getUpdateHelper();
++      helper.dolly(cam.radius * 0.001 * e.deltaY);
++      render();
++    };
+
+    elem.addEventListener('pointerup', onUp);
+    elem.addEventListener('pointercancel', onUp);
+    elem.addEventListener('lostpointercapture', onUp);
+    elem.addEventListener('pointerdown', onDown);
+    elem.addEventListener('pointermove', onMove);
++    elem.addEventListener('wheel', onWheel);
+
+    return () =&gt; {
+      elem.removeEventListener('pointerup', onUp);
+      elem.removeEventListener('pointercancel', onUp);
+      elem.removeEventListener('lostpointercapture', onUp);
+      elem.removeEventListener('pointerdown', onDown);
+      elem.removeEventListener('pointermove', onMove);
++      elem.removeEventListener('wheel', onWheel);
+    };
+  }
+</pre>
+<p>Con ese pequeño cambio, deberías ser capaz de acercar/alejar (dolly) con la rueda del ratón (o con 2 dedos en un portátil).</p>
+<p>El código ajusta el radio en una milésima parte. Esto no ha sido probado con muchísimas escenas, pero parece razonable que no queramos movernos a la misma velocidad si estamos demasiado cerca.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-scene-graph-step-04.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-scene-graph-step-04.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="dolly-mediante-pellizco-pinch"><a id="a-dolly-by-pinch"></a> Dolly mediante pellizco (pinch)</h2>
+<p>En dispositivos móviles es común pellizcar para hacer zoom. Vamos a añadirlo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addOrbitCameraEventListeners(cam, elem) {
+    let startX;
+    let startY;
+    let lastMode;
+    let camHelper;
++    let startPinchDistance;
++    const pointerToLastPosition = new Map();
+
++    const computePinchDistance = () =&gt; {
++      const pos = [...pointerToLastPosition.values()];
++      const dx = pos[0].x - pos[1].x;
++      const dy = pos[0].y - pos[1].y;
++      return Math.hypot(dx, dy);
++    };
+
+    const updateStartPosition = (e) =&gt; {
+      startX = e.clientX;
+      startY = e.clientY;
++      if (pointerToLastPosition.size === 2) {
++        startPinchDistance = computePinchDistance();
++      }
+      camHelper = cam.getUpdateHelper();
+    };
+
+    const onMove = (e) =&gt; {
+-      if (!canvas.hasPointerCapture(e.pointerId)) {
++      if (!pointerToLastPosition.has(e.pointerId) ||
++          !canvas.hasPointerCapture(e.pointerId)) {
+         return;
+       }
++      pointerToLastPosition.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+-      const mode = e.shiftKey || (e.buttons &amp; 4) !== 0
++      const mode = pointerToLastPosition.size === 2
++        ? 'pinch'
++        : pointerToLastPosition.size &gt; 2
++        ? 'undefined'
++        : e.shiftKey || (e.buttons &amp; 4) !== 0
+         ? 'track'
+         : 'panAndTilt';
+
+      if (mode !== lastMode) {
+        lastMode = mode;
+        updateStartPosition(e);
+      }
+
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      switch (mode) {
++        case 'pinch': {
++          const pinchDistance = computePinchDistance();
++          const delta = pinchDistance - startPinchDistance;
++          camHelper.dolly(cam.radius * 0.002 * -delta);
++          break;
++        }
+        case 'track': {
+          const s = cam.radius * 0.001;
+          camHelper.track(-deltaX * s, deltaY * s);
+          break;
+        }
+        case 'panAndTilt':
+          camHelper.panAndTilt(deltaX * 0.01, deltaY * 0.01);
+          break;
+      }
+
+      render();
+    };
+
+    const onUp = (e) =&gt; {
++     pointerToLastPosition.delete(e.pointerId);
+      canvas.releasePointerCapture(e.pointerId);
+    };
+
+    const onDown = (e) =&gt; {
+      canvas.setPointerCapture(e.pointerId);
++      pointerToLastPosition.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      updateStartPosition(e);
+    };
+
+    ...
+  }
+</pre>
+<p>Ahora estamos rastreando la posición inicial de todos los punteros. Comprobamos si hay 2. Si es así, estamos pellizcando; si hay más de 2, nos rendimos. Si solo hay 1, volvemos a donde estábamos.</p>
+<p>En <code class="notranslate" translate="no">computePinchDistance</code> obtenemos las 2 posiciones y calculamos la distancia entre ellas. Podemos usar eso para registrar qué tan separados estaban cuando el usuario comenzó a pellizcar y qué tan separados están después, aplicando eso al zoom.</p>
+<p>Si tienes un portátil con pantalla táctil, o estás en una tableta o teléfono, puedes intentarlo.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-scene-graph-step-05.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-scene-graph-step-05.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="dolly-mediante-doble-toque-y-arrastre"><a id="a-dolly-by-double-tab-drag"></a> Dolly mediante doble toque y arrastre</h2>
+<p>Hagamos uno más. Es común en algunas aplicaciones que si das dos toques a la pantalla y luego arrastras el dedo, se haga zoom. Google Maps hace esto, por ejemplo. Vamos a añadirlo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addOrbitCameraEventListeners(cam, elem) {
+    let startX;
+    let startY;
+    let lastMode;
+    let camHelper;
++    let doubleTapMode;
++    let lastSingleTapTime;
+    let startPinchDistance;
+    const pointerToLastPosition = new Map();
+
+    ...
+
+    const onMove = (e) =&gt; {
+      if (!pointerToLastPosition.has(e.pointerId) ||
+          !canvas.hasPointerCapture(e.pointerId)) {
+        return;
+      }
+      pointerToLastPosition.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      const mode = pointerToLastPosition.size === 2
+        ? 'pinch'
+        : pointerToLastPosition.size &gt; 2
+        ? 'undefined'
++        : doubleTapMode
++        ? 'doubleTapZoom'
+        : e.shiftKey || (e.buttons &amp; 4) !== 0
+        ? 'track'
+        : 'panAndTilt';
+
+      if (mode !== lastMode) {
+        lastMode = mode;
+        updateStartPosition(e);
+      }
+
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      switch (mode) {
+        case 'pinch': {
+          const pinchDistance = computePinchDistance();
+          const delta = pinchDistance - startPinchDistance;
+          camHelper.dolly(cam.radius * 0.002 * -delta);
+          break;
+        }
+        case 'track': {
+          const s = cam.radius * 0.001;
+          camHelper.track(-deltaX * s, deltaY * s);
+          break;
+        }
+        case 'panAndTilt':
+          camHelper.panAndTilt(deltaX * 0.01, deltaY * 0.01);
+          break;
++        case 'doubleTapZoom':
++          camHelper.dolly(cam.radius * 0.002 * deltaY);
++          break;
+      }
+
+      render();
+    };
+
+    const onUp = (e) =&gt; {
+      pointerToLastPosition.delete(e.pointerId);
+      canvas.releasePointerCapture(e.pointerId);
++      if (pointerToLastPosition.size === 0) {
++        doubleTapMode = false;
++      }
+    };
+
++    const kDoubleClickTimeMS = 300;
+    const onDown = (e) =&gt; {
+      canvas.setPointerCapture(e.pointerId);
+      pointerToLastPosition.set(e.pointerId, { x: e.clientX, y: e.clientY });
++      if (pointerToLastPosition.size === 1) {
++        if (!doubleTapMode) {
++          const now = performance.now();
++          const deltaTime = now - lastSingleTapTime;
++          if (deltaTime &lt; kDoubleClickTimeMS) {
++            doubleTapMode = true;
++          }
++          lastSingleTapTime = now;
++        }
++      } else {
++        doubleTapMode = false;
++      }
+      updateStartPosition(e);
+    };
+
+    ...
+  }
+</pre>
+<p>El código comprueba si hay un único <code class="notranslate" translate="no">pointerdown</code> y mira el tiempo transcurrido entre ese y el anterior. Si es inferior a <code class="notranslate" translate="no">kDoubleClickTime</code>, estamos en <code class="notranslate" translate="no">doubleTapMode</code> y podemos ajustar el zoom basándonos en la distancia desde donde empezó el segundo toque.</p>
+<p>Por ahora esto funcionará con el ratón o una pantalla táctil. ¿Es apropiado para un ratón? Pruébalo.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-scene-graph-step-06.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-scene-graph-step-06.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="la-cámara-no-está-en-la-raíz"><a id="a-camera-not-at-root"></a> La cámara no está en la raíz</h2>
+<p>Un problema que no hemos cubierto es qué sucede si nuestra <code class="notranslate" translate="no">OrbitCamera</code>, que existe en el grafo de escena, no se encuentra en la raíz del grafo.</p>
+<p>Por ejemplo, supongamos que es una cámara situada en una torre caída dentro de la escena. Como la torre está caída, la cámara no está nivelada con el suelo.</p>
+<p>Para tilt, pan y dolly nada necesita cambiar, ya que todos ellos son relativos a la propia cámara; pero para track necesitamos hacer un trabajo extra, puesto que el objetivo (target) de la cámara es relativo a su nodo padre.</p>
+<p>Para solucionar esto, primero probablemente deberíamos eliminar el setter de <code class="notranslate" translate="no">target</code>, ya que induce a error. Crearemos una función <code class="notranslate" translate="no">setTarget</code> que tenga en cuenta al padre de la cámara.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  class OrbitCamera {
+
+   ...
+
+    get target() { return vec3.copy(this.#camTarget.source.translation); }
+-    set target(v) { vec3.copy(v, this.#camTarget.source.translation); }
++    setTarget(worldPosition) {
++      const inv = mat4.inverse(this.#camTarget.parent?.worldMatrix ?? mat4.identity());
++      vec3.transformMat4(worldPosition, inv, this.#camTarget.source.translation);
++    }
+  }
+</pre>
+<p>También necesitamos añadir <code class="notranslate" translate="no">vec3.transformMat4</code>, que es la misma matemática que usamos en nuestro vertex shader para <code class="notranslate" translate="no">uni.matrix * vert.position</code>, pero traducida a JavaScript.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
+  transformMat3(v, m, dst) {
+    dst = dst ?? new Float32Array(3);
+
+    const x = v[0];
+    const y = v[1];
+    const z = v[2];
+
+    dst[0] = x * m[0] + y * m[4] + z * m[8];
+    dst[1] = x * m[1] + y * m[5] + z * m[9];
+    dst[2] = x * m[2] + y * m[6] + z * m[10];
+
+    return dst;
+  },
+
++  transformMat4(v, m, dst) {
++    dst = dst ?? new Float32Array(3);
++
++    const x = v[0];
++    const y = v[1];
++    const z = v[2];
++    const w = (m[3] * x + m[7] * y + m[11] * z + m[15]) || 1;
++
++    dst[0] = (m[0] * x + m[4] * y + m[8] * z + m[12]) / w;
++    dst[1] = (m[1] * x + m[5] * y + m[9] * z + m[13]) / w;
++    dst[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w;
++
++    return dst;
++  },
+};
+</pre>
+<p>Con el setter eliminado, tenemos que arreglar el código que lo estaba usando:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const orbitCamera = new OrbitCamera();
+  orbitCamera.setParent(root);
+-  orbitCamera.target = [120, 80, 0];
++  orbitCamera.setTarget([120, 80, 0]);
+  orbitCamera.tilt = Math.PI * -0.2;
+  orbitCamera.radius = 300;
+</pre>
+<p>También necesitamos refactorizar la función <code class="notranslate" translate="no">track</code> del ayudante para tener en cuenta que podría no estar en la raíz y ajustar el delta para que sea relativo al padre de la cámara.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  class OrbitCamera {
+
+    ...
+
+    getUpdateHelper() {
+
+      ...
+
+        track: (deltaX, deltaY) =&gt; {
+-          const direction = vec3.transformMat3([deltaX, deltaY, 0], startCameraMatrix);
+-          this.target = vec3.add(startTarget, direction);
++          const worldDirection = vec3.transformMat3([deltaX, deltaY, 0], startCameraMatrix);
++          const inv = mat4.inverse(this.#camTarget.parent?.worldMatrix ?? mat4.identity());
++          const cameraDirection = vec3.transformMat3(worldDirection, inv);
+-          this.target = vec3.add(startTarget, cameraDirection);
++          vec3.add(startTarget, cameraDirection, this.#camTarget.source.translation);
+        },
+
+      ...
+    }
+  }
+</pre>
+<p>La dirección que calculábamos antes estaba en el espacio del mundo. Eso funcionaba cuando la cámara estaba en la raíz. Ahora, sin embargo, multiplicamos por la inversa de la <code class="notranslate" translate="no">worldMatrix</code> del padre de la cámara. Esto cambia efectivamente el delta para que sea relativo a ese padre, que es lo que necesitamos.</p>
+<p>Pongamos la cámara en algunos nodos extra del grafo de escena:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const orbitCamera = new OrbitCamera();
+-  orbitCamera.setParent(root);
++  const extraRot = addTRSSceneGraphNode('extra-rot', root, { rotation: [0, 0, Math.PI * 0.35] });
++  const extraMov = addTRSSceneGraphNode('extra-mov', extraRot, { translation: [-30, -90, 40] });
++  orbitCamera.setParent(extraMov);
+</pre>
+<p>Verás que el tracking sigue funcionando.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-scene-graph-step-07.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-scene-graph-step-07.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="encuadrar-selección-frame-selected"><a id="a-frame-selected"></a> Encuadrar selección (Frame Selected)</h2>
+<p>Otra característica importante es poder seleccionar un objeto y elegir “Encuadrar selección” (Frame Selected) para mover la cámara y mostrar ese objeto. Para ello es necesario saber qué tan grande es cada objeto. En este caso específico, sabemos que todo lo que hay en la pantalla es un cubo unitario. Podríamos almacenar algunas extensiones en nuestros datos, pero por ahora simplemente las estableceremos para que cubran nuestro cubo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCubeVertices() {
+  const positions = [
+    // izquierda
+    0, 0,  0,
+    0, 0, -1,
+    0, 1,  0,
+    0, 1, -1,
+
+    // derecha
+    1, 0,  0,
+    1, 0, -1,
+    1, 1,  0,
+    1, 1, -1,
+  ];
+
+  ...
+
+  return {
+    vertexData,
+    numVertices,
++    aabb: {
++      min: [ 0,  0, -1],
++      max: [ 1,  1,  0],
++    },
+  };
+</pre>
+<p><code class="notranslate" translate="no">aabb</code> significa Axis Aligned Bounding Box (Caja Envolvente Alineada con los Ejes). Vemos fácilmente que esto coincide con nuestro cubo. Si tuviéramos datos diferentes, tendríamos que analizarlos para encontrar los valores mínimos y máximos.</p>
+<p>Necesitamos propagar estos datos hasta nuestros vértices de malla (mesh):</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  function createVertices({vertexData, numVertices}, name) {
++  function createVertices({vertexData, numVertices, aabb}, name) {
+    const vertexBuffer = device.createBuffer({
+      label: `${name}: vertex buffer vertices`,
+      size: vertexData.byteLength,
+      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+    return {
+      vertexBuffer,
+      numVertices,
++      aabb,
+    };
+</pre>
+<p>Necesitamos una función que, dada una malla, calcule el AABB de esa malla en el espacio del mundo, ya que habrá sido orientada por nuestro grafo de escena.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function computeAABBForMesh(mesh) {
+    const mat = mesh.node.worldMatrix;
+    const p0 = mesh.vertices.aabb.min;
+    const p1 = mesh.vertices.aabb.max;
+    let min;
+    let max;
+    for (let i = 0; i &lt; 8; ++i) {
+      const p = [
+        (i &amp; 1) ? p0[0] : p1[0],
+        (i &amp; 2) ? p0[1] : p1[1],
+        (i &amp; 4) ? p0[2] : p1[2],
+      ];
+      vec3.transformMat4(p, mat, p);
+      if (i === 0) {
+        min = p.slice();
+        max = p.slice();
+      } else {
+        vec3.min(min, p, min);
+        vec3.max(max, p, max);
+      }
+    }
+    return { min, max };
+  }
+</pre>
+<p>Esto usa 2 funciones más de <code class="notranslate" translate="no">vec3</code> que debemos añadir: <code class="notranslate" translate="no">min</code> y <code class="notranslate" translate="no">max</code>, que devuelven un <code class="notranslate" translate="no">vec3</code> con el mínimo o máximo de cada componente de dos vec3.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
+
++  min(a, b, dst) {
++    dst = dst ?? new Float32Array(3);
++
++    dst[0] = Math.min(a[0], b[0]);
++    dst[1] = Math.min(a[1], b[1]);
++    dst[2] = Math.min(a[2], b[2]);
++
++    return dst;
++  },
++
++  max(a, b, dst) {
++    dst = dst ?? new Float32Array(3);
++
++    dst[0] = Math.max(a[0], b[0]);
++    dst[1] = Math.max(a[1], b[1]);
++    dst[2] = Math.max(a[2], b[2]);
++
++    return dst;
++  },
+
+  ...
+};
+</pre>
+<p>Luego, necesitamos una función que recorra las mallas seleccionadas y nos devuelva su AABB combinado.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function expandAABBInPlace(aabb, otherAABB) {
+    vec3.min(aabb.min, otherAABB.min, aabb.min);
+    vec3.max(aabb.max, otherAABB.max, aabb.max);
+  }
+
+  function getAABBForSelectedMeshes() {
+    if (selectedMeshes.length === 0) {
+      return undefined;
+    }
+    const aabb = computeAABBForMesh(selectedMeshes[0]);
+    for (let i = 1; i &lt; selectedMeshes.length; ++i) {
+      expandAABBInPlace(aabb, computeAABBForMesh(selectedMeshes[i]));
+    }
+    return aabb;
+  }
+</pre>
+<p>Con eso ya podemos crear una función que encuadre las mallas seleccionadas:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function frameSelected() {
+    if (selectedMeshes.length === 0) {
+      return;
+    }
+
+    // obtener los límites aabb de los objetos seleccionados.
+    const aabb = getAABBForSelectedMeshes();
+
+    const extent = vec3.subtract(aabb.max, aabb.min);
+    const diameter = vec3.distance(aabb.min, aabb.max);
+
+    // calcular qué tan lejos necesitamos establecer el radio para que los
+    // objetos seleccionados queden encuadrados.
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const fieldOfViewH = 2 * Math.atan(Math.tan(settings.fieldOfView) * aspect);
+    const fov = Math.min(fieldOfViewH, settings.fieldOfView);
+    const zoomScale = 1.5; // lo hacemos 1.5 veces más grande para dar margen.
+    const halfSize = diameter * zoomScale * 0.5;
+    const distance = halfSize / Math.tan(fov * 0.5);
+
+    orbitCamera.radius = distance;
+
+    // apuntar la cámara al centro
+    const center = vec3.addScaled(aabb.min, extent, 0.5);
+    orbitCamera.setTarget(center);
+
+    render();
+  }
+</pre>
+<p>El código anterior obtiene el AABB de las mallas seleccionadas. El diámetro de una esfera que contendría este AABB es simplemente la distancia entre 2 esquinas opuestas. Una vez que tenemos ese diámetro, calculamos qué tan lejos debe estar una cámara dado su <code class="notranslate" translate="no">fieldOfView</code> actual. El ajuste de campo de visión de nuestra función <code class="notranslate" translate="no">mat4.perspective</code> es el campo de visión vertical; así que basándonos en eso y en la relación de aspecto, obtenemos el campo de visión horizontal, usamos el que sea menor y luego lo empleamos para calcular qué tan lejos debemos estar para que nuestra esfera encaje. Usamos <code class="notranslate" translate="no">zoomScale</code> para hacer que nuestra esfera sea 1.5 veces más grande que la que contiene nuestro AABB y así tener algo de margen. Luego ajustamos el radio de la cámara a esa distancia.</p>
+<p>Finalmente, apuntamos el objetivo de la cámara al punto central del AABB.</p>
+<p>Necesitamos suministrar un par de funciones <code class="notranslate" translate="no">vec3</code> más: <code class="notranslate" translate="no">distance</code> y <code class="notranslate" translate="no">addScaled</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
++  distance(a, b) {
++    const dx = a[0] - b[0];
++    const dy = a[1] - b[1];
++    const dz = a[2] - b[2];
++    return Math.sqrt(dx * dx + dy * dy + dz * dz);
++  },
+
+...
+
++  addScaled(a, b, scale, dst) {
++      dst = dst || new Float32Array(3);
++
++      dst[0] = a[0] + b[0] * scale;
++      dst[1] = a[1] + b[1] * scale;
++      dst[2] = a[2] + b[2] * scale;
++
++      return dst;
++  },
+
+
+  ...
+};
+</pre>
+<p><code class="notranslate" translate="no">distance</code> calcula la distancia entre 2 <code class="notranslate" translate="no">vec3</code>. <code class="notranslate" translate="no">addScaled</code> hace efectivamente <code class="notranslate" translate="no">a + b * scale</code>. Facilita añadir una parte de <code class="notranslate" translate="no">b</code> a <code class="notranslate" translate="no">a</code>.</p>
+<p>Necesitamos añadir un <code class="notranslate" translate="no">fieldOfView</code> a los ajustes:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
++    fieldOfView: degToRad(60),
+    showMeshNodes: false,
+    showAllTRS: false,
+  };
+
+  function render() {
+    ...
+
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(
+-        degToRad(60), // fieldOfView,
++        settings.fieldOfView,
+        aspect,
+        1,      // zNear
+        2000,   // zFar
+    );
+</pre>
+<p>También necesitamos añadir un botón “encuadrar selección”:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const uiElem = document.querySelector('#ui');
+  const gui = new GUI({
+    parent: uiElem,
+  });
+  gui.onChange(() =&gt; {
+    uiElem.classList.toggle('hide-ui', !gui.isOpen());
+    render();
+  });
+  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
++  gui.addButton('encuadrar selección', frameSelected);
+  const trsFolder = gui.addFolder('orientation').listen();
+</pre>
+<p>Añadamos también un nodo padre que contenga los 4 armarios. De esa forma tendremos algo que seleccionar para poder encuadrar el conjunto completo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const cabinets = addTRSSceneGraphNode('armarios', root);
+  // Añadir armarios
+  for (let cabinetNdx = 0; cabinetNdx &lt; kNumCabinets; ++cabinetNdx) {
+-    addCabinet(root, cabinetNdx);
++    addCabinet(cabinets, cabinetNdx);
+  }
+
+  ...
+
+-  setCurrentSceneGraphNode(root.children[2]);
++  setCurrentSceneGraphNode(cabinets.children[1]);
+</pre>
+<p>Y ya que estamos, eliminemos la rotación y traslación extra:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const extraRot = addTRSSceneGraphNode('extra-rot', root, { rotation: [0, 0, Math.PI * 0.35] });
+-  const extraMov = addTRSSceneGraphNode('extra-mov', extraRot, { translation: [-30, -90, 40] });
++  const extraRot = addTRSSceneGraphNode('extra-rot', root);
++  const extraMov = addTRSSceneGraphNode('extra-mov', extraRot);
+</pre>
+<p>Prueba a seleccionar un objeto y elegir “Encuadrar selección”.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-scene-graph-step-08.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-scene-graph-step-08.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="decisiones-de-ux"><a id="a-ux"></a> Decisiones de UX</h2>
+<p>Hay MUCHÍSIMAS decisiones de UX (Experiencia de Usuario) relacionadas con una cámara de órbita que tendrás que tomar. Algunas de ellas incluyen:</p>
+<ul>
+<li>
+<p><strong>¿Debería permitir el roll?</strong></p>
+<p>El roll es como cuando inclinas la cabeza a izquierda o derecha. Añadir roll sería simplemente cuestión de añadir un nodo más al final con una rotación en z de nuestro rig actual entre <code class="notranslate" translate="no">#camExtend</code> y <code class="notranslate" translate="no">#cam</code>.</p>
+</li>
+<li>
+<p><strong>¿Debería ser como lo tenemos, permitiendo simplemente arrastrar, o debería requerir alguna otra forma de ajustar la cámara?</strong></p>
+<p>En Unity, tienes que mantener pulsada una tecla o cambiar al modo de control de cámara haciendo clic en un icono. En Blender, haces clic y arrastras sobre ciertos iconos o usas el botón central del ratón y teclas modificadoras. Arrastrar el icono de “track camera” traslada la cámara. Arrastrar el icono de “orbit camera” la orbita. Arrastrar el icono de zoom hace dolly de la cámara.</p>
+<p>Para un visor (viewer), es agradable poder simplemente arrastrar sin teclas ni iconos. Para un editor, donde la mayor parte de la actividad es editar contenido 3D, probablemente sea mejor usar un icono, añadir un modo o hacer que el usuario mantenga pulsada una tecla.</p>
+</li>
+<li>
+<p><strong>¿Qué debería pasar en móviles?</strong></p>
+<p>No proporcionamos una solución para realizar tracking de la cámara en móviles. Nuestro único método actual requiere mantener pulsada la tecla Shift. Usar un icono para arrastrar funcionaría. Creo que algunos visores usan 2 dedos para realizar tracking.</p>
+</li>
+<li>
+<p><strong>¿Debería permitir inclinarse más de 90 grados?</strong></p>
+<p>Hemos permitido pasar de 90 grados, lo que significa que la cámara puede quedar boca abajo. Algunas aplicaciones lo impiden.</p>
+</li>
+<li>
+<p><strong>¿Debería el “encuadre” mantener la misma orientación?</strong></p>
+<p>La mayoría de los editores 3D te permiten seleccionar un objeto y elegir “Encuadrar”, lo que centra ese objeto en la cámara Y hace que la cámara orbite ese objeto. La pregunta es: ¿se restablece la orientación de la cámara (por ejemplo, vista desde el frente del objeto) o tal vez siempre cambia a mirar a lo largo del eje Z positivo? ¿O mantiene la orientación que tuviera antes de elegir “encuadrar”? Por ejemplo, si estabas mirando hacia abajo el objeto A y seleccionas B, ¿debería seguir mirando hacia abajo?</p>
+</li>
+<li>
+<p><strong>¿En qué dirección se mueve la cámara respecto al puntero?</strong></p>
+<p>En otras palabras, si arrastras el puntero de izquierda a derecha, ¿debería la cámara girar en sentido horario o antihorario? El sentido antihorario hace parecer que estás orbitando la cámara. El sentido horario hace parecer que estás girando el mundo bajo la cámara. Esto es similar a arrastrar dos dedos en un trackpad para desplazarse (scroll). Si arrastras hacia abajo, ¿debería el contenido subir, porque estás arrastrando la vista sobre el contenido? ¿O debería el contenido bajar, como si estuvieras arrastrando el contenido mismo?</p>
+<p>Con las pantallas táctiles, generalmente quieres que parezca que estás arrastrando el contenido, pero las barras de desplazamiento existían antes que las pantallas táctiles. Arrastrar el tirador de la barra de desplazamiento arrastra la vista, no el contenido. Las ruedas de desplazamiento movían ese tirador. Dos dedos en un trackpad eran un atajo para esa rueda.</p>
+</li>
+</ul>
+<h2 id="implementar-una-orbitcamera-sin-un-grafo-de-escena"><a id="a-no-scene-graph"></a> Implementar una OrbitCamera sin un grafo de escena.</h2>
+<p>Si entendiste cómo funciona un grafo de escena en <a href="webgpu-scene-graphs.html">el artículo sobre grafos de escena</a>, entonces esto debería estar bastante claro. Solo necesitamos un código como este:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   class OrbitCamera {
+    #target = vec3.create();
+    #pan = 0;
+    #tilt = 0;
+    #radius = 0;
+
+    constructor() {}
+
+    getCameraMatrix(parentMatrix) {
+      const mat = mat4.copy(parentMatrix ?? mat4.identity());
+      mat4.translate(mat, this.#target, mat);
+      mat4.rotateY(mat, this.#pan, mat);
+      mat4.rotateX(mat, this.#tilt, mat);
+      mat4.translate(mat, [0, 0, this.#radius], mat);
+      return mat;
+    }
+
+    getUpdateHelper(parentMatrix) {
+      const startTilt = this.tilt;
+      const startPan = this.pan;
+      const startRadius = this.radius;
+      const startCameraMatrix = mat4.copy(this.getCameraMatrix());
+      const startTarget = vec3.copy(this.target);
+
+      return {
+        panAndTilt: (deltaPan, deltaTilt) =&gt; {
+          this.tilt = startTilt - deltaTilt;
+          this.pan = startPan - deltaPan;
+        },
+        track: (deltaX, deltaY) =&gt; {
+          const worldDirection = vec3.transformMat3([deltaX, deltaY, 0], startCameraMatrix);
+          const inv = mat4.inverse(parentMatrix ?? mat4.identity());
+          const cameraDirection = vec3.transformMat3(worldDirection, inv);
+          this.target = vec3.add(startTarget, cameraDirection);
+        },
+        dolly: (delta) =&gt; {
+          this.radius = startRadius + delta;
+        },
+      };
+    }
+
+    get pan() { return this.#pan; }
+    set pan(v) { this.#pan = v; }
+    get tilt() { return this.#tilt; }
+    set tilt(v) { this.#tilt = v; }
+    get radius() { return this.#radius; }
+    set radius(v) { this.#radius = v; }
+    get target() { return vec3.copy(this.#target); }
+    set target(v) { vec3.copy(v, this.#target); }
+  }
+</pre>
+<p>Al introducirlo en nuestro ejemplo, necesitamos un pequeño cambio más. Como no está en el grafo de escena, no debemos añadirlo a dicho grafo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const orbitCamera = new OrbitCamera();
+-  orbitCamera.setParent(root);
+  orbitCamera.target = [120, 80, 0];
+  orbitCamera.tilt = Math.PI * -0.2;
+  orbitCamera.radius = 300;
+</pre>
+<p>Y funciona:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-camera-controls-raw.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-camera-controls-raw.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Ahora que tenemos una cámara, hagamos que se pueda <a href="webgpu-picking.html">hacer clic en los objetos directamente para seleccionarlos</a>.</p>
+<!-- keep this at the bottom of the article -->
+<link href="../webgpu-camera-controls.css" rel="stylesheet">
+<script type="module" src="../webgpu-camera-controls.js"></script>
+
+    </div>
+    <div class="lesson-sidebar">
+        <select class="language">
+    <option value="/webgpu/lessons/webgpu-camera-controls.html">English
+    </option><option value="/webgpu/lessons/es/webgpu-camera-controls.html" selected="">Español
+    </option><option value="/webgpu/lessons/ja/webgpu-camera-controls.html">日本語
+    </option><option value="/webgpu/lessons/ko/webgpu-camera-controls.html">한국어
+    </option><option value="/webgpu/lessons/ru/webgpu-camera-controls.html">Русский
+    </option><option value="/webgpu/lessons/tr/webgpu-camera-controls.html">Türkçe
+    </option><option value="/webgpu/lessons/uk/webgpu-camera-controls.html">Українська
+    </option><option value="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">简体中文
+</option></select>
+
+
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li>Texturas</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+        </ul>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
+        </ul>
+  <li>Matemáticas 3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
+        </ul>
+  <li>Iluminación</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
+        </ul>
+  <li>Técnicas</li>
+        <ul>
+            <li>2D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
+        </ul>
+  <li>3D</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
+        </ul>
+  <li>Post-procesado</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
+        </ul>
+        </ul>
+  <li>Shaders de Cómputo</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
+        </ul>
+  <li>Miscelánea</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
+        </ul></ul>
+<ul>
+  <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
+  <li><a href="https://google.github.io/tour-of-wgsl/">Tour of WGSL</a></li>
+  <li><a href="https://gpuweb.github.io/types/">WebGPU API Reference</a></li>
+  <li><a href="https://www.w3.org/TR/webgpu/">WebGPU Spec</a></li>
+  <li><a href="https://www.w3.org/TR/WGSL/">WGSL Spec</a></li>
+  <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
+  <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
+</ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Controles de cámara en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+<script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-92BFT5PE4H');
+</script>
+
+
+
+
+
+
+</body></html>

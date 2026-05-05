@@ -51,7 +51,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'hardcoded checkerboard triangle shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
       };

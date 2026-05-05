@@ -1,9 +1,9 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createElem as el,
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import UnitCircle from '../resources/js/unit-circle.js';
 
 renderDiagrams({

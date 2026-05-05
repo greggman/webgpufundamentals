@@ -103,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-buffers.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-buffers.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-buffers.html" selected="">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-buffers.html">Русский
@@ -230,6 +230,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU 스토리지 버퍼</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>이 글에서는 <a href="webgpu-uniforms.html">지난 글</a>에 이어서,
@@ -256,8 +259,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     });
 </pre>
 <p>WSGL에서는 아래와 같습니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">      @group(0) @binding(0) var&lt;storage, read&gt; ourStruct: OurStruct;
-      @group(0) @binding(1) var&lt;storage, read&gt; otherStruct: OtherStruct;
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">-@group(0) @binding(0) var&lt;uniform&gt; ourStruct: OurStruct;
+-@group(0) @binding(1) var&lt;uniform&gt; otherStruct: OtherStruct;
++@group(0) @binding(0) var&lt;storage, read&gt; ourStruct: OurStruct;
++@group(0) @binding(1) var&lt;storage, read&gt; otherStruct: OtherStruct;
 </pre>
 <p>더이상 다른 수정 없이도, 이전과 같이 동작합니다.</p>
 <p></p><div class="webgpu_example_container">
@@ -269,22 +274,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <h2 id="uniform-버퍼와-스토리지-버퍼의-차이점">uniform 버퍼와 스토리지 버퍼의 차이점</h2>
 <p>uniform 버퍼와 스토리지 버퍼의 주요한 차이점은 아래와 같습니다:</p>
 <ol>
-<li>일반적인 uniform 버퍼의 사용 예에서는 uniform 버퍼가 더 빠를 수 있음</li>
+<li>일반적인 uniform 버퍼의 용례에서는 uniform 버퍼가 더 빠를 수 있음</li>
 </ol>
 <p>사용 법에 따라 다를 수 있습니다. 일반적인 앱에서는 여러가지 다른 것들을 그려야 합니다.
-3D 게임의 예를 들어보죠. 앱에서 자동차, 건물, 바위, 덤불, 사람 등등을 그려야 합니다.
+3D 게임의 예를 들어보죠. 자동차, 건물, 바위, 덤불, 사람 등등을 그려야 합니다.
 이들 각각에 대한 방향(orientation)과 머티리얼(material) 속성 등을 위 예제와 같이 넘겨주어야 합니다.
 이러한 경우 uniform 버퍼를 사용하는 것이 좋은 방법입니다.</p>
 <ol start="2">
 <li>
 <p>스토리지 버퍼는 uniform 버퍼보다 훨씬 클 수 있음</p>
 <ul>
-<li>uniform 버퍼의 최대 크기의 하한은 64k 이상</li>
-<li>스토리지 버퍼의 최대 크기의 하한은 128M 이상</li>
+<li>uniform 버퍼의 최대 크기는 64 kiB (65536 bytes).</li>
+<li>스토리지 버퍼의 최대 크기는 128 MiB (134217728 bytes).</li>
 </ul>
-<p>버퍼의 종류에 따라 보장되는 최대 크기의 하한이 다를 수 있습니다.
-uniform 버퍼의 경우 최대 크기는 하한이 64k 입니다.
-스토리지 버퍼는 128M입니다. 이러한 제약에 대해서는
+<p>모든 webgpu 구현체는 최소 이런 크기들을 보장합니다. 이러한 제약에 대해서는
 <a href="webgpu-limits-and-features.html">다른 글</a>에서 설명합니다.</p>
 </li>
 <li>
@@ -303,7 +306,7 @@ uniform 버퍼의 경우 최대 크기는 하한이 64k 입니다.
 각자는 각자의 용도가 있고, WebGPU도 마찬가지 입니다.
 우리가 하는 모든 것들의 달성하는 방법은 여러가지 입니다.
 삼각형을 그리는 경우에 대해선, WebGPU는 오직 정점 셰이더에서 <code class="notranslate" translate="no">builtin(position)</code>를 반환하는 것과
-프래그먼트 셰이더에서 <code class="notranslate" translate="no">location(0)</code>에 색상/값을 반환하는 것 뿐입니다.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+프래그먼트 셰이더에서 <code class="notranslate" translate="no">location(0)</code>에 색상/값을 반환하는 것만 제대로 되면 됩니다.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <p>먼저 할 것은 스토리지 선언을 런타임에 크기가 정해지는 배열로 바꾸는 것입니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(0) var&lt;storage, read&gt; ourStruct: OurStruct;
 -@group(0) @binding(1) var&lt;storage, read&gt; otherStruct: OtherStruct;
@@ -430,8 +433,8 @@ uniform 버퍼의 경우 최대 크기는 하한이 64k 입니다.
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: staticStorageBuffer }},
-      { binding: 1, resource: { buffer: changingStorageBuffer }},
+      { binding: 0, resource: staticStorageBuffer },
+      { binding: 1, resource: changingStorageBuffer },
     ],
   });
 </pre>
@@ -492,9 +495,9 @@ uniform 버퍼의 경우 최대 크기는 하한이 64k 입니다.
 같은 물체에 대한 아주 많은 인스턴스를 그리고 싶은 상황에서는 이러한 방법이 하나의 옵션이 될 수 있습니다.</p>
 <h2 id="정점-데이터를-위한-스토리지-버퍼의-사용">정점 데이터를 위한 스토리지 버퍼의 사용</h2>
 <p>여기까지는 셰이더에서 하드 코딩을 통해 직접 삼각형을 명시해 주었습니다.
-스토리지 버퍼의 사용 예시 중 하나는 정점 데이터를 저장하는 것입니다.
+정점 데이터를 저장하는 용도로 스토리지 버퍼를 쓰는 것이 가능합니다.
 위 예제에서 현재 스토리지 버퍼를 <code class="notranslate" translate="no">instance_index</code>로 인덱싱했던 것처럼,
-다른 스토리지 버퍼를 <code class="notranslate" translate="no">vertex_index</code>로 인덱싱하여 정점 데이터를 얻어올 수 있습니다.</p>
+스토리지 버퍼를 <code class="notranslate" translate="no">vertex_index</code>로 인덱싱하여 정점 데이터를 얻어올 수 있습니다.</p>
 <p>한번 해 보죠!</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurStruct {
   color: vec4f,
@@ -553,7 +556,7 @@ struct VSOutput {
   startAngle = 0,
   endAngle = Math.PI * 2,
 } = {}) {
-  // subdivision하나마다 두 개의 삼각형, 삼각형 하나마다 3개의 정점이 각각 두 개의 값 (xy)를 가짐
+  // 각 subdivision은 두 개의 삼각형, 각 삼각형은 3개의 정점, 각 정점은 두 개의 값 (xy)를 가짐
   const numVertices = numSubdivisions * 3 * 2;
   const vertexData = new Float32Array(numSubdivisions * 2 * 3 * 2);
 
@@ -563,7 +566,7 @@ struct VSOutput {
     vertexData[offset++] = y;
   };
 
-  // subdivision하나마다 두 개의 삼각형
+  // 각 subdivision은 두 개의 삼각형
   //
   // 0--1 4
   // | / /|
@@ -615,9 +618,9 @@ struct VSOutput {
     label: 'bind group for objects',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: staticStorageBuffer }},
-      { binding: 1, resource: { buffer: changingStorageBuffer }},
-+      { binding: 2, resource: { buffer: vertexStorageBuffer }},
+      { binding: 0, resource: staticStorageBuffer },
+      { binding: 1, resource: changingStorageBuffer },
++      { binding: 2, resource: vertexStorageBuffer },
     ],
   });
 </pre>
@@ -639,7 +642,11 @@ struct VSOutput {
 @group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
 </pre>
 <p>구조체를 사용하지 않고 바로 <code class="notranslate" translate="no">vec2f</code>를 사용하여 좀 더 쉽게 구현할 수도 있습니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(2) var&lt;storage, read&gt; pos: vec2f;
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;Vertex&gt;;
++@group(0) @binding(2) var&lt;storage, read&gt; pos: array&lt;vec2f&gt;;
+...
+-pos[vertexIndex].position * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
++pos[vertexIndex] * otherStruct.scale + ourStruct.offset, 0.0, 1.0);
 </pre>
 <p>하지만 구조체를 만들면 나중에 정점별(per-vertex)데이터를 추가하는 것이 훨씬 쉬워지겠죠?</p>
 <p>스토리지 버퍼를 사용해 정점을 넘기는 방법이 인기를 얻고 있습니다.
@@ -659,7 +666,7 @@ struct VSOutput {
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-buffers.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-buffers.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-buffers.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-buffers.html" selected="">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-buffers.html">Русский
@@ -677,22 +684,22 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/ko/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-vertex-buffers.html">정점 버퍼</a></li>
-  <li>Textures</li>
+  <li>텍스처</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-textures.html">텍스처</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-importing-textures.html">이미지 로딩</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-textures-external-video.html">비디오 사용하기</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">Storage Textures</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">스토리지 텍스처</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">멀티 샘플링 / MSAA</a></li>
         </ul>
 <li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">바인드 그룹 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-copying-data.html">데이터 복사하기</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-limits-and-features.html">선택적 기능(optional feature)과 제한(limit)</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-timing.html">타이밍 성능</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-wgsl.html">WGSL</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-how-it-works.html">동작 방식</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
@@ -709,13 +716,13 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/ko/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-scene-graphs.html">Scene Graphs</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>조명</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-lighting-directional.html">Directional Lighting</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-lighting-point.html">Point Lighting</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-lighting-spot.html">Spot Lighting</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>기법</li>
         <ul>
             <li>2D</li>
         <ul>
@@ -726,16 +733,25 @@ struct VSOutput {
           <li><a href="/webgpu/lessons/ko/webgpu-environment-maps.html">Environment maps</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>후처리</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>컴퓨트 셰이더</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-compute-shaders.html">컴퓨트 셰이더 기초</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram.html">이미지 히스토그램</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">이미지 히스토그램 Part 2</a></li>
         </ul>
   <li>기타</li>
         <ul>
@@ -743,9 +759,9 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/ko/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-points.html">Points</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-optimization.html">속도와 최적화</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-debugging.html">디버깅과 에러</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-resources.html">리소스 / 참고자료</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -805,8 +821,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

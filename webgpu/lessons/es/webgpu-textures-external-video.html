@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-textures-external-video.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Using Video Efficiently">
+
+<meta name="description" content="Cómo usar video en WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures-external-video_es.jpg">
+
+<meta property="og:title" content="Uso eficiente de video en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use video in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures-external-video_es.jpg">
+<meta property="og:description" content="Cómo usar video en WebGPU">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures-external-video.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Using Video Efficiently">
+<meta name="twitter:title" content="Uso eficiente de video en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures-external-video.html">
-<meta name="twitter:description" content="How to use video in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Cómo usar video en WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures-external-video_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures-external-video.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-textures-external-video_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures-external-video.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures-external-video.html",
+      "inLanguage":"es",
+      "name":"Uso eficiente de video en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-textures-external-video.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Using Video Efficiently</title>
+<title>Uso eficiente de video en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-textures-external-video.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-textures-external-video.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-textures-external-video.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-textures-external-video.html">Русский
@@ -182,18 +227,331 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Using Video Efficiently</h1>
+    <h1>Uso eficiente de video en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-textures-external-video.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>En el <a href="webgpu-importing-textures.html">artículo anterior</a>, cubrimos cómo cargar imágenes, canvases y video en una textura. Este artículo tratará sobre una forma más eficiente de usar video en WebGPU.</p>
+<p>En el artículo anterior cargamos datos de video en una textura de WebGPU llamando a <code class="notranslate" translate="no">copyExternalImageToTexture</code>. Esta función copia el frame actual del video desde el propio video a una textura preexistente que hayamos creado.</p>
+<p>WebGPU tiene otro método para usar video. Se llama <code class="notranslate" translate="no">importExternalTexture</code> y, como su nombre indica, proporciona una <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUExternalTexture"><code class="notranslate" translate="no">GPUExternalTexture</code></a>. Esta textura externa representa los datos del video directamente. No se realiza ninguna copia. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> Pasas un video a <code class="notranslate" translate="no">importExternalTexture</code> y te devuelve una textura lista para usar.</p>
+<p>Hay algunas advertencias importantes al usar una textura de <code class="notranslate" translate="no">importExternalTexture</code>.</p>
+<ul>
+<li>
+<h2 id="la-textura-solo-es-válida-hasta-que-salgas-de-la-tarea-actual-de-javascript">La textura solo es válida hasta que salgas de la tarea actual de JavaScript.</h2>
+<p>Para la mayoría de las aplicaciones WebGPU, eso significa que la textura solo existe hasta que finaliza tu función <code class="notranslate" translate="no">requestAnimationCallback</code>. O cualquier evento en el que estés renderizando; <code class="notranslate" translate="no">requestVideoFrameCallback</code>, <code class="notranslate" translate="no">setTimeout</code>, <code class="notranslate" translate="no">mouseMove</code>, etc… Cuando tu función termina, la textura expira. Para volver a usar el video, debes llamar a <code class="notranslate" translate="no">importExternalTexture</code> de nuevo.</p>
+<p>Una implicación de esto es que debes crear un nuevo bind group cada vez que llames a <code class="notranslate" translate="no">importExternalTexture</code> <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> para poder pasar la nueva textura a tu shader.</p>
+</li>
+<li>
+<h2 id="debes-usar-texture_external-en-tus-shaders">Debes usar <code class="notranslate" translate="no">texture_external</code> en tus shaders</h2>
+<p>Hemos estado usando <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code> en todos los ejemplos de texturas anteriores, pero las texturas de <code class="notranslate" translate="no">importExternalTexture</code> solo pueden vincularse a puntos de binding que utilicen <code class="notranslate" translate="no">texture_external</code>.</p>
+</li>
+<li>
+<h2 id="debes-usar-texturesamplebaseclamptoedge-en-tus-shaders">Debes usar <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code> en tus shaders</h2>
+<p>Hemos estado usando <code class="notranslate" translate="no">textureSample</code> en todos los ejemplos de texturas anteriores, pero las texturas de <code class="notranslate" translate="no">importExternalTexture</code> solo pueden usar <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code>. <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> Como su nombre indica, <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code> solo muestreará el nivel de mip base (nivel 0). En otras palabras, las texturas externas no pueden tener un mipmap. Además, la función realiza un “clamp to edge” (ajuste a los bordes), lo que significa que si estableces un sampler con <code class="notranslate" translate="no">addressModeU: 'repeat'</code>, este será ignorado.</p>
+<p>Ten en cuenta que puedes implementar tu propio comportamiento de repetición usando <code class="notranslate" translate="no">fract</code> de esta manera:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">let color = textureSampleBaseClampToEdge(
+   someExternalTexture,
+   someSampler,
+   fract(texcoord)
+);
+</pre>
+</li>
+</ul>
+<p>Si estas restricciones no son adecuadas para tus necesidades, entonces deberás usar <code class="notranslate" translate="no">copyExternalImageToTexture</code> como cubrimos en <a href="webgpu-importing-textures.html">el artículo anterior</a>.</p>
+<p>Hagamos un ejemplo funcional usando <code class="notranslate" translate="no">importExternalTexture</code>. Aquí tienes un video:</p>
+<div class="webgpu_center">
+  <div>
+     <video muted="" controls="" src="../../resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4" style="width: 320px" ;=""></video>
+     <div class="copyright"><a href="https://www.pexels.com/video/dog-walking-outside-the-house-5534310/">by Anna Bondarenko</a></div>
+  </div>
+</div>
+<p>Aquí están los cambios necesarios respecto a nuestro ejemplo anterior.</p>
+<p>Primero necesitamos actualizar nuestro shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct OurVertexShaderOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
+struct Uniforms {
+  matrix: mat4x4f,
+};
+
+@group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; OurVertexShaderOutput {
+  let pos = array(
+    // 1er triángulo
+    vec2f( 0.0,  0.0),  // centro
+    vec2f( 1.0,  0.0),  // derecha, centro
+    vec2f( 0.0,  1.0),  // centro, arriba
+
+    // 2do triángulo
+    vec2f( 0.0,  1.0),  // centro, arriba
+    vec2f( 1.0,  0.0),  // derecha, centro
+    vec2f( 1.0,  1.0),  // derecha, arriba
+  );
+
+  var vsOutput: OurVertexShaderOutput;
+  let xy = pos[vertexIndex];
+  vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+  vsOutput.texcoord = xy;
+  return vsOutput;
+}
+
+@group(0) @binding(0) var ourSampler: sampler;
+-@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
++@group(0) @binding(1) var ourTexture: texture_external;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+-  return textureSample(ourTexture, ourSampler, fsInput.texcoord);
++  return textureSampleBaseClampToEdge(
++      ourTexture,
++      ourSampler,
++      fsInput.texcoord,
++  );
+}
+</pre>
+<p>Arriba dejamos de multiplicar las coordenadas de textura por 50, ya que eso solo estaba ahí para mostrar la repetición, y las texturas externas no se repiten.</p>
+<p>También realizamos los cambios obligatorios mencionados anteriormente. <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code> se convierte en <code class="notranslate" translate="no">texture_external</code> y <code class="notranslate" translate="no">textureSample</code> se convierte en <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code>.</p>
+<p>Eliminamos todo el código relacionado con la creación de una textura y la generación de mips.</p>
+<p>Por supuesto, necesitamos apuntar a nuestro video:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  video.src = 'resources/videos/Golden_retriever_swimming_the_doggy_paddle-360-no-audio.webm';
++  video.src = 'resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4';
+</pre>
+<p>Dado que no podemos tener niveles de mip, no hay necesidad de crear samplers que los utilicen.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const objectInfos = [];
+-  for (let i = 0; i &lt; 8; ++i) {
++  for (let i = 0; i &lt; 4; ++i) {
+    const sampler = device.createSampler({
+      addressModeU: 'repeat',
+      addressModeV: 'repeat',
+      magFilter: (i &amp; 1) ? 'linear' : 'nearest',
+      minFilter: (i &amp; 2) ? 'linear' : 'nearest',
+-      mipmapFilter: (i &amp; 4) ? 'linear' : 'nearest',
+    });
+
+  ...
+</pre>
+<p>Como no obtenemos una textura hasta que llamamos a <code class="notranslate" translate="no">importExternalTexture</code>, no podemos crear nuestros bind groups por adelantado, así que guardaremos la información necesaria para crearlos más tarde. <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const objectInfos = [];
+  for (let i = 0; i &lt; 4; ++i) {
+
+    ...
+
+-    const bindGroups = textures.map(texture =&gt;
+-      device.createBindGroup({
+-        layout: pipeline.getBindGroupLayout(0),
+-        entries: [
+-          { binding: 0, resource: sampler },
+-          { binding: 1, resource: texture },
+-          { binding: 2, resource: uniformBuffer },
+-        ],
+-      }));
+
+    // Guarda los datos que necesitamos para renderizar este objeto.
+    objectInfos.push({
+-      bindGroups,
++     sampler,
+      matrix,
+      uniformValues,
+      uniformBuffer,
+    });
+</pre>
+<p>En el momento del renderizado llamaremos a <code class="notranslate" translate="no">importExternalTexture</code> y crearemos los bind groups:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+-    copySourceToTexture(device, texture, video);
+    ...
+
+    const encoder = device.createCommandEncoder({
+      label: 'render quad encoder',
+    });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
++    const texture = device.importExternalTexture({source: video});
+
+    objectInfos.forEach(({sampler, matrix, uniformBuffer, uniformValues}, i) =&gt; {
++      const bindGroup = device.createBindGroup({
++        layout: pipeline.getBindGroupLayout(0),
++        entries: [
++          { binding: 0, resource: sampler },
++          { binding: 1, resource: texture },
++          { binding: 2, resource: uniformBuffer },
++        ],
++      });
+
+      ...
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // llama a nuestro vertex shader 6 veces
+    });
+</pre>
+<p>Además, dado que no podemos repetir la textura, ajustemos las matemáticas de la matriz para que los cuadriláteros que estamos dibujando sean más visibles y no los estiremos en una proporción de 50 a 1 como teníamos antes.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    ...
+    objectInfos.forEach(({bindGroups, matrix, uniformBuffer, uniformValues}, i) =&gt; {
+      const bindGroup = bindGroups[texNdx];
+
+      const xSpacing = 1.2;
+-      const ySpacing = 0.7;
+-      const zDepth = 50;
++      const ySpacing = 0.5;
++      const zDepth = 1;
+
+-      const x = i % 4 - 1.5;
+-      const y = i &lt; 4 ? 1 : -1;
++      const x = i % 2 - .5;
++      const y = i &lt; 2 ? 1 : -1;
+
+      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+-      mat4.rotateX(matrix, 0.5 * Math.PI, matrix);
+-      mat4.scale(matrix, [1, zDepth * 2, 1], matrix);
++      mat4.rotateX(matrix, 0.25 * Math.PI * Math.sign(y), matrix);
++      mat4.scale(matrix, [1, -1, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+
+      // copia los valores de JavaScript a la GPU
+      device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // llama a nuestro vertex shader 6 veces
+    });
+
+</pre>
+<p>Y con eso obtenemos una textura de video con “zero copy” en WebGPU.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-external-video.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-external-video.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="¿por-qué-texture_external">¿Por qué <code class="notranslate" translate="no">texture_external</code>?</h2>
+<p>Algunos de ustedes habrán notado que esta forma de usar video emplea <code class="notranslate" translate="no">texture_external</code> en lugar de algo más común como <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>, y usa <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code> en lugar de simplemente <code class="notranslate" translate="no">textureSample</code>. Esto significa que si quieres utilizar este método para las texturas y deseas mezclarlo con otras partes de tu renderizado, necesitarás shaders diferentes. Shaders que usen <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code> cuando utilices una textura estática y otros shaders que usen <code class="notranslate" translate="no">texture_external</code> cuando quieras usar un video.</p>
+<p>Creo que es importante entender qué está sucediendo internamente aquí.</p>
+<p>A menudo, el video se entrega con la parte de la luminancia (el brillo de cada píxel) separada de la parte del croma (el color de cada píxel). Frecuentemente, la resolución del color es inferior a la de la luminancia. Una forma común de separar y codificar esto es <a href="https://en.wikipedia.org/wiki/Y%E2%80%B2UV">YUV</a>, donde los datos se dividen en luminancia (Y) e información de color (UV). Generalmente, esta representación también se comprime mejor.</p>
+<p>El objetivo de WebGPU para las texturas externas es usar el video directamente en el formato en el que se proporciona. Para lograrlo, <em>finge</em> que hay una sola textura de video, pero en la implementación real puede haber múltiples texturas. Por ejemplo, una textura con los valores de luminancia (Y) y una textura separada con los valores UV. Además, esos valores UV podrían estar organizados de forma especial. En lugar de ser una textura con, por ejemplo, 2 valores por píxel entrelazados:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+uvuvuvuvuvuvuvuv
+</pre>
+<p>Podrían estar dispuestos así:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+uuuuuuuu
+vvvvvvvv
+vvvvvvvv
+vvvvvvvv
+vvvvvvvv
+vvvvvvvv
+vvvvvvvv
+</pre>
+<p>Un valor (u) por píxel en un área de la textura y un valor (v) en otra área. De nuevo, esto se debe a que organizar los datos de esta manera suele comprimirse mejor.</p>
+<p>Cuando añades <code class="notranslate" translate="no">texture_external</code> y <code class="notranslate" translate="no">textureSampleBaseClampToEdge</code> a tu shader, WebGPU, entre bastidores, inyecta código en tu shader que toma estos datos de video y te devuelve un valor RGBA. Es posible que realice un muestreo de múltiples texturas o que tenga que hacer cálculos matemáticos con las coordenadas de textura para extraer los datos correctos de 2, 3 o más lugares y convertirlos a RGB.</p>
+<p>Aquí están los canales Y, U y V del video anterior:</p>
+<div class="webgpu_center">
+  <div class="side-by-side">
+    <div class="separate">
+      <img src="../../resources/videos/pexels-anna-bordarenko-5534310-y-channel.png" style="width: 300px;">
+      <div>Canal Y (luminancia)</div>
+    </div>
+    <div class="separate">
+      <div class="side-by-side">
+        <div class="separate">
+          <img src="../../resources/videos/pexels-anna-bordarenko-5534310-u-channel.png" style="width: 150px;">
+          <div>Canal U<br>(rojo ↔ amarillo)</div>
+        </div>
+        <div class="separate">
+          <img src="../../resources/videos/pexels-anna-bordarenko-5534310-v-channel.png" style="width: 150px;">
+          <div>Canal V<br>(azul ↔ amarillo)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p>WebGPU está proporcionando efectivamente una optimización aquí. En las librerías gráficas tradicionales, esto te correspondería a ti. O bien escribirías el código tú mismo para convertir de YUV a RGB, o bien le pedirías al sistema operativo que lo hiciera. Copiarías los datos a una textura RGBA y luego usarías esa textura RGBA como <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>. Ese método es más flexible, ya que no tienes que escribir shaders diferentes para video frente a texturas estáticas. Sin embargo, es más lento porque la conversión debe ocurrir desde las texturas YUV a la textura RGBA.</p>
+<p>Este método más lento pero más flexible sigue estando disponible en WebGPU y lo cubrimos <a href="webgpu-importing-textures.html#a-loading-video">en el artículo anterior</a>. Si necesitas esa flexibilidad, por ejemplo, si quieres poder usar video en cualquier lugar sin necesitar shaders diferentes para video vs. imágenes estáticas, entonces usa ese método.</p>
+<p>Una razón por la que WebGPU proporciona esta optimización para <code class="notranslate" translate="no">texture_external</code> es porque esto es la web. Los formatos de video soportados en el navegador cambian con el tiempo. WebGPU gestionará esto por ti, mientras que si tuvieras que escribir el shader tú mismo para convertir de YUV a RGB, también necesitarías saber que el formato de los videos no cambiará, algo que la web no puede garantizar.</p>
+<p>Los lugares más obvios para usar el método <code class="notranslate" translate="no">texture_external</code> descrito en este artículo serían funciones relacionadas con video, como por ejemplo aplicaciones tipo Meet, Zoom o FB Messenger; cuando se realiza reconocimiento facial para añadir visualizaciones o separación de fondo. Otro caso podría ser para video VR una vez que WebGPU sea compatible con WebXR.</p>
+<h2 id="uso-de-la-cámara"><a id="a-web-camera"></a> Uso de la cámara</h2>
+<p>De hecho, vamos a usar la cámara. Es un cambio muy pequeño.</p>
+<p>Primero, no especificamos un video para reproducir.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const video = document.createElement('video');
+-  video.muted = true;
+-  video.loop = true;
+-  video.preload = 'auto';
+-  video.src = 'resources/videos/pexels-anna-bondarenko-5534310 (540p).mp4'; /* webgpufundamentals: url */
+   await waitForClick();
+   await startPlayingAndWaitForVideo(video);
+</pre>
+<p>Luego, cuando el usuario hace clic en reproducir, llamamos a <code class="notranslate" translate="no">getUserMedia</code> y solicitamos la cámara. El stream resultante se aplica entonces al video.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function waitForClick() {
+    return new Promise(resolve =&gt; {
+      window.addEventListener(
+        'click',
+        'click',
+-        () =&gt; {
++        async() =&gt; {
+          document.querySelector('#start').style.display = 'none';
+-          resolve();
++          try {
++            const stream = await navigator.mediaDevices.getUserMedia({
++              video: true,
++            });
++            video.srcObject = stream;
++            resolve();
++          } catch (e) {
++            fail(`could not access camera: ${e.message ?? ''}`);
++          }
+        },
+        { once: true });
+    });
+  }
+</pre>
+<p>Dependiendo de tu caso de uso, probablemente querrás reflejar la imagen para que aparezca igual que un espejo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">      mat4.translate(viewProjectionMatrix, [x * xSpacing, y * ySpacing, -zDepth * 0.5], matrix);
+      mat4.rotateX(matrix, 0.25 * Math.PI * Math.sign(y), matrix);
+-      mat4.scale(matrix, [1, -1, 1], matrix);
++      mat4.scale(matrix, [-1, -1, 1], matrix);
+      mat4.translate(matrix, [-0.5, -0.5, 0], matrix);
+</pre>
+<p>No se necesitan otros cambios.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-textured-quad-external-video-camera.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-textured-quad-external-video-camera.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Podríamos realizar cambios similares al <a href="webgpu-importing-textures.html#a-loading-video">ejemplo de video del artículo anterior</a> si quisiéramos la imagen de la cámara como el tipo de textura <code class="notranslate" translate="no">texture&lt;f32&gt;</code>, que es más flexible, en lugar del tipo de textura <code class="notranslate" translate="no">texture_external</code>, que es más eficiente.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Lo que sucede realmente depende de la implementación del navegador. La especificación de WebGPU se diseñó con la esperanza de que el navegador no necesitara realizar una copia. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>La especificación realmente dice que la implementación puede devolver la misma textura, pero no es obligatorio. Si quieres comprobar si obtuviste la misma textura, compárala con la textura anterior como en: </p><pre class="prettyprint showlinemods notranslate notranslate" translate="no">const newTexture = device.importExternalTexture(…);<br>const same = oldTexture === newTexture;</pre> Si es la misma textura, entonces puedes reutilizar tu bind group existente y la <code class="notranslate" translate="no">oldTexture</code> referenciada. <a href="#fnref2" class="footnote-backref">↩︎</a><p></p>
+</li>
+<li id="fn3" class="footnote-item"><p>También puedes usar <code class="notranslate" translate="no">textureLoad</code> con texturas externas. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Podríamos dividir los bind groups para que haya uno que contenga el sampler y el uniformBuffer, el cual podríamos crear por adelantado, y otro que solo haga referencia a la textura externa que creamos en el momento del renderizado. Si vale la pena hacerlo o no dependerá de tus necesidades particulares. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-textures-external-video.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-textures-external-video.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-textures-external-video.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-textures-external-video.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-textures-external-video.html">Русский
@@ -203,84 +561,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +659,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Uso eficiente de video en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

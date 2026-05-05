@@ -1,9 +1,9 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createRequestAnimationFrameLoop,
-} from './resources/good-raf.js';
+} from './resources/js/good-raf.js';
 import { SVG as svg } from '../../3rdparty/svg.esm.js';
 import {
   rgba8unormFromCSS,
@@ -11,18 +11,18 @@ import {
   clamp,
   clamp01,
   euclideanModulo,
-} from './resources/utils.js';
+} from './resources/js/utils.js';
 import {
   createElem as el, radio, checkbox, makeTable,
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import {
   generateMips,
-} from './resources/generate-mips-cpu.js';
+} from './resources/js/generate-mips-cpu.js';
 import {
   kDepthStencilFormats,
   kRegularTextureFormats,
   kTextureFormatInfo,
-} from './resources/capabilities-info.js';
+} from './resources/js/capabilities-info.js';
 
 const rgba8unorm = (r, g, b, a) => `rgba(${r}, ${g}, ${b}, ${a / 255})`;
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -255,7 +255,7 @@ renderDiagrams({
     const size = [tw, th];
     const clampOrRepeat = (ndx, v) => {
       const s = size[ndx];
-      return repeat[ndx] ? v : clamp(v, 0.5 / s, 1 - 0.5 / s);
+      return repeat[ndx] ? v : clamp(v, 0.5 / s, (s - 0.501) / s);  // cheating with the 0.501 :P (0.5 would give the same final results but would show the box off the right/bottom)
     };
 
     uiDiv.appendChild(el('div', {}, [

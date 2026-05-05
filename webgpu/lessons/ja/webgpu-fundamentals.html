@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-fundamentals.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-fundamentals.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-fundamentals.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-fundamentals.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-fundamentals.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-fundamentals.html">Русский
@@ -228,6 +228,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPUの基本</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -433,7 +436,7 @@ WebGPUコンテキストに対して、<code class="notranslate" translate="no">
 今回は、頂点シェーダを１つ、フラグメントシェーダを１つ、都合２つのシェーダをシェーダモジュールに持たせることにします。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
     label: 'our hardcoded red triangle shaders',
-    code: `
+    code: /* wgsl */ `
       @vertex fn vs(
         @builtin(vertex_index) vertexIndex : u32
       ) -&gt; @builtin(position) vec4f {
@@ -641,7 +644,7 @@ WebGPUはこの際、「各ピクセルの中心点が三角形の内側にあ�
 <p>違ってくるのはシェーダモジュールの部分からです。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
     label: 'doubling compute module',
-    code: `
+    code: /* wgsl */ `
       @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
 
       @compute @workgroup_size(1) fn computeSomething(
@@ -778,7 +781,7 @@ WebGPUでこのデータを利用するには、GPU上にバッファを用意�
     label: 'bindGroup for work buffer',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: workBuffer } },
+      { binding: 0, resource: workBuffer  },
     ],
   });
 </pre>
@@ -1001,7 +1004,7 @@ WebGPUはそういうデザインになっている。多くの場合、デバ�
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-fundamentals.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-fundamentals.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-fundamentals.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-fundamentals.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-fundamentals.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-fundamentals.html">Русский
@@ -1071,6 +1074,15 @@ WebGPUはそういうデザインになっている。多くの場合、デバ�
   <li>ポストプロセッシング</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
@@ -1137,8 +1149,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -1,10 +1,10 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import { SVG as svg } from '../../3rdparty/svg.esm.js';
 import {
   createElem as el,
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 
 const makeText = (parent, t) => {
   return parent.text(t)

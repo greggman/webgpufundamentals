@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-post-processing.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Post Processing - Basic CRT Effect">
+
+<meta name="description" content="Post-procesamiento">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_es.jpg">
+
+<meta property="og:title" content="Post-procesamiento en WebGPU - Efecto CRT básico">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Post Processing">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_es.jpg">
+<meta property="og:description" content="Post-procesamiento">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-post-processing.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Post Processing - Basic CRT Effect">
+<meta name="twitter:title" content="Post-procesamiento en WebGPU - Efecto CRT básico">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-post-processing.html">
-<meta name="twitter:description" content="Post Processing">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Post-procesamiento">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-post-processing.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-post-processing.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-post-processing.html",
+      "inLanguage":"es",
+      "name":"Post-procesamiento en WebGPU - Efecto CRT básico",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-post-processing.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Post Processing - Basic CRT Effect</title>
+<title>Post-procesamiento en WebGPU - Efecto CRT básico</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-post-processing.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-post-processing.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-post-processing.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-post-processing.html">Русский
@@ -182,18 +227,630 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Post Processing - Basic CRT Effect</h1>
+    <h1>Post-procesamiento en WebGPU - Efecto CRT básico</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-post-processing.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>El post-procesamiento (post-processing) simplemente significa realizar algún procesamiento después de haber creado la imagen “original”. El post-procesamiento puede aplicarse a una foto, un video, una escena 2D o una escena 3D. En general, significa que tienes una imagen y le aplicas algunos efectos, como elegir un filtro en Instagram.</p>
+<p>En casi todos los ejemplos de este sitio renderizamos a la textura del canvas. Para realizar el post-procesamiento, en su lugar renderizamos a una textura diferente. Luego renderizamos esa textura al canvas mientras aplicamos algunos efectos de procesamiento de imagen.</p>
+<p>Como ejemplo sencillo, intentemos post-procesar una imagen para que parezca una televisión de los años 80 con líneas de escaneo (scanlines) y elementos RGB de CRT.</p>
+<div class="webgpu_center"><img class="nobg" src="../resources/gemini-generated-1980s-tv-1024.png" style="width: 700px"></div>
+<p>Para hacer eso, tomemos el ejemplo animado de la parte superior de <a href="webgpu-timing.html">el artículo sobre temporización</a>. Lo primero que haremos será hacer que se renderice en una textura separada y luego renderizar esa textura en el canvas.</p>
+<p>Aquí tienes un shader que dibuja un <a href="webgpu-large-triangle-to-cover-clip-space.html">triángulo grande que cubre el espacio de recorte (clip space)</a> y pasa las coordenadas UV correctas para permitirnos dibujar una textura que cubra la parte del triángulo que cabe en el espacio de recorte.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+        return vec4f(color);
+      }
+    `,
+  })
+</pre>
+<p>Es bastante directo y es similar al shader que usamos para generar mipmaps en <a href="webgpu-importing-textures.html">el artículo sobre el uso de imágenes con texturas</a>. La única diferencia importante es que el shader original usa 2 triángulos para cubrir el espacio de recorte, mientras que este usa <a href="webgpu-large-triangle-to-cover-clip-space.html">1 triángulo grande</a>.</p>
+<p>Luego, para usar estos shaders necesitamos un pipeline:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessPipeline = device.createRenderPipeline({
+    layout: 'auto',
+    vertex: { module: postProcessModule },
+    fragment: {
+      module: postProcessModule,
+      targets: [ { format: presentationFormat }],
+    },
+  });
+</pre>
+<p>Este pipeline se renderizará en el canvas, por lo que debemos establecer el formato de destino como el <code class="notranslate" translate="no">presentationFormat</code> que buscamos antes.</p>
+<p>Necesitaremos un sampler y un renderPassDescriptor.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessSampler = device.createSampler({
+    minFilter: 'linear',
+    magFilter: 'linear',
+  });
+
+  const postProcessRenderPassDescriptor = {
+    label: 'post process render pass',
+    colorAttachments: [
+      { loadOp: 'clear', storeOp: 'store' },
+    ],
+  };
+</pre>
+<p>Luego, en lugar de hacer que nuestro renderPass original renderice en el canvas, necesitamos que renderice en una textura separada.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let renderTarget;
++
++  function setupPostProcess(canvasTexture) {
++    if (renderTarget?.width === canvasTexture.width &amp;&amp;
++        renderTarget?.height === canvasTexture.height) {
++      return;
++    }
++
++    renderTarget?.destroy();
++    renderTarget = device.createTexture({
++      size: canvasTexture,
++      format: 'rgba8unorm',
++      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
++    });
++    const renderTargetView = renderTarget.createView();
++    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
++  }
+
+  let then = 0;
+  function render(now) {
+    now *= 0.001;  // convertir a segundos
+    const deltaTime = now - then;
+    then = now;
+
+-    // Obtener la textura actual del contexto del canvas y
+-    // establecerla como la textura a renderizar.
+-    renderPassDescriptor.colorAttachments[0].view =
+-        context.getCurrentTexture().createView();
++    const canvasTexture = context.getCurrentTexture();
++    setupPostProcess(canvasTexture);
+
+    ...
+</pre>
+<p>Arriba, pasamos el <code class="notranslate" translate="no">canvasTexture</code> actual a <code class="notranslate" translate="no">setupPostProcess</code>. Este verifica si el tamaño de nuestra textura “renderTarget” es el mismo tamaño que el canvas. Si no, crea una nueva textura del mismo tamaño.</p>
+<p>Luego establece el attachment de color de nuestro <code class="notranslate" translate="no">renderPassDescriptor</code> original a esta textura renderTarget.</p>
+<p>Dado que nuestro antiguo pipeline renderizará en esta textura, necesitamos actualizarlo para el formato de esta textura:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'per vertex color',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        ...
+      ],
+    },
+    fragment: {
+      module,
+-      targets: [{ format: presentationFormat }],
++      targets: [{ format: 'rgba8unorm' }],
+    },
+  });
+</pre>
+<p>Este cambio por sí solo haría que comience a renderizar la escena original en esta textura de destino de renderizado, pero aún necesitamos dibujar algo en el canvas o no veremos nada, así que hagamos eso.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+
+  ...
+
+
+  let then = 0;
+  function render(now) {
+    now *= 0.001;  // convertir a segundos
+    const deltaTime = now - then;
+    then = now;
+
+    const canvasTexture = context.getCurrentTexture();
+    setupPostProcess(canvasTexture);
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+    ...
+
+    pass.draw(numVertices, settings.numObjects);
+
+    pass.end();
+
++    postProcess(encoder, renderTarget, canvasTexture);
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>Hagamos otro pequeño ajuste. Eliminemos la configuración del recuento de objetos, ya que no es relevante para el post-procesamiento.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+-    numObjects: 100,
++    numObjects: 200,
+  };
+
+  const gui = new GUI();
+-  gui.add(settings, 'numObjects', 0, kNumObjects, 1);
+</pre>
+<p>Podríamos habernos deshecho de <code class="notranslate" translate="no">settings.numObjects</code> por completo, pero requiere ediciones en varios lugares diferentes, así que dejémoslo por ahora. Estableceremos el número en 200 solo para llenar la imagen.</p>
+<p>Si ejecutamos esto, no habrá ninguna diferencia visible con el original.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-01.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-01.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>La diferencia es que estamos renderizando a la textura renderTarget y luego renderizando esa textura al canvas, así que ahora podemos empezar a aplicar algunos efectos.</p>
+<p>El efecto más obvio de un CRT antiguo es que tienen líneas de escaneo (scanlines) visibles. Esto se debe a que la forma en que se proyectaba la imagen era mediante imanes que dirigían un haz a través de la pantalla en un patrón de líneas horizontales.</p>
+<p>Podemos obtener un efecto similar simplemente generando un patrón de luz y oscuridad usando una onda senoidal y tomando el valor absoluto.</p>
+<div class="webgpu_center">
+  <div style="width: 100%;"><img class="ddnobg" src="../resources/sinewave-40.svg"></div>
+  <div lass="caption">sin(x)</div>
+</div>
+<div class="webgpu_center">
+   <div style="width: 100%;"><img class="ddnobg" src="../resources/abs-sinewave-40.svg"></div>
+   <div class="caption">abs(sin(x))</div>
+</div>
+<div class="webgpu_center">
+   <div style="width: 100%;"><div data-diagram="sine" style="aspect-ratio: 981 / 50; width: 100%;"></div></div>
+   <div class="caption">abs(sin(x)) como color en escala de grises</div>
+</div>
+<p>Agreguemos eso al código. Primero, editemos el shader para aplicar esta onda senoidal.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
++      struct Uniforms {
++        effectAmount: f32,
++        bandMult: f32,
++      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
++      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
++        let banding = abs(sin(fsInput.position.y * uni.bandMult));
++        let effect = mix(1.0, banding, uni.effectAmount);
+
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+-        return vec4f(color);
++        return vec4f(color.rgb * effect, color.a);
+      }
+    `,
+  });
+</pre>
+<p>Nuestra onda senoidal se basa en <code class="notranslate" translate="no">fsInput.position.y</code>, que es la coordenada y del píxel que se está escribiendo. En otras palabras, para cada línea de escaneo que comienza en 0, irá 0.5, 1.5, 2.5, 3.5, etc. <code class="notranslate" translate="no">bandMult</code> nos permitirá ajustar el tamaño de las bandas y <code class="notranslate" translate="no">effectAmount</code> nos permitirá activar y desactivar el efecto para que podamos comparar el efecto con el resultado sin efecto.</p>
+<p>Para usar el nuevo shader necesitamos un buffer de uniformes (uniform buffer).</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessUniformBuffer = device.createBuffer({
+    size: 8,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+</pre>
+<p>Necesitamos agregarlo a nuestro bind group:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    postProcessBindGroup = device.createBindGroup({
+      layout: postProcessPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: renderTargetView },
+        { binding: 1, resource: postProcessSampler },
++        { binding: 2, resource: postProcessUniformBuffer },
+      ],
+    });
+</pre>
+<p>Y necesitamos agregar algunas configuraciones:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    numObjects: 200,
++    affectAmount: 1,
++    bandMult: 1,
+  };
+
+  const gui = new GUI();
++  gui.add(settings, 'affectAmount', 0, 1);
++  gui.add(settings, 'bandMult', 0.01, 2.0);
+</pre>
+<p>Y necesitamos subir esas configuraciones al buffer de uniformes:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
++    device.queue.writeBuffer(
++      postProcessUniformBuffer,
++      0,
++      new Float32Array([
++        settings.affectAmount,
++        settings.bandMult,
++      ]),
++    );
+
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+</pre>
+<p>Y eso nos da un efecto de línea de escaneo similar al de un CRT.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-02.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-02.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Los CRT, al igual que los LCD, dividen la imagen en áreas rojas, verdes y azules. En los CRT, esas áreas eran generalmente más grandes que la mayoría de los LCD actuales, por lo que a veces esto resaltaba. Agreguemos algo para aproximar ese efecto.</p>
+<p>Primero, cambiemos el shader:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
++        cellMult: f32,
++        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+        let banding = abs(sin(fsInput.position.y * uni.bandMult));
+
++        let cellNdx = u32(fsInput.position.x * uni.cellMult) % 3;
++        var cellColor = vec3f(0);
++        cellColor[cellNdx] = 1;
++        let cMult = cellColor + uni.cellBright;
+
+-        let effect = mix(1.0, banding, uni.effectAmount);
++        let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+        return vec4f(color.rgb * effect, 1);
+      }
+    `,
+  });
+</pre>
+<p>Arriba estamos usando <code class="notranslate" translate="no">fsInput.position.x</code>, que es la coordenada x del píxel que se está escribiendo. Al multiplicar por <code class="notranslate" translate="no">cellMult</code> podemos elegir un tamaño de celda. Convertimos a un entero y calculamos el módulo 3. Esto nos da un número, 0, 1 o 2, que usamos para establecer el canal rojo, verde o azul de <code class="notranslate" translate="no">cellColor</code> en 1.</p>
+<p>Añadimos <code class="notranslate" translate="no">cellBright</code> como un ajuste y luego multiplicamos tanto el antiguo banding como el nuevo efecto juntos. <code class="notranslate" translate="no">effect</code> cambió de un <code class="notranslate" translate="no">f32</code> a un <code class="notranslate" translate="no">vec3f</code> para que pueda afectar a cada canal de forma independiente.</p>
+<p>De vuelta en JavaScript necesitamos ajustar el tamaño del buffer de uniformes:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessUniformBuffer = device.createBuffer({
+-    size: 8,
++    size: 16,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+</pre>
+<p>Y añadir algunas configuraciones a la GUI:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    numObjects: 200,
+    affectAmount: 1,
+    bandMult: 1,
++    cellMult: 0.5,
++    cellBright: 1,
+  };
+
+  const gui = new GUI();
+  gui.add(settings, 'affectAmount', 0, 1);
+  gui.add(settings, 'bandMult', 0.01, 2.0);
++  gui.add(settings, 'cellMult', 0, 1);
++  gui.add(settings, 'cellBright', 0, 2);
+</pre>
+<p>Y subir las nuevas configuraciones:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
+    device.queue.writeBuffer(
+      postProcessUniformBuffer,
+      0,
+      new Float32Array([
+        settings.affectAmount,
+        settings.bandMult,
++        settings.cellMult,
++        settings.cellBright,
+      ]),
+    );
+
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+</pre>
+<p>Y ahora tenemos un efecto <em>parecido</em> a los elementos de color de un CRT.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Los efectos anteriores no pretenden ser representaciones perfectas de cómo funciona un CRT. Más bien, solo pretenden dar la sensación de un CRT y ser, con suerte, fáciles de entender. Puedes encontrar técnicas más sofisticadas por toda la web.</p>
+<h2 id="usando-un-compute-shader"><a id="compute"></a> Usando un Compute Shader</h2>
+<p>Surge la pregunta: ¿podríamos usar un compute shader (shader de cómputo) para esto? Y, tal vez más importante, ¿deberíamos? Veamos primero el “¿podemos?”.</p>
+<p>Cubrimos el uso de un compute shader para renderizar a una textura en <a href="webgpu-storage-textures.html">el artículo sobre texturas de almacenamiento (storage textures)</a>.</p>
+<p>Para convertir nuestro código para usar un compute shader, necesitamos añadir el uso <code class="notranslate" translate="no">STORAGE_BINDING</code> a la textura del canvas, lo que, según <a href="webgpu-storage-textures.html">el artículo mencionado anteriormente</a>, requiere comprobar si podemos y elegir un formato de textura que lo soporte.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
++  const hasBGRA8UnormStorage = adapter?.features.has('bgra8unorm-storage');
+-  const device = await adapter?.requestDevice();
++  const device = await adapter?.requestDevice({
++    requiredFeatures: [
++      ...(hasBGRA8UnormStorage ? ['bgra8unorm-storage'] : []),
++    ],
++  });
+  if (!device) {
+    fail('necesitas un navegador que soporte WebGPU');
+    return;
+  }
+
+  // Obtener un contexto de WebGPU del canvas y configurarlo
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+-  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
++  const presentationFormat = hasBGRA8UnormStorage
++    ? navigator.gpu.getPreferredCanvasFormat()
++    : 'rgab8unorm';
+  context.configure({
+    device,
+    format: presentationFormat,
++    usage: GPUTextureUsage.RENDER_ATTACHMENT |
++           GPUTextureUsage.TEXTURE_BINDING |
++           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p>Necesitamos cambiar nuestro shader para escribir en una textura de almacenamiento:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+-      struct VSOutput {
+-        @builtin(position) position: vec4f,
+-        @location(0) texcoord: vec2f,
+-      };
+-
+-      @vertex fn vs(
+-        @builtin(vertex_index) vertexIndex : u32,
+-      ) -&gt; VSOutput {
+-        var pos = array(
+-          vec2f(-1.0, -1.0),
+-          vec2f(-1.0,  3.0),
+-          vec2f( 3.0, -1.0),
+-        );
+-
+-        var vsOutput: VSOutput;
+-        let xy = pos[vertexIndex];
+-        vsOutput.position = vec4f(xy, 0.0, 1.0);
+-        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+-        return vsOutput;
+-      }
+
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
+        cellMult: f32,
+        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
++      @group(1) @binding(0) var outTexture: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+-      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+-        let banding = abs(sin(fsInput.position.y * uni.bandMult));
+-
+-        let cellNdx = u32(fsInput.position.x * uni.cellMult) % 3;
++      @compute @workgroup_size(1) fn cs(@builtin(global_invocation_id) gid: vec3u) {
++        let outSize = textureDimensions(outTexture);
++        let banding = abs(sin(f32(gid.y) * uni.bandMult));
++
++        let cellNdx = u32(f32(gid.x) * uni.cellMult) % 3;
+         var cellColor = vec3f(0);
+         cellColor[cellNdx] = 1.0;
+         let cMult = cellColor + uni.cellBright;
+
+         let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+-        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+-        return vec4f(color.rgb * effect, color.a);
++        let uv = (vec2f(gid.xy) + 0.5) / vec2f(outSize);
++        let color = textureSampleLevel(postTexture2d, postSampler, uv, 0);
++        textureStore(outTexture, gid.xy, vec4f(color.rgb * effect, color.a));
+       }
+    `,
+  });
+</pre>
+<p>Arriba eliminamos el vertex shader (shader de vértices) y las partes relacionadas. También ya no tenemos <code class="notranslate" translate="no">fsInput.position</code>, que era la coordenada del píxel que se estaba escribiendo. En su lugar, tenemos <code class="notranslate" translate="no">gid</code>, que es el <code class="notranslate" translate="no">global_invocation_id</code> de una invocación individual de nuestro compute shader. Usaremos esto como nuestra coordenada de textura. Es un <code class="notranslate" translate="no">vec3u</code>, así que necesitamos hacer conversiones de tipo aquí y allá. Tampoco tenemos ya <code class="notranslate" translate="no">fsInput.texcoord</code>, pero podemos obtener el equivalente con <code class="notranslate" translate="no">(vec2f(gid.xy) + 0.5) / vec2f(outSize)</code>.</p>
+<p>Necesitamos dejar de usar un render pass y, en su lugar, usar un compute pass para nuestro post-procesamiento.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessPipeline = device.createRenderPipeline({
+    layout: 'auto',
+-    vertex: { module: postProcessModule },
+-    fragment: {
+-      module: postProcessModule,
+-      targets: [ { format: presentationFormat }],
+-    },
++    compute: { module: postProcessModule },
+  });
+
+  function postProcess(encoder, srcTexture, dstTexture) {
+    device.queue.writeBuffer(
+      postProcessUniformBuffer,
+      0,
+      new Float32Array([
+        settings.affectAmount,
+        settings.bandMult,
+        settings.cellMult,
+        settings.cellBright,
+      ]),
+    );
+
++    const outBindGroup = device.createBindGroup({
++      layout: postProcessPipeline.getBindGroupLayout(1),
++      entries: [
++        { binding: 0, resource: dstTexture },
++      ],
++    });
+
+-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+-    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
++    const pass = encoder.beginComputePass();
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+-    pass.draw(3);
++    pass.dispatchWorkgroups(dstTexture.width, dstTexture.height);
+    pass.end();
+  }
+</pre>
+<p>Eso funciona:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03-compute.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03-compute.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Desafortunadamente, dependiendo de la GPU, ¡es lento! Cubrimos parte del porqué en <a href="webgpu-compute-shaders-historgram.html">el artículo sobre optimización de compute shaders</a>. Usar un tamaño de workgroup de 1 facilita las cosas, pero es lento.</p>
+<p>Podemos actualizar para usar un tamaño de workgroup más grande. Esto requiere que nos saltemos la escritura en la textura cuando estemos fuera de los límites.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const workgroupSize = [16, 16];
+  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
+        cellMult: f32,
+        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+      @group(1) @binding(0) var outTexture: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+-      @compute @workgroup_size(1) fn cs(@builtin(global_invocation_id) gid: vec3u) {
++      @compute @workgroup_size(${workgroupSize}) fn cs(@builtin(global_invocation_id) gid: vec3u) {
+        let outSize = textureDimensions(outTexture);
++        if (gid.x &gt;= outSize.x || gid.y &gt;= outSize.y) {
++          return;
++        }
+        let banding = abs(sin(f32(gid.y) * uni.bandMult));
+
+        let cellNdx = u32(f32(gid.x) * uni.cellMult) % 3;
+        var cellColor = vec3f(0);
+        cellColor[cellNdx] = 1.0;
+        let cMult = cellColor + uni.cellBright;
+
+        let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+        let uv = (vec2f(gid.xy) + 0.5) / vec2f(outSize);
+        let color = textureSampleLevel(postTexture2d, postSampler, uv, 0);
+        textureStore(outTexture, gid.xy, vec4f(color.rgb * effect, color.a));
+      }
+    `,
+  });
+</pre>
+<p>Y luego necesitamos enviar (dispatch) menos workgroups:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const pass = encoder.beginComputePass();
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.setBindGroup(1, outBindGroup);
+-    pass.dispatchWorkgroups(dstTexture.width, dstTexture.height);
++    pass.dispatchWorkgroups(
++      Math.ceil(dstTexture.width / workgroupSize[0]),
++      Math.ceil(dstTexture.height / workgroupSize[1]),
++    );
+    pass.end();
+</pre>
+<p>Esto funciona:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03-compute-workgroups.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03-compute-workgroups.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>¡Esto es mucho más rápido! Pero, desafortunadamente, en algunas GPU sigue siendo más lento que usar un render pass.</p>
+<div class="webgpu_center data-table">
+  <table>
+    <thead>
+      <tr><th>GPU</th><th>Tiempo de compute pass vs<br>Tiempo de render pass<br>(más alto es peor)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>M1 Mac                 </td><td>1x</td></tr>
+      <tr><td>AMD Radeon Pro 5300M   </td><td>1x</td></tr>
+      <tr><td>AMD Radeon Pro WX 32000</td><td>1.3x</td></tr>
+      <tr><td>Intel UHD Graphics 630 </td><td>1.7x</td></tr>
+      <tr><td>NVidia 2070 Super      </td><td>2x</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Entrar en detalles sobre cómo hacerlo más rápido es un tema demasiado extenso para este artículo en particular. Haciendo referencia a <a href="webgpu-compute-shaders-historgram.html">el artículo sobre optimización de compute shaders</a>, se aplican las mismas reglas. Desafortunadamente, ninguna de ellas es realmente relevante para este ejemplo. Si el post-procesamiento que estás intentando realizar pudiera beneficiarse de la memoria de workgroup compartida, entonces tal vez usar un compute shader sería beneficioso. Los patrones de acceso también podrían ser relevantes para intentar asegurar que la GPU no esté teniendo muchos fallos de caché. Otra posibilidad podría ser aprovechar los <a href="webgpu-subgroups.html">subgroups (subgrupos)</a>.</p>
+<p>Por ahora, se recomienda probar diferentes técnicas y comprobar sus tiempos. O bien, quédate con los render passes a menos que el algoritmo que estés implementando pueda beneficiarse verdaderamente de los datos compartidos de los workgroups o subgroups. Las GPU han estado renderizando a texturas durante mucho más tiempo del que han estado ejecutando compute shaders, por lo que muchos aspectos de ese proceso están altamente optimizados.</p>
+<hr>
+<p>Este artículo introdujo el concepto de <em>post-procesamiento</em>. En el próximo artículo cubriremos algunos <a href="webgpu-image-adjustments.html">ajustes de imagen comunes en el post-procesamiento</a>.</p>
+<!-- keep this at the bottom of the article -->
+<link href="../webgpu-post-processing.css" rel="stylesheet">
+<script type="module" src="../webgpu-post-processing.js"></script>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-post-processing.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-post-processing.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-post-processing.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-post-processing.html">Русский
@@ -203,84 +860,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +958,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Post-procesamiento en WebGPU - Efecto CRT básico`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-timing.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-timing.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-timing.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-timing.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-timing.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-timing.html">Русский
@@ -228,6 +228,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU タイミングパフォーマンス</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -627,13 +630,13 @@ canvas {
 
 +    if (canTimestamp &amp;&amp; resultBuffer.mapState === 'unmapped') {
 +      resultBuffer.mapAsync(GPUMapMode.READ).then(() =&gt; {
-+        const times = new BigInt64Array(resultBuffer.getMappedRange());
++        const times = new BigUint64Array(resultBuffer.getMappedRange());
 +        gpuTime = Number(times[1] - times[0]);
 +        resultBuffer.unmap();
 +      });
 +    }
 </pre>
-<p>クエリセットの結果はナノ秒単位であり、64ビット整数で格納されます。JavaScriptでそれらを読み取るには、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt64Array"><code class="notranslate" translate="no">BigInt64Array</code></a>型付き配列ビューを使用できます。<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt64Array"><code class="notranslate" translate="no">BigInt64Array</code></a>を使用するには、特別な注意が必要です。<code class="notranslate" translate="no">BitInt64Array</code>から要素を読み取ると、型は<code class="notranslate" translate="no">number</code>ではなく<code class="notranslate" translate="no">bigint</code>になるため、多くの数学関数では使用できません。また、数値に変換すると、<code class="notranslate" translate="no">number</code>は53ビットのサイズの整数しか保持できないため、精度が失われる可能性があります。したがって、まず2つの<code class="notranslate" translate="no">bigint</code>を減算します。これは<code class="notranslate" translate="no">bigint</code>のままです。次に、結果を数値に変換して、通常どおり使用できるようにします。</p>
+<p>クエリセットの結果はナノ秒単位であり、64ビット整数で格納されます。JavaScriptでそれらを読み取るには、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigUint64Array"><code class="notranslate" translate="no">BigUint64Array</code></a>型付き配列ビューを使用できます。<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigUint64Array"><code class="notranslate" translate="no">BigUint64Array</code></a>を使用するには、特別な注意が必要です。<code class="notranslate" translate="no">BitInt64Array</code>から要素を読み取ると、型は<code class="notranslate" translate="no">number</code>ではなく<code class="notranslate" translate="no">bigint</code>になるため、多くの数学関数では使用できません。また、数値に変換すると、<code class="notranslate" translate="no">number</code>は53ビットのサイズの整数しか保持できないため、精度が失われる可能性があります。したがって、まず2つの<code class="notranslate" translate="no">bigint</code>を減算します。これは<code class="notranslate" translate="no">bigint</code>のままです。次に、結果を数値に変換して、通常どおり使用できるようにします。</p>
 <p>上記のコードでは、マップされていない場合にのみ、結果を<code class="notranslate" translate="no">resultBuffer</code>にコピーしています。つまり、一部のフレームでのみ時間を読み取ることになります。おそらく他のすべてのフレームですが、<code class="notranslate" translate="no">mapAsync</code>が解決されるまでにかかる時間については厳密な保証はありません。そのため、いつでも最後に記録された時間を取得するために使用できる<code class="notranslate" translate="no">gpuTime</code>を更新します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    infoElem.textContent = `\
 fps: ${(1 / deltaTime).toFixed(1)}
@@ -685,7 +688,7 @@ function render(now) {
 
     if (canTimestamp &amp;&amp; resultBuffer.mapState === 'unmapped') {
       resultBuffer.mapAsync(GPUMapMode.READ).then(() =&gt; {
-        const times = new BigInt64Array(resultBuffer.getMappedRange());
+        const times = new BigUint64Array(resultBuffer.getMappedRange());
         gpuTime = Number(times[1] - times[0]);
 +        gpuAverage.addSample(gpuTime / 1000);
         resultBuffer.unmap();
@@ -860,7 +863,7 @@ export default class TimingHelper {
 
     const resultBuffer = this.#resultBuffer;
     await resultBuffer.mapAsync(GPUMapMode.READ);
-    const times = new BigInt64Array(resultBuffer.getMappedRange());
+    const times = new BigUint64Array(resultBuffer.getMappedRange());
     const duration = Number(times[1] - times[0]);
     resultBuffer.unmap();
     this.#resultBuffers.push(resultBuffer);
@@ -920,12 +923,12 @@ export default class TimingHelper {
 
     pass.end();
 
-    -if (canTimestamp) {
-    -  encoder.resolveQuerySet(querySet, 0, querySet.count, resolveBuffer, 0);
-    -  if (resultBuffer.mapState === 'unmapped') {
-    -    encoder.copyBufferToBuffer(resolveBuffer, 0, resultBuffer, 0, resultBuffer.size);
-    -  }
-    -}
+-    if (canTimestamp) {
+-      encoder.resolveQuerySet(querySet, 0, querySet.count, resolveBuffer, 0);
+-      if (resultBuffer.mapState === 'unmapped') {
+-        encoder.copyBufferToBuffer(resolveBuffer, 0, resultBuffer, 0, resultBuffer.size);
+-      }
+-    }
 
     const commandBuffer = encoder.finish();
     device.queue.submit([commandBuffer]);
@@ -1010,7 +1013,7 @@ export default class TimingHelper {
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-timing.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-timing.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-timing.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-timing.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-timing.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-timing.html">Русский
@@ -1080,6 +1083,15 @@ export default class TimingHelper {
   <li>ポストプロセッシング</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
@@ -1146,8 +1158,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

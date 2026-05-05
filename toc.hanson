@@ -52,6 +52,14 @@
     ],
     'post-processing': [
       'webgpu-post-processing.md',
+      'webgpu-image-adjustments.md',
+      'webgpu-1dlut.md',
+      'webgpu-3dlut.md',
+    ],
+    editor: [
+      'webgpu-highlighting.md',
+      'webgpu-camera-controls.md',
+      'webgpu-picking.md',
     ],
   },
   'compute-shaders': [

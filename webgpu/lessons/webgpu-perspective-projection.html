@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-perspective-projection.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-perspective-projection.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-perspective-projection.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-perspective-projection.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-perspective-projection.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-perspective-projection.html">Русский
@@ -228,6 +228,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU Perspective Projection</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -594,7 +597,7 @@ outside of that is clipped.</p>
 <p>I could go into detail about the math to fix it but <a href="https://stackoverflow.com/a/28301213/128511">you can derive
 it</a> the same way we did 2D
 projection.  We need to take Z, add some amount (translation) and scale some amount and
-we can make any range we want get remapped to the -1 to +1.</p>
+we can make any range we want get remapped to the 0 to +1.</p>
 <p>The cool thing is all of these steps can be done in 1 matrix.  Even
 better, rather than a <code class="notranslate" translate="no">fudgeFactor</code> we’ll decide on a <code class="notranslate" translate="no">fieldOfView</code> and
 compute the right values to make that happen.</p>
@@ -783,7 +786,7 @@ In other words, with our new perspective projection matrix, if we tried to draw 
 <p>
 The F has its top left front corner at the origin. The perspective projection matrix
 looks toward negative Z but our F is built in positive Z. The perspective projection matrix has
-positive Y up but our F is built with positive Z down.
+positive Y up but our F is built with positive Y down.
 </p>
 <p>
 Our new projection only sees what's in the blue frustum. With -zNear = 1 and with a field of view of 100 degrees
@@ -803,7 +806,7 @@ Moving it -120 units in Z moves the F inside the frustum. We also rotated it to 
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-perspective-projection.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-perspective-projection.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-perspective-projection.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-perspective-projection.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-perspective-projection.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-perspective-projection.html">Русский
@@ -873,6 +876,15 @@ Moving it -120 units in Z moves the F inside the frustum. We also rotated it to 
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -948,8 +960,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

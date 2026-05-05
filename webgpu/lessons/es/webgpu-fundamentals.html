@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-fundamentals.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Fundamentals">
+
+<meta name="description" content="Los fundamentos de WebGPU">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-fundamentals_es.jpg">
+
+<meta property="og:title" content="Fundamentos de WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="The fundamentals of WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-fundamentals_es.jpg">
+<meta property="og:description" content="Los fundamentos de WebGPU">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-fundamentals.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Fundamentals">
+<meta name="twitter:title" content="Fundamentos de WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-fundamentals.html">
-<meta name="twitter:description" content="The fundamentals of WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Los fundamentos de WebGPU">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-fundamentals_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-fundamentals.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-fundamentals_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-fundamentals.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-fundamentals.html",
+      "inLanguage":"es",
+      "name":"Fundamentos de WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-fundamentals.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Fundamentals</title>
+<title>Fundamentos de WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-fundamentals.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-fundamentals.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-fundamentals.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-fundamentals.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-fundamentals.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-fundamentals.html">Русский
@@ -182,18 +227,650 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Fundamentals</h1>
+    <h1>Fundamentos de WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-fundamentals.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Este artículo intentará enseñarte los fundamentos básicos de WebGPU.</p>
+<div class="warn">
+Se espera que ya sepas JavaScript antes de leer este artículo. Conceptos como
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map">mapear arrays</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">asignación por desestructuración</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">operador spread</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">async/await</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">módulos es6</a>,
+y otros se utilizarán de forma extensiva. Si aún no conoces JavaScript y te gustaría aprenderlo, consulta
+<a href="https://javascript.info/">JavaScript.info</a>, <a href="https://eloquentjavascript.net/">Eloquent JavaScript</a>,
+y/o <a href="https://www.codecademy.com/learn/introduction-to-javascript">CodeCademy</a>.
+</div>
+<div class="warn">Si ya conoces WebGL, <a href="webgpu-from-webgl.html">lee esto</a>.</div>
+<p>WebGPU es una API que te permite hacer 2 cosas básicas:</p>
+<ol>
+<li>
+<p><a href="#a-drawing-triangles-to-textures">Dibujar triángulos/puntos/líneas en texturas</a></p>
+</li>
+<li>
+<p><a href="#a-run-computations-on-the-gpu">Ejecutar cómputo en la GPU</a></p>
+</li>
+</ol>
+<p>¡Eso es todo!</p>
+<p>Todo lo demás sobre WebGPU depende de ti. Es como aprender un lenguaje de programación como JavaScript, Rust o C++. Primero aprendes lo básico y luego depende de ti usar creativamente esos fundamentos para resolver tu problema.</p>
+<p>WebGPU es una API de nivel extremadamente bajo. Aunque puedes hacer algunos ejemplos pequeños, para muchas aplicaciones probablemente requerirá una gran cantidad de código y una organización de datos seria. Como ejemplo, <a href="https://threejs.org">three.js</a>, que soporta WebGPU, consiste en <a href="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.178.0/three.webgpu.js">~550k bytes de JavaScript minificado</a>, y eso es solo su biblioteca base. No incluye cargadores, controles, post-procesamiento y muchas otras características. De manera similar, está <a href="https://www.tensorflow.org/">TensorFlow</a>, cuyo <a href="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@4.22.0/dist/tf-core.min.js">núcleo (core)</a> más <a href="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgpu@4.22.0/dist/tf-backend-webgpu.min.js">el backend de WebGPU</a> son ~600k bytes de JavaScript minificado y tampoco incluye soporte para todas las diversas características opcionales de TensorFlow.</p>
+<p>El punto es que, si solo quieres mostrar algo en pantalla, es mucho mejor elegir una biblioteca que proporcione la gran cantidad de código que tendrías que escribir tú mismo al hacerlo desde cero.</p>
+<p>Por otro lado, tal vez tengas un caso de uso personalizado, quieras modificar una biblioteca existente o simplemente tengas curiosidad por saber cómo funciona todo. En esos casos, ¡sigue leyendo!</p>
+<h1 id="empezando">Empezando</h1>
+<p>Es difícil decidir por dónde empezar. A cierto nivel, WebGPU es un sistema muy simple. Todo lo que hace es ejecutar 3 tipos de funciones en la GPU: vertex shaders (sombreadores de vértices), fragment shaders (sombreadores de fragmentos) y compute shaders (shaders de cómputo).</p>
+<p>Un vertex shader calcula vértices. El shader devuelve posiciones de vértices. Por cada grupo de 3 vértices que la función del vertex shader devuelve, se dibuja un triángulo entre esas 3 posiciones.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>Un fragment shader calcula colores.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> Cuando se dibuja un triángulo, para cada píxel que se va a dibujar, la GPU llama a tu fragment shader. El fragment shader devuelve entonces un color.</p>
+<p>Un compute shader es más genérico. Es efectivamente solo una función que llamas y dices “ejecuta esta función N veces”. La GPU pasa el número de iteración cada vez que llama a tu función, de modo que puedes usar ese número para hacer algo único en cada iteración.</p>
+<p>Si entrecierras los ojos, puedes pensar en estas funciones como algo similar a las funciones que pasas a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach"><code class="notranslate" translate="no">array.forEach</code></a> o <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map"><code class="notranslate" translate="no">array.map</code></a>. Las funciones que ejecutas en la GPU son solo funciones, al igual que las funciones de JavaScript. La parte que difiere es que se ejecutan en la GPU, por lo que para ejecutarlas necesitas copiar todos los datos a los que quieres que accedan a la GPU en forma de buffers y texturas, y solo pueden escribir en esos buffers y texturas. Necesitas especificar en las funciones qué bindings o locations buscará la función para encontrar los datos. Y, de vuelta en JavaScript, necesitas vincular los buffers y texturas que contienen tus datos a esos bindings o locations. Una vez que hayas hecho eso, le indicas a la GPU que ejecute la función.</p>
+<p><a id="a-draw-diagram"></a>Quizás una imagen ayude. Aquí tienes un diagrama <em>simplificado</em> de la configuración de WebGPU para dibujar triángulos usando un vertex shader y un fragment shader:</p>
+<div class="webgpu_center"><img src="../resources/webgpu-draw-diagram.svg" style="width: 960px;"></div>
+<p>Qué observar en este diagrama:</p>
+<ul>
+<li>
+<p>Hay un <strong>pipeline</strong>. Contiene el vertex shader y el fragment shader que la GPU ejecutará. También podrías tener un pipeline con un compute shader.</p>
+</li>
+<li>
+<p>Los shaders referencian recursos (buffers, texturas, samplers) indirectamente a través de <strong>bind groups</strong>.</p>
+</li>
+<li>
+<p>El pipeline define atributos (attributes) que referencian buffers indirectamente a través del estado interno.</p>
+</li>
+<li>
+<p>Los atributos extraen datos de los buffers y los envían al vertex shader.</p>
+</li>
+<li>
+<p>El vertex shader puede enviar datos al fragment shader.</p>
+</li>
+<li>
+<p>El fragment shader escribe en texturas indirectamente a través de la descripción del render pass.</p>
+</li>
+</ul>
+<p>Para ejecutar shaders en la GPU, necesitas crear todos estos recursos y configurar este estado. La creación de recursos es relativamente sencilla. Algo interesante es que la mayoría de los recursos de WebGPU no se pueden cambiar después de su creación. Puedes cambiar su contenido pero no su tamaño, uso (usage), formato, etc. Si quieres cambiar algo de eso, creas un nuevo recurso y destruyes el anterior.</p>
+<p>Parte del estado se configura creando y luego ejecutando buffers de comandos (command buffers). Los buffers de comandos son literalmente lo que sugiere su nombre: son un buffer de comandos. Creas codificadores de comandos (command encoders). Los codificadores codifican comandos en el buffer de comandos. Luego, <em>finalizas (finish)</em> el codificador y este te entrega el buffer de comandos que creó. Después, puedes <em>enviar (submit)</em> ese buffer de comandos para que WebGPU ejecute los comandos.</p>
+<p>Aquí hay algo de pseudo-código para codificar un buffer de comandos, seguido de una representación del buffer de comandos que se creó.</p>
+<div class="webgpu_center side-by-side"><div style="min-width: 300px; max-width: 400px; flex: 1 1;"><pre class="prettyprint showlinemods notranslate notranslate" translate="no">encoder = device.createCommandEncoder()
+// dibujar algo
+{
+  pass = encoder.beginRenderPass(...)
+  pass.setPipeline(...)
+  pass.setVertexBuffer(0, …)
+  pass.setVertexBuffer(1, …)
+  pass.setIndexBuffer(...)
+  pass.setBindGroup(0, …)
+  pass.setBindGroup(1, …)
+  pass.draw(...)
+  pass.end()
+}
+// dibujar algo más
+{
+  pass = encoder.beginRenderPass(...)
+  pass.setPipeline(...)
+  pass.setVertexBuffer(0, …)
+  pass.setBindGroup(0, …)
+  pass.draw(...)
+  pass.end()
+}
+// computar algo
+{
+  pass = encoder.beginComputePass(...)
+  pass.beginComputePass(...)
+  pass.setBindGroup(0, …)
+  pass.setPipeline(...)
+  pass.dispatchWorkgroups(...)
+  pass.end();
+}
+commandBuffer = encoder.finish();
+</pre></div>
+<div><img src="../resources/webgpu-command-buffer.svg" style="width: 300px;"></div>
+</div>
+<p>Una vez que creas un buffer de comandos, puedes <em>enviarlo (submit)</em> para que se ejecute:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.submit([commandBuffer]);
+</pre>
+<p>El ‘diagrama simplificado de la configuración de WebGPU’ mostrado anteriormente representa el estado en un <em>único</em> comando <code class="notranslate" translate="no">draw</code> en el buffer de comandos. Al ejecutar los comandos se configurará el <em>estado interno</em> y luego el comando <code class="notranslate" translate="no">draw</code> le dirá a la GPU que ejecute un vertex shader (e indirectamente un fragment shader). El comando <code class="notranslate" translate="no">dispatchWorkgroup</code> le dirá a la GPU que ejecute un compute shader.</p>
+<p>Espero que eso te haya dado una imagen mental del estado que necesitas configurar. Como se mencionó anteriormente, WebGPU tiene 2 cosas básicas que puede hacer:</p>
+<ol>
+<li>
+<p><a href="#a-drawing-triangles-to-textures">Dibujar triángulos/puntos/líneas en texturas</a></p>
+</li>
+<li>
+<p><a href="#a-run-computations-on-the-gpu">Ejecutar cómputo en la GPU</a></p>
+</li>
+</ol>
+<p>Repasaremos un pequeño ejemplo de cómo hacer cada una de esas cosas. Otros artículos mostrarán las diversas formas de proporcionar datos para estas tareas. Ten en cuenta que esto será muy básico. Necesitamos construir una base con estos fundamentos. Más adelante mostraremos cómo usarlos para hacer las cosas que la gente suele hacer con las GPU, como gráficos 2D, gráficos 3D, etc.</p>
+<h1 id="dibujando-triángulos-en-texturas"><a id="a-drawing-triangles-to-textures"></a>Dibujando triángulos en texturas</h1>
+<p>WebGPU puede dibujar triángulos en <a href="webgpu-textures.html">texturas</a>. Para los propósitos de este artículo, una textura es un rectángulo 2D de píxeles.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> El elemento <code class="notranslate" translate="no">&lt;canvas&gt;</code> representa una textura en una página web. En WebGPU podemos pedirle al canvas una textura y luego renderizar en ella.</p>
+<p>Para dibujar triángulos con WebGPU tenemos que proporcionar 2 “shaders”. De nuevo, los shaders son funciones que se ejecutan en la GPU. Estos 2 shaders son:</p>
+<ol>
+<li>
+<p>Vertex Shaders</p>
+<p>Los vertex shaders son funciones que calculan las posiciones de los vértices para dibujar triángulos/líneas/puntos.</p>
+</li>
+<li>
+<p>Fragment Shaders</p>
+<p>Los fragment shaders son funciones que calculan el color (u otros datos) para cada píxel que se va a dibujar/rasterizar al dibujar triángulos/líneas/puntos.</p>
+</li>
+</ol>
+<p>Empecemos con un programa de WebGPU muy pequeño para dibujar un triángulo.</p>
+<p>Necesitamos un canvas para mostrar nuestro triángulo:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas&gt;&lt;/canvas&gt;
+</pre>
+<p>luego necesitamos una etiqueta <code class="notranslate" translate="no">&lt;script&gt;</code> para contener nuestro JavaScript:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas&gt;&lt;/canvas&gt;
++&lt;script type="module"&gt;
+
+... el código javascript va aquí ...
+
++&lt;/script&gt;
+</pre>
+<p>Todo el JavaScript de abajo irá dentro de esta etiqueta de script.</p>
+<p>WebGPU es una API asíncrona, por lo que es más fácil de usar dentro de una función asíncrona (<code class="notranslate" translate="no">async</code>). Comenzamos solicitando un adapter y luego solicitando un device al adapter.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('necesitas un navegador que soporte WebGPU');
+    return;
+  }
+}
+main();
+</pre>
+<p>El código anterior es bastante autoexplicativo. Primero, solicitamos un adapter usando el <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining">operador de encadenamiento opcional <code class="notranslate" translate="no">?.</code></a>, de modo que si <code class="notranslate" translate="no">navigator.gpu</code> no existe, <code class="notranslate" translate="no">adapter</code> será <code class="notranslate" translate="no">undefined</code>. Si existe, llamaremos a <code class="notranslate" translate="no">requestAdapter</code>. Este devuelve sus resultados de forma asíncrona, por lo que necesitamos <code class="notranslate" translate="no">await</code>. El adapter representa una GPU específica. Algunos dispositivos tienen múltiples GPUs.</p>
+<p>A partir del adapter, solicitamos el device, pero de nuevo usamos <code class="notranslate" translate="no">?.</code> para que si el adapter resulta ser <code class="notranslate" translate="no">undefined</code>, el device también lo sea.</p>
+<p>Si el <code class="notranslate" translate="no">device</code> no está definido, es probable que el usuario tenga un navegador antiguo.</p>
+<p>A continuación, buscamos el canvas y creamos un contexto <code class="notranslate" translate="no">webgpu</code> para él. Esto nos permitirá obtener una textura en la cual renderizar. Esa textura se utilizará para mostrar el canvas en la página web.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Obtener un contexto de WebGPU del canvas y configurarlo
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+</pre>
+<p>Nuevamente, el código anterior es bastante sencillo. Obtenemos un contexto <code class="notranslate" translate="no">"webgpu"</code> del canvas. Le preguntamos al sistema cuál es el formato preferido para el canvas. Este será <code class="notranslate" translate="no">"rgba8unorm"</code> o <code class="notranslate" translate="no">"bgra8unorm"</code>. No es realmente importante cuál sea, pero consultarlo hará que las cosas funcionen más rápido en el sistema del usuario.</p>
+<p>Pasamos eso como <code class="notranslate" translate="no">format</code> al contexto del canvas de WebGPU llamando a <code class="notranslate" translate="no">configure</code>. También pasamos el <code class="notranslate" translate="no">device</code>, lo cual asocia este canvas con el device que acabamos de crear.</p>
+<p>A continuación, creamos un shader module. Un shader module contiene una o más funciones de shader. En nuestro caso, crearemos 1 función de vertex shader y 1 función de fragment shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    label: 'nuestros shaders de triángulo rojo estático',
+    code: /* wgsl */ `
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; @builtin(position) vec4f {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // superior centro
+          vec2f(-0.5, -0.5),  // inferior izquierda
+          vec2f( 0.5, -0.5)   // inferior derecha
+        );
+
+        return vec4f(pos[vertexIndex], 0.0, 1.0);
+      }
+
+      @fragment fn fs() -&gt; @location(0) vec4f {
+        return vec4f(1.0, 0.0, 0.0, 1.0);
+      }
+    `,
+  });
+</pre>
+<p>Los shaders están escritos en un lenguaje llamado <a href="https://gpuweb.github.io/gpuweb/wgsl/">WebGPU Shading Language (WGSL)</a>, que a menudo se pronuncia <em>wig-sil</em>. WGSL es un lenguaje fuertemente tipado que intentaremos repasar con más detalle en <a href="webgpu-wgsl.html">otro artículo</a>. Por ahora, espero que con una pequeña explicación puedas inferir algunos conceptos básicos.</p>
+<blockquote>
+<p>Nota: en todo este sitio, los strings que almacenan WGSL tienen <code class="notranslate" translate="no">/* wgsl */</code> como comentario delante de ellos. Esta es una convención para ayudar a los editores de texto a resaltar la sintaxis y/o proporcionar autocompletado (intellisense) para WGSL.</p>
+</blockquote>
+<p>Arriba vemos que se declara una función llamada <code class="notranslate" translate="no">vs</code> con el atributo <code class="notranslate" translate="no">@vertex</code>. Esto la designa como una función de vertex shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; @builtin(position) vec4f {
+         ...
+</pre>
+<p>Acepta un parámetro que llamamos <code class="notranslate" translate="no">vertexIndex</code>. <code class="notranslate" translate="no">vertexIndex</code> es un <code class="notranslate" translate="no">u32</code>, que significa un <em>entero sin signo de 32 bits</em>. Obtiene su valor del builtin llamado <code class="notranslate" translate="no">vertex_index</code>. <code class="notranslate" translate="no">vertex_index</code> es como un número de iteración, similar a <code class="notranslate" translate="no">index</code> en <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array.map(function(value, index) { ... })"><code class="notranslate" translate="no">Array.map(function(value, index) { ... })</code></a> de JavaScript. Si le decimos a la GPU que ejecute esta función 10 veces llamando a <code class="notranslate" translate="no">draw</code>, la primera vez <code class="notranslate" translate="no">vertex_index</code> sería <code class="notranslate" translate="no">0</code>, la segunda vez sería <code class="notranslate" translate="no">1</code>, la tercera vez sería <code class="notranslate" translate="no">2</code>, etc.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>Nuestra función <code class="notranslate" translate="no">vs</code> está declarada devolviendo un <code class="notranslate" translate="no">vec4f</code>, que es un vector de cuatro valores de punto flotante de 32 bits. Piénsalo como un array de 4 valores o un objeto con 4 propiedades como <code class="notranslate" translate="no">{x: 0, y: 0, z: 0, w: 0}</code>. Este valor devuelto se asignará al builtin <code class="notranslate" translate="no">position</code>. En el modo “triangle-list”, cada 3 veces que se ejecuta el vertex shader se dibujará un triángulo conectando los 3 valores de <code class="notranslate" translate="no">position</code> que devolvemos.</p>
+<p>Las posiciones en WebGPU deben devolverse en <em>espacio de recorte (clip space)</em>, donde X va de -1.0 a la izquierda a +1.0 a la derecha, e Y va de -1.0 en la parte inferior a +1.0 en la parte superior. Esto es cierto independientemente del tamaño de la textura en la que estemos dibujando.</p>
+<div class="webgpu_center"><img src="../resources/clipspace.svg" style="width: 500px"></div>
+<p>La función <code class="notranslate" translate="no">vs</code> declara un array de 3 <code class="notranslate" translate="no">vec2f</code>. Cada <code class="notranslate" translate="no">vec2f</code> consta de dos valores de punto flotante de 32 bits.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">        let pos = array(
+          vec2f( 0.0,  0.5),  // superior centro
+          vec2f(-0.5, -0.5),  // inferior izquierda
+          vec2f( 0.5, -0.5)   // inferior derecha
+        );
+</pre>
+<p>Finalmente, usa <code class="notranslate" translate="no">vertexIndex</code> para devolver uno de los 3 valores del array. Como la función requiere 4 valores de punto flotante para su tipo de retorno, y dado que <code class="notranslate" translate="no">pos</code> es un array de <code class="notranslate" translate="no">vec2f</code>, el código proporciona <code class="notranslate" translate="no">0.0</code> y <code class="notranslate" translate="no">1.0</code> para los 2 valores restantes.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">        return vec4f(pos[vertexIndex], 0.0, 1.0);
+</pre>
+<p>Ten en cuenta que para dibujar algo en 2D normalmente solo necesitamos los valores x e y para la posición. El valor z se usa para la prueba de profundidad (depth testing) y aparecerá en el <a href="webgpu-orthographic-projection.html">artículo sobre proyección ortográfica</a>. El valor w se usa para la división de perspectiva y aparecerá en el <a href="webgpu-perspective-projection.html">artículo sobre proyección en perspectiva</a>. Por ahora, establecer z en 0.0 y w en 1.0 es lo que necesitamos para dibujar el triángulo.</p>
+<p>El shader module también declara una función llamada <code class="notranslate" translate="no">fs</code> que se declara con el atributo <code class="notranslate" translate="no">@fragment</code>, lo que la convierte en una función de fragment shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @fragment fn fs() -&gt; @location(0) vec4f {
+</pre>
+<p>Esta función no toma parámetros y devuelve un <code class="notranslate" translate="no">vec4f</code> en la <code class="notranslate" translate="no">@location(0)</code>. Esto significa que escribirá en el primer render target. Más adelante haremos que el primer render target sea nuestra textura del canvas.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">        return vec4f(1, 0, 0, 1);
+</pre>
+<p>El código devuelve <code class="notranslate" translate="no">1, 0, 0, 1</code>, que es rojo. Los colores en WebGPU se especifican normalmente como valores de punto flotante de <code class="notranslate" translate="no">0.0</code> a <code class="notranslate" translate="no">1.0</code>, donde los 4 valores anteriores corresponden a rojo, verde, azul y alfa respectivamente.</p>
+<p>Cuando la GPU rasteriza el triángulo (lo dibuja con píxeles), llamará al fragment shader para averiguar de qué color hacer cada píxel. En nuestro caso, simplemente devolvemos rojo.</p>
+<p>Una cosa más a tener en cuenta es el <code class="notranslate" translate="no">label</code>. Casi todos los objetos que puedes crear con WebGPU pueden tomar un <code class="notranslate" translate="no">label</code>. Las etiquetas son totalmente opcionales, pero se considera una <em>buena práctica</em> etiquetar todo lo que crees. La razón es que cuando obtienes un error, la mayoría de las implementaciones de WebGPU imprimirán un mensaje de error que incluye las etiquetas de las cosas relacionadas con el error.</p>
+<p>En una aplicación normal, tendrías cientos o miles de buffers, texturas, shader modules, pipelines, etc. Si obtienes un error como <code class="notranslate" translate="no">"WGSL syntax error in shaderModule at line 10"</code>, si tienes 100 shader modules, ¿cuál de ellos dio el error? Si etiquetas el módulo, obtendrás un error más parecido a <code class="notranslate" translate="no">"WGSL syntax error in shaderModule('nuestros shaders de triángulo rojo estático') at line 10"</code>, lo cual es un mensaje de error mucho más útil y te ahorrará un montón de tiempo rastreando el problema.</p>
+<p>Ahora que hemos creado un shader module, lo siguiente que necesitamos es crear un render pipeline:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'nuestro pipeline de triángulo rojo estático',
+    layout: 'auto',
+    vertex: {
+      entryPoint: 'vs',
+      module,
+    },
+    fragment: {
+      entryPoint: 'fs',
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>En este caso, no hay mucho que ver. Establecemos <code class="notranslate" translate="no">layout</code> como <code class="notranslate" translate="no">'auto'</code>, lo que significa pedirle a WebGPU que derive el diseño de los datos a partir de los shaders. Sin embargo, no estamos usando ningún dato.</p>
+<p>Luego le decimos al render pipeline que use la función <code class="notranslate" translate="no">vs</code> de nuestro shader module para el vertex shader y la función <code class="notranslate" translate="no">fs</code> para nuestro fragment shader. Por lo demás, le indicamos el formato del primer render target. “Render target” significa la textura en la que renderizaremos. Cuando creamos un pipeline, tenemos que especificar el formato para la(s) textura(s) que usaremos con este pipeline para renderizar finalmente.</p>
+<p>El elemento 0 del array <code class="notranslate" translate="no">targets</code> corresponde a la ubicación 0 que especificamos para el valor de retorno del fragment shader. Más adelante, estableceremos ese objetivo como una textura para el canvas.</p>
+<p>Un atajo: para cada etapa del shader, <code class="notranslate" translate="no">vertex</code> y <code class="notranslate" translate="no">fragment</code>, si solo hay una función del tipo correspondiente, no necesitamos especificar el <code class="notranslate" translate="no">entryPoint</code>. WebGPU usará la única función que coincida con la etapa del shader. Así que podemos acortar el código anterior a:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'nuestro pipeline de triángulo rojo estático',
+    layout: 'auto',
+    vertex: {
+-      entryPoint: 'vs',
+      module,
+    },
+    fragment: {
+-      entryPoint: 'fs',
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>A continuación preparamos un <a href="https://www.w3.org/TR/webgpu/#dictdef-gpurenderpassdescriptor"><code class="notranslate" translate="no">GPURenderPassDescriptor</code></a>, que describe en qué texturas queremos dibujar y cómo usarlas.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const renderPassDescriptor = {
+    label: 'nuestro renderPass básico de canvas',
+    colorAttachments: [
+      {
+        // view: &lt;- se rellenará cuando rendericemos
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };  
+</pre>
+<p>Un <a href="https://www.w3.org/TR/webgpu/#dictdef-gpurenderpassdescriptor"><code class="notranslate" translate="no">GPURenderPassDescriptor</code></a> tiene un array para <code class="notranslate" translate="no">colorAttachments</code>, que enumera las texturas en las que renderizaremos y cómo tratarlas. Esperaremos para rellenar qué textura queremos renderizar realmente. Por ahora, configuramos un valor de limpieza (<code class="notranslate" translate="no">clearValue</code>) de gris oscuro y una <code class="notranslate" translate="no">loadOp</code> y <code class="notranslate" translate="no">storeOp</code>.</p>
+<p><code class="notranslate" translate="no">loadOp: 'clear'</code> especifica limpiar la textura con el valor de limpieza antes de dibujar. La otra opción es <code class="notranslate" translate="no">'load'</code>, que significa cargar el contenido existente de la textura en la GPU para que podamos dibujar sobre lo que ya está allí.</p>
+<p><code class="notranslate" translate="no">storeOp: 'store'</code> significa almacenar el resultado de lo que dibujamos. También podríamos pasar <code class="notranslate" translate="no">'discard'</code>, lo cual descartaría lo que dibujamos. Cubriremos por qué podríamos querer hacer eso en <a href="webgpu-multisampling.html">otro artículo</a>.</p>
+<p>Ahora es el momento de renderizar.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    // Obtener la textura actual del contexto del canvas y
+    // establecerla como la textura en la que renderizar.
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    // crear un codificador de comandos para comenzar a codificar comandos
+    const encoder = device.createCommandEncoder({ label: 'nuestro encoder' });
+
+    // crear un codificador de render pass para codificar comandos específicos de renderizado
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.draw(3);  // llamar a nuestro vertex shader 3 veces
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+  render();
+</pre>
+<p>Primero, llamamos a <code class="notranslate" translate="no">context.getCurrentTexture()</code> para obtener una textura que aparecerá en el canvas. Llamar a <code class="notranslate" translate="no">createView</code> obtiene una vista (view) de una parte específica de una textura, pero sin parámetros, devolverá la parte por defecto, que es lo que queremos en este caso. Por ahora, nuestro único <code class="notranslate" translate="no">colorAttachment</code> es una vista de textura de nuestro canvas, que obtenemos a través del contexto que creamos al principio. De nuevo, el elemento 0 del array <code class="notranslate" translate="no">colorAttachments</code> corresponde a <code class="notranslate" translate="no">@location(0)</code>, como especificamos para el valor de retorno del fragment shader.</p>
+<p>A continuación, creamos un codificador de comandos (command encoder). Un codificador de comandos se utiliza para crear un buffer de comandos. Lo usamos para codificar comandos y luego “enviar” (submit) el buffer de comandos creado para que se ejecuten los comandos.</p>
+<p>Luego usamos el codificador de comandos para crear un codificador de render pass (render pass encoder) llamando a <code class="notranslate" translate="no">beginRenderPass</code>. Un codificador de render pass es un codificador específico para crear comandos relacionados con el renderizado. Le pasamos nuestro <code class="notranslate" translate="no">renderPassDescriptor</code> para decirle en qué textura queremos renderizar.</p>
+<p>Codificamos el comando <code class="notranslate" translate="no">setPipeline</code> para establecer nuestro pipeline y luego le indicamos que ejecute nuestro vertex shader 3 veces llamando a <code class="notranslate" translate="no">draw</code> con el valor 3. Por defecto, cada 3 veces que se ejecuta nuestro vertex shader se dibujará un triángulo conectando los 3 valores recién devueltos por el vertex shader.</p>
+<p>Terminamos el render pass y luego finalizamos (finish) el codificador. Esto nos da un buffer de comandos que representa los pasos que acabamos de especificar. Finalmente, enviamos el buffer de comandos para que se ejecute.</p>
+<p>Cuando se ejecute el comando <code class="notranslate" translate="no">draw</code>, este será nuestro estado:</p>
+<div class="webgpu_center"><img src="../resources/webgpu-simple-triangle-diagram.svg" style="width: 723px;"></div>
+<p>No tenemos texturas, ni buffers, ni bindGroups, pero sí tenemos un pipeline, un vertex y fragment shader, y un descriptor de render pass que le dice a nuestro shader que renderice en la textura del canvas.</p>
+<p>El resultado:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Es importante enfatizar que todas estas funciones que llamamos, como <code class="notranslate" translate="no">setPipeline</code> y <code class="notranslate" translate="no">draw</code>, solo añaden comandos a un buffer de comandos. No ejecutan realmente los comandos. Los comandos se ejecutan cuando enviamos el buffer de comandos a la cola (queue) del dispositivo.</p>
+<p><a id="a-rasterization"></a>WebGPU toma cada 3 vértices que devolvemos de nuestro vertex shader y los usa para rasterizar un triángulo. Lo hace determinando qué centros de píxeles están dentro del triángulo. Luego llama a nuestro fragment shader para cada píxel para preguntar de qué color hacerlo.</p>
+<p>Imagina que la textura en la que estamos renderizando fuera de 15x11 píxeles. Estos serían los píxeles que se dibujarían:</p>
+<div class="webgpu_center">
+  <div data-diagram="clip-space-to-texels" style="display: inline-block; max-width: 500px; width: 100%"></div>
+  <div>arrastra los vértices</div>
+</div>
+<p>Así que, ahora hemos visto un ejemplo de WebGPU funcional muy pequeño. Debería ser bastante obvio que programar un triángulo estático dentro de un shader no es muy flexible. Necesitamos formas de proporcionar datos y las cubriremos en los siguientes artículos. Los puntos clave a recordar del código anterior son:</p>
+<ul>
+<li>WebGPU solo ejecuta shaders. Depende de ti llenarlos con código para hacer cosas útiles.</li>
+<li>Los shaders se especifican en un shader module y luego se convierten en un pipeline.</li>
+<li>WebGPU puede dibujar triángulos.</li>
+<li>WebGPU dibuja en texturas (casualmente obtuvimos una textura del canvas).</li>
+<li>WebGPU funciona codificando comandos y luego enviándolos.</li>
+</ul>
+<h1 id="ejecutar-cómputo-en-la-gpu"><a id="a-run-computations-on-the-gpu"></a>Ejecutar cómputo en la GPU</h1>
+<p>Escribamos un ejemplo básico para realizar algún cómputo en la GPU.</p>
+<p>Comenzamos con el mismo código para obtener un dispositivo WebGPU.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('necesitas un navegador que soporte WebGPU');
+    return;
+  }
+</pre>
+<p>Luego creamos un shader module.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    label: 'módulo de computación para duplicar valores',
+    code: /* wgsl */ `
+      @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
+
+      @compute @workgroup_size(1) fn computeSomething(
+        @builtin(global_invocation_id) id: vec3u
+      ) {
+        let i = id.x;
+        data[i] = data[i] * 2.0;
+      }
+    `,
+  });
+</pre>
+<p>Primero, declaramos una variable llamada <code class="notranslate" translate="no">data</code> de tipo <code class="notranslate" translate="no">storage</code> que queremos poder leer y escribir.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
+</pre>
+<p>Declaramos su tipo como <code class="notranslate" translate="no">array&lt;f32&gt;</code>, lo que significa un array de valores de punto flotante de 32 bits. Le decimos que vamos a especificar este array en la ubicación de binding 0 (el <code class="notranslate" translate="no">binding(0)</code>) en el bindGroup 0 (el <code class="notranslate" translate="no">@group(0)</code>).</p>
+<p>Luego declaramos una función llamada <code class="notranslate" translate="no">computeSomething</code> con el atributo <code class="notranslate" translate="no">@compute</code>, lo que la convierte en un compute shader.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @compute @workgroup_size(1) fn computeSomething(
+        @builtin(global_invocation_id) id: vec3u
+      ) {
+        ...
+</pre>
+<p>Los compute shaders están obligados a declarar un tamaño de grupo de trabajo (workgroup size), que cubriremos más adelante. Por ahora, lo estableceremos en 1 con el atributo <code class="notranslate" translate="no">@workgroup_size(1)</code>. Declaramos que tiene un parámetro <code class="notranslate" translate="no">id</code> que usa un <code class="notranslate" translate="no">vec3u</code>. Un <code class="notranslate" translate="no">vec3u</code> son tres valores enteros de 32 bits sin signo. Al igual que nuestro vertex shader anterior, este es el número de iteración. Se diferencia en que los números de iteración del compute shader son tridimensionales (tienen 3 valores). Declaramos <code class="notranslate" translate="no">id</code> para que obtenga su valor del builtin <code class="notranslate" translate="no">global_invocation_id</code>.</p>
+<p>Puedes pensar <em>más o menos</em> que los compute shaders se ejecutan así. Es una simplificación excesiva, pero servirá por ahora.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// pseudo-código
+function dispatchWorkgroups(width, height, depth) {
+  for (z = 0; z &lt; depth; ++z) {
+    for (y = 0; y &lt; height; ++y) {
+      for (x = 0; x &lt; width; ++x) {
+        const workgroup_id = {x, y, z};
+        dispatchWorkgroup(workgroup_id)
+      }
+    }
+  }
+}
+
+function dispatchWorkgroup(workgroup_id) {
+  // de @workgroup_size en WGSL
+  const workgroup_size = shaderCode.workgroup_size;
+  const {x: width, y: height, z: depth} = workgroup_size;
+  for (z = 0; z &lt; depth; ++z) {
+    for (y = 0; y &lt; height; ++y) {
+      for (x = 0; x &lt; width; ++x) {
+        const local_invocation_id = {x, y, z};
+        const global_invocation_id =
+            workgroup_id * workgroup_size + local_invocation_id;
+        computeShader(global_invocation_id)
+      }
+    }
+  }
+}
+</pre>
+<p>Dado que establecimos <code class="notranslate" translate="no">@workgroup_size(1)</code>, efectivamente el pseudo-código anterior se convierte en:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// pseudo-código
+function dispatchWorkgroups(width, height, depth) {
+  for (z = 0; z &lt; depth; ++z) {
+    for (y = 0; y &lt; height; ++y) {
+      for (x = 0; x &lt; width; ++x) {
+        const workgroup_id = {x, y, z};
+        dispatchWorkgroup(workgroup_id)
+      }
+    }
+  }
+}
+
+function dispatchWorkgroup(workgroup_id) {
+  const global_invocation_id = workgroup_id;
+  computeShader(global_invocation_id)
+}
+</pre>
+<p>Finalmente, usamos la propiedad <code class="notranslate" translate="no">x</code> de <code class="notranslate" translate="no">id</code> para indexar <code class="notranslate" translate="no">data</code> y multiplicar cada valor por 2.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">        let i = id.x;
+        data[i] = data[i] * 2.0;
+</pre>
+<p>Arriba, <code class="notranslate" translate="no">i</code> es simplemente el primero de los 3 números de iteración.</p>
+<p>Ahora que hemos creado el shader, necesitamos crear un pipeline.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createComputePipeline({
+    label: 'pipeline de computación para duplicar valores',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+</pre>
+<p>Aquí simplemente le decimos que estamos usando una etapa <code class="notranslate" translate="no">compute</code> del shader <code class="notranslate" translate="no">module</code> que creamos y, como solo hay un entry point <code class="notranslate" translate="no">@compute</code>, WebGPU sabe que queremos llamarlo. <code class="notranslate" translate="no">layout</code> es de nuevo <code class="notranslate" translate="no">'auto'</code>, indicando a WebGPU que averigüe el diseño a partir de los shaders. <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<p>A continuación, necesitamos algunos datos.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const input = new Float32Array([1, 3, 5]);
+</pre>
+<p>Esos datos solo existen en JavaScript. Para que WebGPU los use, necesitamos crear un buffer que exista en la GPU y copiar los datos al buffer.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // crear un buffer en la GPU para contener nuestro cómputo
+  // entrada y salida
+  const workBuffer = device.createBuffer({
+    label: 'work buffer',
+    size: input.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST,
+  });
+  // Copiar nuestros datos de entrada a ese buffer
+  device.queue.writeBuffer(workBuffer, 0, input);
+</pre>
+<p>Arriba, llamamos a <code class="notranslate" translate="no">device.createBuffer</code> para crear un buffer. <code class="notranslate" translate="no">size</code> es el tamaño en bytes. En este caso, será 12 porque el tamaño en bytes de un <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> de 3 valores es 12. Si no estás familiarizado con <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> y los typed arrays, consulta <a href="webgpu-memory-layout.html">este artículo</a>.</p>
+<p>Cada buffer de WebGPU que creamos debe especificar un <code class="notranslate" translate="no">usage</code> (uso). Hay un montón de flags que podemos pasar para el uso, pero no todos se pueden usar juntos. Aquí decimos que queremos que este buffer se pueda usar como <code class="notranslate" translate="no">storage</code> pasando <code class="notranslate" translate="no">GPUBufferUsage.STORAGE</code>. Esto lo hace compatible con <code class="notranslate" translate="no">var&lt;storage,...&gt;</code> del shader. Además, queremos poder copiar datos a este buffer, por lo que incluimos el flag <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>. Y finalmente, queremos poder copiar datos desde el buffer, por lo que incluimos <code class="notranslate" translate="no">GPUBufferUsage.COPY_SRC</code>.</p>
+<p>Ten en cuenta que no puedes leer directamente el contenido de un buffer de WebGPU desde JavaScript. En su lugar, tienes que “mapearlo”, lo cual es otra forma de solicitar acceso al buffer desde WebGPU porque el buffer podría estar en uso y porque podría existir solo en la GPU.</p>
+<p>Los buffers de WebGPU que se pueden mapear en JavaScript no se pueden usar para mucho más. En otras palabras, no podemos mapear el buffer que acabamos de crear arriba y, si intentamos añadir el flag para hacerlo mapeable, obtendremos un error indicando que no es compatible con el uso <code class="notranslate" translate="no">STORAGE</code>.</p>
+<p>Por lo tanto, para ver el resultado de nuestro cómputo, necesitaremos otro buffer. Después de ejecutar el cómputo, copiaremos el buffer anterior a este buffer de resultados y estableceremos sus flags para que podamos mapearlo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // crear un buffer en la GPU para obtener una copia de los resultados
+  const resultBuffer = device.createBuffer({
+    label: 'result buffer',
+    size: input.byteLength,
+    usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST
+  });
+</pre>
+<p><code class="notranslate" translate="no">MAP_READ</code> significa que queremos poder mapear este buffer para leer datos.</p>
+<p>Para indicarle a nuestro shader sobre el buffer en el que queremos que trabaje, necesitamos crear un bindGroup.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Configurar un bindGroup para indicarle al shader qué
+  // buffer usar para la computación
+  const bindGroup = device.createBindGroup({
+    label: 'bindGroup para el work buffer',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: workBuffer  },
+    ],
+  });
+</pre>
+<p>Obtenemos el layout del bindGroup a partir del pipeline. Luego configuramos las entradas del bindGroup. El 0 en <code class="notranslate" translate="no">pipeline.getBindGroupLayout(0)</code> corresponde al <code class="notranslate" translate="no">@group(0)</code> en el shader. La entrada <code class="notranslate" translate="no">{binding: 0 ...</code> corresponde al <code class="notranslate" translate="no">@group(0) @binding(0)</code> en el shader.</p>
+<p>Ahora podemos empezar a codificar comandos.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Codificar comandos para realizar el cómputo
+  const encoder = device.createCommandEncoder({
+    label: 'codificador para duplicar',
+  });
+  const pass = encoder.beginComputePass({
+    label: 'compute pass para duplicar',
+  });
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(input.length);
+  pass.end();
+</pre>
+<p>Creamos un codificador de comandos. Iniciamos un compute pass. Establecemos el pipeline y luego el bindGroup. Aquí, el <code class="notranslate" translate="no">0</code> en <code class="notranslate" translate="no">pass.setBindGroup(0, bindGroup)</code> corresponde a <code class="notranslate" translate="no">@group(0)</code> en el shader. Luego llamamos a <code class="notranslate" translate="no">dispatchWorkgroups</code> y, en este caso, le pasamos <code class="notranslate" translate="no">input.length</code>, que es <code class="notranslate" translate="no">3</code>, indicando a WebGPU que ejecute el compute shader 3 veces. Luego terminamos el pass.</p>
+<p>Aquí está la situación que tendremos cuando se ejecute <code class="notranslate" translate="no">dispatchWorkgroups</code>.</p>
+<div class="webgpu_center"><img src="../resources/webgpu-simple-compute-diagram.svg" style="width: 553px;"></div>
+<p>Una vez finalizado el cómputo, le pedimos a WebGPU que copie de <code class="notranslate" translate="no">workBuffer</code> a <code class="notranslate" translate="no">resultBuffer</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Codificar un comando para copiar los resultados a un buffer mapeable.
+  encoder.copyBufferToBuffer(workBuffer, 0, resultBuffer, 0, resultBuffer.size);
+</pre>
+<p>Ahora podemos “finalizar” (<code class="notranslate" translate="no">finish</code>) el codificador para obtener un buffer de comandos y luego enviarlo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Finalizar la codificación y enviar los comandos
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+</pre>
+<p>Luego mapeamos el buffer de resultados y obtenemos una copia de los datos.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Leer los resultados
+  await resultBuffer.mapAsync(GPUMapMode.READ);
+  const result = new Float32Array(resultBuffer.getMappedRange());
+
+  console.log('entrada', input);
+  console.log('resultado', result);
+
+  resultBuffer.unmap();
+</pre>
+<p>Para mapear el buffer de resultados, llamamos a <code class="notranslate" translate="no">mapAsync</code> y tenemos que esperar (<code class="notranslate" translate="no">await</code>) a que termine. Una vez mapeado, podemos llamar a <code class="notranslate" translate="no">resultBuffer.getMappedRange()</code>, que sin parámetros devolverá un <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a> de todo el buffer. Ponemos eso en una vista de array tipado <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> y entonces podemos ver los valores. Un detalle importante: el <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a> devuelto por <code class="notranslate" translate="no">getMappedRange</code> solo es válido hasta que llamemos a <code class="notranslate" translate="no">unmap</code>. Después de <code class="notranslate" translate="no">unmap</code>, su longitud se establecerá en 0 y sus datos ya no serán accesibles.</p>
+<p>Al ejecutar eso, podemos ver que obtuvimos el resultado: todos los números se han duplicado.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-compute.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-compute.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Cubriremos cómo usar realmente los compute shaders en otros artículos. Por ahora, espero que hayas podido vislumbrar algo de lo que hace WebGPU. ¡TODO LO DEMÁS DEPENDE DE TI! Piensa en WebGPU de forma similar a otros lenguajes de programación: proporciona algunas características básicas y deja el resto a tu creatividad.</p>
+<p>Lo que hace especial a la programación en WebGPU es que estas funciones —vertex shaders, fragment shaders y compute shaders— se ejecutan en tu GPU. Una GPU podría tener más de 10,000 procesadores, lo que significa que pueden realizar potencialmente más de 10,000 cálculos en paralelo, lo cual es probablemente 3 o más órdenes de magnitud de lo que tu CPU puede hacer en paralelo.</p>
+<h2 id="redimensionado-simple-del-canvas"><a id="a-resizing"></a> Redimensionado simple del canvas</h2>
+<p>Antes de continuar, volvamos a nuestro ejemplo de dibujo de un triángulo y añadamos soporte básico para redimensionar el canvas. El dimensionamiento de un canvas es en realidad un tema que puede tener muchos matices, por lo que <a href="webgpu-resizing-the-canvas.html">hay un artículo entero dedicado a ello</a>. Por ahora, simplemente añadiremos un soporte básico.</p>
+<p>Primero, añadiremos algo de CSS para que nuestro canvas llene la página.</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;style&gt;
+html, body {
+  margin: 0;       /* eliminar el margen por defecto       */
+  height: 100%;    /* hacer que html,body llenen la página */
+}
+canvas {
+  display: block;  /* hacer que el canvas actúe como un bloque   */
+  width: 100%;     /* hacer que el canvas llene su contenedor   */
+  height: 100%;
+}
+&lt;/style&gt;
+</pre>
+<p>Ese CSS por sí solo hará que el canvas se muestre cubriendo la página, pero no cambiará la resolución del propio canvas. Por eso notarás que, si haces que el ejemplo de abajo sea grande (por ejemplo, si haces clic en el botón de pantalla completa), verás que los bordes del triángulo se ven pixelados.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-with-canvas-css.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-with-canvas-css.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Las etiquetas <code class="notranslate" translate="no">&lt;canvas&gt;</code>, por defecto, tienen una resolución de 300x150 píxeles. Nos gustaría ajustar la resolución del canvas para que coincida con el tamaño en el que se muestra. Una buena forma de hacer esto es con un <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>. Creas un <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> y le das una función para que la llame cada vez que los elementos que le has pedido observar cambien de tamaño. Luego le indicas qué elementos observar.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    ...
+-    render();
+
++    const observer = new ResizeObserver(entries =&gt; {
++      for (const entry of entries) {
++        const canvas = entry.target;
++        const width = entry.contentBoxSize[0].inlineSize;
++        const height = entry.contentBoxSize[0].blockSize;
++        canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
++        canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
++      }
++      // re-renderizar
++      render();
++    });
++    observer.observe(canvas);
+</pre>
+<p>En el código anterior, recorremos todas las entradas, pero solo debería haber una porque solo estamos observando nuestro canvas. Necesitamos limitar el tamaño del canvas al tamaño máximo que soporte nuestro dispositivo; de lo contrario, WebGPU empezará a generar errores indicando que intentamos crear una textura demasiado grande. También debemos asegurarnos de que no llegue a cero, o de nuevo obtendremos errores. <a href="webgpu-resizing-the-canvas.html">Consulta el artículo detallado para más pormenores</a>.</p>
+<p>Llamamos a <code class="notranslate" translate="no">render</code> para volver a dibujar el triángulo con la nueva resolución. Eliminamos la antigua llamada a <code class="notranslate" translate="no">render</code> porque ya no es necesaria. Un <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> siempre llamará a su callback al menos una vez para informar del tamaño de los elementos cuando comenzaron a ser observados.</p>
+<p>La textura de nuevo tamaño se crea cuando llamamos a <code class="notranslate" translate="no">context.getCurrentTexture()</code> dentro de <code class="notranslate" translate="no">render</code>, por lo que no queda nada más por hacer.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-simple-triangle-with-canvas-resize.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-simple-triangle-with-canvas-resize.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<blockquote>
+<p>Nota: El código anterior no maneja la respuesta al zoom, que podría cambiar la resolución del canvas. Tampoco trata con resoluciones más altas para pantallas de alta densidad. Para esos problemas, consulta el <a href="webgpu-resizing-the-canvas.html">artículo sobre el redimensionado del canvas</a>.</p>
+</blockquote>
+<p>En los siguientes artículos, cubriremos varias formas de pasar datos a los shaders:</p>
+<ul>
+<li><a href="webgpu-inter-stage-variables.html">variables entre etapas (inter-stage variables)</a></li>
+<li><a href="webgpu-uniforms.html">uniforms</a></li>
+<li><a href="webgpu-storage-buffers.html">buffers de almacenamiento (storage buffers)</a></li>
+<li><a href="webgpu-vertex-buffers.html">buffers de vértices (vertex buffers)</a></li>
+<li><a href="webgpu-textures.html">texturas (textures)</a></li>
+<li><a href="webgpu-constants.html">constantes (constants)</a></li>
+</ul>
+<p>Luego cubriremos <a href="webgpu-wgsl.html">los conceptos básicos de WGSL</a>.</p>
+<p>Este orden va de lo más simple a lo más complejo. Las variables entre etapas no requieren ninguna configuración externa para ser explicadas. Podemos ver cómo usarlas simplemente con cambios en el WGSL que usamos arriba. Los uniforms son efectivamente variables globales y, como tales, se usan en los 3 tipos de shaders (vertex, fragment y compute). Pasar de buffers de uniforms a buffers de almacenamiento es trivial, como se muestra al principio del artículo sobre storage buffers. Los vertex buffers solo se usan en los vertex shaders. Son más complejos porque requieren describir el diseño de los datos a WebGPU. Las texturas son las más complejas, ya que tienen muchísimos tipos y opciones.</p>
+<p>Me preocupa un poco que estos artículos resulten aburridos al principio. Siéntete libre de saltar de uno a otro si lo prefieres. Solo recuerda que si no entiendes algo, probablemente necesites leer o revisar estos conceptos básicos. Una vez que dominemos los fundamentos, empezaremos a repasar técnicas reales.</p>
+<p>Otra cosa: todos los programas de ejemplo pueden editarse en vivo en la página web. Además, todos pueden exportarse fácilmente a <a href="https://jsfiddle.net">jsfiddle</a>, <a href="https://codepen.io">codepen</a> e incluso <a href="https://stackoverflow.com">stackoverflow</a>. Simplemente haz clic en “Export”.</p>
+<div class="webgpu_bottombar">
+<p>
+El código de arriba obtiene un dispositivo WebGPU de una forma muy concisa. Una forma más detallada sería algo como:
+</p>
+<pre class="prettyprint showmods">async function start() {
+  if (!navigator.gpu) {
+    fail('este navegador no soporta WebGPU');
+    return;
+  }
+
+  const adapter = await navigator.gpu.requestAdapter();
+  if (!adapter) {
+    fail('este navegador soporta webgpu pero parece estar desactivado');
+    return;
+  }
+
+  const device = await adapter.requestDevice();
+  device.lost.then((info) =&gt; {
+    console.error(`Se perdió el dispositivo WebGPU: ${info.message}`);
+
+    // 'reason' será 'destroyed' si destruimos el dispositivo intencionadamente.
+    if (info.reason !== 'destroyed') {
+      // intentarlo de nuevo
+      start();
+    }
+  });
+  
+  main(device);
+}
+start();
+
+function main(device) {
+  ... trabajar con webgpu ...
+}
+</pre>
+<p>
+<code class="notranslate" translate="no">device.lost</code> es una promesa que comienza sin resolver. Se resolverá si y cuando el dispositivo se pierda. Un dispositivo puede perderse por muchas razones. Quizás el usuario ejecutó una aplicación muy intensiva y eso colgó su GPU. Quizás el usuario actualizó sus controladores. Quizás el usuario tiene una GPU externa y la desenchufó. Quizás otra página usó mucha GPU, tu pestaña estaba en segundo plano y el navegador decidió liberar algo de memoria perdiendo el dispositivo para las pestañas en segundo plano. El punto clave es que para cualquier aplicación seria probablemente querrás manejar la pérdida del dispositivo.
+</p>
+<p>
+Ten en cuenta que <code class="notranslate" translate="no">requestDevice</code> siempre devuelve un dispositivo. Simplemente podría empezar ya perdido. WebGPU está diseñado para que, en su mayor parte, el dispositivo parezca funcionar, al menos desde el nivel de la API. Las llamadas para crear cosas y usarlas parecerán tener éxito, pero en realidad no funcionarán. Depende de ti tomar medidas cuando la promesa <code class="notranslate" translate="no">lost</code> se resuelva.
+</p>
+</div>
+<!-- keep this at the bottom of the article -->
+<script type="module" src="../webgpu-fundamentals.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>En realidad hay 5 modos:</p>
+<ul>
+<li><code class="notranslate" translate="no">'point-list'</code>: por cada posición, dibuja un punto</li>
+<li><code class="notranslate" translate="no">'line-list'</code>: por cada 2 posiciones, dibuja una línea</li>
+<li><code class="notranslate" translate="no">'line-strip'</code>: dibuja líneas conectando el nuevo punto con el anterior</li>
+<li><code class="notranslate" translate="no">'triangle-list'</code>: por cada 3 posiciones, dibuja un triángulo (<strong>por defecto</strong>)</li>
+<li><code class="notranslate" translate="no">'triangle-strip'</code>: por cada nueva posición, dibuja un triángulo a partir de ella y las últimas 2 posiciones</li>
+</ul>
+ <a href="#fnref1" class="footnote-backref">↩︎</a></li>
+<li id="fn2" class="footnote-item"><p>Los fragment shaders escriben datos indirectamente en texturas. Esos datos no tienen por qué ser colores. Por ejemplo, es común generar la dirección de la superficie que representa ese píxel. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Las texturas también pueden ser rectángulos 3D de píxeles, cube maps (6 cuadrados de píxeles que forman un cubo) y algunas otras cosas, pero las texturas más comunes son rectángulos 2D de píxeles. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>También podemos usar un buffer de índices para especificar <code class="notranslate" translate="no">vertex_index</code>. Esto se cubre en el <a href="webgpu-vertex-buffers.html#a-index-buffers">artículo sobre buffers de vértices</a>. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p><code class="notranslate" translate="no">layout: 'auto'</code> es conveniente, pero es imposible compartir bind groups entre pipelines usando <code class="notranslate" translate="no">layout: 'auto'</code>. La mayoría de los ejemplos de este sitio nunca usan un bind group con múltiples pipelines. Cubriremos los layouts explícitos en <a href="webgpu-bind-group-layouts.html">otro artículo</a>. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-fundamentals.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-fundamentals.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-fundamentals.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-fundamentals.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-fundamentals.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-fundamentals.html">Русский
@@ -203,84 +880,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +978,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Fundamentos de WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

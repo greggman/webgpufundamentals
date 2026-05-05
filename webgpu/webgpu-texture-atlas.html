@@ -458,7 +458,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         matrix: mat4x4f,
       };
@@ -564,7 +564,7 @@ async function main() {
       if (!module) {
         module = device.createShaderModule({
           label: 'textured quad shaders for mip level generation',
-          code: `
+          code: /* wgsl */ `
             struct VSOutput {
               @builtin(position) position: vec4f,
               @location(0) texcoord: vec2f,
@@ -705,7 +705,7 @@ async function main() {
 
   const indexBuffer = device.createBuffer({
     label: 'index buffer',
-    size: vertexData.byteLength,
+    size: indexData.byteLength,
     usage: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
   });
   device.queue.writeBuffer(indexBuffer, 0, indexData);
@@ -714,9 +714,9 @@ async function main() {
     label: 'bind group for object',
     layout: pipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: uniformBuffer }},
+      { binding: 0, resource: uniformBuffer },
       { binding: 1, resource: sampler },
-      { binding: 2, resource: texture.createView() },
+      { binding: 2, resource: texture },
     ],
   });
 

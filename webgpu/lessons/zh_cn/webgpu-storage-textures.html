@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-storage-textures.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Storage Textures">
+
+<meta name="description" content="如何使用存储纹理">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 存储纹理(Storage Texture)">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use Storage Textures">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_zh-cn.jpg">
+<meta property="og:description" content="如何使用存储纹理">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-storage-textures.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Storage Textures">
+<meta name="twitter:title" content="WebGPU 存储纹理(Storage Texture)">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-storage-textures.html">
-<meta name="twitter:description" content="How to use Storage Textures">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="如何使用存储纹理">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-storage-textures.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-storage-textures_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-storage-textures.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-storage-textures.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 存储纹理(Storage Texture)",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-storage-textures.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Storage Textures</title>
+<title>WebGPU 存储纹理(Storage Texture)</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-textures.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-textures.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-textures.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-textures.html">Русский
@@ -182,19 +228,225 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Storage Textures</h1>
+    <h1>WebGPU 存储纹理(Storage Texture)</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-storage-textures.html">英文原版地址</a></p>
+      <p>存储纹理本质上就是<a href="webgpu-textures.html">纹理</a>，只不过你可以直接向其写入或"存储"数据。通常我们在顶点着色器中指定三角形，由 GPU 间接更新纹理，而使用存储纹理则可以直接向纹理的任意位置写入数据。</p>
+<p>存储纹理并不是一种特殊的纹理类型，它就是你使用 <code class="notranslate" translate="no">createTexture</code> 创建的普通纹理。只要添加 <code class="notranslate" translate="no">STORAGE_BINDING</code> 用法标志，就可以将纹理作为存储纹理使用，同时保留其他所需的所有用法标志。</p>
+<p>从某种意义上说，存储纹理就像一个用作二维数组的存储缓冲区。例如，我们可以创建一个存储缓冲区，并在代码中这样引用它：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0)
+  var&lt;storage&gt; buf: array&lt;f32&gt;;
+
+...
+fn loadValueFromBuffer(pos: vec2u) -&gt; f32 {
+  return buffer[pos.y * width + pos.x];
+}
+
+fn storeValueToBuffer(pos: vec2u, v: f32) {
+  buffer[pos.y * width + pos.x] = v;
+}
+
+...
+  let pos = vec2u(2, 3);
+  var v = loadValueFromBuffer(pos);
+  storeValueToBuffer(pos, v * 2.0);
+
+</pre>
+<p>而存储纹理则是这样：</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">@group(0) @binding(0)
+  var tex: texture_storage_2d&lt;r32float, read_write&gt;;
+
+...
+
+   let pos = vec2u(2, 3);
+   let mipLevel = 0;
+   var v = textureLoad(tex, pos, mipLevel);
+   textureStore(tex, pos, mipLevel, v * 2);
+
+</pre>
+<p>既然两者看起来等价，那么手动使用存储缓冲区和存储纹理有什么区别呢？</p>
+<ul>
+<li>
+<p>存储纹理仍然是纹理。</p>
+<p>你可以在一个着色器中将其用作存储纹理，而在另一个着色器中将其用作常规纹理（使用采样器和 mipmap 等）。</p>
+</li>
+<li>
+<p>存储纹理具有格式解析能力，而存储缓冲区没有。</p>
+<p>示例：</p>
+<pre class="prettyprint showlinemods notranslate lang-wsgl" translate="no">@group(0) @binding(0) var tex: texture_storage_2d&lt;rgba8unorm, read&gt;;
+@group(0) @binding(1) var buf: array&lt;f32&gt;;
+
+   ...
+    let t = textureLoad(tex, pos, 0);
+    let b = buffer[pos.y * bufferWidth + pos.x];
+</pre>
+<p>在上面的代码中，<code class="notranslate" translate="no">textureLoad</code> 加载的是一个 <code class="notranslate" translate="no">rgba8unorm</code> 纹理，这意味着会加载 4 个字节，自动转换为 4 个 0 到 1 之间的浮点数值，并作为 <code class="notranslate" translate="no">vec4f</code> 返回。</p>
+<p>对于缓冲区的情况，4 个字节被加载为单个 <code class="notranslate" translate="no">f32</code> 值。我们可以将缓冲区改为 <code class="notranslate" translate="no">array&lt;u32&gt;</code>，然后加载一个值，并手动将其拆分为 4 个字节值，再转换为浮点数。但是，如果这就是我们想要的，存储纹理可以免费提供这个功能。</p>
+</li>
+<li>
+<p>存储纹理具有维度属性。</p>
+<p>对于缓冲区，唯一的维度是其长度，或者更准确地说，是其绑定的长度<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。上面，当我们将缓冲区用作2维数组时，我们需要宽度从2维坐标转换为1维缓冲区索引。我们要么硬编码 <code class="notranslate" translate="no">width</code> 的值，要么以某种方式传递它<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>。而对于纹理，我们可以调用 <code class="notranslate" translate="no">textureDimensions</code> 来获取纹理的尺寸。</p>
+</li>
+</ul>
+<p>不过，存储纹理也有一定的限制。</p>
+<ul>
+<li>
+<p>只有特定格式可以设置为 <code class="notranslate" translate="no">read_write</code>。</p>
+<p>这些格式是 <code class="notranslate" translate="no">r32float</code>、<code class="notranslate" translate="no">r32sint</code> 和 <code class="notranslate" translate="no">r32uint</code>。</p>
+<p>其他支持的格式在单个着色器内只能设置 <code class="notranslate" translate="no">read</code> 或 <code class="notranslate" translate="no">write</code>。</p>
+</li>
+<li>
+<p>只有特定格式可以用作存储纹理。</p>
+<p>纹理格式有很多种，但只有一部分可以用作存储纹理。</p>
+<ul>
+<li><code class="notranslate" translate="no">rgba8(unorm/snorm/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rgba16(float/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rg32(float/sint/uint)</code></li>
+<li><code class="notranslate" translate="no">rgba32(float/sint/uint)</code></li>
+</ul>
+<p>需要注意缺少的一个格式是 <code class="notranslate" translate="no">bgra8unorm</code>，我们将在下文介绍。</p>
+</li>
+<li>
+<p>存储纹理不能使用采样器。</p>
+<p>如果我们将纹理用作普通的 <code class="notranslate" translate="no">TEXTURE_BINDING</code>，则可以调用 <code class="notranslate" translate="no">textureSample</code> 等函数，这些函数会跨 mip 级别加载最多 16 个像素并进行混合。而当我们将纹理用作 <code class="notranslate" translate="no">STORAGE_BINDING</code> 时，只能调用 <code class="notranslate" translate="no">textureLoad</code> 和/或 <code class="notranslate" translate="no">textureStore</code>，每次只能加载和存储单个像素。</p>
+</li>
+</ul>
+<h2 id="将-canvas-作为存储纹理使用"><a id="canvas-as-storage-texture"></a> 将 Canvas 作为存储纹理使用</h2>
+<p>你可以将 canvas 纹理用作存储纹理。为此，你需要配置上下文以获取可以用作存储纹理的纹理。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
+  context.configure({
+    device,
+    format: presentationFormat,
++    usage: GPUTextureUsage.TEXTURE_BINDING |
++           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p>需要 <code class="notranslate" translate="no">TEXTURE_BINDING</code> 是为了让浏览器本身能将纹理渲染到页面。<code class="notranslate" translate="no">STORAGE_BINDING</code> 则允许我们将 canvas 的纹理用作存储纹理。如果我们仍然想通过渲染通道将纹理渲染到纹理上（就像本网站上大多数示例一样），还需要添加 <code class="notranslate" translate="no">RENDER_ATTACHMENT</code> 用法。</p>
+<p>不过，这里有一个复杂的问题。正如<a href="webgpu-fundamentals.html">第一篇文章</a>中所介绍的，通常我们会调用 <code class="notranslate" translate="no">navigator.gpu.getPreferredCanvasFormat</code> 来获取首选的 canvas 格式。<code class="notranslate" translate="no">getPreferredCanvasFormat</code> 会根据用户的系统性能返回 <code class="notranslate" translate="no">rgba8unorm</code> 或 <code class="notranslate" translate="no">bgra8unorm</code> 之一。</p>
+<p>但是，如上所述，默认情况下，我们不能将 <code class="notranslate" translate="no">bgra8unorm</code> 纹理用作存储纹理。</p>
+<p>幸运的是，有一个名为 <code class="notranslate" translate="no">'bgra8unorm-storage'</code> 的<a href="webgpu-limits-and-features.html">特性</a>。启用该特性后，就可以将 <code class="notranslate" translate="no">bgra8unorm</code> 纹理用作存储纹理。一般来说，在任何报告 <code class="notranslate" translate="no">bgra8unorm</code> 为首选 canvas 格式的平台上，<em>应该</em>都能使用该特性，但也有可能不可用。因此，我们需要检查 <code class="notranslate" translate="no">'bgra8unorm-storage'</code> <em>特性</em>是否存在。如果存在，我们将要求设备启用该特性，并使用首选 canvas 格式。如果不存在，我们就选择 <code class="notranslate" translate="no">rgba8unorm</code> 作为 canvas 格式。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const adapter = await navigator.gpu?.requestAdapter();
+-  const device = await adapter?.requestDevice();
++  const hasBGRA8unormStorage = adapter.features.has('bgra8unorm-storage');
++  const device = await adapter?.requestDevice({
++    requiredFeatures: hasBGRA8unormStorage
++      ? ['bgra8unorm-storage']
++      : [],
++  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+-  const presentationFormat = navigator.gpu.getPreferredCanvasFormat()
++  const presentationFormat = hasBGRA8unormStorage
++     ? navigator.gpu.getPreferredCanvasFormat()
++     : 'rgba8unorm';
+  context.configure({
+    device,
+    format: presentationFormat,
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p>现在我们可以将 canvas 纹理用作存储纹理了。让我们编写一个简单的计算着色器，在纹理中绘制同心圆。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const module = device.createShaderModule({
+    label: 'circles in storage texture',
+    code: /* wgsl */ `
+      @group(0) @binding(0)
+      var tex: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+      @compute @workgroup_size(1) fn cs(
+        @builtin(global_invocation_id) id : vec3u
+      )  {
+        let size = textureDimensions(tex);
+        let center = vec2f(size) / 2.0;
+
+        // the pixel we're going to write to
+        let pos = id.xy;
+
+        // The distance from the center of the texture
+        let dist = distance(vec2f(pos), center);
+
+        // Compute stripes based on the distance
+        let stripe = dist / 32.0 % 2.0;
+        let red = vec4f(1, 0, 0, 1);
+        let cyan = vec4f(0, 1, 1, 1);
+        let color = select(red, cyan, stripe &lt; 1.0);
+
+        // Write the color to the texture
+        textureStore(tex, pos, color);
+      }
+    `,
+  });
+</pre>
+<p>注意我们将存储纹理标记为 <code class="notranslate" translate="no">write</code>，并且必须在着色器中指定具体的纹理格式。与 <code class="notranslate" translate="no">TEXTURE_BINDING</code> 不同，<code class="notranslate" translate="no">STORAGE_BINDING</code> 需要知道纹理的确切格式。</p>
+<p>设置方式与<a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">第一篇文章中编写的计算着色器</a>类似。创建着色器模块后，我们设置一个计算管线来使用它。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createComputePipeline({
+    label: 'circles in storage texture',
+    layout: 'auto',
+    compute: {
+      module,
+    },
+  });
+</pre>
+<p>要渲染，我们获取 canvas 的当前纹理，创建一个绑定组以便将纹理传递给着色器，然后执行设置管线、绑定绑定组和分发工作组这些常规操作。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    const texture = context.getCurrentTexture();
+
+    const bindGroup = device.createBindGroup({
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: texture },
+      ],
+    });
+
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+    const pass = encoder.beginComputePass();
+    pass.setPipeline(pipeline);
+    pass.setBindGroup(0, bindGroup);
+    pass.dispatchWorkgroups(texture.width, texture.height);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>效果如下：</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-storage-texture-canvas.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-storage-texture-canvas.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>使用常规纹理不会改变任何东西，除非我们调用 <code class="notranslate" translate="no">createTexture</code> 而不是 <code class="notranslate" translate="no">getCurrentTexture</code> 来制作纹理，并将其与我们需要的任何其他使用标志一起传递给 <code class="notranslate" translate="no">STORAGE_BINDING</code>。</p>
+<h2 id="速度和竞态条件">速度和竞态条件</h2>
+<p>上面我们对每个像素分发了一个工作组。这是非常浪费的，GPU 可以运行得更快。将着色器优化为最佳工作量会使得示例变得复杂。重点是演示如何使用存储纹理，而不是展示最快的着色器。你可以在<a href="webgpu-compute-shaders-histogram.html">计算图像直方图的文章</a>中阅读一些优化计算着色器的方法。</p>
+<p>同样，由于你可以在存储纹理中的任意位置写入，你需要意识到<a href="webgpu-compute-shaders.html">其他关于计算着色器的文章</a>中提到的竞态条件。调用运行的顺序是无法保证的。需要由你来避免竞态条件和/或插入 <code class="notranslate" translate="no">textureBarriers</code> 或其他机制来确保两个或多个调用不会互相干扰。</p>
+<h2 id="示例">示例</h2>
+<p><a href="https://compute.toys">compute.toys</a> 是一个包含大量直接写入存储纹理的示例的网站。<strong>警告</strong>：虽然<a href="https://compute.toys">compute.toys</a> 上的示例有很多值得学习的地方，但它们不一定是最优实践。Compute toys 的目的是仅用计算着色器制作有趣的东西。用仅计算着色器来发挥创意是一件有趣的难题，但请注意，其他方法<em>可能</em>快 10 倍、100 倍甚至 1000 倍。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>当你创建绑定组并指定缓冲区时，可以选择指定偏移量和长度。在着色器中，数组的长度是根据绑定的长度计算的，而不是根据缓冲区的长度。如果你没有指定偏移量，默认为 0，长度默认为整个缓冲区的大小。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>你可以通过<a href="webgpu-uniforms.html">uniform</a>、另一个<a href="webgpu-storage-buffers.html">存储缓冲区</a>或甚至作为同一缓冲区中的第一个值来传入缓冲区的宽度。 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-storage-textures.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-textures.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-textures.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-storage-textures.html">Русский
@@ -204,7 +456,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
@@ -214,17 +467,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">加载图像</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">高效使用视频</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">立方体贴图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
@@ -233,7 +486,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </ul>
   <li>3D数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">Translation</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">平移(Translation)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-rotation.html">Rotation</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scale.html">Scale</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-math.html">Matrix Math</a></li>
@@ -263,6 +516,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
@@ -292,13 +554,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 存储纹理(Storage Texture)`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

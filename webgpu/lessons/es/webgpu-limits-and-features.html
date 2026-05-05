@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-limits-and-features.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Optional Features and Limits">
+
+<meta name="description" content="Características Opcionales">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_es.jpg">
+
+<meta property="og:title" content="Características Opcionales y Límites en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Optional Features">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_es.jpg">
+<meta property="og:description" content="Características Opcionales">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-limits-and-features.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Optional Features and Limits">
+<meta name="twitter:title" content="Características Opcionales y Límites en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-limits-and-features.html">
-<meta name="twitter:description" content="Optional Features">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Características Opcionales">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-limits-and-features.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-limits-and-features.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-limits-and-features.html",
+      "inLanguage":"es",
+      "name":"Características Opcionales y Límites en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-limits-and-features.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Optional Features and Limits</title>
+<title>Características Opcionales y Límites en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-limits-and-features.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-limits-and-features.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-limits-and-features.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-limits-and-features.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-limits-and-features.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-limits-and-features.html">Русский
@@ -182,18 +227,160 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Optional Features and Limits</h1>
+    <h1>Características Opcionales y Límites en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-limits-and-features.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>WebGPU tiene un conjunto de características opcionales y límites. Repasemos cómo comprobarlos
+y solicitarlos.</p>
+<p>Cuando solicitas un adapter (adaptador) con</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+</pre>
+<p>El adapter tendrá una lista de límites en <code class="notranslate" translate="no">adapter.limits</code> y un array de nombres de características (features)
+en <code class="notranslate" translate="no">adapter.features</code>. Por ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+console.log(adapter.limits.maxColorAttachments);
+</pre>
+<p>Podría imprimir <code class="notranslate" translate="no">8</code> en la consola, lo que significa que el adapter soporta un máximo
+de 8 color attachments.</p>
+<p>Aquí tienes una lista de todos los límites, incluyendo los límites de tu adapter por defecto,
+así como los límites mínimos requeridos.</p>
+<div class="webgpu_center data-table limits" data-diagram="limits"></div>
+<p>Los límites mínimos son los límites con los que puedes contar en todos los dispositivos que soportan WebGPU.</p>
+<p>También hay una lista de características opcionales (features). Por ejemplo, podrías verlas
+así:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+console.log(adapter.features);
+</pre>
+<p>lo cual podría imprimir algo como <code class="notranslate" translate="no">["texture-compression-astc", "texture-compression-bc"]</code>, indicándote
+que esas características están disponibles si las solicitas.</p>
+<p>Aquí está la lista de características disponibles en tu adapter por defecto.</p>
+<div class="webgpu_center data-table features" data-diagram="features"></div>
+<blockquote>
+<p>Nota: Puedes comprobar todas las características y límites de los adapters de tu sistema en <a href="https://webgpureport.org">webgpureport.org</a>.</p>
+</blockquote>
+<h2 id="solicitando-límites-y-características">Solicitando límites y características</h2>
+<p>Por defecto, cuando solicitas un device (dispositivo), obtienes los límites mínimos
+(la columna de la derecha arriba) y no obtienes ninguna característica opcional. La
+esperanza es que, si te mantienes por debajo de los límites mínimos, tu aplicación
+funcionará en todos los dispositivos que soporten WebGPU.</p>
+<p>Pero, dados los límites y características disponibles listados en el adapter,
+puedes solicitarlos cuando llamas a <code class="notranslate" translate="no">requestDevice</code> pasando
+tus límites deseados como <code class="notranslate" translate="no">requiredLimits</code> y tus características deseadas como <code class="notranslate" translate="no">requiredFeatures</code>. Por ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const k1Gig = 1024 * 1024 * 1024;
+const adapter = await navigator.gpu?.requestAdapter();
+const device = adapter?.requestDevice({
+  requiredLimits: { maxBufferSize: k1Gig },
+  requiredFeatures: [ 'float32-filterable' ],
+});
+</pre>
+<p>Arriba estamos solicitando poder usar buffers de hasta 1 GiB y poder usar texturas
+float32 filtrables (por ejemplo, <code class="notranslate" translate="no">'rgba32float'</code> con minFilter establecido en <code class="notranslate" translate="no">'linear'</code>, que por defecto solo puede usarse con <code class="notranslate" translate="no">'nearest'</code>).</p>
+<p>Si alguna de esas solicitudes no puede cumplirse, <code class="notranslate" translate="no">requestDevice</code> fallará (rechazará la promesa).</p>
+<h2 id="no-lo-solicites-todo">No lo solicites todo</h2>
+<p>Podría ser tentador pedir todos los límites y características y luego comprobar cuáles necesitas.</p>
+<p>Ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function objLikeToObj(src) {
+  const dst = {};
+  for (const key in src) {
+    dst[key] = src[key];
+  }
+  return dst;
+}
+
+//
+// ¡¡¡MAL!!! ?
+//
+async function main() {
+  const adapter = await navigator?.gpu.requestAdapter();
+  const device = await adapter?.requestDevice({
+    requiredLimits: objLikeToObj(adapter.limits),
+    requiredFeatures: adapter.features,
+  });
+  if (!device) {
+    fail('se necesita webgpu');
+    return;
+  }
+
+  const canUse128KUniformsBuffers = device.limits.maxUniformBufferBindingSize &gt;= 128 * 1024;
+  const canStoreToBGRA8Unorm = device.features.has('bgra8unorm-storage');
+  const canIndirectFirstInstance = device.features.has('indirect-first-instance');
+}
+</pre>
+<p>Esto parece una forma sencilla y clara de comprobar límites y características<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. El
+problema con este patrón es que podrías estar excediendo límites accidentalmente sin
+saberlo. Por ejemplo, supongamos que creaste una textura <code class="notranslate" translate="no">'rgba32float'</code> y la filtraste
+con un filtrado <code class="notranslate" translate="no">'linear'</code>.
+Simplemente funcionaría “por arte de magia” en tu máquina de escritorio porque resultó que
+la habías habilitado.</p>
+<p>En el teléfono del usuario, tu programa falla misteriosamente porque la característica <code class="notranslate" translate="no">'float32-filterable'</code>
+no existía y resultó que la estabas usando sin darte cuenta de que es
+una característica opcional.</p>
+<p>O podrías asignar un buffer más grande que el mínimo <code class="notranslate" translate="no">maxBufferSize</code> y, de nuevo,
+no ser consciente de que superaste el límite. Lanzas tu aplicación y un montón de usuarios no pueden ejecutar
+tu página.</p>
+<h2 id="forma-recomendada-de-solicitar-características-y-límites">Forma recomendada de solicitar características y límites</h2>
+<p>La forma recomendada de usar características y límites es decidir qué es lo que absolutamente
+debes tener y solicitar únicamente esos límites.</p>
+<p>Por ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const adapter = await navigator?.gpu.requestAdapter();
+
+  const canUse128KUniformsBuffers = adapter?.limits.maxUniformBufferBindingSize &gt;= 128 * 1024;
+  const canStoreToBGRA8Unorm = adapter?.features.has('bgra8unorm-storage');
+  const canIndirectFirstInstance = adapter?.features.has('indirect-first-instance');
+
+  // si necesitamos absolutamente una o más de estas características, fallamos ahora si no están
+  // disponibles
+  if (!canUse128KUniformsBuffers) {
+    alert('Lo sentimos, tu dispositivo probablemente es demasiado antiguo o poco potente');
+    return;
+  }
+
+  // Solicitar las características y límites disponibles que necesitamos
+  const device = adapter?.requestDevice({
+    requiredFeatures: [
+      ...(canStoreToBGRA8Unorm ? ['bgra8unorm-storage'] : []),
+      ...(canIndirectFirstInstance ? ['indirect-first-instance'] : []),
+    ],
+    requiredLimits: {
+      maxUniformBufferBindingSize: 128 * 1024,
+    }
+  });
+</pre>
+<p>Haciéndolo de esta manera, si resulta que pides un uniform buffer de más de 128 KiB, obtendrás un error.
+Del mismo modo, si intentas usar una característica que no solicitaste, obtendrás un error.
+Entonces puedes tomar una decisión consciente de si quieres aumentar tus límites requeridos (y, por lo tanto,
+negarte a funcionar en más dispositivos) o si quieres mantener los límites, o si quieres estructurar
+tu código para hacer cosas diferentes según si las características o límites están o no disponibles.</p>
+<!-- keep this at the bottom of the article -->
+<link rel="stylesheet" href="../webgpu-limits-and-features.css">
+<script type="module" src="../webgpu-limits-and-features.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>¿Qué es esto de <code class="notranslate" translate="no">objLikeToObj</code> y por qué lo necesito?
+Es un problema esotérico de la especificación web. La especificación lista <code class="notranslate" translate="no">requiredLimits</code> como
+<code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code>. La especificación Web IDL dice que, al convertir
+un objeto de algo a <code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code>, solo se copien
+las propiedades que son realmente propiedades <em>propias</em> (own properties) del objeto.
+El objeto <code class="notranslate" translate="no">limits</code> en el adapter está listado como una <code class="notranslate" translate="no">interfaz</code>. Las
+cosas que parecen ser propiedades allí no son propiedades, son
+getters que existen en el prototipo del objeto, no son realmente propiedades
+propias del objeto. Por lo tanto, no se copian
+cuando se convierten a <code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code> y, por lo tanto, tienes que
+copiarlas tú mismo. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-limits-and-features.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-limits-and-features.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-limits-and-features.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-limits-and-features.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-limits-and-features.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-limits-and-features.html">Русский
@@ -203,84 +390,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +488,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Características Opcionales y Límites en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

@@ -57,7 +57,7 @@ module.exports = function(grunt) {
         src: [
           'webgpu/*.html',
           'webgpu/lessons/resources/*.js',
-          '!webgpu/lessons/resources/prettify.js',
+          '!webgpu/lessons/resources/js/prettify.js',
           'webgpu/lessons/resources/*.html',
         ],
       },
@@ -196,10 +196,10 @@ module.exports = function(grunt) {
   grunt.registerTask('buildindex', function() {
     let dirs = fs.readdirSync('out', { withFileTypes: true, recursive: true });
     dirs = dirs.filter(dir => dir.isDirectory());
-    dirs = dirs.filter(dir => !fs.existsSync(path.join(dir.path, dir.name, 'index.html')));
-    dirs = dirs.filter(dir => !(/monaco-editor|types/.test(path.join(dir.path, dir.name))));
+    dirs = dirs.filter(dir => !fs.existsSync(path.join(dir.parentPath, dir.name, 'index.html')));
+    dirs = dirs.filter(dir => !(/monaco-editor|types/.test(path.join(dir.parentPath, dir.name))));
     dirs.forEach(dir => {
-      generateIndex(path.join(dir.path, dir.name));
+      generateIndex(path.join(dir.parentPath, dir.name));
     });
   });
 

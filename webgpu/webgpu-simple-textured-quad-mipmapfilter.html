@@ -21,6 +21,7 @@ canvas {
   left: 0;
   font-size: 3vh;
   padding: 0.5em;
+  color: white;
   background-color: black;
   pointer-events: none;
   user-select: none;
@@ -56,7 +57,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'our hardcoded textured quad shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -284,8 +285,8 @@ async function main() {
         layout: pipeline.getBindGroupLayout(0),
         entries: [
           { binding: 0, resource: sampler },
-          { binding: 1, resource: texture.createView() },
-          { binding: 2, resource: { buffer: uniformBuffer }},
+          { binding: 1, resource: texture },
+          { binding: 2, resource: uniformBuffer },
         ],
       }));
 

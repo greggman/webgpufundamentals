@@ -26,8 +26,14 @@
   categoryMapping: {
     'basics': '기초',
     'misc': '기타',
+    'textures': '텍스처',
     'reference': '참조',
     '3d-math': '3D 수학',
+    'lighting': '조명',
+    'techniques': '기법',
+    '2d': '2D',
+    '3d': '3D',
+    'post-processing': '후처리',
     'compute-shaders': '컴퓨트 셰이더',
   },
 }

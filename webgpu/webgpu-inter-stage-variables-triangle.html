@@ -40,7 +40,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'our hardcoded rgb triangle shaders',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) color: vec4f,

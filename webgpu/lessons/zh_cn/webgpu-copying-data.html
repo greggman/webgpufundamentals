@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-copying-data.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Copying Data">
+
+<meta name="description" content="在缓冲区和纹理之间拷贝数据">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 数据拷贝">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Copying Data to/from buffers and textures">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_zh-cn.jpg">
+<meta property="og:description" content="在缓冲区和纹理之间拷贝数据">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-copying-data.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Copying Data">
+<meta name="twitter:title" content="WebGPU 数据拷贝">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-copying-data.html">
-<meta name="twitter:description" content="Copying Data to/from buffers and textures">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="在缓冲区和纹理之间拷贝数据">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-copying-data.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-copying-data_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-copying-data.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-copying-data.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 数据拷贝",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-copying-data.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Copying Data</title>
+<title>WebGPU 数据拷贝</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-copying-data.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-copying-data.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-copying-data.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-copying-data.html">Русский
@@ -182,19 +228,308 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Copying Data</h1>
+    <h1>WebGPU 数据拷贝</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-copying-data.html">英文原版地址</a></p>
+      <p>在大多数文章中，我们使用 <code class="notranslate" translate="no">writeBuffer</code> 函数将数据写入缓冲区，使用 <code class="notranslate" translate="no">writeTexture</code> 将数据写入纹理。将数据放入缓冲区或纹理有多种方法。</p>
+<h2 id="writebuffer"><code class="notranslate" translate="no">writeBuffer</code></h2>
+<p><code class="notranslate" translate="no">writeBuffer</code> 将数据从 JavaScript 中的 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> 或 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a> 拷贝到缓冲区。这可以说是将数据放入缓冲区最直接的方式。</p>
+<p><code class="notranslate" translate="no">writeBuffer</code> 的格式如下：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeBuffer(
+  destBuffer,  // 要写入的缓冲区
+  destOffset,  // 在目标缓冲区中开始写入的位置
+  srcData,     // typedArray 或 arrayBuffer
+  srcOffset?,  // **元素**为单位的 srcData 中的起始偏移量
+  size?,       // 要拷贝的 srcData 的**元素**数量
+)
+</pre>
+<p>如果未传入 <code class="notranslate" translate="no">srcOffset</code>，则默认为 <code class="notranslate" translate="no">0</code>。如果未传入 <code class="notranslate" translate="no">size</code>，则默认为 <code class="notranslate" translate="no">srcData</code> 的大小。</p>
+<blockquote>
+<p>重要：<code class="notranslate" translate="no">srcOffset</code> 和 <code class="notranslate" translate="no">size</code> 是 <code class="notranslate" translate="no">srcData</code> 中的<strong>元素</strong>数量</p>
+<p>换句话说，</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeBuffer(
+  someBuffer,
+  someOffset,
+  someFloat32Array,
+  6,
+  7,
+)
+</pre>
+<p>上面的代码将从 float32 #6 开始，拷贝 7 个 float32 的数据。
+换句话说，它将从 <code class="notranslate" translate="no">someFloat32Array</code> 所视图的 arrayBuffer 部分中，从字节 24 开始拷贝 28 字节。</p>
+</blockquote>
+<h2 id="writetexture"><code class="notranslate" translate="no">writeTexture</code></h2>
+<p><code class="notranslate" translate="no">writeTexture</code> 将数据从 JavaScript 中的 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray"><code class="notranslate" translate="no">TypedArray</code></a> 或 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a> 拷贝到纹理。</p>
+<p><code class="notranslate" translate="no">writeTexture</code> 的签名如下：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">device.queue.writeTexture(
+  // 目标详细信息
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 源数据
+  srcData,
+
+  // 源数据详细信息
+  { offset: 0, bytesPerRow, rowsPerImage },
+
+  // 大小：
+  [ width, height, depthOrArrayLayers ] 或 { width, height, depthOrArrayLayers }
+)
+</pre>
+<p>注意事项：</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">texture</code> 必须具有 <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code> 用法标志</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">mipLevel</code>、<code class="notranslate" translate="no">origin</code> 和 <code class="notranslate" translate="no">aspect</code> 都有默认值，所以通常不需要指定</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">bytesPerRow</code>：这是前进到下一个<em>块行</em>数据需要跳过的字节数。</p>
+<p>如果你要拷贝超过 1 个<em>块行</em>，这是必需的。几乎
+总是要拷贝超过 1 个<em>块行</em>的数据，因此
+几乎总是需要这个参数。</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">rowsPerImage</code>：这是从一张图像的开始到下一张图像开始需要跳过的<em>块行</em>数量。</p>
+<p>如果你要拷贝超过 1 层，则这是必需的。换句话说，
+如果 size 参数中的 <code class="notranslate" translate="no">depthOrArrayLayers</code> &gt; 1，则你需要提供此值。</p>
+</li>
+</ul>
+<p>你可以将拷贝过程想象成这样：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   // 伪代码
+   const [x, y, z] = origin ?? [0, 0, 0];
+   const [blockWidth, blockHeight, bytesPerBlock] =
+      getBlockInfoForTextureFormat(texture.format);
+
+   const blocksAcross = width / blockWidth;
+   const blocksDown = height / blockHeight;
+   const bytesPerBlockRow = blocksAcross * bytesPerBlock;
+
+   for (layer = 0; layer &lt; depthOrArrayLayers; layer) {
+      for (row = 0; row &lt; blocksDown; ++row) {
+        const start = offset + (layer * rowsPerImage + row) * bytesPerRow;
+        copyRowToTexture(
+            texture,               // 要拷贝到哪个纹理
+            x, y + row, z + layer, // 拷贝到纹理中的位置
+            srcDataAsBytes + start,
+            bytesPerBlockRow);
+      }
+   }
+</pre>
+<h3 id="块行（block-row）"><a id="a-block-rows"></a><strong>块行（block row）</strong></h3>
+<p>纹理被组织成块。对于大多数<em>常规</em>纹理，块宽度和块高度都是 1。对于压缩纹理，情况会发生变化。例如，格式 <code class="notranslate" translate="no">bc1-rgba-unorm</code> 的块宽度为 4，块高度为 4。这意味着如果你设置宽度为 8，高度为 12，只会拷贝 6 个块。第一行 2 个块，第二行 2 个块，第三行 2 个块。</p>
+<p>对于压缩纹理，size 和 origin 必须与块大小对齐。</p>
+<blockquote>
+<p>重要：WebGPU 中任何接受大小（定义为 <code class="notranslate" translate="no">GPUExtent3D</code>）的地方都可以是 1 到 3 个数字的数组，也可以是具有 1 到 3 个属性的对象。<code class="notranslate" translate="no">height</code> 和 <code class="notranslate" translate="no">depthOrArrayLayers</code> 默认为 1，因此</p>
+<ul>
+<li><code class="notranslate" translate="no">[2]</code> 大小：width = 2, height = 1, depthOrArrayLayers = 1</li>
+<li><code class="notranslate" translate="no">[2, 3]</code> 大小：width = 2, height = 3, depthOrArrayLayers = 1</li>
+<li><code class="notranslate" translate="no">[2, 3, 4]</code> 大小：width = 2, height = 3, depthOrArrayLayers = 4</li>
+<li><code class="notranslate" translate="no">{ width: 2 }</code> 大小：width = 2, height = 1, depthOrArrayLayers = 1</li>
+<li><code class="notranslate" translate="no">{ width: 2, height: 3 }</code> 大小：width = 2, height = 3, depthOrArrayLayers = 1</li>
+<li><code class="notranslate" translate="no">{ width: 2, height: 3, depthOrArrayLayers: 4 }</code> 大小：width = 2, height = 3, depthOrArrayLayers = 4</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>同样，任何出现 origin 的地方（默认为 <code class="notranslate" translate="no">GPUOrigin3D</code>），你可以使用 3 个数字的数组，或具有 <code class="notranslate" translate="no">x</code>、<code class="notranslate" translate="no">y</code>、<code class="notranslate" translate="no">z</code> 属性的对象。它们都默认为 0，因此</p>
+<ul>
+<li><code class="notranslate" translate="no">[5]</code> origin：x = 5, y = 0, z = 0</li>
+<li><code class="notranslate" translate="no">[5, 6]</code> origin：x = 5, y = 6, z = 0</li>
+<li><code class="notranslate" translate="no">[5, 6, 7]</code> origin：x = 5, y = 6, z = 7</li>
+<li><code class="notranslate" translate="no">{ x: 5 }</code> origin：x = 5, y = 0, z = 0</li>
+<li><code class="notranslate" translate="no">{ x: 5, y: 6 }</code> origin：x = 5, y = 6, z = 0</li>
+<li><code class="notranslate" translate="no">{ x: 5, y: 6, z: 7 }</code> origin：x = 5, y = 6, z = 7</li>
+</ul>
+</blockquote>
+<ul>
+<li><code class="notranslate" translate="no">aspect</code> 主要在拷贝深度模具格式数据时才起作用。你一次只能拷贝到一个方面，即 <code class="notranslate" translate="no">depth-only</code> 或 <code class="notranslate" translate="no">stencil-only</code>。</li>
+</ul>
+<blockquote>
+<p>小知识：纹理上有 <code class="notranslate" translate="no">width</code>、<code class="notranslate" translate="no">height</code> 和 <code class="notranslate" translate="no">depthOrArrayLayers</code> 属性，这意味着它是一个有效的 <code class="notranslate" translate="no">GPUExtent3D</code>。换句话说，给定这个纹理</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const texture = device.createTexture({
+  format: 'r8unorm',
+  size: [2, 4],
+  usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_ATTACHMENT,
+});
+</pre>
+<p>以下所有用法都是有效的</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 拷贝 2x4 像素的数据到纹理
+const bytesPerRow = 2;
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, [2, 4]);
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, [texture.width, texture.height]);
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, {width: 2, height: 4});
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, {width: texture.width, height: texture.height});
+device.queue.writeTexture({ texture }, data, { bytesPerRow }, texture); // !!!
+</pre>
+<p>最后一个有效是因为纹理有 <code class="notranslate" translate="no">width</code>、<code class="notranslate" translate="no">height</code> 和 <code class="notranslate" translate="no">depthOrArrayLayers</code>。我们没有使用这种风格，因为它不太清晰，但它是有效的。</p>
+</blockquote>
+<h2 id="copybuffertobuffer"><code class="notranslate" translate="no">copyBufferToBuffer</code></h2>
+<p>顾名思义，<code class="notranslate" translate="no">copyBufferToBuffer</code> 将数据从一个缓冲区拷贝到另一个缓冲区。</p>
+<p>签名：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyBufferToBuffer(
+  source,       // 要拷贝的源缓冲区
+  sourceOffset, // 开始拷贝的位置
+  dest,         // 目标缓冲区
+  destOffset,   // 开始拷贝到的位置
+  size,         // 要拷贝的字节数
+)
+</pre>
+<ul>
+<li><code class="notranslate" translate="no">source</code> 必须具有 <code class="notranslate" translate="no">GPUBufferUsage.COPY_SRC</code> 用法标志</li>
+<li><code class="notranslate" translate="no">dest</code> 必须具有 <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> 用法标志</li>
+<li><code class="notranslate" translate="no">size</code> 必须是 4 的倍数</li>
+</ul>
+<h2 id="copybuffertotexture"><code class="notranslate" translate="no">copyBufferToTexture</code></h2>
+<p>顾名思义，<code class="notranslate" translate="no">copyBufferToTexture</code> 将数据从缓冲区拷贝到纹理。</p>
+<p>签名：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyBufferToTexture(
+  // 源缓冲区详细信息
+  { buffer, offset: 0, bytesPerRow, rowsPerImage },
+
+  // 目标纹理详细信息
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 大小：
+  [ width, height, depthOrArrayLayers ] 或 { width, height, depthOrArrayLayers }
+)
+</pre>
+<p>这与 <code class="notranslate" translate="no">writeTexture</code> 的参数几乎完全相同。最大的区别是 <code class="notranslate" translate="no">bytesPerRow</code> <strong>必须是 256 的倍数！！</strong></p>
+<ul>
+<li><code class="notranslate" translate="no">texture</code> 必须具有 <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code> 用法标志</li>
+<li><code class="notranslate" translate="no">buffer</code> 必须具有 <code class="notranslate" translate="no">GPUBufferUsage.COPY_SRC</code> 用法标志</li>
+</ul>
+<h2 id="copytexturetobuffer"><code class="notranslate" translate="no">copyTextureToBuffer</code></h2>
+<p>顾名思义，<code class="notranslate" translate="no">copyTextureToBuffer</code> 将数据从纹理拷贝到缓冲区。</p>
+<p>签名：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyTextureToBuffer(
+  // 源纹理详细信息
+  { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 目标缓冲区详细信息
+  { buffer, offset: 0, bytesPerRow, rowsPerImage },
+
+  // 大小：
+  [ width, height, depthOrArrayLayers ] 或 { width, height, depthOrArrayLayers }
+)
+</pre>
+<p>这与 <code class="notranslate" translate="no">copyBufferToTexture</code> 的参数类似，只是纹理（现在是源）和缓冲区（现在是目标）交换了位置。与 <code class="notranslate" translate="no">copyBufferToTexture</code> 一样，<code class="notranslate" translate="no">bytesPerRow</code> <strong>必须是 256 的倍数！！</strong></p>
+<ul>
+<li><code class="notranslate" translate="no">texture</code> 必须具有 <code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code> 用法标志</li>
+<li><code class="notranslate" translate="no">buffer</code> 必须具有 <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> 用法标志</li>
+</ul>
+<h2 id="copytexturetotexture"><code class="notranslate" translate="no">copyTextureToTexture</code></h2>
+<p><code class="notranslate" translate="no">copyTextureToTexture</code> 将部分纹理拷贝到另一个纹理。</p>
+<p>两个纹理必须是相同格式，或者只能通过 <code class="notranslate" translate="no">'-srgb'</code> 后缀不同。</p>
+<p>签名：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">encoder.copyTextureToTexture(
+  // 源纹理详细信息
+  src: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 目标纹理详细信息
+  dst: { texture, mipLevel: 0, origin: [0, 0, 0], aspect: "all" },
+
+  // 大小：
+  [ width, height, depthOrArrayLayers ] 或 { width, height, depthOrArrayLayers }
+)
+</pre>
+<ul>
+<li>src.<code class="notranslate" translate="no">texture</code> 必须具有 <code class="notranslate" translate="no">GPUTextureUsage.COPY_SRC</code> 用法标志</li>
+<li>dst.<code class="notranslate" translate="no">texture</code> 必须具有 <code class="notranslate" translate="no">GPUTextureUsage.COPY_DST</code> 用法标志</li>
+<li><code class="notranslate" translate="no">width</code> 必须是块宽度的倍数</li>
+<li><code class="notranslate" translate="no">height</code> 必须是块高度的倍数</li>
+<li>src.<code class="notranslate" translate="no">origin[0]</code> 或 <code class="notranslate" translate="no">.x</code> 必须是块宽度的倍数</li>
+<li>src.<code class="notranslate" translate="no">origin[1]</code> 或 <code class="notranslate" translate="no">.y</code> 必须是块高度的倍数</li>
+<li>dst.<code class="notranslate" translate="no">origin[0]</code> 或 <code class="notranslate" translate="no">.x</code> 必须是块宽度的倍数</li>
+<li>dst.<code class="notranslate" translate="no">origin[1]</code> 或 <code class="notranslate" translate="no">.y</code> 必须是块高度的倍数</li>
+</ul>
+<h2 id="着色器">着色器</h2>
+<p>着色器可以读取和写入存储缓冲区、存储纹理，并且间接地可以渲染到纹理。这些都是将数据放入缓冲区和纹理的方法。换句话说，你可以编写着色器来生成、拷贝和传输数据。</p>
+<h2 id="映射缓冲区">映射缓冲区</h2>
+<p>你可以映射一个缓冲区。映射缓冲区意味着使它可以被 JavaScript 读取或写入。至少在 WebGPU 第一版中，可映射缓冲区有严格限制，即：可映射缓冲区只能用作临时的拷贝源或拷贝目标。可映射缓冲区不能用作任何其他类型的缓冲区（如 uniform 缓冲区、顶点缓冲区、索引缓冲区、存储缓冲区等）<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>你可以用 2 种用法标志组合创建可映射缓冲区：</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST</code></p>
+<p>这是一个缓冲区，你可以使用上面的拷贝命令从另一个缓冲区或纹理拷贝数据，然后映射它以在 JavaScript 中读取值</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE | GPUBufferUsage.COPY_SRC</code></p>
+<p>这是一个你可以在 JavaScript 中映射的缓冲区，你可以在其中放入数据，最后取消映射并使用上面的拷贝命令将其内容拷贝到另一个缓冲区或纹理</p>
+</li>
+</ul>
+<p>映射缓冲区的过程是异步的。你调用 <code class="notranslate" translate="no">buffer.mapAsync(mode, offset = 0, size?)</code>，其中 <code class="notranslate" translate="no">offset</code> 和 <code class="notranslate" translate="no">size</code> 以字节为单位。如果未指定 <code class="notranslate" translate="no">size</code>，则为整个缓冲区的大小。<code class="notranslate" translate="no">mode</code> 必须是 <code class="notranslate" translate="no">GPUMapMode.READ</code> 或 <code class="notranslate" translate="no">GPUMapMode.WRITE</code>，当然必须与你创建缓冲区时传入的 <code class="notranslate" translate="no">MAP_</code> 用法标志匹配。</p>
+<p><code class="notranslate" translate="no">mapAsync</code> 返回一个 <code class="notranslate" translate="no">Promise</code>。当 promise 解析时，缓冲区就可以映射了。你可以通过调用 <code class="notranslate" translate="no">buffer.getMappedRange(offset = 0, size?)</code> 来查看缓冲区的部分或全部内容，其中 <code class="notranslate" translate="no">offset</code> 是映射部分缓冲区的字节偏移量。<code class="notranslate" translate="no">getMappedRange</code> 返回一个 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer"><code class="notranslate" translate="no">ArrayBuffer</code></a>，因此通常你需要用它来构造 TypedArray 才能使用。</p>
+<p>下面是一个映射缓冲区的示例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const buffer = device.createBuffer({
+  size: 1024,
+  usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+});
+
+// 映射整个缓冲区
+await buffer.mapAsync(GPUMapMode.READ);
+
+// 将整个缓冲区作为 32 位浮点数数组获取
+const f32 = new Float32Array(buffer.getMappedRange())
+
+...
+
+buffer.unmap();
+</pre>
+<p>注意：一旦映射，在调用 <code class="notranslate" translate="no">unmap</code> 之前，缓冲区不能被 WebGPU 使用。一旦调用 <code class="notranslate" translate="no">unmap</code>，缓冲区就会从 JavaScript 中消失。换句话说，以这个例子为例：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const f32 = new Float32Array(buffer.getMappedRange())
+
+f32[0] = 123;
+console.log(f32[0]); // 打印 123
+
+buffer.unmap();
+
+console.log(f32[0]); // 打印 undefined
+</pre>
+<p>我们已经在<a href="webgpu-fundamentals.html#a-run-computations-on-the-gpu">第一篇文章</a>中看到过映射缓冲区读取的示例，我们在存储缓冲区中将一些数字翻倍，然后将结果拷贝到可映射缓冲区并映射它以读取结果。</p>
+<p>另一个示例是<a href="../webgpu-compute-shaders.md">计算着色器基础文章</a>，我们将各种 <code class="notranslate" translate="no">@builtin</code> 计算着色器值输出到存储缓冲区，然后将结果拷贝到可映射缓冲区并映射它以读取结果。</p>
+<h2 id="mappedatcreation"><a id="a-mapped-at-creation"></a>mappedAtCreation</h2>
+<p><code class="notranslate" translate="no">mappedAtCreation: true</code> 是创建缓冲区时可以添加的标志。在这种情况下，缓冲区不需要 <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code> 或 <code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE</code> 用法标志。</p>
+<p>这是一个特殊的标志，仅用于让你在创建时将数据放入缓冲区。你在创建缓冲区时添加标志 <code class="notranslate" translate="no">mappedAtCreation: true</code>。缓冲区被创建时已经映射好用于写入。例如：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const buffer = device.createBuffer({
+   size: 16,
+   usage: GPUBufferUsage.UNIFORM,
+   mappedAtCreation: true,
+ });
+ const arrayBuffer = buffer.getMappedRange(0, buffer.size);
+ const f32 = new Float32Array(arrayBuffer);
+ f32.set([1, 2, 3, 4]);
+ buffer.unmap();
+</pre>
+<p>或者更简洁：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const buffer = device.createBuffer({
+   size: 16,
+   usage: GPUBufferUsage.UNIFORM,
+   mappedAtCreation: true,
+ });
+ new Float32Array(buffer.getMappedRange(0, buffer.size)).set([1, 2, 3, 4]);
+ buffer.unmap();
+</pre>
+<p>请注意，用 <code class="notranslate" translate="no">mappedAtCreation: true</code> 创建的缓冲区不会自动设置任何标志。这只是在首次创建时将数据放入缓冲区的便利方式。它在创建时映射，在你第一次取消映射后，表现得像任何其他缓冲区一样，只会对你指定的用法有效。换句话说，如果你想在以后拷贝到它，需要 <code class="notranslate" translate="no">GPUBufferUsage.COPY_DST</code>；如果你想在以后映射它，需要 <code class="notranslate" translate="no">GPUBufferUsage.MAP_READ</code> 或 <code class="notranslate" translate="no">GPUBufferUsage.MAP_WRITE</code>。</p>
+<h2 id="高效使用可映射缓冲区"><a id="a-efficient"></a> 高效使用可映射缓冲区</h2>
+<p>上面我们看到映射缓冲区是异步的。这意味着从我们通过调用 <code class="notranslate" translate="no">mapAsync</code> 请求缓冲区映射，到缓冲区被映射并可以调用 <code class="notranslate" translate="no">getMappedRange</code> 之间，有一段不确定的时间。</p>
+<p>一个常见的解决方法是始终保持一组缓冲区处于已映射状态。因为它们已经映射好了，所以可以立即使用。一旦你使用了一个并取消映射，并且只要你提交了使用该缓冲区的命令，你就可以再次请求映射它。当它的 promise 解析时，你把它放回已映射缓冲池中。如果你需要可映射缓冲区但没有可用的，你就创建一个新的并添加到池中。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>例外情况是如果你设置了 <code class="notranslate" translate="no">mappedAtCreation: true</code>。请参阅 <a href="#a-mapped-at-creation">mappedAtCreation</a>。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-copying-data.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-copying-data.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-copying-data.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-copying-data.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-copying-data.html">Русский
@@ -204,7 +539,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
@@ -214,17 +550,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">加载图像</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">高效使用视频</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">立方体贴图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
@@ -233,7 +569,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </ul>
   <li>3D数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">Translation</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">平移(Translation)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-rotation.html">Rotation</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scale.html">Scale</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-math.html">Matrix Math</a></li>
@@ -263,6 +599,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
@@ -292,13 +637,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 数据拷贝`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

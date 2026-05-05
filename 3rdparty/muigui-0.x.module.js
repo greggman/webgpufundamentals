@@ -1,4 +1,4 @@
-/* muigui@0.0.22, license MIT */
+/* muigui@0.0.27, license MIT */
 var css = {
   default: `
 .muigui {
@@ -202,7 +202,7 @@ var css = {
 }
 .muigui-root>div:nth-child(2),
 .muigui-menu>div:nth-child(2) {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
 }
 
 .muigui-controller {
@@ -277,15 +277,20 @@ var css = {
   background-image: var(--image-closed);
 }
 
-.muigui-open>.muigui-open-container {
+.muigui-open > .muigui-open-container {
   transition: all 0.1s ease-out;
   overflow: auto;
-  height: 100%;
+  max-height: calc(100vh - 3em);
 }
 .muigui-closed>.muigui-open-container {
   transition: all 0.1s ease-out;
+  max-height: 0;
+  height: 0;        /* make it unambiguous */
+  min-height: 0;    /* overrides .muigui-controller min-height */
   overflow: hidden;
-  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
 }
 .muigui-open>.muigui-open-container>* {
   transition: all 0.1s ease-out;
@@ -1211,6 +1216,9 @@ class Button extends Controller {
         }));
     this.setOptions({name: property, ...options});
   }
+  getName() {
+    return this.#buttonElem.textContent;
+  }
   name(name) {
     this.#buttonElem.textContent = name;
     return this;
@@ -1426,6 +1434,9 @@ class LabelController extends Controller {
   }
   get id() {
     return this.#id;
+  }
+  getName() {
+    return this.#nameElem.textContent;
   }
   name(name) {
     if (this.#nameElem.title === this.#nameElem.textContent) {
@@ -2713,6 +2724,8 @@ class Divider extends Controller {
 class Container extends Controller {
   #controllers;
   #childDestController;
+  #listening;
+  #updateFn;
 
   constructor(className) {
     super(className);
@@ -2775,10 +2788,21 @@ class Container extends Controller {
     this.#childDestController = this.#childDestController.parent;
     return this;
   }
-  listen() {
-    this.#controllers.forEach(c => {
-      c.listen();
-    });
+  listen(listen = true) {
+    if (!this.#updateFn) {
+      this.#updateFn = this.updateDisplay.bind(this);
+    }
+    if (listen) {
+      if (!this.#listening) {
+        this.#listening = true;
+        addTask(this.#updateFn);
+      }
+    } else {
+      if (this.#listening) {
+        this.#listening = false;
+        removeTask(this.#updateFn);
+      }
+    }
     return this;
   }
 }
@@ -2798,13 +2822,23 @@ class Folder extends Container {
     this.name(name);
     this.open();
   }
+  isOpen() {
+    return this.domElement.classList.contains('muigui-open');
+  }
   open(open = true) {
+    const old = this.isOpen();
     this.domElement.classList.toggle('muigui-closed', !open);
     this.domElement.classList.toggle('muigui-open', open);
+    if (old !== open) {
+      this.emitChange(open, this);
+    }
     return this;
   }
   close() {
     return this.open(false);
+  }
+  getName() {
+    return this.#labelElem.textContent;
   }
   name(name) {
     this.#labelElem.textContent = name;
@@ -2814,7 +2848,7 @@ class Folder extends Container {
     return this.name(title);
   }
   toggleOpen() {
-    this.open(!this.domElement.classList.contains('muigui-open'));
+    this.open(!this.isOpen());
     return this;
   }
 }

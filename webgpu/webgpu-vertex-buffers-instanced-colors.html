@@ -102,7 +102,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Vertex {
         @location(0) position: vec2f,
         @location(1) color: vec4f,
@@ -169,7 +169,7 @@ async function main() {
   const kNumObjects = 100;
   const objectInfos = [];
 
-  // create 2 storage buffers
+  // create 2 vertex buffers
   const staticUnitSize =
     4 * 4 + // color is 4 32bit floats (4bytes each)
     2 * 4;  // offset is 2 32bit floats (4bytes each)

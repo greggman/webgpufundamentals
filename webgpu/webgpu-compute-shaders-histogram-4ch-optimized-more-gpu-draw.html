@@ -44,7 +44,7 @@ async function main() {
 
   const histogramChunkModule = device.createShaderModule({
     label: 'histogram chunk shader',
-    code: `
+    code: /* wgsl */ `
       ${sharedConstants}
       const chunkSize = chunkWidth * chunkHeight;
       var<workgroup> bins: array<array<atomic<u32>, 4>, chunkSize>;
@@ -94,7 +94,7 @@ async function main() {
 
   const chunkSumModule = device.createShaderModule({
     label: 'chunk sum shader',
-    code: `
+    code: /* wgsl */ `
       ${sharedConstants}
       const chunkSize = chunkWidth * chunkHeight;
 
@@ -121,7 +121,7 @@ async function main() {
 
   const scaleModule = device.createShaderModule({
     label: 'histogram scale shader',
-    code: `
+    code: /* wgsl */ `
       @group(0) @binding(0) var<storage, read> bins: array<vec4u>;
       @group(0) @binding(1) var<storage, read_write> scale: vec4f;
       @group(0) @binding(2) var ourTexture: texture_2d<f32>;
@@ -141,7 +141,7 @@ async function main() {
 
   const drawHistogramModule = device.createShaderModule({
     label: 'draw histogram shader',
-    code: `
+    code: /* wgsl */ `
       struct OurVertexShaderOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -249,8 +249,8 @@ async function main() {
   const histogramBindGroup = device.createBindGroup({
     layout: histogramChunkPipeline.getBindGroupLayout(0),
     entries: [
-      { binding: 0, resource: { buffer: chunksBuffer }},
-      { binding: 1, resource: texture.createView() },
+      { binding: 0, resource: chunksBuffer },
+      { binding: 1, resource: texture },
     ],
   });
 
@@ -258,8 +258,8 @@ async function main() {
     layout: scalePipeline.getBindGroupLayout(0),
     entries: [
       { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
-      { binding: 1, resource: { buffer: scaleBuffer }},
-      { binding: 2, resource: texture.createView() },
+      { binding: 1, resource: scaleBuffer },
+      { binding: 2, resource: texture },
     ],
   });
 
@@ -278,8 +278,8 @@ async function main() {
     const chunkSumBindGroup = device.createBindGroup({
       layout: chunkSumPipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: chunksBuffer }},
-        { binding: 1, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: chunksBuffer },
+        { binding: 1, resource: uniformBuffer },
       ],
     });
     sumBindGroups.push(chunkSumBindGroup);
@@ -367,8 +367,8 @@ async function main() {
       layout: drawHistogramPipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
-        { binding: 1, resource: { buffer: uniformBuffer } },
-        { binding: 2, resource: { buffer: scaleBuffer }},
+        { binding: 1, resource: uniformBuffer  },
+        { binding: 2, resource: scaleBuffer },
       ],
     });
 

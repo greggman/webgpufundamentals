@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-constants.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Shader Constants">
+
+<meta name="description" content="WebGPU的基础">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-constants_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU着色器常量">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="The fundamentals of WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-constants_zh-cn.jpg">
+<meta property="og:description" content="WebGPU的基础">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-constants.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Shader Constants">
+<meta name="twitter:title" content="WebGPU着色器常量">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-constants.html">
-<meta name="twitter:description" content="The fundamentals of WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="WebGPU的基础">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-constants_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-constants.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-constants_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-constants.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-constants.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU着色器常量",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-constants.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Shader Constants</title>
+<title>WebGPU着色器常量</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-constants.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-constants.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-constants.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-constants.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-constants.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-constants.html">Русский
@@ -182,19 +228,267 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Shader Constants</h1>
+    <h1>WebGPU着色器常量</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-constants.html">英文原版地址</a></p>
+      <p>我不确定这个主题是否值得被视为着色器的一种输入。但从某种角度来看，它确实算是，所以我们还是来探讨一下。</p>
+<p>常量，或者更正式地称为<em>管线可覆盖常量 (pipeline-overridable constants)</em>，是一种你在着色器中声明，但在使用该着色器创建管线时可以更改其值的常量。</p>
+<p>一个简单的例子如下：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">override red = 0.0;
+override green = 0.0;
+override blue = 0.0;
+
+@fragment fn fs() -&gt; @location(0) vec4f {
+  return vec4f(red, green, blue, 1.0);
+}
+</pre>
+<p>将此片元着色器（fragment shader）与<a href="webgpu-fundamentals.html">基础文章</a>中的顶点着色器（vertex shader）结合使用。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; @builtin(position) vec4f {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // 顶部中心
+    vec2f(-0.5, -0.5),  // 左下
+    vec2f( 0.5, -0.5)   // 右下
+  );
+
+  return vec4f(pos[vertexIndex], 0.0, 1.0);
+}
+</pre>
+<p>如果我们直接使用这个着色器，会得到一个黑色的三角形。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>但是，我们可以在指定管线（pipeline）时更改这些常量，或者说“覆盖（override）”它们。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded triangle pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
++      constants: {
++        red: 1,
++        green: 0.5,
++        blue: 1,
++      },
+    },
+  });
+</pre>
+<p>现在我们得到了一个有点粉的颜色。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants-override.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants-override.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>管线可覆盖常量只能是标量值，即布尔值（true/false）、整数、浮点数。它们不能是向量或矩阵。</p>
+<p>如果你没有在着色器中指定常量的值，那么你<strong>必须</strong>在管线中提供一个。你还可以为它们分配一个数字 ID，然后通过 ID 来引用它们。</p>
+<p>例如:</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">override red: f32;             // 必须在管线中指定
+@id(123) override green = 0.0; // 可以通过 'green' 或 123 来指定
+override blue = 0.0;
+
+@fragment fn fs() -&gt; @location(0) vec4f {
+  return vec4f(red, green, blue, 1.0);
+}
+</pre>
+<p>你可能会问，这样做有什么意义？我在创建 WGSL 时也能轻而易举地做到这一点。例如：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const red = 0.5;
+const blue = 0.7;
+const green = 1.0;
+
+const code = `
+const red = ${red};
+const green = ${green};
+const blue = ${blue};
+
+@fragment fn fs() -&gt; @location(0) vec4f {
+  return vec4f(red, green, blue, 1.0);
+}
+`;
+</pre>
+<p>或者更直接一点：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const red = 0.5;
+const blue = 0.7;
+const green = 1.0;
+
+const code = `
+@fragment fn fs() -&gt; @location(0) vec4f {
+  return vec4f(${red}, ${green}, ${blue}, 1.0);
+}
+`;
+</pre>
+<p>区别在于，管线可覆盖常量可以在着色器模块创建<strong>之后</strong>再应用，从技术上讲，这比重新创建一个新的着色器模块要快。不过，创建管线本身并不是一个快速的操作，所以目前还不清楚在创建管线的整个过程中，这种方式到底能节省多少时间。但有一种可能性是，WebGPU 的实现可以利用你第一次使用特定常量创建管线时产生的信息，以便下次你使用不同常量创建管线时，能够大幅减少所需工作量。</p>
+<p>无论如何，这是向着色器传入少量数据的一种方法。</p>
+<h2 id="入口点是独立评估的">入口点是独立评估的</h2>
+<p>同样重要的一点是，请记住入口点是孤立评估的，正如在关于<a href="webgpu-inter-stage-variables.html#a-builtin-position">阶段间变量</a>的文章中部分讨论过的那样。</p>
+<p>这就好比传递给 <code class="notranslate" translate="no">createShaderModule</code> 的代码中，所有与当前入口点无关的内容都被剔除了。管线覆盖常量会被先应用，然后才会创建该入口点的着色器。</p>
+<p>让我们扩展一下上面的示例。我们将修改着色器，使顶点阶段（vertex stage）和片元阶段（fragment stage）都使用这些常量。我们将把顶点阶段的值传递给片元阶段，然后每隔 50 像素宽的垂直条纹交替使用不同的值进行绘制。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VOut {
++  @builtin(position) pos: vec4f,
++  @location(0) color: vec4f,
++}
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+-) -&gt; @builtin(position) vec4f {
++) -&gt; VOut {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // 顶部中心
+    vec2f(-0.5, -0.5),  // 左下
+    vec2f( 0.5, -0.5)   // 右下
+  );
+
+-  return vec4f(pos[vertexIndex], 0.0, 1.0);
++  return VOut(
++    vec4f(pos[vertexIndex], 0.0, 1.0),
++    vec4f(red, green, blue, 1),
++  );
+}
+
+override red = 0.0;
+override green = 0.0;
+override blue = 0.0;
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return vec4f(red, green, blue, 1.0);
++@fragment fn fs(v: VOut) -&gt; @location(0) vec4f {
++  let colorFromVertexShader = v.color;
++  let colorFromFragmentShader = vec4f(red, green, blue, 1.0);
++  // 每隔 50 个像素在两种颜色之间切换
++  return select(
++    colorFromVertexShader,
++    colorFromFragmentShader,
++    v.pos.x % 100.0 &gt; 50.0);
+}
+</pre>
+<p>现在我们将向每个入口点传入不同的常量。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded triangle pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
++      constants: {
++        red: 1,
++        green: 1,
++        blue: 0,
++      },
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+      constants: {
+        red: 1,
+        green: 0.5,
+        blue: 1,
+      },
+    },
+  });
+</pre>
+<p>结果显示，每个阶段中的常量值是不同的。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants-override-set-entry-points.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants-override-set-entry-points.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>同样，从功能上讲，我们为了方便，只使用了一个包含一段 WGSL <code class="notranslate" translate="no">code</code>的着色器模块。上面的代码在功能上等同于：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const vertexModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VOut {
+        @builtin(position) pos: vec4f,
+        @location(0) color: vec4f,
+      }
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; VOut {
+        let pos = array(
+          vec2f( 0.0,  0.5),  // 顶部中心
+          vec2f(-0.5, -0.5),  // 左下
+          vec2f( 0.5, -0.5)   // 右下
+        );
+
+        return VOut(
+          vec4f(pos[vertexIndex], 0.0, 1.0),
+          vec4f(red, green, blue, 1),
+        );
+      }
+
+      override red = 0.0;
+      override green = 0.0;
+      override blue = 0.0;
+    `,
+  });
+
+  const fragmentModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VOut {
+        @builtin(position) pos: vec4f,
+        @location(0) color: vec4f,
+      }
+
+      override red = 0.0;
+      override green = 0.0;
+      override blue = 0.0;
+
+      @fragment fn fs(v: VOut) -&gt; @location(0) vec4f {
+        let colorFromVertexShader = v.color;
+        let colorFromFragmentShader = vec4f(red, green, blue, 1.0);
+        // 每隔 50 个像素在两种颜色之间切换
+        return select(
+          colorFromVertexShader,
+          colorFromFragmentShader,
+          v.pos.x % 100.0 &gt; 50.0);
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: 'our hardcoded triangle pipeline',
+    layout: 'auto',
+    vertex: {
+*      module: vertexModule,
+      constants: {
+        red: 1,
+        green: 1,
+        blue: 0,
+      },
+    },
+    fragment: {
+*      module: fragmentModule,
+      targets: [{ format: presentationFormat }],
+      constants: {
+        red: 1,
+        green: 0.5,
+        blue: 1,
+      },
+    },
+  });
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-constants-override-separate-modules.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-constants-override-separate-modules.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>注意：使用管线可覆盖常量来传递颜色并<strong>不</strong>常见。我们之所以使用颜色，是因为它易于理解且方便展示结果。</p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-constants.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-constants.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-constants.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-constants.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-constants.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-constants.html">Русский
@@ -204,7 +498,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
@@ -214,17 +509,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">加载图像</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">高效使用视频</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">立方体贴图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
@@ -233,7 +528,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </ul>
   <li>3D数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">Translation</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">平移(Translation)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-rotation.html">Rotation</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scale.html">Scale</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-math.html">Matrix Math</a></li>
@@ -263,6 +558,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
@@ -292,13 +596,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU着色器常量`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

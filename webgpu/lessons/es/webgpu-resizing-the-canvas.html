@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-resizing-the-canvas.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Resizing the Canvas.">
+
+<meta name="description" content="Cómo redimensionar un canvas de WebGPU y los problemas involucrados">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-resizing-the-canvas_es.jpg">
+
+<meta property="og:title" content="Redimensionando el canvas en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to resize a WebGPU canvas and the issues involved">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-resizing-the-canvas_es.jpg">
+<meta property="og:description" content="Cómo redimensionar un canvas de WebGPU y los problemas involucrados">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resizing-the-canvas.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Resizing the Canvas.">
+<meta name="twitter:title" content="Redimensionando el canvas en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resizing-the-canvas.html">
-<meta name="twitter:description" content="How to resize a WebGPU canvas and the issues involved">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Cómo redimensionar un canvas de WebGPU y los problemas involucrados">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-resizing-the-canvas_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resizing-the-canvas.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-resizing-the-canvas_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resizing-the-canvas.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resizing-the-canvas.html",
+      "inLanguage":"es",
+      "name":"Redimensionando el canvas en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-resizing-the-canvas.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Resizing the Canvas.</title>
+<title>Redimensionando el canvas en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-resizing-the-canvas.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-resizing-the-canvas.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-resizing-the-canvas.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-resizing-the-canvas.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-resizing-the-canvas.html">Русский
@@ -182,18 +227,331 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Resizing the Canvas.</h1>
+    <h1>Redimensionando el canvas en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-resizing-the-canvas.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>En <a href="webgpu-fundamentals.html">el artículo sobre los fundamentos de webgpu</a> configuramos una estructura básica para establecer la resolución del canvas de modo que coincida con el tamaño en el que se muestra. Repasemos algunos de los detalles sobre el redimensionamiento de un canvas.</p>
+<p>Cada canvas tiene dos tamaños. El tamaño de su <em>drawing buffer</em> (buffer de dibujo). Esto indica cuántos píxeles hay en el propio canvas. El segundo tamaño es el tamaño en el que se muestra el canvas. El CSS determina el tamaño de visualización del canvas.</p>
+<p>Puedes establecer el tamaño del drawing buffer del canvas de dos maneras. Una usando HTML:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas id="c" width="400" height="300"&gt;&lt;/canvas&gt;
+</pre>
+<p>La otra usando JavaScript:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas id="c"&gt;&lt;/canvas&gt;
+</pre>
+<p>JavaScript:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const canvas = document.querySelector("#c");
+canvas.width = 400;
+canvas.height = 300;
+</pre>
+<p>En cuanto a establecer el tamaño de visualización de un canvas, si no tienes ningún CSS que afecte al tamaño de visualización del canvas, el tamaño de visualización será el mismo que el de su drawing buffer. Por lo tanto, en los dos ejemplos anteriores, el drawing buffer del canvas es de 400x300 y su tamaño de visualización también es de 400x300.</p>
+<p>Aquí tienes un ejemplo de un canvas cuyo drawing buffer es de 10x15 píxeles que se muestra a 400x300 píxeles en la página:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;canvas id="c" width="10" height="15" style="width: 400px; height: 300px;"&gt;&lt;/canvas&gt;
+</pre>
+<p>o, por ejemplo, así:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;style&gt;
+#c {
+  width: 400px;
+  height: 300px;
+}
+&lt;/style&gt;
+&lt;canvas id="c" width="10" height="15"&gt;&lt;/canvas&gt;
+</pre>
+<p>Si dibujamos una línea giratoria de un solo píxel de ancho en ese canvas, veremos algo como esto:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-10x15-canvas-400x300-css.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-10x15-canvas-400x300-css.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>¿Por qué se ve tan borroso? Porque el navegador toma nuestro canvas de 10x15 píxeles y lo estira a 400x300 píxeles y, por lo general, lo <em>filtra</em> cuando lo estira.</p>
+<p>Entonces, ¿qué hacemos si, por ejemplo, queremos que el canvas ocupe toda la ventana? Bueno, primero podemos hacer que el navegador estire el canvas para llenar la ventana con CSS. Ejemplo:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;html&gt;
+  &lt;head&gt;
+    &lt;style&gt;
+    html, body {
+      margin: 0;       /* elimina el margen por defecto       */
+      height: 100%;    /* haz que html,body llenen la página  */
+    }
+    #c {
+      display: block;  /* haz que el canvas actúe como bloque */
+      width: 100%;     /* haz que el canvas llene su contenedor */
+      height: 100%;
+    }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;canvas id="c"&gt;&lt;/canvas&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Ahora solo necesitamos que el drawing buffer coincida con el tamaño al que el navegador ha estirado el canvas. Desafortunadamente, este es un tema más complicado de lo que podrías esperar. Repasemos algunos métodos diferentes.</p>
+<h2 id="usar-resizeobserver">Usar <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a></h2>
+<p>Cubrimos esto en <a href="webgpu-fundamentals.html">el artículo sobre los fundamentos de webgpu</a>. Esta es la forma moderna y todos los navegadores que soportan WebGPU también soportan <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>.</p>
+<p>Para repetir lo que escribimos en el otro artículo: creas un <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> y le pasas una función para que la llame cada vez que los elementos que le has pedido observar cambien su tamaño. Luego le indicas qué elementos observar.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const observer = new ResizeObserver(entries =&gt; {
+  for (const entry of entries) {
+    const width = entry.contentBoxSize[0].inlineSize;
+    const height = entry.contentBoxSize[0].blockSize;
+    const canvas = entry.target;
+    canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+    canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+  }
+});
+observer.observe(canvas);
+</pre>
+<p>En el código anterior recorremos todas las entradas (<code class="notranslate" translate="no">entries</code>), pero normalmente solo habrá una porque solo estamos observando un canvas. Necesitamos limitar el tamaño del canvas al tamaño máximo que soporte nuestro dispositivo; de lo contrario, WebGPU empezará a generar errores indicando que intentamos crear una textura demasiado grande. También debemos asegurarnos de que no llegue a cero o, de nuevo, obtendremos errores.</p>
+<p>Si solo estamos renderizando bajo demanda, podríamos poner una llamada a nuestra función de renderizado dentro del código anterior. De lo contrario, si estamos animando mediante un bucle de <code class="notranslate" translate="no">requestAnimationFrame</code> (bucle rAF) u otros medios, la próxima vez que rendericemos obtendremos una textura que coincida con el tamaño que establecimos en el canvas cuando llamemos a <code class="notranslate" translate="no">context.getCurrentTexture()</code>.</p>
+<blockquote>
+<p>Ten en cuenta que <code class="notranslate" translate="no">inlineSize</code> y <code class="notranslate" translate="no">blockSize</code> no son enteros.</p>
+</blockquote>
+<h2 id="usar-clientwidth-y-clientheight">Usar <code class="notranslate" translate="no">clientWidth</code> y <code class="notranslate" translate="no">clientHeight</code></h2>
+<p>Antes de que existiera <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a>, era común usar <code class="notranslate" translate="no">clientWidth</code> y <code class="notranslate" translate="no">clientHeight</code>. Estas son propiedades que tiene cada elemento en HTML y que nos indican el tamaño del elemento en píxeles CSS.</p>
+<blockquote>
+<p>Nota: El rect del cliente incluye cualquier padding de CSS, por lo que si usas <code class="notranslate" translate="no">clientWidth</code> y/o <code class="notranslate" translate="no">clientHeight</code>, es mejor no poner ningún padding en tu elemento canvas.</p>
+</blockquote>
+<p>Usando JavaScript podemos comprobar a qué tamaño se está mostrando ese elemento y luego ajustar el tamaño de su drawing buffer para que coincida.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Consulta el tamaño en el que el navegador muestra el canvas en píxeles CSS.
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+  canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+</pre>
+<p>Usaríamos este código justo antes de llamar a <code class="notranslate" translate="no">context.getCurrentTexture()</code>.</p>
+<p>Personalmente, esta forma parece desactualizada, pero es probable que la veas por aquí y por allá, probablemente copiada y pegada de ejemplos antiguos que usan otras APIs.</p>
+<h2 id="usar-getboundingclientrect">Usar <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect"><code class="notranslate" translate="no">getBoundingClientRect</code></a></h2>
+<p>Otra forma de hacer esto es llamar a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect"><code class="notranslate" translate="no">getBoundingClientRect</code></a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // Consulta el tamaño en el que el navegador muestra el canvas en píxeles CSS.
+  const rect = canvas.getBoundingClientRect();
+  const width = rect.width; 
+  const height = rect.height; 
+  canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+  canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+</pre>
+<p>La diferencia entre <code class="notranslate" translate="no">clientWidth</code>, <code class="notranslate" translate="no">clientHeight</code> y <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect"><code class="notranslate" translate="no">getBoundingClientRect</code></a> es que el ancho y el alto de <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect"><code class="notranslate" translate="no">getBoundingClientRect</code></a> no tienen por qué ser enteros, mientras que los valores de <code class="notranslate" translate="no">clientWidth</code> y <code class="notranslate" translate="no">clientHeight</code> sí lo son.</p>
+<p>¿Por qué el ancho o el alto no serían enteros? <a href="#a-dpr">Mira más abajo</a>.</p>
+<h2 id="usar-windowinnerwidth-y-windowinnerheight">Usar <code class="notranslate" translate="no">window.innerWidth</code> y <code class="notranslate" translate="no">window.innerHeight</code></h2>
+<p>Veo esto a menudo y realmente parece un <strong>anti-patrón</strong>. La razón es que es inflexible. Las dos técnicas anteriores funcionan en cada situación, mientras que usar <code class="notranslate" translate="no">window.innerWidth</code> y <code class="notranslate" translate="no">window.innerHeight</code> solo funciona en una situación específica: cuando quieres llenar la página. Ya hemos demostrado que las técnicas anteriores llenan la página perfectamente, pero también funcionan en cualquier otra situación.</p>
+<p>Por ejemplo, tener el canvas <em>sin</em> llenar la página. Como un diagrama en un artículo o en un editor con una barra de herramientas.</p>
+<p>No supone más trabajo usar las dos primeras técnicas, por lo que parece absurdo usar esta técnica menos útil. Desafortunadamente, la fuerza del “copiar y pegar” es poderosa 😂</p>
+<h2 id="manejo-de-devicepixelratio-y-zoom"><a id="a-dpr"></a>Manejo de <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> y zoom</h2>
+<p>¿Por qué no termina ahí la cosa? Bueno, aquí es donde se complica.</p>
+<p>Lo primero que hay que entender es que la mayoría de los tamaños en el navegador están en unidades de píxeles CSS. Este es un intento de hacer que los tamaños sean independientes del dispositivo. Así, por ejemplo, al principio de este artículo establecimos el tamaño de visualización del canvas en 400x300 píxeles CSS. Dependiendo de si el usuario tiene una pantalla de alta densidad (HD-DPI), o si ha ampliado o reducido el zoom, o si tiene configurado un nivel de zoom en el sistema operativo, la cantidad de píxeles reales que eso represente en el monitor será diferente.</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> nos indicará, en general, la relación entre píxeles reales y píxeles CSS en tu monitor. Por ejemplo, aquí tienes la configuración actual de tu navegador:</p>
+<blockquote>
+<div>devicePixelRatio = <span data-diagram="dpr"></span></div>
+</blockquote>
+<p>Si estás en un ordenador de sobremesa o portátil, intenta pulsar <kbd>ctrl</kbd>+<kbd>+</kbd> y <kbd>ctrl</kbd>+<kbd>-</kbd> para acercar y alejar el zoom (<kbd>⌘</kbd>+<kbd>+</kbd> y <kbd>⌘</kbd>+<kbd>-</kbd> en Mac). Deberías ver que el número cambia en Firefox, Chrome, Edge (pero no en Safari).</p>
+<p>Así que, si queremos que el número de píxeles en el canvas coincida con el número de píxeles utilizados realmente para mostrarlo, la solución aparentemente obvia sería multiplicar los valores que consultamos anteriormente de esta manera:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const observer = new ResizeObserver(entries =&gt; {
+  for (const entry of entries) {
+-    const width = entry.contentBoxSize[0].inlineSize;
+-    const height = entry.contentBoxSize[0].blockSize;
++    const width = entry.contentBoxSize[0].inlineSize * devicePixelRatio;
++    const height = entry.contentBoxSize[0].blockSize * devicePixelRatio;
+</pre>
+<p>O esta:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const width = canvas.clientWidth;
+-  const height = canvas.clientHeight;
++ const width = canvas.clientWidth * devicePixelRatio;
++ const height = canvas.clientHeight * devicePixelRatio;
+</pre>
+<p>O esta:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const rect = canvas.getBoundingClientRect();
+-  const width = rect.width; 
+-  const height = rect.height; 
++  const width = rect.width * devicePixelRatio; 
++  const height = rect.height * devicePixelRatio; 
+</pre>
+<blockquote>
+<p><strong>¡¡¡LOS EJEMPLOS ANTERIORES NO DARÁN REALMENTE EL RESULTADO CORRECTO!!!</strong></p>
+</blockquote>
+<p>Dicho esto, es una aproximación cercana y podría ser suficiente para tus necesidades. Si no te importa no obtener un renderizado perfecto de 1 a 1 píxeles en la pantalla, puedes usar las soluciones anteriores.</p>
+<p>Hay dos formas de ver por qué el código anterior no proporciona la respuesta correcta:</p>
+<ol>
+<li>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> no es un entero.</p>
+<p>Si estás en Firefox, Edge o Chrome y pulsas las teclas de zoom como se mencionó anteriormente, puedes ver fácilmente valores fraccionarios de <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a>.</p>
+</li>
+<li>
+<p>El tamaño de cualquier elemento en sí mismo no es un entero.</p>
+<p>Arriba vimos que tanto <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> como <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect"><code class="notranslate" translate="no">getBoundingClientRect</code></a> devuelven valores no enteros para el tamaño de un elemento.</p>
+</li>
+</ol>
+<p>Para ver un ejemplo concreto de dónde surge este problema, podemos crear un div con 3 hijos, cada uno configurado para tener el 33% del ancho de su padre:</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;div id="parent"&gt;
+  &lt;div id="left"&gt;left&lt;/div&gt;
+  &lt;div id="middle"&gt;middle&lt;/div&gt;
+  &lt;div id="right"&gt;right&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-css" translate="no">#parent {
+  display: flex;
+  width: 299px;
+  height: 40px;
+  align-items: stretch;
+  background-color: red;
+}
+#parent&gt;* {
+  flex: 1 1 33%;
+}
+#left { background-color: #A44; }
+#middle { background-color: #4A4; }
+#right { background-color: #66C; }
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Ffractional-element-size-issues.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../fractional-element-size-issues.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>En una de mis máquinas, con una ventana del navegador por defecto (sin zoom), obtengo estos resultados:</p>
+<pre class="fixed-size-text">devicePixelRatio: 2
+--------------- #left ---------------
+                 inlineSize: 99.65625
+                clientWidth: 100
+ getBoundingClientRect.width: 99.6640625
+--------------- #middle ---------------
+                 inlineSize: 99.65625
+                clientWidth: 100
+ getBoundingClientRect.width: 99.6640625
+--------------- #right ---------------
+                 inlineSize: 99.65625
+                clientWidth: 100
+ getBoundingClientRect.width: 99.6640625
+--------------- #parent ---------------
+                 inlineSize: 299
+                clientWidth: 299
+ getBoundingClientRect.width: 299
+</pre>
+<p>Lo primero a notar es que <strong>¡¡los números para los 3 hijos son exactamente iguales!!</strong> Pero nuestro padre tiene 299 píxeles CSS de ancho. Si multiplicamos eso por el <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> de 2, obtenemos 598 píxeles reales. Tenemos 3 hijos. <code class="notranslate" translate="no">598 / 3 = 199.33333333333334</code>. No podemos tener 199.33333333334 píxeles reales. Si redondeamos a 199, entonces 199 + 199 + 199 = 597. Pero nuestro padre tiene 598. Para llegar a 598, uno de esos elementos necesita un píxel extra pero, dado que la información para los 3 es exactamente la misma, ¿cuál de ellos recibe el píxel extra?</p>
+<h2 id="devicepixelcontentboxsize"><a id="a-devicepixelcontentboxsize"></a> <code class="notranslate" translate="no">devicePixelContentBoxSize</code></h2>
+<p>La solución es que <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> proporciona la respuesta. Se llama <code class="notranslate" translate="no">devicePixelContentBoxSize</code>.</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const observer = new ResizeObserver(entries =&gt; {
+  for (const entry of entries) {
+-    const width = entry.contentBoxSize[0].inlineSize;
+-    const height = entry.contentBoxSize[0].blockSize;
++    const width = entry.devicePixelContentBoxSize[0].inlineSize;
++    const height = entry.devicePixelContentBoxSize[0].blockSize;
+</pre>
+<p>Si añadimos esa medida a nuestro ejemplo, nos da la respuesta real:</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Ffractional-element-size-device-pixel-content-box-size.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../fractional-element-size-device-pixel-content-box-size.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>En la máquina que usé para los resultados anteriores, obtengo estos resultados:</p>
+<pre class="fixed-size-text">devicePixelRatio: 2
+--------------- #left ---------------
+                           inlineSize: 99.65625
+devicePixelContentBoxSize.inlineSize: 199    &lt;=====
+                         clientWidth: 100
+         getBoundingClientRect.width: 99.6640625
+--------------- #middle ---------------
+                           inlineSize: 99.65625
+devicePixelContentBoxSize.inlineSize: 200    &lt;=====
+                         clientWidth: 100
+         getBoundingClientRect.width: 99.6640625
+--------------- #right ---------------
+                           inlineSize: 99.65625
+devicePixelContentBoxSize.inlineSize: 199    &lt;=====
+                         clientWidth: 100
+         getBoundingClientRect.width: 99.6640625
+--------------- #parent ---------------
+                           inlineSize: 299
+devicePixelContentBoxSize.inlineSize: 598    &lt;=====
+                         clientWidth: 299
+         getBoundingClientRect.width: 299
+</pre>
+<p>Como puedes ver, en mi máquina el navegador le dio el píxel extra al elemento central. Tiene 200 píxeles de dispositivo de ancho frente a los otros 2 elementos que tienen 199 píxeles de dispositivo de ancho.</p>
+<p>Este problema no se limita a este caso, es solo la forma más sencilla de mostrar un ejemplo concreto de no poder obtener esta información de ninguna otra manera. El punto es que, si quieres perfección de píxeles, no puedes simplemente multiplicar alguna otra medida por <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a>. Debes usar <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> y <code class="notranslate" translate="no">devicePixelContentBoxSize</code>.</p>
+<p>Nota: Safari, a fecha de noviembre de 2023, no soporta <code class="notranslate" translate="no">devicePixelContentBoxSize</code>, ni tampoco cambia el <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> en respuesta al zoom. Esto significa que <strong>es imposible en Safari mostrar un canvas con una perfección de 1x1 píxeles</strong>.</p>
+<h2 id="content-box-vs-device-pixel-content-box"><code class="notranslate" translate="no">content-box</code> vs <code class="notranslate" translate="no">device-pixel-content-box</code></h2>
+<p>Cuando llamas a <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver.observe"><code class="notranslate" translate="no">ResizeObserver.observe</code></a> puedes indicarle que observe los cambios de uno de dos tamaños de caja. El predeterminado es observar el tamaño de <code class="notranslate" translate="no">content-box</code>. Este es el tamaño CSS del elemento. Arriba, los elementos pueden no cambiar nunca su tamaño CSS. El padre está configurado a 299px píxeles CSS independientemente del nivel de zoom. Los hijos están configurados al 33%, que es el 33% de 299, lo que siempre es 99.666666 (o lo que sea que computen, ver resultados arriba). Por otro lado, si el elemento ocupa todo el tamaño de la página, entonces sí cambiaría al hacer zoom. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>También puedes observar <code class="notranslate" translate="no">device-pixel-content-box</code>. Este es el tamaño de la cantidad real de píxeles de dispositivo que ocupa el elemento. Esto cambiará cuando cambie el nivel de zoom <sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup>. No cambiará si el tamaño en píxeles de dispositivo del elemento no ha cambiado realmente. Por ejemplo, si el elemento ocupa todo el tamaño de la página, hacer zoom no cambia el hecho de que sigue ocupando todo el tamaño de la página y, por lo tanto, sigue teniendo el mismo número de píxeles de dispositivo.</p>
+<p>Para decirle a <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"><code class="notranslate" translate="no">ResizeObserver</code></a> qué tamaño observar, se lo pasas al llamar a <code class="notranslate" translate="no">observe</code>.</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">resizeObserver.observe(someElement1, {box: 'device-pixel-content-box'});
+resizeObserver.observe(someElement2, {box: 'content-box'});
+</pre>
+<p>Desafortunadamente, de nuevo, Safari no soporta esto y lanzará una excepción si intentas pasar <code class="notranslate" translate="no">'device-pixel-content-box'</code>.</p>
+<h2 id="píxeles-reales---solución"><a id="a-actual-pixels"></a> Píxeles reales - solución</h2>
+<p>A partir de noviembre de 2023, la solución para obtener el número real de píxeles es solicitar ambos tipos de cajas anteriores, capturar el problema de Safari y, si <code class="notranslate" translate="no">devicePixelContentBoxSize</code> no está disponible, recurrir a <code class="notranslate" translate="no">contentBoxSize</code>.</p>
+<p>Aquí tienes nuestro código estándar para redimensionar el canvas actualizado para soportar un renderizado perfecto de píxeles en todos los navegadores que cumplen con los estándares <sup class="footnote-ref"><a href="#fn1" id="fnref1:2">[1:2]</a></sup>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const observer = new ResizeObserver(entries =&gt; {
+    for (const entry of entries) {
+      const width = entry.devicePixelContentBoxSize?.[0].inlineSize ||
+                    entry.contentBoxSize[0].inlineSize * devicePixelRatio;
+      const height = entry.devicePixelContentBoxSize?.[0].blockSize ||
+                     entry.contentBoxSize[0].blockSize * devicePixelRatio;
+      const canvas = entry.target;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+      // re-renderizar
+      render();
+    }
+  });
+  try {
+    observer.observe(canvas, { box: 'device-pixel-content-box' });
+  } catch {
+    observer.observe(canvas, { box: 'content-box' });
+  }
+</pre>
+<p>Podemos probar esto dibujando un patrón que mostrará un <a href="https://www.google.com/search?q=moire+effect">efecto moiré</a> si el renderizado no es perfecto a nivel de píxel. Dibujamos un patrón como este en <a href="webgpu-inter-stage-variables.html#a-builtin-position">el artículo sobre variables inter-etapa (inter-stage variables)</a>.</p>
+<p>Reemplazando el código de redimensionamiento del canvas con el fragmento anterior y cambiando el patrón a un tablero de ajedrez magenta, verde, blanco y negro.</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  @fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+-    let red = vec4f(1, 0, 0, 1);
+-    let cyan = vec4f(0, 1, 1, 1);
+-    return select(red, cyan, checker);
+
++    let hv = vec2f(floor(fsInput.position.xy % 2));
++    return vec4f(1, 0, 1, 1) * hv.x +
++           vec4f(0, 1, 0, 1) * hv.y;
+  }
+</pre>
+<p>Hagamos también el triángulo lo suficientemente grande como para cubrir el canvas <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    let pos = array(
+-      vec2f( 0.0,  0.5),  // centro superior
+-      vec2f(-0.5, -0.5),  // inferior izquierda
+-      vec2f( 0.5, -0.5)   // inferior derecha
++      vec2f(-1.0,  3.0),
++      vec2f( 3.0, -1.0),
++      vec2f(-1.0, -1.0),
+    );
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-resize-pixel-perfect.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-resize-pixel-perfect.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Ábrelo en una ventana nueva y acerca o aleja el zoom. Deberías ver un patrón monótono que parece casi un color sólido que no cambia independientemente del nivel de zoom, excepto en Safari donde, si haces zoom, podrías ver <a href="https://www.google.com/search?q=moire+pattern">patrones de moiré</a> que muestran que era imposible obtener perfección de píxeles en Safari.</p>
+<blockquote>
+<p>Nota: Si quieres añadir tu voz educada para que Safari soporte <code class="notranslate" translate="no">devicePixelContentBox</code>, puedes hacerlo en el informe de errores <a href="https://bugs.webkit.org/show_bug.cgi?id=264158">aquí</a>, así como en el error sobre Safari que no cambia <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a> en respuesta al zoom <a href="https://bugs.webkit.org/show_bug.cgi?id=124862">aquí</a>. Los errores a menudo se trabajan según la atención que reciben, así que por favor añade tu voz a los errores.</p>
+</blockquote>
+<h2 id="¿necesitas-usar-devicepixelratio">¿Necesitas usar <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a>?</h2>
+<p>Dibujar a resoluciones más altas es más lento que dibujar a resoluciones más bajas. No siempre es importante usar <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a>. Incluso si decides soportarlo, <a href="https://yesviz.com/viewport/">muchos teléfonos tienen relaciones de píxeles de dispositivo de hasta 4</a>. Eso es un total de 16 píxeles por cada píxel CSS. Dibujar 16 veces más píxeles es literalmente hasta 16 veces más lento que dibujar 1. Así que quizás quieras considerar limitar cómo usas <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"><code class="notranslate" translate="no">devicePixelRatio</code></a>, como <code class="notranslate" translate="no">dpr = Math.min(2, devicePixelRatio)</code>.</p>
+<p>Además, dado que los juegos suelen ofrecer una mala experiencia si son lentos, podrías considerar permitir que el usuario elija un multiplicador, que es lo que hacen muchos juegos de ordenador nativos en su configuración de opciones gráficas. De esta forma, el usuario puede elegir si prefiere resolución o velocidad.</p>
+<!-- keep this at the bottom of the article -->
+<script type="module" src="../webgpu-resizing-the-canvas.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Excepto en Safari 🤬 <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a> <a href="#fnref1:2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Consulta <a href="webgpu-large-triangle-to-cover-clip-space.html">este artículo</a> para saber por qué estas posiciones de vértices. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-resizing-the-canvas.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-resizing-the-canvas.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-resizing-the-canvas.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-resizing-the-canvas.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-resizing-the-canvas.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-resizing-the-canvas.html">Русский
@@ -203,84 +561,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +659,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Redimensionando el canvas en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

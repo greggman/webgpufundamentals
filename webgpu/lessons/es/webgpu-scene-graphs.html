@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/es/webgpu-scene-graphs.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,72 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Scene Graphs">
+
+<meta name="description" content="Grafos de escena (scene graphs)">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-scene-graphs_es.jpg">
+
+<meta property="og:title" content="Grafos de escena en WebGPU">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Scene Graphs">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-scene-graphs_es.jpg">
+<meta property="og:description" content="Grafos de escena (scene graphs)">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-scene-graphs.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Scene Graphs">
+<meta name="twitter:title" content="Grafos de escena en WebGPU">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/es/webgpu-scene-graphs.html">
-<meta name="twitter:description" content="Scene Graphs">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="Grafos de escena (scene graphs)">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-scene-graphs_es.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-scene-graphs.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-scene-graphs_es.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-scene-graphs.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-scene-graphs.html",
+      "inLanguage":"es",
+      "name":"Grafos de escena en WebGPU",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/es/webgpu-scene-graphs.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Scene Graphs</title>
+<title>Grafos de escena en WebGPU</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -57,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-scene-graphs.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-scene-graphs.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-scene-graphs.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-scene-graphs.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-scene-graphs.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-scene-graphs.html">Русский
@@ -182,18 +227,978 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Scene Graphs</h1>
+    <h1>Grafos de escena en WebGPU</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Lo sentimos, pero este artículo no se ha traducido todavía. <a href="https://github.com/webgpu/webgpufundamentals">Cualquier ayuda para traducir los artículos es bien recibida</a>! 😄</p>
-<p><a href="/webgpu/lessons/webgpu-scene-graphs.html">Puedes encontrar el artículo original en inglés aquí</a>.</p>
+      <p>Este artículo es el noveno de una serie que esperamos que te enseñe sobre matemáticas 3D. Cada uno se basa en la lección anterior, por lo que es posible que te resulten más fáciles de entender leyéndolos en orden.</p>
+<ol>
+<li><a href="webgpu-translation.html">Traslación</a></li>
+<li><a href="webgpu-rotation.html">Rotación</a></li>
+<li><a href="webgpu-scale.html">Escalado</a></li>
+<li><a href="webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="webgpu-cameras.html">Cámaras</a></li>
+<li><a href="webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="webgpu-scene-graphs.html">Grafos de escena</a> ⬅ estás aquí</li>
+</ol>
+<p>En el último artículo cubrimos la pila de matrices (matrix stack). Nos permitió crear una pila de cambios de matriz que fue útil para posicionar, orientar y escalar cosas en relación con otras.</p>
+<p>Un grafo de escena (scene graph) es, en cierto sentido, lo mismo, excepto que en lugar de usar código, usamos datos. Creamos un grafo de padres e hijos donde los hijos calculan su matriz basándose en la matriz de su padre.</p>
+<p>El grafo de escena para los archivadores se vería algo así:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">raíz (root)
+ &nbsp;+-archivador0
+ &nbsp;|&nbsp;&nbsp;+-malla-archivador0
+ &nbsp;|&nbsp;&nbsp;+-cajón0
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-cajón-cajón0
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-tirador-cajón0
+ &nbsp;|&nbsp;&nbsp;+-cajón1
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-cajón-cajón1
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-tirador-cajón1
+ &nbsp;|&nbsp;&nbsp;+-cajón2
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-cajón-cajón2
+ &nbsp;|&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-tirador-cajón2
+ &nbsp;|&nbsp;&nbsp;+-cajón3
+ &nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-malla-cajón-cajón3
+ &nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-malla-tirador-cajón3
+ &nbsp;+-archivador1
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-archivador2
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-archivador3
+ &nbsp;|&nbsp;&nbsp;...
+ &nbsp;+-archivador4
+ &nbsp;&nbsp;&nbsp;&nbsp;+-malla-archivador4
+ &nbsp;&nbsp;&nbsp;&nbsp;+-cajón0
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-cajón-cajón0
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-tirador-cajón0
+ &nbsp;&nbsp;&nbsp;&nbsp;+-cajón1
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-cajón-cajón1
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-tirador-cajón1
+ &nbsp;&nbsp;&nbsp;&nbsp;+-cajón2
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-cajón-cajón2
+ &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;+-malla-tirador-cajón2
+ &nbsp;&nbsp;&nbsp;&nbsp;+-cajón3
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-malla-cajón-cajón3
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-malla-tirador-cajón3
+</pre>
+<p>La ventaja de un grafo de escena es que almacena los datos como nodos en un grafo, por lo que puedes manipular fácilmente una parte del grafo sin tener que recurrir a la recursión en el código.</p>
+<h2 id="vamos-a-cambiar-el-ejemplo-de-los-archivadores-del-artículo-anterior-para-usar-un-grafo-de-escena">Vamos a cambiar el ejemplo de los archivadores del artículo anterior para usar un grafo de escena.</h2>
+<p>Lo primero que necesitamos es una clase que represente nuestro nodo del grafo de escena.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class SceneGraphNode {
+  constructor(name, source) {
+    this.name = name;
+    this.children = [];
+    this.localMatrix = mat4.identity();
+    this.worldMatrix = mat4.identity();
+    this.source = source;
+  }
+
+  addChild(child) {
+    child.setParent(this);
+  }
+
+  removeChild(child) {
+    child.setParent(null);
+  }
+
+  setParent(parent) {
+    // eliminarnos de nuestro padre actual
+    if (this.parent) {
+      const ndx = this.parent.children.indexOf(this);
+      if (ndx &gt;= 0) {
+        this.parent.children.splice(ndx, 1);
+      }
+    }
+
+    // añadirnos a nuestro nuevo padre
+    if (parent) {
+      parent.children.push(this);
+    }
+    this.parent = parent;
+  }
+
+  updateWorldMatrix() {
+    // actualizar la matriz local desde su fuente si tiene una.
+    this.source?.getMatrix(this.localMatrix);
+
+    if (this.parent) {
+      // tenemos un padre, hacemos la multiplicación
+      mat4.multiply(this.parent.worldMatrix, this.localMatrix, this.worldMatrix);
+    } else {
+      // no tenemos padre, así que solo copiamos local a mundo
+      mat4.copy(this.localMatrix, this.worldMatrix);
+    }
+
+    // ahora procesamos a todos los hijos
+      this.children.forEach(function(child) {
+      child.updateWorldMatrix();
+    });
+  }
+}
+</pre>
+<p>La clase <code class="notranslate" translate="no">SceneGraphNode</code> de arriba es bastante sencilla. Cada nodo tiene un array de hijos (<code class="notranslate" translate="no">children</code>). Hay funciones para añadir y quitar hijos, así como para establecer el padre de un nodo. Cada nodo tiene una matriz local (<code class="notranslate" translate="no">localMatrix</code>) que representa su posición, orientación y escala relativa a su padre. Cada nodo tiene una matriz de mundo (<code class="notranslate" translate="no">worldMatrix</code>) que representa la posición, orientación y escala de este nodo respecto al “mundo” o, más específicamente, respecto al exterior del grafo de escena. Y finalmente hay un <code class="notranslate" translate="no">updateWorldMatrix</code> que actualiza la <code class="notranslate" translate="no">worldMatrix</code> de un nodo y de todos sus hijos. Cada nodo también tiene una fuente opcional (<code class="notranslate" translate="no">source</code>), que es un objeto que proporciona una función <code class="notranslate" translate="no">getMatrix</code>. Podemos usar esto para proporcionar diferentes formas de calcular una matriz local para un nodo en particular.</p>
+<p>Proporcionemos una fuente.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class TRS {
+  constructor({
+    translation = [0, 0, 0],
+    rotation = [0, 0, 0],
+    scale = [1, 1, 1],
+  } = {}) {
+     this.translation = new Float32Array(translation);
+     this.rotation = new Float32Array(rotation);
+     this.scale = new Float32Array(scale);
+  }
+
+  getMatrix(dst) {
+    mat4.translation(this.translation, dst);
+    mat4.rotateX(dst, this.rotation[0], dst);
+    mat4.rotateY(dst, this.rotation[1], dst);
+    mat4.rotateZ(dst, this.rotation[2], dst);
+    mat4.scale(dst, this.scale, dst);
+    return dst;
+  }
+}
+</pre>
+<p><code class="notranslate" translate="no">TRS</code> es la abreviatura de Traslación, Rotación y Escalado (Translation, Rotation, Scale). Es una forma común de calcular una matriz local en un grafo de escena. A menudo, algunas implementaciones usan “position” en lugar de “translation”. Para este tutorial, pensé que sería mejor usar “translation” ya que coincide con lo que hacemos en <code class="notranslate" translate="no">getMatrix</code>.</p>
+<p>Una cosa que destaca arriba es establecer <code class="notranslate" translate="no">this.translation</code>, <code class="notranslate" translate="no">this.rotation</code> y <code class="notranslate" translate="no">this.scale</code> como <code class="notranslate" translate="no">new Float32Array(value)</code>. La ventaja de <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a> es que tiene una función <code class="notranslate" translate="no">set</code>, por lo que podemos hacer <code class="notranslate" translate="no">unTRS.translation.set(unNuevoValor)</code>.</p>
+<p>Puedes ver que <code class="notranslate" translate="no">getMatrix</code> calcula una matriz usando efectivamente:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">traslación * rotaciónX * rotaciónY * rotaciónZ * escalado
+</pre>
+<p>Es común tener opciones para cambiar el orden en que se aplica la rotación. En lugar de XYZ, podría ser ZYX o YZX o cualquier otro. También es común usar un <a href="https://www.google.com/search?q=quaternion">cuaternión</a> y se está volviendo cada vez más común usar <a href="https://www.youtube.com/watch?v=Idlv83CxP-8">álgebra geométrica</a>.</p>
+<p>En cualquier caso, vamos a empezar con lo que tenemos arriba.</p>
+<p>Ahora que tenemos un <code class="notranslate" translate="no">SceneGraphNode</code> y una fuente <code class="notranslate" translate="no">TRS</code>, vamos a construir nuestro grafo de escena.</p>
+<p>Primero, hagamos una función que añada tanto un <code class="notranslate" translate="no">SceneGraphNode</code> como una fuente <code class="notranslate" translate="no">TRS</code> a algún padre.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addTRSSceneGraphNode(
+    name,
+    parent,
+    trs,
+  ) {
+    const node = new SceneGraphNode(name, new TRS(trs));
+    if (parent) {
+      node.setParent(parent);
+    }
+    return node;
+  }
+</pre>
+<p>Añadamos una función que cree una “malla” (mesh). No estoy seguro de cómo llamarlo, pero será una lista de cosas para dibujar. Cada “cosa para dibujar” será una combinación de un <code class="notranslate" translate="no">SceneGraphNode</code>, los vértices de lo que queremos dibujar y un color para dibujarlo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const meshes = [];
+  function addMesh(node, vertices, color) {
+    const mesh = {
+      node,
+      vertices,
+      color,
+    };
+    meshes.push(mesh);
+    return mesh;
+  }
+</pre>
+<p>Ahora, dado que solo tenemos un cubo, hagamos una función que añada un cubo al grafo de escena y añada una “malla” para renderizar el cubo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addCubeNode(name, parent, trs, color) {
+    const node = addTRSSceneGraphNode(name, parent, trs);
+    return addMesh(node, cubeVertices, color);
+  }
+</pre>
+<p>Con estas piezas en su lugar, construyamos el grafo para los archivadores. Primero, hagamos un nodo “raíz” (root). La raíz no necesita una “fuente”.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const root = new SceneGraphNode('root');
+</pre>
+<p>Luego añadamos los archivadores:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const root = new SceneGraphNode('root');
++  // Añadir archivadores
++  for (let cabinetNdx = 0; cabinetNdx &lt; kNumCabinets; ++cabinetNdx) {
++    addCabinet(root, cabinetNdx);
++  }
+</pre>
+<p>Escribamos <code class="notranslate" translate="no">addCabinet</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addCabinet(parent, cabinetNdx) {
+    const cabinetName = `cabinet${cabinetNdx}`;
+
+    // añadir un nodo para todo el archivador
+    const cabinet = addTRSSceneGraphNode(
+      cabinetName, parent, {
+         translation: [cabinetNdx * kCabinetSpacing, 0, 0],
+       });
+
+    // añadir un nodo con un cubo para la malla del archivador
+    const kCabinetSize = [
+      kDrawerSize[kWidth] + 6,
+      kDrawerSpacing * kNumDrawersPerCabinet + 6,
+      kDrawerSize[kDepth] + 4,
+    ];
+    addCubeNode(
+      `${cabinetName}-mesh`, cabinet, {
+        scale: kCabinetSize,
+      }, kCabinetColor);
+
+    // Añadir los cajones
+    for (let drawerNdx = 0; drawerNdx &lt; kNumDrawersPerCabinet; ++drawerNdx) {
+      addDrawer(cabinet, drawerNdx);
+    }
+  }
+</pre>
+<p>Y escribamos <code class="notranslate" translate="no">addDrawer</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function addDrawer(parent, drawerNdx) {
+    const drawerName = `drawer${drawerNdx}`;
+
+    // añadir un nodo para todo el cajón
+    const drawer = addTRSSceneGraphNode(
+      drawerName, parent, {
+        translation: [3, drawerNdx * kDrawerSpacing + 5, 1],
+      });
+    animNodes.push(drawer);
+
+    // añadir un nodo con un cubo para el cubo del cajón.
+    addCubeNode(`${drawerName}-drawer-mesh`, drawer, {
+      scale: kDrawerSize,
+    }, kDrawerColor);
+
+    // añadir un nodo con un cubo para el tirador
+    addCubeNode(`${drawerName}-handle-mesh`, drawer, {
+      translation: kHandlePosition,
+      scale: kHandleSize,
+    }, kHandleColor);
+  }
+</pre>
+<p>Con nuestro grafo de escena listo, necesitamos actualizar nuestra función de renderizado.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    stack.save();
+-    stack.rotateY(settings.baseRotation);
+-    stack.translate([(kNumCabinets - 0.5) * kCabinetSpacing * -0.5, 0, 0]);
+-    objectNdx = 0;
+-    const ctx = { pass, stack, viewProjectionMatrix };
+-    drawCabinets(ctx, kNumCabinets);
+-    stack.restore();
++    const ctx = { pass, viewProjectionMatrix };
++    root.updateWorldMatrix();
++    for (const mesh of meshes) {
++      drawMesh(ctx, mesh);
++    }
+</pre>
+<p>Y ajustemos el código de la cámara:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const settings = {
+-    baseRotation: 0,
++    cameraRotation: 0,
+   };
+
+   const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
+
+   const gui = new GUI();
+   gui.onChange(render);
+-  gui.add(settings, 'baseRotation', radToDegOptions);
++  gui.add(settings, 'cameraRotation', radToDegOptions);
+
+...
+
+   function render() {
+     ...
+
+-    const eye = [0, 80, 200];
+-    const target = [0, 80, 0];
+-    const up = [0, 1, 0];
+-
+-    // Calcular una matriz de vista
+-    const viewMatrix = mat4.lookAt(eye, target, up);
++    // Calcular una matriz de cámara
++    const cameraMatrix = mat4.identity();
++    mat4.translate(cameraMatrix, [120, 100, 0], cameraMatrix);
++    mat4.rotateY(cameraMatrix, settings.cameraRotation, cameraMatrix);
++    mat4.translate(cameraMatrix, [60, 0, 300], cameraMatrix);
++
++    // Calcular una matriz de vista
++    const viewMatrix = mat4.inverse(cameraMatrix);
+
+     // combinar las matrices de vista y proyección
+     const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+</pre>
+<p>Y eso nos da los mismos archivadores pero usando un grafo de escena.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<h2 id="añadir-una-interfaz-de-usuario-gui"><a id="a-gui"></a> Añadir una interfaz de usuario (GUI)</h2>
+<p>Un punto importante de un grafo de escena es que, como son solo datos, podemos manipularlos. Añadamos una interfaz para ajustar y retocar el grafo.</p>
+<p>Primero, añadamos algunos controles para la traslación, rotación y escalado. Crearemos un ayudante que la interfaz usará para ajustar un <code class="notranslate" translate="no">TRS</code>, pero que nos permitirá cambiar qué <code class="notranslate" translate="no">TRS</code> se está editando.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   // Presenta un TRS a la interfaz, permitiendo elegir qué TRS se está editando.
+   class TRSUIHelper {
+     #trs = new TRS();
+
+     constructor() {}
+
+     setTRS(trs) {
+       this.#trs = trs;
+     }
+
+     get translationX() { return this.#trs.translation[0]; }
+     set translationX(x) { this.#trs.translation[0] = x; }
+     get translationY() { return this.#trs.translation[1]; }
+     set translationY(x) { this.#trs.translation[1] = x; }
+     get translationZ() { return this.#trs.translation[2]; }
+     set translationZ(x) { this.#trs.translation[2] = x; }
+
+     get rotationX() { return this.#trs.rotation[0]; }
+     set rotationX(x) { this.#trs.rotation[0] = x; }
+     get rotationY() { return this.#trs.rotation[1]; }
+     set rotationY(x) { this.#trs.rotation[1] = x; }
+     get rotationZ() { return this.#trs.rotation[2]; }
+     set rotationZ(x) { this.#trs.rotation[2] = x; }
+
+     get scaleX() { return this.#trs.scale[0]; }
+     set scaleX(x) { this.#trs.scale[0] = x; }
+     get scaleY() { return this.#trs.scale[1]; }
+     set scaleY(x) { this.#trs.scale[1] = x; }
+     get scaleZ() { return this.#trs.scale[2]; }
+     set scaleZ(x) { this.#trs.scale[2] = x; }
+   }
+</pre>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+ const trsUIHelper = new TRSUIHelper();
+
+   const settings = {
+-    cameraRotation: 0,
++    cameraRotation: degToRad(-45),
+   };
+
+-  const radToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
++  const radToDegOptions = { min: -90, max: 90, step: 1, converters: GUI.converters.radToDeg };
++  const cameraRadToDegOptions = { min: -180, max: 180, step: 1, converters: GUI.converters.radToDeg };
+
+   const gui = new GUI();
+   gui.onChange(render);
+-  gui.add(settings, 'cameraRotation', radToDegOptions);
++  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  const trsFolder = gui.addFolder('orientación');
++  trsFolder.add(trsUIHelper, 'translationX', -200, 200, 1),
++  trsFolder.add(trsUIHelper, 'translationY', -200, 200, 1),
++  trsFolder.add(trsUIHelper, 'translationZ', -200, 200, 1),
++  trsFolder.add(trsUIHelper, 'rotationX', radToDegOptions),
++  trsFolder.add(trsUIHelper, 'rotationY', radToDegOptions),
++  trsFolder.add(trsUIHelper, 'rotationZ', radToDegOptions),
++  trsFolder.add(trsUIHelper, 'scaleX', 0.1, 100),
++  trsFolder.add(trsUIHelper, 'scaleY', 0.1, 100),
++  trsFolder.add(trsUIHelper, 'scaleZ', 0.1, 100),
+</pre>
+<p>Ahora necesitamos una forma de seleccionar un nodo, así que vamos a recorrer el grafo de escena y crear un botón para cada nodo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import GUI from '../3rdparty/muigui-0.x.module.js';
++import { addButtonLeftJustified } from './resources/js/gui-helpers.js';
+
+...
++  const kUnelected = '\u3000'; // espacio de ancho completo
++  const kSelected = '➡️';
++  const prefixRE = new RegExp(`^(?:${kUnelected}|${kSelected})`);
++
++  function setCurrentSceneGraphNode(node) {
++    trsUIHelper.setTRS(node.source);
++    trsFolder.name(`orientación: ${node.name}`);
++    trsFolder.updateDisplay();
++
++    // Marcar qué nodo está seleccionado.
++    for (const b of nodeButtons) {
++      const name = b.button.getName().replace(prefixRE, '');
++      b.button.name(`${b.node === node ? kSelected : kUnelected}${name}`);
++    }
++  }
++
++  // \u00a0 es un espacio de no separación.
++  const threeSpaces = '\u00a0\u00a0\u00a0';
++  const barTwoSpaces = '\u00a0|\u00a0';
++  const plusDash = '\u00a0+-';
++  // añade un nodo del grafo de escena a la interfaz y añade el
++  // prefijo apropiado para que se vea algo como:
++  //
++  // +-raíz
++  // | +-hijo
++  // | | +-hijo
++  // | +-hijo
++  // +-hijo
++  function addSceneGraphNodeToGUI(gui, node, last, prefix) {
++    if (node.source instanceof TRS) {
++      const label = `${prefix === undefined ? '' : `${prefix}${plusDash}`}${node.name}`;
++      addButtonLeftJustified(
++        gui, label, () =&gt; setCurrentSceneGraphNode(node));
++    }
++    const childPrefix = prefix === undefined
++      ? ''
++      : `${prefix}${last ? threeSpaces : barTwoSpaces}`;
++    node.children.forEach((child, i) =&gt; {
++      const childLast = i === node.children.length - 1;
++      addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
++    });
++  }
+
+   const gui = new GUI();
+   ...
++  const nodesFolder = gui.addFolder('nodos');
++  addSceneGraphNodeToGUI(nodesFolder, root);
++
++  setCurrentSceneGraphNode(root.children[0]);
+</pre>
+<p>Arriba creamos un botón para cada nodo que tiene una fuente <code class="notranslate" translate="no">TRS</code>. Cuando se pulsa un botón, llama a <code class="notranslate" translate="no">setCurrentSceneGraphNode</code> y le pasa el nodo de ese botón. <code class="notranslate" translate="no">setCurrentSceneGraphNode</code> actualiza el nombre de la carpeta y luego llama a <code class="notranslate" translate="no">trsFolder.updateDisplay</code> para actualizar la interfaz con los datos del <code class="notranslate" translate="no">TRS</code> recién seleccionado.</p>
+<p>Esto funciona, pero encontré que la interfaz está un poco saturada para nuestras pequeñas ventanas, así que aquí hay algunos retoques más.</p>
+<ol>
+<li>
+<p>Reducir los controles de traslación, rotación y escalado.</p>
+<p>Para los archivadores, aunque podemos establecer cualquiera de los 9 ajustes de traslación, rotación y escalado en cada nodo, el único que es realmente relevante es la “traslación z”. Así que ocultemos todos menos la traslación por defecto.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no"> const settings = {
+   cameraRotation: degToRad(-45),
++   showAllTRS: false,
+ };
+
+ const gui = new GUI();
+ gui.onChange(render);
+ gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++ gui.add(settings, 'showAllTRS').onChange(showTRS);
+ const trsFolder = gui.addFolder('orientación');
++ const trsControls = [
+*   trsFolder.add(trsUIHelper, 'translationX', -200, 200, 1),
+*   trsFolder.add(trsUIHelper, 'translationY', -200, 200, 1),
+*   trsFolder.add(trsUIHelper, 'translationZ', -200, 200, 1),
+*   trsFolder.add(trsUIHelper, 'rotationX', radToDegOptions),
+*   trsFolder.add(trsUIHelper, 'rotationY', radToDegOptions),
+*   trsFolder.add(trsUIHelper, 'rotationZ', radToDegOptions),
+*   trsFolder.add(trsUIHelper, 'scaleX', 0.1, 100),
+*   trsFolder.add(trsUIHelper, 'scaleY', 0.1, 100),
+*   trsFolder.add(trsUIHelper, 'scaleZ', 0.1, 100),
++ ];
+const nodesFolder = gui.addFolder('nodos');
+addSceneGraphNodeToGUI(nodesFolder, root);
+
++const alwaysShow = new Set([0, 1, 2]);
++function showTRS(show) {
++  trsControls.forEach((trs, i) =&gt; {
++    trs.show(show || alwaysShow.has(i));
++  });
++}
++showTRS(false);
+</pre>
+<p>Este código agrupa los controles de traslación, rotación y escalado en un array y muestra todos o solo los primeros 3.</p>
+</li>
+<li>
+<p>No mostrar las mallas (meshes).</p>
+<p>Tenemos un nodo ‘-mesh’ en el grafo para cada cubo que realmente no necesitamos para mover los archivadores o los cajones, así que ocultémoslos por defecto.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // \u00a0 es un espacio de no separación.
+  const threeSpaces = '\u00a0\u00a0\u00a0';
+  const barTwoSpaces = '\u00a0|\u00a0';
+  const plusDash = '\u00a0+-';
+  // añade un nodo del grafo de escena a la interfaz y añade el
+  // prefijo apropiado para que se vea algo como:
+  //
+  // +-raíz
+  // | +-hijo
+  // | | +-hijo
+  // | +-hijo
+  // +-hijo
+  function addSceneGraphNodeToGUI(gui, node, last, prefix) {
++   const nodes = [];
+    if (node.source instanceof TRS) {
+      const label = `${prefix === undefined ? '' : `${prefix}${plusDash}`}${node.name}`;
+-      addButtonLeftJustified(gui, label, () =&gt; setCurrentSceneGraphNode(node));
++      nodes.push(addButtonLeftJustified(
++        gui, label, () =&gt; setCurrentSceneGraphNode(node)));
+    const childPrefix = prefix === undefined
+      ? ''
+      : `${prefix}${last ? threeSpaces : barTwoSpaces}`;
+-    node.children.forEach((child, i) =&gt; {
++    nodes.push(...node.children.map((child, i) =&gt; {
+*      const childLast = i === node.children.length - 1;
+-      addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
++      return addSceneGraphNodeToGUI(gui, child, childLast, childPrefix);
+*    }));
++    return nodes.flat();
+  }
+ 
+  const settings = {
+    cameraRotation: degToRad(-45),
++    showMeshNodes: false,
+    showAllTRS: false,
+  };
+ 
+  const gui = new GUI();
+  gui.onChange(render);
+  gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+  gui.add(settings, 'showAllTRS').onChange(showTRS);
+
+   ...
+
+-  const nodesFolder = gui.addFolder('nodos');
+  addSceneGraphNodeToGUI(nodesFolder, root);
++  const nodeButtons = addSceneGraphNodeToGUI(nodesFolder, root);
+ 
++ function showMeshNodes(show) {
++   for (const child of nodeButtons) {
++     if (child.domElement.textContent.includes('mesh')) {
++       child.show(show);
++     }
++   }
++ }
++ showMeshNodes(false);
+</pre>
+</li>
+</ol>
+<p>Intenta seleccionar un “cajón” (drawer) y ajustar la “traslación z”.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets-w-gui.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets-w-gui.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Como puedes ver, al tener datos para cada nodo es fácil cambiar la posición, rotación y escala de cualquier nodo individual.</p>
+<h2 id="animación"><a id="a-animate"></a> Animación</h2>
+<p>Por diversión, vamos a animar los cajones.</p>
+<p>Primero, hagamos una lista de los nodos de los cajones.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const animNodes = [];
+
+   function addDrawer(parent, drawerNdx) {
+     const drawerName = `drawer${drawerNdx}`;
+
+     // añadir un nodo para todo el cajón
+     const drawer = addTRSSceneGraphNode(
+       drawerName, parent, {
+         translation: [3, drawerNdx * kDrawerSpacing + 5, 1],
+       });
++    animNodes.push(drawer);
+
+     // añadir un nodo con un cubo para el cubo del cajón.
+     addCubeNode(`${drawerName}-drawer-mesh`, drawer, {
+       scale: kDrawerSize,
+     }, kDrawerColor);
+
+     // añadir un nodo con un cubo para el tirador
+     addCubeNode(`${drawerName}-handle-mesh`, drawer, {
+       translation: kHandlePosition,
+       scale: kHandleSize,
+     }, kHandleColor);
+   }
+</pre>
+<p>Luego escribamos algo de código para animar los cajones basándonos en el tiempo.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const lerp = (a, b, t) =&gt; a + (b - a) * t;
+
+   function animate(time) {
+     animNodes.forEach((node, i) =&gt; {
+       const source = node.source;
+       const t = time + i * 1;
+       const l = Math.sin(t) * 0.5 + 0.5;
+       source.translation[2] = lerp(1, kDrawerSize[2] * 0.8, l);
+     });
+   }
+</pre>
+<p>Hagamos un bucle de renderizado. Haremos que solicite un frame de animación solo si aún no hemos solicitado uno y ningún frame se ha renderizado todavía.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // solicitar render si aún no se ha solicitado.
++  let renderRequestId;
++  function requestRender() {
++    if (!renderRequestId) {
++      renderRequestId = requestAnimationFrame(render);
++    }
++  }
+
+   function render() {
++    renderRequestId = undefined;
+     ...
+
+   }
+</pre>
+<p>Y necesitamos actualizar los lugares que antes llamaban a <code class="notranslate" translate="no">render</code> para que ahora llamen a <code class="notranslate" translate="no">requestRender</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const gui = new GUI();
+-  gui.onChange(render);
++  gui.onChange(requestRender);
+   gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+
+   ...
+
+   const observer = new ResizeObserver(entries =&gt; {
+     for (const entry of entries) {
+       const canvas = entry.target;
+       const width = entry.contentBoxSize[0].inlineSize;
+       const height = entry.contentBoxSize[0].blockSize;
+       canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+       canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+       // volver a renderizar
+-      render();
++      requestRender();
+     }
+   });
+   observer.observe(canvas);
+</pre>
+<p>Finalmente, configuremos algo de código para permitirnos encender y apagar la animación.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const settings = {
+     cameraRotation: degToRad(-45),
++    animate: false,
+     showMeshNodes: false,
+     showAllTRS: false,
+   };
+
+   const gui = new GUI();
+   gui.onChange(requestRender);
+   gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
++  gui.add(settings, 'animate').onChange(v =&gt; {
++    trsFolder.enable(!v);
++  });
+   gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+   gui.add(settings, 'showAllTRS').onChange(showTRS);
+
+   ...
+
++  let then;
++  let time = 0;
++  let wasRunning = false;
+   function render() {
+     renderRequestId = undefined;
+
+   ...
+
++    const isRunning = settings.animate;
++    const now = performance.now() * 0.001;
++    const deltaTime = wasRunning ? now - then : 0;
++    then = now;
++
++    if (isRunning) {
++      time += deltaTime;
++    }
++    wasRunning = isRunning;
++
++    if (settings.animate) {
++      animate(time);
++      trs.updateDisplay();
++      requestRender();
++    }
+   }
+</pre>
+<p>Una complicación de arriba es que preferimos que el reloj solo corra si “animate” está marcado. Por eso comprobamos si <code class="notranslate" translate="no">wasRunning</code> (estaba corriendo) en el frame anterior. Si no, establecemos <code class="notranslate" translate="no">deltaTime</code> a 0. De esa manera, el reloj no saltará hacia adelante la cantidad de tiempo que estuvimos sin animar.</p>
+<p>Desactivamos los controles de traslación, rotación y escalado si estamos animando.</p>
+<p>Finalmente, si <code class="notranslate" translate="no">settings.animate</code> está activado, solicitamos otro frame de animación. El código de la interfaz ya llamará a <code class="notranslate" translate="no">requestRender</code> en cualquier cambio, por lo que iniciará un renderizado, verá que <code class="notranslate" translate="no">settings.animate</code> es true y solicitará otro frame.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-file-cabinets-w-animation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-file-cabinets-w-animation.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Otra ventaja de un grafo de escena es que facilita la aplicación de animaciones. Simplemente las aplicamos a los nodos. No tenemos que preocuparnos de antemano de cómo fueron creados.</p>
+<h2 id="creación-de-una-mano"><a id="a-hand"></a> Creación de una mano</h2>
+<p>Hagamos un nuevo ejemplo de una mano. Para que sea sencillo, seguiremos usando cubos.</p>
+<p>Aquí hay un diagrama de cómo se verá el grafo de escena:</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">raíz (root)
+ +-muñeca (wrist)
+    +-palma (palm)
+    |  +-pulgar (thumb)
+    |  |  +-malla-pulgar
+    |  |  +-pulgar-1
+    |  |     +-malla-pulgar-1
+    |  +-dedo índice (index finger)
+    |  |  +-malla-dedo índice
+    |  |  +-dedo índice-1
+    |  |     +-malla-dedo índice-1
+    |  |     +-dedo índice-2
+    |  |        +-malla-dedo índice-2
+    |  +-dedo medio (middle finger)
+    |  |  +-malla-dedo medio
+    |  |  +-dedo medio-1
+    |  |     +-malla-dedo medio-1
+    |  |     +-dedo medio-2
+    |  |        +-malla-dedo medio-2
+    |  +-dedo anular (ring finger)
+    |  |  +-malla-dedo anular
+    |  |  +-dedo anular-1
+    |  |     +-malla-dedo anular-1
+    |  |     +-dedo anular-2
+    |  |        +-malla-dedo anular-2
+    |  +-meñique (pinky)
+    |     +-malla-meñique
+    |     +-meñique-1
+    |        +-malla-meñique-1
+    |        +-meñique-2
+    |           +-malla-meñique-2
+    +-malla-palma
+</pre>
+<p>Primero, movamos los vértices del cubo para que estén centrados sobre el plano XZ. Podríamos hacer esto añadiendo más nodos en el grafo de escena o aplicándolo en cada nodo ‘-mesh’, pero sería menos lioso hacerlo simplemente en los propios vértices.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createCubeVertices() {
+  const positions = [
+    // izquierda
+-    0, 0,  0,
+-    0, 0, -1,
+-    0, 1,  0,
+-    0, 1, -1,
++   -0.5, 0,  0.5,
++   -0.5, 0, -0.5,
++   -0.5, 1,  0.5,
++   -0.5, 1, -0.5,
+
+    // derecha
+-    1, 0,  0,
+-    1, 0, -1,
+-    1, 1,  0,
+-    1, 1, -1,
++    0.5, 0,  0.5,
++    0.5, 0, -0.5,
++    0.5, 1,  0.5,
++    0.5, 1, -0.5,
+  ];
+
+  ...
+</pre>
+<p>Ahora hagamos el grafo de escena. Borramos todo el código relacionado con la creación del grafo de los archivadores y lo reemplazamos por esto:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const kWhite = [1, 1, 1, 1];
++  function addFinger(name, parent, segments, segmentHeight, trs) {
++    const nodes = [];
++    const baseName = name;
++    for (let i = 0; i &lt; segments; ++i) {
++      const node = addTRSSceneGraphNode(name, parent, trs);
++      nodes.push(node);
++      const meshNode = addTRSSceneGraphNode(`${name}-mesh`, node, { scale: [10, segmentHeight, 10] });
++      addMesh(meshNode, cubeVertices, kWhite);
++      parent = node;
++      name = `${baseName}-${i + 1}`;
++      trs = {
++        translation: [0, segmentHeight, 0],
++        rotation: [degToRad(15), 0, 0],
++      };
++    }
++    return nodes;
++  }
+
+   const root = new SceneGraphNode('root');
++  const wrist = addTRSSceneGraphNode('wrist', root);
++  const palm = addTRSSceneGraphNode('palm', wrist, { translation: [0, 100, 0] });
++  const palmMesh = addTRSSceneGraphNode('palm-mesh', wrist, { scale: [100, 100, 10] });
++  addMesh(palmMesh, cubeVertices, kWhite);
++  const rotation = [degToRad(15), 0, 0];
++  const animNodes = [
++    wrist,
++    palm,
++    ...addFinger('pulgar',         palm, 2, 20, { translation: [-50, 0, 0], rotation }),
++    ...addFinger('dedo índice',  palm, 3, 30, { translation: [-25, 0, 0], rotation }),
++    ...addFinger('dedo medio', palm, 3, 35, { translation: [ -0, 0, 0], rotation }),
++    ...addFinger('dedo anular',   palm, 3, 33, { translation: [ 25, 0, 0], rotation }),
++    ...addFinger('meñique',         palm, 3, 25, { translation: [ 45, 0, 0], rotation }),
++  ];
+</pre>
+<p>Creamos una muñeca, a la que adjuntamos una palma y una malla de la palma. A la palma adjuntamos 5 dedos usando <code class="notranslate" translate="no">addFinger</code>. <code class="notranslate" translate="no">addFinger</code> añade los segmentos de un dedo, cada uno de cierta longitud.</p>
+<blockquote>
+<p>Sí, esto no es ni remotamente correcto para una mano humana 😂</p>
+</blockquote>
+<p>Mientras que para los archivadores solo nos importaba la <code class="notranslate" translate="no">traslación z</code>, la transformación más importante para la mano es la <code class="notranslate" translate="no">rotación x</code>, así que ajustemos qué controles se muestran por defecto:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const alwaysShow = new Set([0, 1, 2]);
++  const alwaysShow = new Set([0, 1, 3]);
+   function showTRS(show) {
+     trsControls.forEach((trs, i) =&gt; {
+       trs.show(show || alwaysShow.has(i));
+     });
+   }
+   showTRS(false);
+</pre>
+<p>La animación para la mano necesita rotar en x en lugar de trasladar en z.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   function animate(time) {
+     animNodes.forEach((node, i) =&gt; {
+       const source = node.source;
+-      const t = time + i * 1;
++      const t = time + i * 0.1;
+       const l = Math.sin(t) * 0.5 + 0.5;
+-      source.translation[2] = lerp(1, kDrawerSize[2] * 0.8, l);
++      source.rotation[0] = lerp(0, Math.PI * 0.25, l);
+     });
+   }
+</pre>
+<p>Finalmente, ajustemos un poco la cámara.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">     // Calcular una matriz de cámara.
+     const cameraMatrix = mat4.identity();
+-    mat4.translate(cameraMatrix, [120, 100, 0], cameraMatrix);
++    mat4.translate(cameraMatrix, [100, 100, 0], cameraMatrix);
+     mat4.rotateY(cameraMatrix, settings.cameraRotation, cameraMatrix);
+-    mat4.translate(cameraMatrix, [60, 0, 300], cameraMatrix);
++    mat4.translate(cameraMatrix, [100, 0, 300], cameraMatrix);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-hand.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-hand.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Selecciona un dedo y ajusta solo la ‘rotación x’ y verás que todos los segmentos de más adelante rotan con él.</p>
+<h2 id="disparar-un-proyectil-desde-el-dedo-índice"><a id="a-shoot"></a> Disparar un proyectil desde el dedo índice</h2>
+<p>Otra ventaja de un grafo de escena es que puedes preguntar fácilmente la posición y orientación de cualquier nodo del grafo.</p>
+<p>Así que, para disparar desde el dedo índice, necesitamos conocer el nodo de la punta del dedo. Muchos APIs de grafos de escena tienen funciones para buscar nodos por nombre. Añadamos una al nuestro.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">class SceneGraphNode {
+  constructor(name, source) {
+    this.name = name;
+    this.children = [];
+    this.localMatrix = mat4.identity();
+    this.worldMatrix = mat4.identity();
+    this.source = source;
+  }
+
++  find(name) {
++    if (this.name === name) {
++      return this;
++    }
++    for (const child of this.children) {
++      const found = child.find(name);
++      if (found) {
++        return found;
++      }
++    }
++    return undefined;
++  }
+
+   ...
+}
+</pre>
+<p>Con eso añadido, podemos encontrar el último segmento del dedo índice por nombre. Ese nodo representa la base del último segmento del dedo índice, el punto en el que rota, no la punta. Así que vamos a añadir otro nodo como hijo de ese último segmento del dedo índice que realmente represente la punta.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const root = new SceneGraphNode('root');
+   const wrist = addTRSSceneGraphNode('wrist', root);
+   const palm = addTRSSceneGraphNode('palm', wrist, { translation: [0, 100, 0] });
+   const palmMesh = addTRSSceneGraphNode('palm-mesh', wrist, { scale: [100, 100, 10] });
+   addMesh(palmMesh, cubeVertices, kWhite);
+   const rotation = [degToRad(15), 0, 0];
+   const animNodes = [
+     wrist,
+     palm,
+     ...addFinger('pulgar',         palm, 2, 20, { translation: [-50, 0, 0], rotation }),
+     ...addFinger('dedo índice',  palm, 3, 30, { translation: [-25, 0, 0], rotation }),
+     ...addFinger('dedo medio', palm, 3, 35, { translation: [ -0, 0, 0], rotation }),
+     ...addFinger('dedo anular',   palm, 3, 33, { translation: [ 25, 0, 0], rotation }),
+     ...addFinger('meñique',         palm, 3, 25, { translation: [ 45, 0, 0], rotation }),
+   ];
++  const fingerTip = addTRSSceneGraphNode('punta-dedo', root.find('dedo índice-2'), { translation: [0, 30, 0] });
+</pre>
+<p>Ahora necesitamos un proyectil. Usaremos el cono que creamos para los adornos en <a href="webgpu-matrix-stacks.html">el artículo anterior</a>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const cubeVertices = createVertices(createCubeVertices(), 'cube');
++  const shotVertices = createVertices(createConeVertices({
++    radius: 10,
++    height: 20,
++  }), 'disparo');
+</pre>
+<p>Ahora añadamos algo de código para disparar proyectiles.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const kShotVelocity = 100; // unidades por segundo
+   const shots = [];
+   let shotId = 0;
+   function fireShot() {
+     const node = new SceneGraphNode(`disparo-${shotId++}`);
+     node.setParent(root);
+     mat4.translate(fingerTip.worldMatrix, [0, 20, 0], node.localMatrix);
+     const mesh = addMesh(node, shotVertices, kWhite);
+     const velocity = vec3.mulScalar(
+       vec3.normalize(vec3.getAxis(fingerTip.worldMatrix, 1)),
+       kShotVelocity);
+     shots.push({
+       node,
+       mesh,
+       velocity,
+       endTime: performance.now() * 0.001 + 5,
+     });
+     requestRender();
+   }
+</pre>
+<p>Este código añade un “disparo” (shot) al array <code class="notranslate" translate="no">shots</code>. Esto incluye un <code class="notranslate" translate="no">node</code>, una <code class="notranslate" translate="no">mesh</code>, una <code class="notranslate" translate="no">velocity</code> y un <code class="notranslate" translate="no">endTime</code>.</p>
+<p>El <code class="notranslate" translate="no">node</code> se posiciona 20 unidades hacia fuera en el eje Y. Esto se debe a que el código para crear los vértices del cono coloca la punta a 20 unidades, por lo que necesitamos compensarlo. Podríamos ir a modificar el código del vértice del cono, pero esto era menos trabajo 😅. Fíjate en que no estamos añadiendo una fuente <code class="notranslate" translate="no">TRS</code> para este nodo; actualizaremos la matriz local directamente.</p>
+<p><code class="notranslate" translate="no">mesh</code> son los vértices de la malla. Necesitamos esto para poder eliminar la malla del disparo de la lista de cosas a renderizar cuando el disparo haya terminado.</p>
+<p><code class="notranslate" translate="no">velocity</code> es la dirección y velocidad para mover el disparo. Llamamos a <code class="notranslate" translate="no">vec3.getAxis</code> para obtener el eje Y como la dirección para disparar, ya que ese es el eje hacia el que apuntan los dedos. Como cubrimos en <a href="webgpu-orthographic-projection.html">el artículo sobre matemáticas 3D</a>, el eje Y es la segunda fila de la matriz (o los elementos 4, 5, 6), por lo que <code class="notranslate" translate="no">vec3.getAxis</code> se puede implementar así:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
++  // 0 = x, 1 = y, 2 = z;
++  getAxis(m, axis, dst) {
++    dst = dst || new Float32Array(3);
++
++    const offset = axis * 4;
++    dst[0] = m[offset + 0];
++    dst[1] = m[offset + 1];
++    dst[2] = m[offset + 2];
++
++    return dst;
++  },
+  ...
+};
+</pre>
+<p>Nuestro código obtiene ese eje Y y normaliza esa dirección, y luego usa <code class="notranslate" translate="no">vec3.mulScalar</code> para multiplicarla por nuestra velocidad deseada. Necesitamos suministrar <code class="notranslate" translate="no">vec3.mulScalar</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const vec3 = {
+  ...
+  mulScalar(a, scale, dst) {
+    dst = dst || new Float32Array(3);
+
+    dst[0] = a[0] * scale;
+    dst[1] = a[1] * scale;
+    dst[2] = a[2] * scale;
+
+    return dst;
+  },  ...
+};
+</pre>
+<p>Finalmente, el <code class="notranslate" translate="no">endTime</code> es algún momento en el futuro para eliminar el disparo. Con eso, añadamos algo de código para mover los proyectiles.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   function processShots(now, deltaTime) {
+     if (shots.length &gt; 0) {
+       requestRender();
+       while (shots.length &amp;&amp; shots[0].endTime &lt;= now) {
+         const shot = shots.shift();
+         shot.node.setParent(null);
+         removeMesh(shot.mesh);
+       }
+       for (const shot of shots) {
+         const v = vec3.mulScalar(shot.velocity, deltaTime);
+         mat4.multiply(mat4.translation(v), shot.node.localMatrix, shot.node.localMatrix);
+       }
+     }
+   }
+</pre>
+<p>Ese código comprueba si el tiempo del disparo ha expirado. Si es así, elimina el nodo del disparo del grafo de escena y elimina la malla de la lista de cosas a renderizar. De lo contrario, para cada disparo en el array, añade la velocidad a la matriz del disparo, escalándola por el <code class="notranslate" translate="no">deltaTime</code> para que sea independiente de la tasa de frames. Necesitamos suministrar <code class="notranslate" translate="no">removeMesh</code>:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   function removeMesh(mesh) {
+     meshes.splice(meshes.indexOf(mesh), 1);
+   }
+</pre>
+<p>Ahora necesitamos añadir un botón para disparar, así como llamar realmente a esta función de procesamiento.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const gui = new GUI();
+   gui.onChange(requestRender);
+   gui.add(settings, 'cameraRotation', cameraRadToDegOptions);
+   gui.add(settings, 'animate').onChange(v =&gt; {
+     trsFolder.enable(!v);
+   });
+   gui.add(settings, 'showMeshNodes').onChange(showMeshNodes);
+   gui.add(settings, 'showAllTRS').onChange(showTRS);
++  gui.addButton('¡Disparar!', fireShot);
+
+   ...
+
+   function render() {
+     ...
+
+-      const isRunning = settings.animate;
++      const isRunning = settings.animate || shots.length;
+       const now = performance.now() * 0.001;
+       const deltaTime = wasRunning ? now - then : 0;
+       then = now;
+
+       if (isRunning) {
+         time += deltaTime;
+       }
+       wasRunning = isRunning;
+
+       if (settings.animate) {
+         animate(time);
+         updateCurrentNodeGUI();
+         requestRender();
+       }
+
++      processShots(now, deltaTime);
+   }
+</pre>
+<p>Necesitamos seguir ejecutando si hay disparos. Cuando se pulsa el botón ‘¡Disparar!’, se añadirá un disparo. El GUI también llamará a <code class="notranslate" translate="no">requestRender</code>, por lo que pasará por este código y llamará a <code class="notranslate" translate="no">processShots</code>. <code class="notranslate" translate="no">processShots</code> llama a <code class="notranslate" translate="no">requestRender</code> si hay algún disparo, por lo que el bucle de animación continuará hasta que todos los disparos hayan terminado.</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-scene-graphs-hand-shoot.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-scene-graphs-hand-shoot.html" target="_blank">haz clic aquí para abrir el enlace en una ventana nueva</a>
+</div>
+
+<p></p>
+<p>Intenta seleccionar uno de los dedos índice, ajustando la rotación x, y luego pulsando ‘¡Disparar!’. O pulsa ‘¡Disparar!’ mientras se está animando.</p>
+<p>Este artículo debería haberte dado una idea de qué es un grafo de escena y cómo usarlo. Unity, Blender, Unreal, Maya, 3DSMax, Three.js, todos tienen un grafo de escena. Pueden tomar diferentes formas. Algunos ponen las mallas en el propio grafo, haciéndolo no homogéneo. Otros son más “puros” y las mantienen separadas. Algunos tienen clases “fuente” bastante complejas. Tener un grafo de escena es generalmente el comienzo de un motor 3D. No todos los motores 3D tienen uno, pero la mayoría sí.</p>
+<p>En nuestro código de arriba mantuvimos la cámara fuera del grafo de escena, pero es más común que la cámara sea parte del propio grafo. Así es como puedes ver y manipular múltiples cámaras en programas como Unity, Unreal, Blender, etc… Al ponerla en el propio grafo, podemos hacer que la cámara sea hija de algún nodo y, por tanto, se vea afectada por su padre. Por ejemplo, una cámara desde la perspectiva del conductor de un coche o una cámara en una cámara de seguridad giratoria.</p>
+<p>Del mismo modo, los grafos de escena pueden ayudar a implementar manipuladores 3D como los que tienen muchos editores 3D. Estos son los elementos de la interfaz que te permiten trasladar, rotar y escalar objetos en la vista 3D en lugar de hacerlo desde una interfaz separada como la que usamos arriba. Quizás podamos cubrir los manipuladores 3D en otro artículo.</p>
+<!-- keep this at the bottom of the article -->
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-scene-graphs.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-scene-graphs.html" selected="">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-scene-graphs.html" selected="">Español
     </option><option value="/webgpu/lessons/ja/webgpu-scene-graphs.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-scene-graphs.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-scene-graphs.html">Русский
@@ -203,84 +1208,94 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>Conceptos básicos</li>
+        <div id="toc">
+          <ul>  <li>Lo básico</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
-  <li>Textures</li>
+  <li>Texturas</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Textures</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Storage Textures</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-textures.html">Texturas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-importing-textures.html">Carga de imágenes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-textures-external-video.html">Uso de video</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cube-maps.html">Cubemaps</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constants</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Data Memory Layout</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparency and Blending</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copying Data</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-copying-data.html">Copiando Datos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-limits-and-features.html">Características Opcionales y Límites</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-timing.html">Rendimiento y Timing</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-how-it-works.html">Cómo funciona</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compatibility-mode.html">Modo de compatibilidad</a></li>
         </ul>
   <li>Matemáticas 3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Translation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotation</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scale.html">Scale</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matrix Math</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Orthographic Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Perspective Projection</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cameras</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Matrix Stacks</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Scene Graphs</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-translation.html">Traslación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-rotation.html">Rotación</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scale.html">Escalado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-cameras.html">Cámaras</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-scene-graphs.html">Grafos de escena</a></li>
         </ul>
-  <li>Lighting</li>
+  <li>Iluminación</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Directional Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Point Lighting</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Spot Lighting</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-lighting-directional.html">Iluminación direccional</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-point.html">Iluminación puntual</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-lighting-spot.html">Iluminación focal</a></li>
         </ul>
-  <li>Techniques</li>
+  <li>Técnicas</li>
         <ul>
             <li>2D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Large Clip Space Triangle</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-large-triangle-to-cover-clip-space.html">Gran Triángulo de Espacio de Recorte</a></li>
         </ul>
   <li>3D</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment maps</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-environment-maps.html">Environment Maps</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-skybox.html">Skyboxes</a></li>
         </ul>
-  <li>Post Processing</li>
+  <li>Post-procesado</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-post-processing.html">Efecto CRT básico</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-highlighting.html">Resaltado</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-camera-controls.html">Controles de cámara</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
-  <li>Compute Shaders</li>
+  <li>Shaders de Cómputo</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-compute-shaders.html">Conceptos básicos de Compute Shader</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram.html">Histograma de Imagen</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Histograma de Imagen Parte 2</a></li>
         </ul>
-  <li>Otros</li>
+  <li>Miscelánea</li>
         <ul>
-          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-resources.html">Resources / References</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
-<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
+          <li><a href="/webgpu/lessons/es/webgpu-resizing-the-canvas.html">Redimensionando el canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-multiple-canvases.html">Múltiples Canvas</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-points.html">Puntos</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-from-webgl.html">WebGPU desde WebGL</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-optimization.html">Velocidad y Optimización</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-debugging.html">Depuración y Errores</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-resources.html">Recursos / Referencias</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-wgsl-function-reference.html">Referencia de Funciones WGSL</a></li>
+<li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">Calculadora de offsets de WGSL</a></li>
         </ul></ul>
 <ul>
   <li><a href="https://github.com/webgpu/webgpufundamentals">Github</a></li>
@@ -291,13 +1306,53 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+    <div>¿Dudas? <a href="http://stackoverflow.com/questions/tagged/webgpu">Pregunta en StackOverflow</a>.</div>
+    <div>
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=suggested+topic&amp;template=suggest-topic.md&amp;title=%5BSUGGESTION%5D">Sugerencia</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=&amp;template=request.md&amp;title=">Solicitud</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Problemas</a>?
+      ¿<a href="https://github.com/webgpu/webgpufundamentals/issues/new?assignees=&amp;labels=bug+%2F+issue&amp;template=bug-issue-report.md&amp;title=">Bug</a>?
+    </div>
+    
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `Grafos de escena en WebGPU`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "Thank you <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>for <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} contributions</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

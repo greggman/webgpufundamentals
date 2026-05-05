@@ -42,7 +42,7 @@ async function main() {
 
   const module = device.createShaderModule({
     label: 'our hardcoded red triangle shaders',
-    code: `
+    code: /* wgsl */ `
       struct VOut {
         @builtin(position) position: vec4f,
         @location(0) baryCoord: vec3f,

@@ -4,20 +4,20 @@ import {
 } from '../../3rdparty/webgpu-utils-1.x.module.js';
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 import {
   createRequestAnimationFrameLoop,
-} from './resources/good-raf.js';
+} from './resources/js/good-raf.js';
 import {
   createElem as el
-} from './resources/elem.js';
+} from './resources/js/elem.js';
 import {
   mat4,
   vec3,
 } from '../../3rdparty/wgpu-matrix.module.js';
 import {
   hsla,
-} from './resources/utils.js';
+} from './resources/js/utils.js';
 
 const darkColors = {
   lines: [1, 1, 1, 1],
@@ -176,7 +176,7 @@ async function main() {
   const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         vec4f: color,
         matrix: mat4x4f,
@@ -301,7 +301,7 @@ async function main() {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: { buffer: uniformBuffer }},
+        { binding: 0, resource: uniformBuffer },
       ],
     });
 

@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-post-processing.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-post-processing.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-post-processing.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-post-processing.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU ポストプロセッシング - 基本的なCRTエフェクト</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
@@ -239,7 +242,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <p>そのためには、<a href="webgpu-timing.html">タイミングに関する記事</a>の冒頭のアニメーションの例を取り上げましょう。最初に行うことは、別のテクスチャにレンダリングし、そのテクスチャをキャンバスにレンダリングすることです。</p>
 <p>これは、<a href="webgpu-large-triangle-to-cover-clip-space.html">大きなクリップ空間の三角形</a>を描画し、クリップ空間に収まる三角形の部分をカバーするテクスチャを描画できるように正しいUV座標を渡すシェーダーです。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VSOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -423,7 +426,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 <p>これをコードに追加しましょう。まず、この正弦波を適用するようにシェーダーを編集しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VSOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -478,7 +481,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       entries: [
         { binding: 0, resource: renderTargetView },
         { binding: 1, resource: postProcessSampler },
-+        { binding: 2, resource: { buffer: postProcessUniformBuffer }},
++        { binding: 2, resource: postProcessUniformBuffer },
       ],
     });
 </pre>
@@ -522,7 +525,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <p>CRTは、LCDと同様に、画像を赤、緑、青の領域に分割します。CRTでは、これらの領域は今日のほとんどのLCDよりも一般的に大きかったため、これが目立つことがありました。その効果を近似するために何かを追加しましょう。</p>
 <p>まず、シェーダーを変更しましょう。</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">  const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VSOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -659,7 +662,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </pre>
 <p>シェーダーをストレージテクスチャに書き込むように切り替える必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
 -      struct VSOutput {
 -        @builtin(position) position: vec4f,
 -        @location(0) texcoord: vec2f,
@@ -743,7 +746,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +    const outBindGroup = device.createBindGroup({
 +      layout: postProcessPipeline.getBindGroupLayout(1),
 +      entries: [
-+        { binding: 0, resource: dstTexture.createView() },
++        { binding: 0, resource: dstTexture },
 +      ],
 +    });
 
@@ -768,7 +771,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <p>より大きなワークグループサイズを使用するように更新できます。これには、範囲外の場合はテクスチャへの書き込みをスキップする必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const workgroupSize = [16, 16];
   const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct Uniforms {
         effectAmount: f32,
         bandMult: f32,
@@ -843,7 +846,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-post-processing.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-post-processing.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-post-processing.html" selected="">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-post-processing.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-post-processing.html">Русский
@@ -913,6 +916,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>ポストプロセッシング</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-post-processing.html">基本的なCRTエフェクト</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>コンピュートシェーダ</li>
@@ -979,8 +991,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

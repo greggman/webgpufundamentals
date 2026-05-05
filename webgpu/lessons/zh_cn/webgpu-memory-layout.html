@@ -103,7 +103,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-memory-layout.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-memory-layout.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-memory-layout.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-memory-layout.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-memory-layout.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-memory-layout.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="container">
   <div class="lesson-title">
     <h1>WebGPU 数据内存布局</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
@@ -363,48 +366,30 @@ frameCountView[0] = 56;
       <tr><td><code class="notranslate" translate="no">vec4&lt;f16&gt;</code></td><td>a type with 4  <code class="notranslate" translate="no">f16</code>s</td><td><code class="notranslate" translate="no">vec4h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat2x2&lt;f32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec2&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x2f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat2x2&lt;u32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec2&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x2u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat2x2&lt;i32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec2&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x2i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat2x2&lt;f16&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec2&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x2h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat2x3&lt;f32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x3f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat2x3&lt;u32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec3&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x3u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat2x3&lt;i32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec3&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x3i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat2x3&lt;f16&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec3&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x3h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat2x4&lt;f32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec4&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x4f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat2x4&lt;u32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec4&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x4u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat2x4&lt;i32&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec4&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x4i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat2x4&lt;f16&gt;</code></td><td>a matrix of 2 <code class="notranslate" translate="no">vec4&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat2x4h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat3x2&lt;f32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec2&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x2f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat3x2&lt;u32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec2&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x2u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat3x2&lt;i32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec2&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x2i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat3x2&lt;f16&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec2&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x2h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat3x3&lt;f32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x3f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat3x3&lt;u32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec3&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x3u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat3x3&lt;i32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec3&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x3i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat3x3&lt;f16&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec3&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x3h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat3x4&lt;f32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec4&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x4f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat3x4&lt;u32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec4&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x4u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat3x4&lt;i32&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec4&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x4i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat3x4&lt;f16&gt;</code></td><td>a matrix of 3 <code class="notranslate" translate="no">vec4&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat3x4h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat4x2&lt;f32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec2&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x2f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat4x2&lt;u32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec2&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x2u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat4x2&lt;i32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec2&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x2i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat4x2&lt;f16&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec2&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x2h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat4x3&lt;f32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec3&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x3f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat4x3&lt;u32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec3&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x3u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat4x3&lt;i32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec3&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x3i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat4x3&lt;f16&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec3&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x3h</code></td></tr>
       <tr></tr>
       <tr><td><code class="notranslate" translate="no">mat4x4&lt;f32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec4&lt;f32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x4f</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat4x4&lt;u32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec4&lt;u32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x4u</code></td></tr>
-      <tr><td><code class="notranslate" translate="no">mat4x4&lt;i32&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec4&lt;i32&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x4i</code></td></tr>
       <tr><td><code class="notranslate" translate="no">mat4x4&lt;f16&gt;</code></td><td>a matrix of 4 <code class="notranslate" translate="no">vec4&lt;f16&gt;</code>s</td><td><code class="notranslate" translate="no">mat4x4h</code></td></tr>
     </tbody>
   </table>
@@ -512,7 +497,7 @@ myUniformValues.set({
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-memory-layout.html">English
-    </option><option value="/webgpu/lessons/es/webgpu-memory-layout.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-memory-layout.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-memory-layout.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-memory-layout.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-memory-layout.html">Русский
@@ -533,17 +518,17 @@ myUniformValues.set({
   <li>纹理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-textures.html">纹理</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">Loading Images</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">Using Video</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">Cube Maps</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">Storage Textures</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">Multisampling / MSAA</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-importing-textures.html">加载图像</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-textures-external-video.html">高效使用视频</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-cube-maps.html">立方体贴图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">Transparency and Blending</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">Copying Data</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
@@ -552,7 +537,7 @@ myUniformValues.set({
         </ul>
   <li>3D数学</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">Translation</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-translation.html">平移(Translation)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-rotation.html">Rotation</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-scale.html">Scale</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-matrix-math.html">Matrix Math</a></li>
@@ -582,6 +567,15 @@ myUniformValues.set({
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
@@ -651,8 +645,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

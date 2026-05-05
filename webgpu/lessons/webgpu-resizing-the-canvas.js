@@ -1,6 +1,6 @@
 import {
   renderDiagrams
-} from './resources/diagrams.js';
+} from './resources/js/diagrams.js';
 
 renderDiagrams({
   'dpr': (elem) => {

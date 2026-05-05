@@ -102,7 +102,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div>
     <select class="language">
     <option value="/webgpu/lessons/webgpu-compatibility-mode.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-compatibility-mode.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compatibility-mode.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compatibility-mode.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compatibility-mode.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compatibility-mode.html">Русский
@@ -229,6 +229,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Compatibility Mode</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
       <p>WebGPU Compatibility mode is a version of WebGPU that,
@@ -237,7 +240,7 @@ if you can make your app run within some extra limits and
 restrictions then you can request a webgpu compatibility adapter
 and have your app run in more places.</p>
 <blockquote>
-<p>Note: Compatibility mode has not officially shipped. It may be available in
+<p>Note: Compatibility mode is shipping in Chrome 146. (2026-02-23) It may be available in
 your browser as an experiment. In, <a href="https://www.google.com/chrome/canary/">Chrome Canary</a>,
 as of version 136.0.7063.0
 (2025-03-11), you can allow compatibility mode by enabling the flag
@@ -266,12 +269,13 @@ which is the 3nd article on this site. After that article we
 <a href="webgpu-vertex-buffers.html">switched to using vertex buffers</a>.
 Using vertex buffers is common and works everywhere but certain solutions are easier
 with storage buffers. One example is
-<a href="https://webgpu.github.io/webgpu-samples/?sample=wireframe">this example of drawing wireframes</a>. It uses storage buffers to generate triangles from vertex data.</p>
+<a href="https://webgpu.github.io/webgpu-samples/?sample=wireframe">this example of drawing wireframes</a>.
+It uses storage buffers to generate triangles from vertex data.</p>
 <p>With vertex data stored in storage buffers we can randomly access the vertex
 data. With the vertex data in vertex buffer we can not. Of course there are
 always other solutions.</p>
 <h2 id="medium-limits-and-restrictions">Medium limits and restrictions</h2>
-<h2 id="only-a-single-viewdimension-is-allowed-for-a-texture">Only a single viewDimension is allowed for a texture.</h2>
+<h2 id="only-a-single-view-dimension-is-allowed-for-a-texture-as-a-texture_binding">Only a single view dimension is allowed for a texture as a <code class="notranslate" translate="no">TEXTURE_BINDING</code></h2>
 <p>In normal WebGPU you can make a 2d texture like this</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const myTexture = device.createTexture({
   size: [width, height, 6],
@@ -285,18 +289,18 @@ const as2DArray = myTexture.createView();
 
 // view layer 3 of myTexture as a 2d texture
 const as2D = myTexture.createView({
-  viewDimension: '2d',
+  dimension: '2d',
   baseArrayLayer: 3,
   arrayLayerCount: 1,
 });
 
 // view of myTexture as a cubemap
 const asCube = myTexture.createView({
-  viewDimension: 'cube',
+  dimension: 'cube',
 });
 </pre>
 <p>In compatibility mode you can only use one view dimension and you have to
-choose which viewDimension when you create the texture. A 2D texture with
+choose which view dimension when you create the texture. A 2D texture with
 1 layer defaults to only being usable as a <code class="notranslate" translate="no">'2d'</code> view. A 2D texture with
 more than 1 layer defaults to only being usable as a <code class="notranslate" translate="no">'2d-array</code>’ view.
 If you want something other than the default you must tell WebGPU. For example,
@@ -311,8 +315,12 @@ If you want a cube map then you must tell WebGPU when you create the texture.</p
 <p>Note, this extra parameter is called <code class="notranslate" translate="no">textureBindingViewDimension</code> because
 it relates to using the texture with usage <code class="notranslate" translate="no">TEXTURE_BINDING</code>. You can still
 use a single layer of a cubemap or 2d-array as a 2d texture as a <code class="notranslate" translate="no">RENDER_ATTACHMENT</code>.</p>
-<p>In compatibility mode, using the texture with another type of view will
-generate a validation error</p>
+<p>To put it another way, you must use this same view dimension when using the
+texture in a bind group. You can still use the <code class="notranslate" translate="no">2d</code> dimension, even if the
+<code class="notranslate" translate="no">textureBindingViewDimension</code> is <code class="notranslate" translate="no">2d-array</code> or <code class="notranslate" translate="no">cube</code> when using the texture
+in as a render target.</p>
+<p>In compatibility mode, using the texture in a bind group with another type of view will
+generate a validation error.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// a view of cubeTexture as a 2d array with 6 layers
 const bindGroup = device.createBindGroup({
   ...
@@ -320,7 +328,8 @@ const bindGroup = device.createBindGroup({
     {
       binding,
       // ERROR in compatibility mode: texture is a cubemap not a 2d-array
-      resource: cubeTexture.createView(),
+      // (the default for a texture with more than 1 layer)
+      resource: cubeTexture,
     },
   ],
 })
@@ -407,7 +416,7 @@ than selecting the layer via <code class="notranslate" translate="no">createView
       if (!module) {
         module = device.createShaderModule({
           label: 'textured quad shaders for mip level generation',
-          code: `
+          code: /* wgsl */ `
             struct VSOutput {
               @builtin(position) position: vec4f,
               @location(0) texcoord: vec2f,
@@ -577,16 +586,8 @@ struct VSOutput {
 +    ourSampler,
 +    faceMat[fsInput.baseArrayLayer] * vec3f(fract(fsInput.texcoord), 1));
 +}
-+
-+@group(0) @binding(1) var ourTextureCubeArray: texture_cube_array&lt;f32&gt;;
-+@fragment fn fscubearray(fsInput: VSOutput) -&gt; @location(0) vec4f {
-+  return textureSample(
-+    ourTextureCubeArray,
-+    ourSampler,
-+    faceMat[fsInput.baseArrayLayer] * vec3f(fract(fsInput.texcoord), 1), fsInput.baseArrayLayer);
-+}
 </pre>
-<p>This code has 4 fragment shaders, one for each of <code class="notranslate" translate="no">'2d'</code>, <code class="notranslate" translate="no">'2d-array'</code>, <code class="notranslate" translate="no">'cube'</code>, and <code class="notranslate" translate="no">'cube-array'</code>.
+<p>This code has 3 fragment shaders, one for each of <code class="notranslate" translate="no">'2d'</code>, <code class="notranslate" translate="no">'2d-array'</code>, <code class="notranslate" translate="no">'cube'</code>.
 It uses the <a href="webgpu-large-triangle-to-cover-clip-space.html">large triangle to cover clip space</a> technique
 <a href="webgpu-large-triangle-to-cover-clip-space.html">covered elsewhere</a> to draw.
 It also uses <code class="notranslate" translate="no">@builtin(instance_index)</code> to select the layer. This is an interesting and quick way
@@ -598,43 +599,22 @@ in the fragment shader.</p>
 <p>The cubemap code converts a 2d-array layer and normalized UV coordinate into a
 cubemap 3d coordinate. We need this because again, in compatibility mode, a cubemap
 can only be viewed as a cubemap.</p>
-<p>Back to our JavaScript, We need to let the user pass in the viewDimension they used when they created
-the texture so that we can select one of these shaders. If they don’t pass it
-in we’ll guess from the defaults.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  /**
-+  * Get the default viewDimension
-+  * Note: It's only a guess. The user needs to tell us to be
-+  * correct in all cases because we can't distinguish between
-+  * a 2d texture and a 2d-array texture with 1 layer, nor can
-+  * we distinguish between a 2d-array texture with 6 layers and
-+  * a cubemap.
-+  */
-+  function getDefaultViewDimensionForTexture(dimension, depthOrArrayLayers) {
-+   switch (dimension) {
-+      case '1d':
-+        return '1d';
-+      default:
-+      case '2d':
-+        return depthOrArrayLayers &gt; 1 ? '2d-array' : '2d';
-+      case '3d':
-+        return '3d';
-+    }
-+  }
-
-  const generateMips = (() =&gt; {
+<p>Back to our JavaScript, we need to read the <code class="notranslate" translate="no">textureBindingViewDimension</code> property
+from the texture. Note that this value is undefined if we are <strong>not</strong> in compatibility
+mode. But, we can just assumed <code class="notranslate" translate="no">'2d-array'</code> in that case since in norm “core” webgpu,
+<code class="notranslate" translate="no">'2d-array'</code> should always work</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const generateMips = (() =&gt; {
     let sampler;
     let module;
     const pipelineByFormat = {};
 
--    return function generateMips(device, texture) {
-+    return function generateMips(device, texture, textureBindingViewDimension) {
-+      // If the user doesn't pass in a textureBindingViewDimension then guess
-+      textureBindingViewDimension = textureBindingViewDimension ??
-+        getDefaultViewDimensionForTexture(texture.dimension, texture.depthOrArrayLayers);
+    return function generateMips(device, texture) {
++      // If the texture doesn't have a textureBindingViewDimension then use '2d-array'
++      const textureBindingViewDimension = texture.textureBindingViewDimension ?? '2d-array';
       if (!module) {
         module = device.createShaderModule({
           label: 'textured quad shaders for mip level generation',
-          code: `
+          code: /* wgsl */ `
             const faceMat = array(
               mat3x3f( 0,  0,  -2,  0, -2,   0,  1,  1,   1),   // pos-x
               mat3x3f( 0,  0,   2,  0, -2,   0, -1,  1,  -1),   // neg-x
@@ -690,14 +670,6 @@ in we’ll guess from the defaults.</p>
                 ourSampler,
                 faceMat[fsInput.baseArrayLayer] * vec3f(fract(fsInput.texcoord), 1));
             }
-
-            @group(0) @binding(1) var ourTextureCubeArray: texture_cube_array&lt;f32&gt;;
-            @fragment fn fscubearray(fsInput: VSOutput) -&gt; @location(0) vec4f {
-              return textureSample(
-                ourTextureCubeArray,
-                ourSampler,
-                faceMat[fsInput.baseArrayLayer] * vec3f(fract(fsInput.texcoord), 1), fsInput.baseArrayLayer);
-            }
           `,
         });
 
@@ -719,9 +691,9 @@ per viewDimension.</p>
 +    const pipelineByFormatAndView = {};
 
     return function generateMips(device, texture, textureBindingViewDimension) {
-      // If the user doesn't pass in a textureBindingViewDimension then guess
-      textureBindingViewDimension = textureBindingViewDimension ??
-        getDefaultViewDimensionForTexture(texture);
+      // If the texture doesn't have a textureBindingViewDimension then use '2d-array'.
+      // This will be true in core webgpu mode.
+      const textureBindingViewDimension = texture.textureBindingViewDimension ?? '2d-array';
       let module = moduleByViewDimension[textureBindingViewDimension];
       if (!module) {
         ...
@@ -821,7 +793,7 @@ works in core WebGPU.</p>
 <p>We have a function <code class="notranslate" translate="no">createTextureFromSources</code> that we pass sources
 to and it creates a texture. It was always creating a <code class="notranslate" translate="no">'2d'</code> texture
 since in core we can view a <code class="notranslate" translate="no">'2d'</code> texture with 6 layers as a cubemap.
-Instead, we need to make it so we can pass in a viewDimension and/or
+Instead, we need to make it so we can pass in a <code class="notranslate" translate="no">textureBindingViewDimension</code> and/or
 a dimension so that when we create the texture we can tell compatibility
 mode how we will view it.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function textureViewDimensionToDimension(viewDimension) {
@@ -833,8 +805,8 @@ mode how we will view it.</p>
 +  }
 
   function createTextureFromSources(device, sources, options = {}) {
-+    const viewDimension = options.viewDimension ??
-+      getDefaultViewDimensionForTexture(options.dimension, sources.length);
++    const viewDimension = options.dimension ??
++      getDefaultViewDimensionForTexture(options.textureBindingViewDimension);
 +    const dimension = options.dimension ?? textureViewDimensionToDimension(viewDimension);
     // Assume are sources all the same size so just use the first one for width and height
     const source = sources[0];
@@ -846,35 +818,17 @@ mode how we will view it.</p>
              GPUTextureUsage.COPY_DST |
              GPUTextureUsage.RENDER_ATTACHMENT,
 +      dimension,
-+      textureBindingViewDimension: viewDimension,
++      textureBindingViewDimension: options.textureBindingViewDimension,
     });
     copySourcesToTexture(device, texture, sources, options);
     return texture;
-  }
-</pre>
-<p>We also need to update <code class="notranslate" translate="no">copySourcesToTexture</code> to get the <code class="notranslate" translate="no">viewDimension</code> and
-pass it to <code class="notranslate" translate="no">generateMips</code>.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function copySourcesToTexture(device, texture, sources, {flipY, viewDimension} = {}) {
-    sources.forEach((source, layer) =&gt; {
-      device.queue.copyExternalImageToTexture(
-        { source, flipY, },
-        { texture, origin: [0, 0, layer] },
-        { width: source.width, height: source.height },
-      );
-    });
-    if (texture.mipLevelCount &gt; 1) {
-+      viewDimension = viewDimension ??
-+        getDefaultViewDimensionForTexture(texture.dimension, sources.length);
-+      generateMips(device, texture, viewDimension);
--      generateMips(device, texture);
-    }
   }
 </pre>
 <p>And, we need to update our call to <code class="notranslate" translate="no">createTextureFromSources</code> to tell it in advance
 that we want a cubemap.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = await createTextureFromSources(
 -      device, faceCanvases, {mips: true, flipY: false});
-+      device, faceCanvases, {mips: true, flipY: false, viewDimension: 'cube'});
++      device, faceCanvases, {mips: true, flipY: false, textureBindingViewDimension: 'cube'});
 </pre>
 <p>To make the example run in compatibility mode we need to request it like we covered
 at the top of this article.</p>
@@ -896,7 +850,7 @@ at the top of this article.</p>
 <p></p>
 <p>You now have a compatibility mode friendly <code class="notranslate" translate="no">generateMips</code> which you could
 use in any of the examples on this site. It works on both core and compatibility mode.
-In compatibility mode you must pass in a <code class="notranslate" translate="no">viewDimension</code> if you want a cube map or if
+In compatibility mode you must pass in a <code class="notranslate" translate="no">textureBindingViewDimension</code> if you want a cube map or if
 you want a 1 layer 2d-array. In core WebGPU you can pass one in or not. It doesn’t matter.</p>
 <h1 id="minor-limits-and-restrictions">Minor limits and restrictions</h1>
 <p>The following are limits and restrictions <em>most</em> programs are unlikely to
@@ -980,7 +934,7 @@ must have <code class="notranslate" translate="no">depthOrArrayLayers: 6</code>.
 <h2 id="textureload-does-not-work-with-depth-textures"><code class="notranslate" translate="no">textureLoad</code> does not work with depth textures.</h2>
 <p>A “depth texture” is a texture referenced in WGSL with <code class="notranslate" translate="no">texture_depth</code>,
 <code class="notranslate" translate="no">texture_depth_2d_array</code>, or <code class="notranslate" translate="no">texture_depth_cube</code>. Those can not be used with
-<code class="notranslate" translate="no">textureLoad</code> in compatibility mode.ß</p>
+<code class="notranslate" translate="no">textureLoad</code> in compatibility mode.</p>
 <p>On the other hand, <code class="notranslate" translate="no">textureLoad</code> can be used with <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>, <code class="notranslate" translate="no">texture_2d_array&lt;f32&gt;</code> and
 <code class="notranslate" translate="no">texture_cube&lt;f32&gt;</code> and a texture that has a depth format can be bound to these bindings…</p>
 </li>
@@ -994,6 +948,11 @@ can only be used with <code class="notranslate" translate="no">textureSampleComp
 in compatibility mode.</p>
 <p>On the other hand, you can bind a texture that uses a depth format to a <code class="notranslate" translate="no">texture_2d&lt;f32&gt;</code>, <code class="notranslate" translate="no">texture_2d_array&lt;f32&gt;</code> and <code class="notranslate" translate="no">texture_cube&lt;f32&gt;</code> binding,
 subject to the normal restriction that it must use a non-filtering sampler.</p>
+</li>
+<li>
+<h2 id="fine-derivatives-are-not-supported">fine derivatives are not supported</h2>
+<p>The WGSL functions <code class="notranslate" translate="no">dpdxFine</code>, <code class="notranslate" translate="no">dpdyFine</code> and <code class="notranslate" translate="no">fwidthFine</code> are not supported in compatibility mode.
+You can still use <code class="notranslate" translate="no">dpdx</code> <code class="notranslate" translate="no">dpdxCoarse</code>, <code class="notranslate" translate="no">dpdy</code>, <code class="notranslate" translate="no">dpdyCoarse</code>, <code class="notranslate" translate="no">fwidth</code>, and <code class="notranslate" translate="no">fwidthCoarse</code></p>
 </li>
 <li>
 <h2 id="the-combinations-of-texture--sampler-are-more-limited">The combinations of texture + sampler are more limited</h2>
@@ -1123,11 +1082,6 @@ compatibility device should check the device’s features.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const isCore = device.features.has('core-features-and-limits');
 </pre>
 <p>This will always be true on a core device.</p>
-<blockquote>
-<p>Note: As of 2025-03-11, some browsers have not yet fully shipped WebGPU and
-have not added <code class="notranslate" translate="no">'core'features-and'limits'</code> to their implementations.
-They should be updated soon.</p>
-</blockquote>
 <h1 id="testing-compatibility-mode">Testing compatibility mode</h1>
 <p>On a browser that supports compatibility mode you can test your
 application follows the restrictions by NOT requesting <code class="notranslate" translate="no">'core-features-and-limits'</code> (as we did at the top).
@@ -1142,17 +1096,75 @@ const device = await adapter.requestDevice();
 const isCompatibilityMode = !device.features.has('core-features-and-limits');
 </pre>
 <p>This is a good way to test if your app will run on these older devices.</p>
-<blockquote>
-<p>Note: As of 2025-03-11, some browsers have not yet fully shipped WebGPU and
-have not added <code class="notranslate" translate="no">'core'features-and'limits'</code> to their implementations.
-They should be updated soon.</p>
-</blockquote>
+<h1 id="quick-test-via-the-webgpu-dev-extension">Quick test via the webgpu-dev-extension</h1>
+<p>Using <a href="https://github.com/greggman/webgpu-dev-extension">webgpu-dev-extension</a> you can
+force your app to use compatibility mode as a quick test with no changes to your app.
+You can also test an app that auto-upgrades to core webgpu, works when it gets compatibility mode.</p>
+<p>Steps:</p>
+<ol>
+<li>
+<p>Open devtools and run your app</p>
+</li>
+<li>
+<p>In Devtools, open the settings</p>
+<div class="webgpu_left"><img src="resources/images/webgpu-devtools-settings.png" style="width: 554px"></div>
+</li>
+<li>
+<p>Turn on ‘Custom Formatters’</p>
+<div class="webgpu_left"><img src="resources/images/webgpu-devtools-custom-formatters.png" style="width: 554px"></div>
+</li>
+<li>
+<p>In the WebGPU-Dev-Extension, select these options:</p>
+<div class="webgpu_left"><img src="resources/images/webgpu-dev-extension-compat.png" style="width: 274px"></div>
+<ul>
+<li>
+<h3 id="force-mode-compatibility-mode">Force Mode: ‘compatibility-mode’</h3>
+<p>This makes the app do <code class="notranslate" translate="no">navigator.gpu.requestAdapter({ featureLevel: 'compatibility' });</code></p>
+<p>Leave this at the default of your app already supports compatibility mode.</p>
+</li>
+<li>
+<h3 id="block-features-core-features-and-limits">Block Features ‘core-features-and-limits’</h3>
+<p>This makes it so the app can’t request core mode</p>
+</li>
+<li>
+<h3 id="devtools-custom-formatters">DevTools Custom Formatters</h3>
+<p>This makes so if you inspect the device in devtools it will show
+device.features as an array of strings. Without this, the devtools shows an
+opaque object so you can’t see the features</p>
+</li>
+<li>
+<h3 id="show-adapter-info">Show Adapter Info</h3>
+<p>This option makes it do console.log(adapter) and console.log(device) any time
+a new adapter or device is created. This lets you verify the device is in
+compatibility mode. You can check device.features and see that it doesn’t have
+‘core-features-and-limits’</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Refresh the page</p>
+</li>
+<li>
+<p>Verify your app is running in compatibility mode</p>
+<p>In the JavaScript console you should see something like this</p>
+</li>
+</ol>
+<div class="webgpu_center"><img src="resources/images/webgpu-compat-verification.png" style="width: 1100px" class="nobg"></div>
+<p>Look for <code class="notranslate" translate="no">webgpu-dev-extension: custom-formatters</code> near the top to verify the formatters
+were injected into the page</p>
+<p>Then, look for <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUDevice"><code class="notranslate" translate="no">GPUDevice</code></a> and expand the <code class="notranslate" translate="no">features</code>. Make sure you <strong>DO NOT SEE</strong>
+<code class="notranslate" translate="no">"core-features-and-limits"</code>.</p>
+<h1 id="examples">Examples:</h1>
+<p>As of 2026-02-01, all of the local examples at <a href="https://webgpu.github.io/webgpu-samples">webgpu-samples</a>
+work, and 185 of the 193 webgpu examples at <a href="https://threejs.org/examples/">threejs.org/examples</a>
+work in compatibility mode. The remaining 8 may be updated to also work in compatibility mode in
+the future with minor adjustments.</p>
 
     </div>
     <div class="lesson-sidebar">
         <select class="language">
     <option value="/webgpu/lessons/webgpu-compatibility-mode.html" selected="">English
-    </option><option value="/webgpu/lessons/es/webgpu-compatibility-mode.html">Spanish
+    </option><option value="/webgpu/lessons/es/webgpu-compatibility-mode.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compatibility-mode.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compatibility-mode.html">한국어
     </option><option value="/webgpu/lessons/ru/webgpu-compatibility-mode.html">Русский
@@ -1222,6 +1234,15 @@ They should be updated soon.</p>
   <li>Post Processing</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-post-processing.html">Basic CRT Effect</a></li>
+<li><a href="/webgpu/lessons/webgpu-image-adjustments.html">Image Adjustments</a></li>
+<li><a href="/webgpu/lessons/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+        </ul>
+  <li>Editor</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-highlighting.html">Highlighting</a></li>
+<li><a href="/webgpu/lessons/webgpu-camera-controls.html">Camera Controls</a></li>
+<li><a href="/webgpu/lessons/webgpu-picking.html">Picking</a></li>
         </ul>
         </ul>
   <li>Compute Shaders</li>
@@ -1297,8 +1318,8 @@ const settings = {
 <script src="/contributors.js"></script>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
-<script src="/webgpu/lessons/resources/prettify.js"></script>
-<script src="/webgpu/lessons/resources/lesson.js" type="module"></script>
+<script src="/webgpu/lessons/resources/js/prettify.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>
