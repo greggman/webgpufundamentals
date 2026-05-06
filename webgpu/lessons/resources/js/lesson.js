@@ -107,6 +107,119 @@ async function checkWebGPU() {
   }
 }
 
+const DIFF_MODE_KEY = 'webgpufundamentals.diffMode';
+// Cycle order for the per-block "diff mode" button. Until the user clicks once,
+// no preference is stored and the page is in "auto": viewport width decides
+// between side-by-side and inline-diff.
+const DIFF_MODES = ['side-by-side', 'inline-diff', 'hide-deleted'];
+const DIFF_AUTO_WIDE_MQ = '(min-width: 1100px)';
+
+function getStoredDiffMode() {
+  const v = localStorage.getItem(DIFF_MODE_KEY);
+  return DIFF_MODES.includes(v) ? v : null;
+}
+
+function getEffectiveDiffMode() {
+  return getStoredDiffMode() ||
+    (window.matchMedia(DIFF_AUTO_WIDE_MQ).matches ? 'side-by-side' : 'inline-diff');
+}
+
+function refreshDiffModeUI() {
+  document.body.dataset.diffMode = getStoredDiffMode() || 'auto';
+  const label = `diff: ${getEffectiveDiffMode()}`;
+  document.querySelectorAll('.diff-mode-btn').forEach(b => {
+    b.textContent = label;
+  });
+}
+
+function cycleDiffMode() {
+  const cur = getEffectiveDiffMode();
+  const i = DIFF_MODES.indexOf(cur);
+  const next = DIFF_MODES[(i + 1) % DIFF_MODES.length];
+  localStorage.setItem(DIFF_MODE_KEY, next);
+  refreshDiffModeUI();
+}
+
+// Build a side-by-side variant of a diff list and inject it next to the inline list.
+// Strategy: a run of `-` lines goes on the left with blanks on the right; a run of `+` lines
+// goes on the right with blanks on the left. Unchanged and `*`-modified lines appear on both
+// sides. No 1:1 pairing of `-`/`+` runs (avoids implying a line correspondence that wasn't
+// authored).
+function buildSideBySideForList(list) {
+  const left = list.cloneNode(false);
+  const right = list.cloneNode(false);
+  left.classList.add('sbs-side', 'sbs-left');
+  right.classList.add('sbs-side', 'sbs-right');
+
+  for (const li of Array.from(list.children)) {
+    const isAdd = li.classList.contains('lineadded');
+    const isDel = li.classList.contains('linedeleted');
+    if (isAdd) {
+      left.appendChild(makeBlankLi());
+      right.appendChild(li.cloneNode(true));
+    } else if (isDel) {
+      left.appendChild(li.cloneNode(true));
+      right.appendChild(makeBlankLi());
+    } else {
+      left.appendChild(li.cloneNode(true));
+      right.appendChild(li.cloneNode(true));
+    }
+  }
+
+  const sbs = document.createElement('div');
+  sbs.className = 'sbs-diff';
+  sbs.append(left, right);
+
+  // Wrap original list in an inline-only container so CSS can show one or the other.
+  const inlineWrap = document.createElement('div');
+  inlineWrap.className = 'sbs-inline';
+  list.parentNode.insertBefore(inlineWrap, list);
+  inlineWrap.appendChild(list);
+  inlineWrap.parentNode.insertBefore(sbs, inlineWrap.nextSibling);
+}
+
+function makeBlankLi() {
+  const blank = document.createElement('li');
+  blank.className = 'sbs-blank';
+  blank.appendChild(document.createTextNode(' '));
+  return blank;
+}
+
+function setupDiffModes() {
+  // :has() not supported in some older browsers — fall back to no-op there.
+  let diffPres;
+  try {
+    diffPres = document.querySelectorAll('pre:has(.lineadded), pre:has(.linedeleted)');
+  } catch (e) {
+    return;
+  }
+  if (!diffPres.length) {
+    return;
+  }
+
+  diffPres.forEach(pre => {
+    const list = pre.querySelector('ul.modifiedlines, ol.modifiedlines');
+    if (list) {
+      buildSideBySideForList(list);
+    }
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'diff-mode-btn';
+    btn.title = 'Cycle diff display mode (side-by-side / inline-diff / hide-deleted)';
+    btn.addEventListener('click', cycleDiffMode);
+    pre.appendChild(btn);
+  });
+
+  // While in auto, the effective mode follows viewport width, so update labels on resize.
+  window.matchMedia(DIFF_AUTO_WIDE_MQ).addEventListener('change', () => {
+    if (!getStoredDiffMode()) {
+      refreshDiffModeUI();
+    }
+  });
+
+  refreshDiffModeUI();
+}
+
 $(document).ready(function($) {
   const linkImgs = function(bigHref) {
     return function() {
@@ -143,18 +256,7 @@ $(document).ready(function($) {
   checkWebGPU();
   if (window.prettyPrint) {
     window.prettyPrint();
-    // Firefox doesn't support the has() css selector as of 2023-09-09
-    try {
-      document.querySelectorAll('pre:has(.linedeleted)').forEach(e => {
-        const b = $('<button>').text('hide deleted').addClass('linedeleted-button').attr('type', 'button').on('click', () => {
-          const hide = e.classList.toggle('hide-linedeleted');
-          b.text(hide ? 'show deleted' : 'hide deleted');
-        });
-        $(e).append(b);
-      });
-    } catch (e) {
-      console.error(e);
-    }
+    setupDiffModes();
   }
   $('span[class=com]')
     .addClass('translate yestranslate')

@@ -87,6 +87,10 @@
   font-family: sans-serif;
   font-size: xx-large;
   color: var(--glocal-fg-color);
+
+  @media (max-width: 450px) {
+    font-size: x-large;
+  }
 }
 
 .m11 { background: hsl( 0, 100%, 15%); }

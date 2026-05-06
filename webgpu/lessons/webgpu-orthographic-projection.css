@@ -65,6 +65,20 @@
   }
 }
 
+.local-compare {
+  display: flex;
+  flex-direction: row;
+  max-width: 1300px;
+  background-color: var(--compare-bg-color);
+  padding: 1em;  
+
+  &>div {
+    flex: 1 1 50%;
+    position: relative;
+    min-width: 0;
+  }
+}
+
 .mspc {
   display: inline-flex;
   width: 2em;
@@ -87,6 +101,19 @@
   font-family: sans-serif;
   font-size: xx-large;
   color: var(--glocal-fg-color);
+
+  @media (max-width: 720px) {
+    font-size: x-large;
+  }
+
+  @media (max-width: 500px) {
+    font-size: large;
+  }
+
+  @media (max-width: 400px) {
+    width: 1.5em;
+    height: 1.5em;
+  }
 }
 
 .m11 { background: hsl( 0, 100%, 15%); }

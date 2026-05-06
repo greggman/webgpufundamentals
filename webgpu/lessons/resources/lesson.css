@@ -599,6 +599,7 @@ iframe.webgpu_example, iframe.webgpu_diagram {
   margin-left: auto;
   margin-right: auto;
   display: block;
+  max-width: 100%;
 }
 iframe.webgpu_example {
   background: black;
@@ -616,6 +617,7 @@ iframe.external_diagram {
   margin-left: auto;
   margin-right: auto;
   display: block;
+  max-width: 100%;
 }
 
 div.webgpu_bottombar {
@@ -731,10 +733,79 @@ pre.prettyprint.lighttheme .fun { color: #900; }  /* function name */
   pre.prettyprint .fun, pre.tableprettyprint .fun { color: #7aa6da } /* function name   */
 }
 
-pre.prettyprint.hide-linedeleted .linedeleted {
-    display: none;
+/* --- Diff display modes --------------------------------------------------- */
+/* Three explicit modes are reachable via the per-block "diff-mode-btn":
+ *   side-by-side  : two columns, deletions left, additions right
+ *   inline-diff   : single column with +/-/* highlighting (the original look)
+ *   hide-deleted  : single column with deleted lines suppressed
+ * Until the user clicks once, body[data-diff-mode="auto"] is in effect, and a
+ * viewport media query picks between side-by-side (wide) and inline-diff. */
+
+.sbs-diff {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  align-items: stretch;
 }
-pre.prettyprint button.linedeleted-button {
+.sbs-diff > .sbs-side {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  overflow-x: auto;
+}
+.sbs-diff > .sbs-side > li {
+  list-style-type: none;
+  white-space: pre;
+}
+.sbs-diff > .sbs-left  { border-right: 1px solid #555; }
+.sbs-blank {
+  list-style-type: none;
+  background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(128, 128, 128, 0.2),
+      rgba(128, 128, 128, 0.2) 2px,
+      transparent 2px,
+      transparent 7px
+  );
+  background-attachment: fixed;
+  text-decoration: none !important;
+}
+
+/* Default (pre-JS, no body attribute): show only the inline list. */
+pre.prettyprint .sbs-diff { display: none; }
+pre.prettyprint .sbs-inline { display: block; }
+
+/* inline-diff: single column with +/- highlighting (current behavior). */
+body[data-diff-mode="inline-diff"] pre.prettyprint .sbs-diff { display: none; }
+body[data-diff-mode="inline-diff"] pre.prettyprint .sbs-inline { display: block; }
+
+/* hide-deleted: same single column, deleted lines suppressed. */
+body[data-diff-mode="hide-deleted"] pre.prettyprint .sbs-diff { display: none; }
+body[data-diff-mode="hide-deleted"] pre.prettyprint .sbs-inline { display: block; }
+body[data-diff-mode="hide-deleted"] pre.prettyprint .linedeleted { display: none; }
+
+/* side-by-side: two columns; widen the pre past the article column cap. */
+body[data-diff-mode="side-by-side"] .lesson-main > pre.prettyprint:has(.sbs-diff) {
+  max-width: min(95%, 1500px);
+}
+body[data-diff-mode="side-by-side"] pre.prettyprint .sbs-diff { display: flex; }
+body[data-diff-mode="side-by-side"] pre.prettyprint .sbs-inline { display: none; }
+
+/* auto: viewport-driven choice between side-by-side and inline-diff. */
+body[data-diff-mode="auto"] pre.prettyprint .sbs-diff { display: none; }
+body[data-diff-mode="auto"] pre.prettyprint .sbs-inline { display: block; }
+@media (min-width: 1100px) {
+  body[data-diff-mode="auto"] .lesson-main > pre.prettyprint:has(.sbs-diff) {
+    max-width: min(95%, 1500px);
+  }
+  body[data-diff-mode="auto"] pre.prettyprint .sbs-diff { display: flex; }
+  body[data-diff-mode="auto"] pre.prettyprint .sbs-inline { display: none; }
+}
+
+/* The per-block diff-mode button. */
+pre.prettyprint button.diff-mode-btn {
   position: absolute;
   top: 0;
   right: 0;
@@ -851,7 +922,7 @@ pre.prettyprint.lighttheme .fun { color: #900; }  /* function name */
     .lesson-sidebar,
     .lesson-comments,
     #forkongithub,
-    .linedeleted-button {
+    .diff-mode-btn {
         display: none !important;
     }
 }
