@@ -234,7 +234,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Эта статья о storage буферах и продолжение <a href="webgpu-uniforms.html">предыдущей статьи</a>.</p>
+      <p>Эта статья из серии о различных способах передачи данных в шейдер.
+Каждая статья основывается на предыдущем уроке, поэтому вам будет проще
+понять их, если читать по порядку.</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Inter-stage Переменные</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">Storage буферы</a> ⬅ вы здесь</li>
+  <li><a href="webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li><a href="webgpu-textures.html">Textures</a></li>
+  <li><a href="webgpu-importing-textures.html">Loading Images</a></li>
+  <li><a href="webgpu-textures-external-video.html">Using Video</a></li>
+  <li><a href="webgpu-cube-maps.html">Cube Maps</a></li>
+  <li><a href="webgpu-storage-textures.html">Storage Textures</a></li>
+  <li><a href="webgpu-multisampling.html">Multisampling / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">Constants</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>Эта статья о storage буферах и продолжение <a href="webgpu-uniforms.html">предыдущей статьи</a>.</p>
 <p>Storage буферы во многом похожи на uniform буферы.
 Если мы просто поменяем <code class="notranslate" translate="no">UNIFORM</code> на <code class="notranslate" translate="no">STORAGE</code> в JavaScript
 и <code class="notranslate" translate="no">var&lt;uniform&gt;</code> на <code class="notranslate" translate="no">var&lt;storage, read&gt;</code> в WGSL, то примеры из предыдущих статей будут работать.</p>
@@ -676,7 +694,9 @@ struct VSOutput {
           <ul>  <li>Основы</li>
         <ul>
           <li><a href="/webgpu/lessons/ru/webgpu-fundamentals.html">Основы</a></li>
-<li><a href="/webgpu/lessons/ru/webgpu-inter-stage-variables.html">Inter-stage Переменные</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ru/webgpu-inter-stage-variables.html">Inter-stage Переменные</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-storage-buffers.html">Storage буферы</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -689,7 +709,10 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/ru/webgpu-storage-textures.html">Storage Textures</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/ru/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/ru/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/ru/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-transparency.html">Transparency and Blending</a></li>
 <li><a href="/webgpu/lessons/ru/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

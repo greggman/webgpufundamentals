@@ -235,7 +235,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>存储纹理本质上就是<a href="webgpu-textures.html">纹理</a>，只不过你可以直接向其写入或"存储"数据。通常我们在顶点着色器中指定三角形，由 GPU 间接更新纹理，而使用存储纹理则可以直接向纹理的任意位置写入数据。</p>
+      <p>本文是着色器数据传递各种方法系列文章中的一篇。
+每一篇都构建于前面的课程基础之上，因此按顺序阅读将有助于您更好地理解。</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
+  <li><a href="webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
+  <li><a href="webgpu-textures.html">纹理</a></li>
+  <li><a href="webgpu-importing-textures.html">加载图像</a></li>
+  <li><a href="webgpu-textures-external-video.html">高效使用视频</a></li>
+  <li><a href="webgpu-cube-maps.html">立方体贴图</a></li>
+  <li><a href="webgpu-storage-textures.html">存储纹理</a> ⬅ 你在此处</li>
+  <li><a href="webgpu-multisampling.html">多重采样 / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">常量</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>存储纹理本质上就是<a href="webgpu-textures.html">纹理</a>，只不过你可以直接向其写入或"存储"数据。通常我们在顶点着色器中指定三角形，由 GPU 间接更新纹理，而使用存储纹理则可以直接向纹理的任意位置写入数据。</p>
 <p>存储纹理并不是一种特殊的纹理类型，它就是你使用 <code class="notranslate" translate="no">createTexture</code> 创建的普通纹理。只要添加 <code class="notranslate" translate="no">STORAGE_BINDING</code> 用法标志，就可以将纹理作为存储纹理使用，同时保留其他所需的所有用法标志。</p>
 <p>从某种意义上说，存储纹理就像一个用作二维数组的存储缓冲区。例如，我们可以创建一个存储缓冲区，并在代码中这样引用它：</p>
 <pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0)
@@ -460,7 +477,9 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
           <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
@@ -473,16 +492,19 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">可选特性与限制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">计时与性能</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">工作原理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">兼容性模式</a></li>
         </ul>
   <li>3D数学</li>
         <ul>
@@ -515,7 +537,7 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
         </ul>
   <li>后处理</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>

@@ -1,21 +1,27 @@
 {
   'basics': [
     'webgpu-fundamentals.md',
-    'webgpu-inter-stage-variables.md',
-    'webgpu-uniforms.md',
-    'webgpu-storage-buffers.md',
-    'webgpu-vertex-buffers.md',
     {
-      'textures': [
-        'webgpu-textures.md',
-        'webgpu-importing-textures.md',
-        'webgpu-textures-external-video.md',
-        'webgpu-cube-maps.md',
-        'webgpu-storage-textures.md',
-        'webgpu-multisampling.md',
+      'passing-data': [
+        'webgpu-inter-stage-variables.md',
+        'webgpu-uniforms.md',
+        'webgpu-storage-buffers.md',
+        'webgpu-vertex-buffers.md',
+        {
+          'textures': [
+            'webgpu-textures.md',
+            'webgpu-importing-textures.md',
+            'webgpu-textures-external-video.md',
+            'webgpu-cube-maps.md',
+            'webgpu-storage-textures.md',
+            'webgpu-multisampling.md',
+          ],
+        },
+        'webgpu-immediates.md',
+        'webgpu-constants.md',
+        'webgpu-miscellaneous-input.md',
       ],
     },
-    'webgpu-constants.md',
     'webgpu-memory-layout.md',
     'webgpu-transparency.md',
     'webgpu-bind-group-layouts.md',

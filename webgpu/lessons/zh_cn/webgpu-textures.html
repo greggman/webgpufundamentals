@@ -235,7 +235,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本文将介绍纹理的基本原理。在之前的文章中，我们介绍了向着色器传递数据的其他主要方法。它们是<a href="webgpu-inter-stage-variables.html">inter-stage 变量</a>、<a href="webgpu-uniforms.html">uniforms</a>、<a href="webgpu-storage-buffers.html">存储缓冲区</a>和<a href="../webgpu-vertex-buffers">顶点缓冲区</a>。最后一种向着色器传递数据的主要方式是纹理。</p>
+      <p>本文是着色器数据传递各种方法系列文章中的一篇。
+每一篇都构建于前面的课程基础之上，因此按顺序阅读将有助于您更好地理解。</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
+  <li><a href="webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
+  <li><a href="webgpu-textures.html">纹理</a> ⬅ 你在此处</li>
+  <li><a href="webgpu-importing-textures.html">加载图像</a></li>
+  <li><a href="webgpu-textures-external-video.html">高效使用视频</a></li>
+  <li><a href="webgpu-cube-maps.html">立方体贴图</a></li>
+  <li><a href="webgpu-storage-textures.html">存储纹理</a></li>
+  <li><a href="webgpu-multisampling.html">多重采样 / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">常量</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>本文将介绍纹理的基本原理。在之前的文章中，我们介绍了向着色器传递数据的其他主要方法。它们是<a href="webgpu-inter-stage-variables.html">inter-stage 变量</a>、<a href="webgpu-uniforms.html">uniforms</a>、<a href="webgpu-storage-buffers.html">存储缓冲区</a>和<a href="../webgpu-vertex-buffers">顶点缓冲区</a>。最后一种向着色器传递数据的主要方式是纹理。</p>
 <p>纹理通常代表 2d 图像。二维图像只是一个由颜色值组成的二维数组，因此你可能会问，为什么我们需要二维数组的纹理呢？我们可以直接使用存储缓冲区作为二维数组。纹理的特殊之处在于，它们可以被称为 <em>采样器(sampler)</em> 的特殊硬件访问。采样器可以读取纹理中最多 16 个不同的值，并将它们混合在一起，这对许多常见的使用情况都很有用。</p>
 <p>举个例子，假设我想绘制一张比原始尺寸更大的 2D 图像。</p>
 <div class="center">
@@ -1264,7 +1281,9 @@ canvas.height = Math.max(
           <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
@@ -1277,16 +1296,19 @@ canvas.height = Math.max(
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">可选特性与限制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">计时与性能</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">工作原理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">兼容性模式</a></li>
         </ul>
   <li>3D数学</li>
         <ul>
@@ -1319,7 +1341,7 @@ canvas.height = Math.max(
         </ul>
   <li>后处理</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>

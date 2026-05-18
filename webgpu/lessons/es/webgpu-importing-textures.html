@@ -234,7 +234,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Cubrimos algunos conceptos básicos sobre el uso de texturas <a href="webgpu-textures.html">en el artículo anterior</a>. En este artículo cubriremos la carga de una imagen en una textura, así como la generación de mipmaps en la GPU.</p>
+      <p>Este artículo es parte de una serie sobre las diversas formas de proporcionar datos
+a un shader. Cada uno se basa en la lección anterior, por lo que te resultará
+más fácil entenderlos si los lees en orden.</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">Storage Buffers</a></li>
+  <li><a href="webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li><a href="webgpu-textures.html">Texturas</a></li>
+  <li><a href="webgpu-importing-textures.html">Carga de imágenes</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-textures-external-video.html">Uso de video</a></li>
+  <li><a href="webgpu-cube-maps.html">Cubemaps</a></li>
+  <li><a href="webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
+  <li><a href="webgpu-multisampling.html">Multisampling / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">Constantes</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>Cubrimos algunos conceptos básicos sobre el uso de texturas <a href="webgpu-textures.html">en el artículo anterior</a>. En este artículo cubriremos la carga de una imagen en una textura, así como la generación de mipmaps en la GPU.</p>
 <p>En el artículo anterior creamos una textura llamando a <code class="notranslate" translate="no">device.createTexture</code> y luego pusimos datos en la textura llamando a <code class="notranslate" translate="no">device.queue.writeTexture</code>. Hay otra función en <code class="notranslate" translate="no">device.queue</code> llamada <code class="notranslate" translate="no">device.queue.copyExternalImageToTexture</code> que nos permite copiar una imagen en una textura.</p>
 <p>Esta función puede tomar un <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a>, así que tomemos <a href="webgpu-textures.html#a-mag-filter">el ejemplo de magFilter del artículo anterior</a> y modifiquémoslo para cargar algunas imágenes.</p>
 <p>Primero necesitamos algo de código para obtener un <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap"><code class="notranslate" translate="no">ImageBitmap</code></a> de una imagen:</p>
@@ -1208,7 +1226,9 @@ struct VSOutput {
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -1221,7 +1241,10 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

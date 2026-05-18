@@ -236,17 +236,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <div class="lesson-main">
       <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
 <p>この記事は、3D数学について学ぶことを目的とした一連の記事の8番目です。各記事は前のレッスンを基にしているので、順番に読むと最も理解しやすいかもしれません。</p>
-<ol>
-<li><a href="webgpu-translation.html">平行移動</a></li>
-<li><a href="webgpu-rotation.html">回転</a></li>
-<li><a href="webgpu-scale.html">スケーリング</a></li>
-<li><a href="webgpu-matrix-math.html">行列演算</a></li>
-<li><a href="webgpu-orthographic-projection.html">正射影</a></li>
-<li><a href="webgpu-perspective-projection.html">透視投影</a></li>
-<li><a href="webgpu-cameras.html">カメラ</a></li>
-<li><a href="webgpu-matrix-stacks.html">行列スタック</a> ⬅ ここです</li>
-<li><a href="webgpu-scene-graphs.html">シーングラフ</a></li>
-</ol>
+<p></p><ol>
+  <li><a href="webgpu-translation.html">平行移動</a></li>
+  <li><a href="webgpu-rotation.html">回転</a></li>
+  <li><a href="webgpu-scale.html">スケール</a></li>
+  <li><a href="webgpu-matrix-math.html">行列演算</a></li>
+  <li><a href="webgpu-orthographic-projection.html">正射影</a></li>
+  <li><a href="webgpu-perspective-projection.html">透視投影</a></li>
+  <li><a href="webgpu-cameras.html">カメラ</a></li>
+  <li><a href="webgpu-matrix-stacks.html">行列スタック</a> ⬅ ここです</li>
+  <li><a href="webgpu-scene-graphs.html">シーングラフ</a></li>
+</ol><p></p>
 <p>行列スタックは、その名の通り、行列の<a href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)">スタック</a>です。互いに相対的に物事を配置したり方向付けしたりするのに役立ちます。デモンストレーションとして、ファイルキャビネットのセットを作成しましょう。行列スタックを使用すると、これが簡単になります。</p>
 <p>簡単にするために、<a href="../webgpu-cameras#a-aim-fs">前の記事の最後の例</a>から始めて、キューブから作成します。</p>
 <p>最初に行うことは、描画していたFを単位キューブに交換することです。</p>
@@ -1152,7 +1152,9 @@ function createConeVertices({radius = 1, height = 1, subdivisions = 6} = {}) {
           <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
@@ -1165,7 +1167,10 @@ function createConeVertices({radius = 1, height = 1, subdivisions = 6} = {}) {
 <li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/ja/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>

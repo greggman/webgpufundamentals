@@ -236,11 +236,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <div class="lesson-main">
       <p>Este artículo es el primero de una breve serie sobre cómo crear partes de un editor 3D. Cada uno se basa en la lección anterior, por lo que te resultará más fácil entenderlos si los lees en orden.
 Estos artículos asumen que ya has leído <a href="webgpu-scene-graphs.html">el artículo sobre grafos de escena (scene graphs)</a> así como <a href="webgpu-post-processing.html">el artículo sobre post-procesamiento (post processing)</a>.</p>
-<ol>
-<li><a href="webgpu-highlighting.html">Resaltado</a> ⬅ estás aquí</li>
-<li><a href="webgpu-camera-controls.html">Controles de cámara</a></li>
-<li><a href="webgpu-picking.html">Picking (Selección)</a></li>
-</ol>
+<p></p><ol>
+  <li><a href="webgpu-highlighting.html">Resaltado</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-camera-controls.html">Controles de cámara</a></li>
+  <li><a href="webgpu-picking.html">Picking</a></li>
+</ol><p></p>
 <p>Supongamos que queremos hacer una especie de editor 3D sencillo inspirado en Blender, Maya, Unity o Unreal. Queremos algo que nos permita seleccionar y manipular objetos en 3D. Empezamos este camino en <a href="webgpu-scene-graphs.html">el artículo sobre grafos de escena</a>, donde teníamos nodos y podíamos seleccionar uno mediante botones en la interfaz de usuario para editar su traslación, rotación y escala. Sería estupendo si pudiéramos ver visualmente cuál está seleccionado. Hagamos eso.</p>
 <p>Partiendo del <a href="webgpu-scene-graphs.html#a-gui">ejemplo donde añadimos por primera vez la capacidad de seleccionar nodos</a>, comenzamos con una escena como esta:</p>
 <div class="webgpu_center center">
@@ -669,7 +669,9 @@ fn isOnEdge(pos: vec2i) -&gt; bool {
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -682,7 +684,10 @@ fn isOnEdge(pos: vec2i) -&gt; bool {
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

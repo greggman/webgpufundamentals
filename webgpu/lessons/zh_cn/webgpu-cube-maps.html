@@ -235,7 +235,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本文假设你已经阅读了<a href="webgpu-textures.html">纹理相关的文章</a>以及<a href="webgpu-importing-textures.html">将图像导入纹理相关的文章</a>。本文还使用了<a href="webgpu-lighting-directional.html">方向光相关的文章</a>中介绍的概念。如果你还没有阅读这些文章，可能需要先读一下。</p>
+      <p>本文是着色器数据传递各种方法系列文章中的一篇。
+每一篇都构建于前面的课程基础之上，因此按顺序阅读将有助于您更好地理解。</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
+  <li><a href="webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
+  <li><a href="webgpu-textures.html">纹理</a></li>
+  <li><a href="webgpu-importing-textures.html">加载图像</a></li>
+  <li><a href="webgpu-textures-external-video.html">高效使用视频</a></li>
+  <li><a href="webgpu-cube-maps.html">立方体贴图</a> ⬅ 你在此处</li>
+  <li><a href="webgpu-storage-textures.html">存储纹理</a></li>
+  <li><a href="webgpu-multisampling.html">多重采样 / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">常量</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>本文假设你已经阅读了<a href="webgpu-textures.html">纹理相关的文章</a>以及<a href="webgpu-importing-textures.html">将图像导入纹理相关的文章</a>。本文还使用了<a href="webgpu-lighting-directional.html">方向光相关的文章</a>中介绍的概念。如果你还没有阅读这些文章，可能需要先读一下。</p>
 <p>在<a href="webgpu-textures.html">上一篇文章</a>中，我们介绍了如何使用纹理、如何使用从 0 到 1 的纹理坐标来引用纹理，以及如何通过 mip 可选地过滤纹理。</p>
 <p>另一种纹理类型是<em>立方体贴图（cubemap）</em>。立方体贴图由 6 个面组成，代表立方体的 6 个面。与传统的二维纹理坐标不同，立方体贴图使用的是法线，也就是三维方向。根据法线指向的方向，会选择立方体的 6 个面之一，然后在该面内对像素进行采样以产生颜色。</p>
 <p>让我们来制作一个简单的例子，使用二维 Canvas 来制作 6 个面中每个面所使用的图像。</p>
@@ -661,7 +678,9 @@ struct VSOutput {
           <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
@@ -674,16 +693,19 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">可选特性与限制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">计时与性能</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">工作原理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">兼容性模式</a></li>
         </ul>
   <li>3D数学</li>
         <ul>
@@ -716,7 +738,7 @@ struct VSOutput {
         </ul>
   <li>后处理</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>

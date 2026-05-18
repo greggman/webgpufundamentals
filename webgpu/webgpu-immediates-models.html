@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Immediates - Models and Materials</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+  </body>
+  <script type="module">
+/* global GPURenderPassEncoder */
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
+import {mat4} from '../3rdparty/wgpu-matrix.module.js';
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // You can probably remove this check by 2027 🙏
+  const canUseImmediates = !!GPURenderPassEncoder?.prototype.setImmediates;
+  if (!canUseImmediates) {
+    fail('need a browser that supports WebGPU immediates');
+    return;
+  }
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+
+  const module = device.createShaderModule({
+    label: 'model and material selection via immediates shaders',
+    code: /* wgsl */ `
+      struct Material {
+        color: vec4f,
+      };
+
+      struct PerModel {
+        matrix: mat4x4f,
+      };
+
+      struct Globals {
+        viewProjection: mat4x4f,
+      };
+
+      struct Vertex {
+        @location(0) position: vec4f,
+      };
+
+      struct MyImmediates {
+        modelNdx: u32,
+        materialNdx: u32,
+      };
+
+      @group(0) @binding(0) var<storage, read> materials: array<Material>;
+      @group(0) @binding(1) var<storage, read> perModel: array<PerModel>;
+      @group(0) @binding(2) var<uniform> glb: Globals;
+
+      var<immediate> imm: MyImmediates;
+
+      @vertex fn vs(v: Vertex) -> @builtin(position) vec4f {
+        let model = perModel[imm.modelNdx];
+        return glb.viewProjection * model.matrix * v.position;
+      }
+
+      @fragment fn fs() -> @location(0) vec4f {
+        let material = materials[imm.materialNdx];
+        return material.color;
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: 'our select model and material via immediates pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        // position
+        {
+          arrayStride: 2 * 4, // 2 floats, 4 bytes each
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  const squareVertices = [
+    -0.5, -0.5,
+     0.5, -0.5,
+    -0.5,  0.5,
+    -0.5,  0.5,
+     0.5, -0.5,
+     0.5,  0.5,
+  ];
+  const triangleVertices = [
+     0,    0.5,
+    -0.5, -0.5,
+     0.5, -0.5,
+  ];
+  const circleVertices = [];
+  const numCircleTriangles = 100;
+  for (let i = 0; i < numCircleTriangles; ++i) {
+    const angle0 = (i + 0) / numCircleTriangles * 2 * Math.PI;
+    const angle1 = (i + 1) / numCircleTriangles * 2 * Math.PI;
+    circleVertices.push(Math.cos(angle0) * 0.5, Math.sin(angle0) * 0.5);
+    circleVertices.push(Math.cos(angle1) * 0.5, Math.sin(angle1) * 0.5);
+    circleVertices.push(0, 0);
+  }
+
+  function createVertexBuffer(device, data) {
+    const buffer = device.createBuffer({
+      size: data.byteLength,
+      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(buffer, 0, data);
+    return { buffer, numVertices: data.length / 2 };
+  }
+
+  const vertices = [
+    createVertexBuffer(
+      device, new Float32Array(triangleVertices)),
+    createVertexBuffer(
+      device, new Float32Array(circleVertices)),
+    createVertexBuffer(
+      device, new Float32Array(squareVertices)),
+  ];
+
+  const materialData = new Float32Array([
+    1.0, 0.5, 0.5, 1.0,  // red
+    0.5, 1.0, 0.5, 1.0,  // green
+    0.5, 0.5, 1.0, 1.0,  // blue
+    1.0, 1.0, 0.5, 1.0,  // yellow
+    1.0, 0.5, 1.0, 1.0,  // magenta
+    0.5, 1.0, 1.0, 1.0,  // cyan
+  ]);
+  const numMaterials = materialData.length / 4;
+  const materialBuffer = device.createBuffer({
+    label: 'our material buffer',
+    size: materialData.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(materialBuffer, 0, materialData);
+
+  const randInt = max => (Math.random() * max) | 0;
+
+  const models = [];
+  const numModels = 200;
+  const modelData = new Float32Array(numModels * 16);
+  for (let i = 0; i < numModels; ++i) {
+    const modelNdx = i;
+    const materialNdx = randInt(numMaterials);
+    const geometryNdx = randInt(vertices.length);
+    const {buffer, numVertices} = vertices[geometryNdx];
+
+    const mat = mat4.translation([(Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2, 0]);
+    mat4.rotateZ(mat, Math.random() * Math.PI  * 2, mat);
+    mat4.scale(mat, [Math.random() * 0.1 + 0.1, Math.random() * 0.1 + 0.1, 1], mat);
+
+    modelData.set(mat, i * 16);
+
+    models.push({
+      numVertices,
+      vertexBuffer: buffer,
+      immediates: new Uint32Array([
+        modelNdx,
+        materialNdx,
+      ]),
+    });
+  }
+
+  const perModelBuffer = device.createBuffer({
+    label: 'our per model buffer',
+    size: modelData.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(perModelBuffer, 0, modelData);
+
+  const sharedData = new Float32Array(16);
+  const sharedBuffer = device.createBuffer({
+    label: 'our shared data buffer',
+    size: sharedData.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const bindGroup = device.createBindGroup({
+    label: 'our bind group',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: materialBuffer },
+      { binding: 1, resource: perModelBuffer },
+      { binding: 2, resource: sharedBuffer },
+    ],
+  });
+
+  function render() {
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
+    mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);
+    device.queue.writeBuffer(sharedBuffer, 0, sharedData);
+
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setBindGroup(0, bindGroup);
+    for (let i = 0; i < numModels; ++i) {
+      const { immediates, vertexBuffer, numVertices } = models[i];
+      pass.setImmediates(0, immediates);
+      pass.setVertexBuffer(0, vertexBuffer);
+      pass.draw(numVertices);
+    }
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const canvas = entry.target;
+      const width = entry.contentBoxSize[0].inlineSize;
+      const height = entry.contentBoxSize[0].blockSize;
+      canvas.width = Math.max(1, Math.min(width, device.limits.maxTextureDimension2D));
+      canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D));
+    }
+    render();
+  });
+  observer.observe(canvas);
+}
+
+function fail(msg) {
+  // eslint-disable-next-line no-alert
+  alert(msg);
+}
+
+main();
+  </script>
+</html>

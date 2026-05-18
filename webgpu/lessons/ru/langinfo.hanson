@@ -8,6 +8,7 @@
   commentSectionHeader: '<div>Нашли ошибку? <a href="https://github.com/webgpu/webgpufundamentals/issues">Создайте задачу на github</a>.</div>',
   missing: "К сожалению, страница ещё не переведена. [Я всегда рад переводчикам](https://github.com/webgpu/webgpufundamentals)! 😄\n\n[А пока можете почитать статью на английском языке]({{{origLink}}}).",
   toc: 'оглавление',
+  here: 'вы здесь',
   categoryMapping: {
     'basics': "Основы",
     'misc': "Разное",

@@ -259,7 +259,7 @@ filling those buffers with data using <code class="notranslate" translate="no">T
 in the first 20-30 articles on this site and in <a href="webgpu-memory-layout.html">the article on memory layout</a>.</p>
 <p>At some point though, it becomes harder
 to understand the code dealing with these details instead of just saying
-“set the uniform” and you, having learned previously that “set the uniforms” means
+“set the uniforms” and you, having learned previously that “set the uniforms” means
 "compute the offset to the various pieces of data, make typed arrays views to
 make it possible to set that data. And then later, before rendering, set it and
 upload the values to the GPU.</p>
@@ -973,7 +973,7 @@ to pull out enough data to make these views.</p>
     // upload the uniform values to the uniform buffer
     device.queue.writeBuffer(uniformBuffer, 0, uni.arrayBuffer);
 </pre>
-<p>You can imaging the <code class="notranslate" translate="no">set</code> function, at least for the use-case shown above, is
+<p>You can imagine the <code class="notranslate" translate="no">set</code> function, at least for the use-case shown above, is
 pretty straight forward.</p>
 <p>This would work</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const arrayBuffer = new ArrayBuffer(256);
@@ -1582,7 +1582,9 @@ higher level concepts.</p>
           <ul>  <li>Basics</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
 <li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -1595,7 +1597,10 @@ higher level concepts.</p>
 <li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
 <li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
 <li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

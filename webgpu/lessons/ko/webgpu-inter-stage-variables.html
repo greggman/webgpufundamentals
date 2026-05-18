@@ -235,7 +235,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p><a href="webgpu-fundamentals.html">이전 글</a>에서, WebGPU에 대한 아주 기초적인 내용을 알아 보았습니다.
+      <p>이 글은 셰이더에 데이터를 전달하는 다양한 방법에 대한 시리즈 중 하나입니다.
+각 글은 이전 내용을 바탕으로 작성되었으므로 순서대로 읽는 것이 가장 이해하기 좋습니다.</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a> ⬅ 여기</li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
+  <li><a href="webgpu-vertex-buffers.html">정점 버퍼</a></li>
+  <li><a href="webgpu-textures.html">텍스처</a></li>
+  <li><a href="webgpu-importing-textures.html">이미지 로딩</a></li>
+  <li><a href="webgpu-textures-external-video.html">비디오 사용하기</a></li>
+  <li><a href="webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
+  <li><a href="webgpu-storage-textures.html">스토리지 텍스처</a></li>
+  <li><a href="webgpu-multisampling.html">멀티 샘플링 / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">상수(Constants)</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p><a href="webgpu-fundamentals.html">이전 글</a>에서, WebGPU에 대한 아주 기초적인 내용을 알아 보았습니다.
 이 글에서는 스테이지간 변수(inter-stage variable)에 대한 <em>기초</em>를 다룰 것입니다.</p>
 <p>스테이지간 변수는 정점 셰이더와 프래그먼트 셰이더 사이에서 역할을 하게 됩니다.</p>
 <p>정점 셰이더가 세 개의 위치값을 출력하면 삼각형이 래스터화됩니다.
@@ -567,7 +584,9 @@ select = (a, b, condition) =&gt; condition ? b : a;
           <ul>  <li>기초</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-fundamentals.html">기초</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-vertex-buffers.html">정점 버퍼</a></li>
@@ -580,7 +599,10 @@ select = (a, b, condition) =&gt; condition ? b : a;
 <li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">스토리지 텍스처</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">멀티 샘플링 / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/ko/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">바인드 그룹 레이아웃</a></li>

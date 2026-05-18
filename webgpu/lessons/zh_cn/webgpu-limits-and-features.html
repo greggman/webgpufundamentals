@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-limits-and-features.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Optional Features and Limits">
+
+<meta name="description" content="可选特性">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 可选特性与限制">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Optional Features">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_zh-cn.jpg">
+<meta property="og:description" content="可选特性">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Optional Features and Limits">
+<meta name="twitter:title" content="WebGPU 可选特性与限制">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">
-<meta name="twitter:description" content="Optional Features">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="可选特性">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-limits-and-features.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-limits-and-features_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-limits-and-features.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-limits-and-features.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 可选特性与限制",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-limits-and-features.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Optional Features and Limits</title>
+<title>WebGPU 可选特性与限制</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,13 +228,118 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Optional Features and Limits</h1>
+    <h1>WebGPU 可选特性与限制</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-limits-and-features.html">英文原版地址</a></p>
+      <p>WebGPU 有一系列可选特性和限制。让我们来看看如何检查它们以及如何请求它们。</p>
+<p>当你请求一个适配器时</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+</pre>
+<p>适配器会包含 <code class="notranslate" translate="no">adapter.limits</code> 上的限制列表和 <code class="notranslate" translate="no">adapter.features</code> 上的特性名称数组。例如</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+console.log(adapter.limits.maxColorAttachments);
+</pre>
+<p>可能会在控制台打印 <code class="notranslate" translate="no">8</code>，表示该适配器最多支持 8 个颜色附件。</p>
+<p>下面列出了所有的限制，包括你的默认适配器的限制以及最低要求限制。</p>
+<div class="webgpu_center data-table limits" data-diagram="limits"></div>
+<p>最低限制是指所有支持 WebGPU 的设备都可以保证具备的限制。</p>
+<p>还有一个可选特性列表。例如，你可以这样查看它们</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const adapter = await navigator.gpu?.requestAdapter();
+console.log(adapter.features);
+</pre>
+<p>可能会打印类似 <code class="notranslate" translate="no">["texture-compression-astc", "texture-compression-bc"]</code> 的内容，告诉你这些特性在请求后可用。</p>
+<p>下面是你的默认适配器上可用特性的列表。</p>
+<div class="webgpu_center data-table features" data-diagram="features"></div>
+<blockquote>
+<p>注意：你可以在 <a href="https://webgpureport.org">webgpureport.org</a> 查看你系统适配器的所有特性和限制。</p>
+</blockquote>
+<h2 id="请求限制和特性">请求限制和特性</h2>
+<p>默认情况下，当你请求设备时，你会获得最低限制（上表右侧列）并且不会获得任何可选特性。这样做的目的是，只要你保持在最低限制之内，你的应用就能在所有支持 WebGPU 的设备上运行。</p>
+<p>但是，根据适配器上列出的可用限制和特性，你可以在调用 <code class="notranslate" translate="no">requestDevice</code> 时通过将你想要的限制作为 <code class="notranslate" translate="no">requiredLimits</code> 传入，以及将你想要的特性作为 <code class="notranslate" translate="no">requiredFeatures</code> 传入来请求它们。例如</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const k1Gig = 1024 * 1024 * 1024;
+const adapter = await navigator.gpu?.requestAdapter();
+const device = adapter?.requestDevice({
+  requiredLimits: { maxBufferSize: k1Gig },
+  requiredFeatures: [ 'float32-filterable' ],
+});
+</pre>
+<p>上面我们请求能够使用最大 1GB 的缓冲区，以及能够使用可过滤的 float32 纹理（例如 <code class="notranslate" translate="no">'rgba32float'</code> 配合 <code class="notranslate" translate="no">minFilter</code> 设置为 <code class="notranslate" translate="no">'linear'</code>，默认情况下只能使用 <code class="notranslate" translate="no">'nearest'</code>）</p>
+<p>如果其中任何一个请求无法满足，<code class="notranslate" translate="no">requestDevice</code> 将会失败（拒绝 promise）。</p>
+<h2 id="不要请求所有内容">不要请求所有内容</h2>
+<p>可能会很想请求所有的限制和特性，然后检查你需要哪些。</p>
+<p>例如：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function objLikeToObj(src) {
+  const dst = {};
+  for (const key in src) {
+    dst[key] = src[key];
+  }
+  return dst;
+}
+
+//
+// 不好！！！ ❌
+//
+async function main() {
+  const adapter = await navigator?.gpu.requestAdapter();
+  const device = await adapter?.requestDevice({
+    requiredLimits: objLikeToObj(adapter.limits),
+    requiredFeatures: adapter.features,
+  });
+  if (!device) {
+    fail('need webgpu');
+    return;
+  }
+
+  const canUse128KUniformsBuffers = device.limits.maxUniformBufferBindingSize &gt;= 128 * 1024;
+  const canStoreToBGRA8Unorm = device.features.has('bgra8unorm-storage');
+  const canIndirectFirstInstance = device.features.has('indirect-first-instance');
+}
+</pre>
+<p>这看起来是一种简单明了的方式来检查限制和特性<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。这种模式的问题在于，你可能会在不知不觉中超过限制。例如，假设你创建了一个 <code class="notranslate" translate="no">'rgba32float'</code> 纹理并使用 <code class="notranslate" translate="no">'linear'</code> 过滤。</p>
+<p>在你的台式机上它会神奇地正常工作，因为你恰好启用了它。</p>
+<p>在用户的手机上，你的程序会神秘地失败，因为 <code class="notranslate" translate="no">'float32-filterable'</code> 特性不存在，而你恰好在不知不觉中使用了它。</p>
+<p>或者你可能分配了一个大于最低 <code class="notranslate" translate="no">maxBufferSize</code> 的缓冲区，同样没有意识到自己超过了限制。你发布后，大量用户无法运行你的页面。</p>
+<h2 id="推荐的方式来请求特性和限制">推荐的方式来请求特性和限制</h2>
+<p>推荐使用特性和限制的方式是，只请求你绝对需要的东西。</p>
+<p>例如</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const adapter = await navigator?.gpu.requestAdapter();
+
+  const canUse128KUniformsBuffers = adapter?.limits.maxUniformBufferBindingSize &gt;= 128 * 1024;
+  const canStoreToBGRA8Unorm = adapter?.features.has('bgra8unorm-storage');
+  const canIndirectFirstInstance = adapter?.features.has('indirect-first-instance');
+
+  // 如果我们绝对需要这些特性中的一个或多个，那么如果它们不可用现在就失败
+  if (!canUse128kUniformBuffers) {
+    alert('抱歉，你的设备可能太旧或性能不足');
+    return;
+  }
+
+  // 请求我们需要的可用特性和限制
+  const device = adapter?.requestDevice({
+    requiredFeatures: [
+      ...(canStorageBGRA8Unorm ? ['bgra8unorm'] : []),
+      ...(canIndirectFirstInstance) ? ['indirect-first-instance']),
+    ],
+    requiredLimit: [
+      maxUniformBufferBindingSize: 128 * 1024,
+    ]
+  });
+</pre>
+<p>这样做的好处是，如果你恰好请求了一个大于 128k 的 Uniform 缓冲区，你会收到错误。同样，如果你尝试使用你没有请求的特性，你也会收到错误。然后你可以自主决定是想增加你需要的限制（因此会拒绝在更多设备上运行），还是想保持限制不变，或者是否想重构代码以便在特性或限制可用或不可用时做不同的事情。</p>
+<!-- keep this at the bottom of the article -->
+<link rel="stylesheet" href="../webgpu-limits-and-features.css">
+<script type="module" src="../webgpu-limits-and-features.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>这个 <code class="notranslate" translate="no">objLikeToObj</code> 是什么？为什么需要它？这是 Web 规范的一个晦涩问题。规范将 <code class="notranslate" translate="no">requiredLimits</code> 列为 <code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code>。Web IDL 规范说，在将对象转换为 <code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code> 时，只复制实际上是对象自身属性的属性。适配器上的 <code class="notranslate" translate="no">limits</code> 对象被列为一个 <code class="notranslate" translate="no">interface</code>。在那里看起来像是属性的东西实际上不是属性，而是存在于对象原型上的 getter，它们实际上不是对象的属性。因此，在转换为 <code class="notranslate" translate="no">record&lt;DOMString, GPUSize64&gt;</code> 时它们不会被复制，所以你必须自己复制它们。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -204,10 +355,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
@@ -220,16 +374,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">可选特性与限制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">计时与性能</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">工作原理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">兼容性模式</a></li>
         </ul>
   <li>3D数学</li>
         <ul>
@@ -262,7 +419,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </ul>
   <li>后处理</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
@@ -301,13 +458,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 可选特性与限制`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

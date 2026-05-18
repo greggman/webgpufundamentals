@@ -234,7 +234,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>En este artículo cubriremos los fundamentos de las texturas. En artículos anteriores cubrimos las otras formas principales de pasar datos a un shader. Estas fueron las <a href="webgpu-inter-stage-variables.html">variables inter-etapa (inter-stage variables)</a>, los <a href="webgpu-uniforms.html">uniforms</a>, los <a href="webgpu-storage-buffers.html">storage buffers</a> y los <a href="webgpu-vertex-buffers.html">vertex buffers</a>. La última forma principal de pasar datos a un shader son las texturas.</p>
+      <p>Este artículo es parte de una serie sobre las diversas formas de proporcionar datos
+a un shader. Cada uno se basa en la lección anterior, por lo que te resultará
+más fácil entenderlos si los lees en orden.</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">Storage Buffers</a></li>
+  <li><a href="webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li><a href="webgpu-textures.html">Texturas</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-importing-textures.html">Carga de imágenes</a></li>
+  <li><a href="webgpu-textures-external-video.html">Uso de video</a></li>
+  <li><a href="webgpu-cube-maps.html">Cubemaps</a></li>
+  <li><a href="webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
+  <li><a href="webgpu-multisampling.html">Multisampling / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">Constantes</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>En este artículo cubriremos los fundamentos de las texturas. En artículos anteriores cubrimos las otras formas principales de pasar datos a un shader. Estas fueron las <a href="webgpu-inter-stage-variables.html">variables inter-etapa (inter-stage variables)</a>, los <a href="webgpu-uniforms.html">uniforms</a>, los <a href="webgpu-storage-buffers.html">storage buffers</a> y los <a href="webgpu-vertex-buffers.html">vertex buffers</a>. La última forma principal de pasar datos a un shader son las texturas.</p>
 <p>Las texturas representan con mayor frecuencia una imagen 2D. Una imagen 2D es solo un array 2D de valores de color, por lo que te preguntarás, ¿por qué necesitamos texturas para arrays 2D? Podríamos usar simplemente storage buffers como arrays 2D. Lo que hace especiales a las texturas es que pueden ser accedidas por un hardware especial llamado <em>sampler</em>. Un sampler puede leer hasta 16 valores diferentes en una textura y mezclarlos entre sí de una manera que es útil para muchos casos de uso comunes.</p>
 <p>Como ejemplo, digamos que quiero dibujar una imagen 2D más grande que su tamaño original.</p>
 <div class="webgpu_center">
@@ -1242,7 +1260,9 @@ canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -1255,7 +1275,10 @@ canvas.height = Math.max(1, Math.min(height, device.limits.maxTextureDimension2D
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

@@ -8,6 +8,7 @@
 	commentSectionHeader: '<div>問題点/バグ? <a href="https://github.com/webgpu/webgpufundamentals/issues">githubでissueを作成</a>.</div>',
 	missing: "ごめん！この記事はまだ翻訳されていない。[翻訳してくれますか？](https://github.com/webgpu/webgpufundamentals)! 😄\n\n[ここに英語版がある]({{{origLink}}}).",
 	toc: '目次',
+	here: 'ここです',
 	categoryMapping: {
 		'basics': "基本",
 		'misc': "その他のトピック",

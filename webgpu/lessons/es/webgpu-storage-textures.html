@@ -234,7 +234,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>Las texturas de almacenamiento (storage textures) son simplemente <a href="webgpu-textures.html">texturas</a> en las que puedes escribir o “almacenar” directamente.
+      <p>Este artículo es parte de una serie sobre las diversas formas de proporcionar datos
+a un shader. Cada uno se basa en la lección anterior, por lo que te resultará
+más fácil entenderlos si los lees en orden.</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">Storage Buffers</a></li>
+  <li><a href="webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li><a href="webgpu-textures.html">Texturas</a></li>
+  <li><a href="webgpu-importing-textures.html">Carga de imágenes</a></li>
+  <li><a href="webgpu-textures-external-video.html">Uso de video</a></li>
+  <li><a href="webgpu-cube-maps.html">Cubemaps</a></li>
+  <li><a href="webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-multisampling.html">Multisampling / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">Constantes</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>Las texturas de almacenamiento (storage textures) son simplemente <a href="webgpu-textures.html">texturas</a> en las que puedes escribir o “almacenar” directamente.
 Normalmente especificamos triángulos en un vertex shader (shader de vértices) y la GPU actualiza la textura
 por nosotros de forma indirecta, pero con una textura de almacenamiento podemos escribir directamente en la
 textura donde queramos.</p>
@@ -533,7 +551,9 @@ el primer valor en el mismo buffer. <a href="#fnref2" class="footnote-backref">�
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -546,7 +566,10 @@ el primer valor en el mismo buffer. <a href="#fnref2" class="footnote-backref">�
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

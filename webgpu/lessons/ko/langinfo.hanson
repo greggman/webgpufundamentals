@@ -23,6 +23,7 @@
   `,
   contribTemplate: '<a href="${html_url}"><img src="${avatar_url}"> ${login}</a>님<br> 당신의 <a href="https://github.com/${owner}/${repo}/commits?author=${login}">${contributions} 기여에 감사드립니다.</a>',
   toc: '목차',
+  here: '여기',
   categoryMapping: {
     'basics': '기초',
     'misc': '기타',

@@ -235,17 +235,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson">
     <div class="lesson-main">
       <p>Este artículo es el cuarto de una serie que esperamos que te enseñe sobre matemáticas 3D. Cada uno se basa en la lección anterior, por lo que es posible que te resulten más fáciles de entender leyéndolos en orden.</p>
-<ol>
-<li><a href="webgpu-translation.html">Traslación</a></li>
-<li><a href="webgpu-rotation.html">Rotación</a></li>
-<li><a href="webgpu-scale.html">Escalado</a></li>
-<li><a href="webgpu-matrix-math.html">Matemáticas de matrices</a> ⬅ estás aquí</li>
-<li><a href="webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
-<li><a href="webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
-<li><a href="webgpu-cameras.html">Cámaras</a></li>
-<li><a href="webgpu-matrix-stacks.html">Pilas de matrices</a></li>
-<li><a href="webgpu-scene-graphs.html">Grafos de escena</a></li>
-</ol>
+<p></p><ol>
+  <li><a href="webgpu-translation.html">Traslación</a></li>
+  <li><a href="webgpu-rotation.html">Rotación</a></li>
+  <li><a href="webgpu-scale.html">Escalado</a></li>
+  <li><a href="webgpu-matrix-math.html">Matemáticas de matrices</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+  <li><a href="webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+  <li><a href="webgpu-cameras.html">Cámaras</a></li>
+  <li><a href="webgpu-matrix-stacks.html">Pilas de matrices</a></li>
+  <li><a href="webgpu-scene-graphs.html">Grafos de escena</a></li>
+</ol><p></p>
 <p>En las últimas 3 publicaciones repasamos cómo <a href="webgpu-translation.html">trasladar</a>, <a href="webgpu-rotation.html">rotar</a> y <a href="webgpu-scale.html">escalar</a> las posiciones de los vértices. La traslación, la rotación y el escalado se consideran tipos de <em>transformación</em>. Cada una de estas transformaciones requirió cambios en el shader y cada una de las 3 transformaciones dependía del orden.</p>
 <p>En <a href="webgpu-scale.html">nuestro ejemplo anterior</a>, escalamos, luego rotamos y después trasladamos. Si aplicáramos esas operaciones en un orden diferente, obtendríamos un resultado distinto.</p>
 <p>Por ejemplo, aquí tienes un escalado de 2, 1, una rotación de 30 grados y una traslación de 100, 0.</p>
@@ -1267,7 +1267,9 @@ struct VSOutput {
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -1280,7 +1282,10 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

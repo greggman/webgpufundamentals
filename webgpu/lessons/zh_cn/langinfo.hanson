@@ -16,6 +16,7 @@
   `,
   contribTemplate: '感谢 <a href="${html_url}"><img src="${avatar_url}"> ${login}</a><br>的 <a href="https://github.com/${owner}/${repo}/commits?author=${login}">${contributions} 次贡献</a>',
   toc: '目录',
+  here: '你在此处',
   categoryMapping: {
     'basics': "基础概念",
     'misc': "杂项",

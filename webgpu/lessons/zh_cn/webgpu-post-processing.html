@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-post-processing.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Post Processing - Basic CRT Effect">
+
+<meta name="description" content="后处理">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 后处理 - 基础 CRT 效果">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Post Processing">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_zh-cn.jpg">
+<meta property="og:description" content="后处理">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-post-processing.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Post Processing - Basic CRT Effect">
+<meta name="twitter:title" content="WebGPU 后处理 - 基础 CRT 效果">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-post-processing.html">
-<meta name="twitter:description" content="Post Processing">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="后处理">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-post-processing.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-post-processing_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-post-processing.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-post-processing.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 后处理 - 基础 CRT 效果",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-post-processing.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Post Processing - Basic CRT Effect</title>
+<title>WebGPU 后处理 - 基础 CRT 效果</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -182,13 +228,623 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Post Processing - Basic CRT Effect</h1>
+    <h1>WebGPU 后处理 - 基础 CRT 效果</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-post-processing.html">英文原版地址</a></p>
+      <p>后处理就是在你创建了"原始"图像之后，再对其进行一些处理。后处理可以应用于照片、视频、二维场景或三维场景。它通常意味着你有一张图像，然后对该图像应用一些效果，比如在 Instagram 上选择滤镜。</p>
+<p>在本站几乎所有示例中，我们都是渲染到画布纹理。要进行后处理，我们改为渲染到另一个纹理。然后在应用一些图像处理效果的同时，将该纹理渲染到画布上。</p>
+<p>作为一个简单的例子，让我们尝试将图像后处理成类似 1980 年代电视的样子，带有扫描线和 CRT RGB 元素。</p>
+<div class="webgpu_center"><img class="nobg" src="../resources/gemini-generated-1980s-tv-1024.png" style="width: 700px"></div>
+<p>为此，我们采用<a href="webgpu-timing.html">计时相关文章</a>顶部的动画示例。首先，我们要让它渲染到一个单独的纹理，然后将该纹理渲染到画布上。</p>
+<p>下面是一个绘制大裁剪空间三角形的着色器，它传递正确的 UV 坐标，以便在裁剪空间中覆盖三角形的适合部分。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+        return vec4f(color);
+      }
+    `,
+  })
+</pre>
+<p>这非常简单，类似于我们在<a href="webgpu-importing-textures.html">将图像与纹理结合使用的文章</a>中用于生成 mipmap 的着色器。唯一的主要区别是原来的着色器使用 2 个三角形来覆盖裁剪空间，这个使用<a href="webgpu-large-triangle-to-cover-clip-space.html">1 个大三角形</a>。</p>
+<p>然后，为了使用这些着色器，我们需要一个管道：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessPipeline = device.createRenderPipeline({
+    layout: 'auto',
+    vertex: { module: postProcessModule },
+    fragment: {
+      module: postProcessModule,
+      targets: [ { format: presentationFormat }],
+    },
+  });
+</pre>
+<p>这个管道将渲染到画布，所以我们需要将目标格式设置为之前查询的 <code class="notranslate" translate="no">presentationFormat</code>。</p>
+<p>我们需要一个采样器和一个渲染通道描述符。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessSampler = device.createSampler({
+    minFilter: 'linear',
+    magFilter: 'linear',
+  });
+
+  const postProcessRenderPassDescriptor = {
+    label: 'post process render pass',
+    colorAttachments: [
+      { loadOp: 'clear', storeOp: 'store' },
+    ],
+  };
+</pre>
+<p>然后，不再让原始渲染通道渲染到画布，而是需要它渲染到一个单独的纹理。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let renderTarget;
++
++  function setupPostProcess(canvasTexture) {
++    if (renderTarget?.width === canvasTexture.width &amp;&amp;
++        renderTarget?.height === canvasTexture.height) {
++      return;
++    }
++
++    renderTarget?.destroy();
++    renderTarget = device.createTexture({
++      size: canvasTexture,
++      format: 'rgba8unorm',
++      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
++    });
++    const renderTargetView = renderTarget.createView();
++    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
++  }
+
+  let then = 0;
+  function render(now) {
+    now *= 0.001;  // 转换为秒
+    const deltaTime = now - then;
+    then = now;
+
+-    // 从画布上下文获取当前纹理，
+-    // 并将其设置为要渲染到的纹理。
+-    renderPassDescriptor.colorAttachments[0].view =
+-        context.getCurrentTexture().createView();
++    const canvasTexture = context.getCurrentTexture();
++    setupPostProcess(canvasTexture);
+
+    ...
+</pre>
+<p>上面，我们将当前的 <code class="notranslate" translate="no">canvasTexture</code> 传入 <code class="notranslate" translate="no">setupPostProcess</code>。它检查"渲染目标"纹理的大小是否与画布相同。如果不是，它会创建一个相同大小的新纹理。</p>
+<p>然后它将原始 <code class="notranslate" translate="no">renderPassDescriptor</code> 的颜色附件设置为此渲染目标纹理。</p>
+<p>由于旧的管道将渲染到此纹理，我们需要为该纹理的格式更新它：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'per vertex color',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        ...
+      ],
+    },
+    fragment: {
+      module,
+-      targets: [{ format: presentationFormat }],
++      targets: [{ format: 'rgba8unorm' }],
+    },
+  });
+</pre>
+<p>仅这些更改就会开始将原始场景渲染到渲染目标纹理上，但我们仍然需要在画布上绘制一些内容，否则我们什么都看不到，所以让我们这样做。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+
+  ...
+
+  let then = 0;
+  function render(now) {
+    now *= 0.001;  // 转换为秒
+    const deltaTime = now - then;
+    then = now;
+
+    const canvasTexture = context.getCurrentTexture();
+    setupPostProcess(canvasTexture);
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+    ...
+
+    pass.draw(numVertices, settings.numObjects);
+
+    pass.end();
+
++    postProcess(encoder, renderTarget, canvasTexture);
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>唯一需要做的另一个调整。让我们移除对象数量设置，因为它与后处理无关。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+-    numObjects: 100,
++    numObjects: 200,
+  };
+
+  const gui = new GUI();
+-  gui.add(settings, 'numObjects', 0, kNumObjects, 1);
+</pre>
+<p>我们可以完全去掉 <code class="notranslate" translate="no">settings.numObjects</code>，但这需要在几个不同的地方进行编辑，所以让我们暂时保留它。我们将数量设置为 200，只是为了填充图像。</p>
+<p>如果运行这个程序，与原来的没有明显的区别。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-01.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-01.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>区别在于我们正在渲染到渲染目标纹理，然后将那个纹理渲染到画布，所以现在我们可以开始应用一些效果了。</p>
+<p>老式 CRT 最明显的效果是老式 CRT 有可见的扫描线。这是因为图像投影的方式是通过使用磁铁将光束以水平线的模式引导穿过屏幕。</p>
+<p>我们可以通过使用正弦波生成明暗图案并取绝对值来获得类似的效果。</p>
+<div class="webgpu_center">
+  <div style="width: 100%;"><img class="ddnobg" src="../resources/sinewave-40.svg"></div>
+  <div class="caption">sin(x)</div>
+</div>
+<div class="webgpu_center">
+   <div style="width: 100%;"><img class="ddnobg" src="../resources/abs-sinewave-40.svg"></div>
+   <div class="caption">abs(sin(x))</div>
+</div>
+<div class="webgpu_center">
+   <div style="width: 100%;"><div data-diagram="sine" style="aspect-ratio: 981 / 50; width: 100%;"></div></div>
+   <div class="caption">abs(sin(x)) 作为灰度颜色</div>
+</div>
+<p>让我们把它添加到代码中。首先修改着色器来应用这个正弦波。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
++      struct Uniforms {
++        effectAmount: f32,
++        bandMult: f32,
++      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
++      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
++        let banding = abs(sin(fsInput.position.y * uni.bandMult));
++        let effect = mix(1.0, banding, uni.effectAmount);
+
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+-        return vec4f(color);
++        return vec4f(color.rgb * effect, color.a);
+      }
+    `,
+  });
+</pre>
+<p>我们的正弦波基于 <code class="notranslate" translate="no">fsInput.position.y</code>，这是正在写入的像素的 y 坐标。换句话说，对于从 0 开始的每条扫描线，它将是 0.5、1.5、2.5、3.5 等等。<code class="notranslate" translate="no">bandMult</code> 允许我们调整条纹的大小，<code class="notranslate" translate="no">effectAmount</code> 允许我们打开和关闭效果，这样我们就可以比较有效果和没有效果的区别。</p>
+<p>要使用新的着色器，我们需要设置一个 uniform 缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessUniformBuffer = device.createBuffer({
+    size: 8,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+</pre>
+<p>我们需要将它添加到绑定组中：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    postProcessBindGroup = device.createBindGroup({
+      layout: postProcessPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: renderTargetView },
+        { binding: 1, resource: postProcessSampler },
++        { binding: 2, resource: postProcessUniformBuffer },
+      ],
+    });
+</pre>
+<p>然后，我们需要添加一些设置：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    numObjects: 200,
++    affectAmount: 1,
++    bandMult: 1,
+  };
+
+  const gui = new GUI();
++  gui.add(settings, 'affectAmount', 0, 1);
++  gui.add(settings, 'bandMult', 0.01, 2.0);
+</pre>
+<p>并且我们需要将这些设置上传到 uniform 缓冲区：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
++    device.queue.writeBuffer(
++      postProcessUniformBuffer,
++      0,
++      new Float32Array([
++        settings.affectAmount,
++        settings.bandMult,
++      ]),
++    );
+
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+</pre>
+<p>这就给了我们一个类似 CRT 的扫描线效果。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-02.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-02.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>CRT 和 LCD 一样，将图像分割为红色、绿色和蓝色区域。在 CRT 上，这些区域通常比今天大多数 LCD 大得多，所以有时这会很突出。让我们添加一些效果来近似这种效果。</p>
+<p>首先修改着色器：</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
++        cellMult: f32,
++        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+        let banding = abs(sin(fsInput.position.y * uni.bandMult));
+
++        let cellNdx = u32(fsInput.position.x * uni.cellMult) % 3;
++        var cellColor = vec3f(0);
++        cellColor[cellNdx] = 1;
++        let cMult = cellColors[cellNdx] + uni.cellBright;
+
+-        let effect = mix(1.0, banding, uni.effectAmount);
++        let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+        return vec4f(color.rgb * effect, 1);
+      }
+    `,
+  });
+</pre>
+<p>上面我们使用 <code class="notranslate" translate="no">fsInput.position.x</code>，这是正在写入的像素的 x 坐标。通过乘以 <code class="notranslate" translate="no">cellMult</code>，我们可以选择一个单元格大小。我们转换为整数并取模 3。这给了我们一个数字 0、1 或 2，我们用它来将 <code class="notranslate" translate="no">cellColor</code> 的红色、绿色或蓝色通道设置为 1。</p>
+<p>我们加入 <code class="notranslate" translate="no">cellBright</code> 作为调整，然后将旧的条纹和新的效果相乘。<code class="notranslate" translate="no">effect</code> 从 <code class="notranslate" translate="no">f32</code> 变为 <code class="notranslate" translate="no">vec3f</code>，这样它可以独立影响每个通道。</p>
+<p>回到 JavaScript，我们需要调整 uniform 缓冲区的大小：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessUniformBuffer = device.createBuffer({
+-    size: 8,
++    size: 16,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+</pre>
+<p>并在 GUI 中添加一些设置：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const settings = {
+    numObjects: 200,
+    affectAmount: 1,
+    bandMult: 1,
++    cellMult: 0.5,
++    cellBright: 1,
+  };
+
+  const gui = new GUI();
+  gui.add(settings, 'affectAmount', 0, 1);
+  gui.add(settings, 'bandMult', 0.01, 2.0);
++  gui.add(settings, 'cellMult', 0, 1);
++  gui.add(settings, 'cellBright', 0, 2);
+</pre>
+<p>并上传新的设置：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
+    device.queue.writeBuffer(
+      postProcessUniformBuffer,
+      0,
+      new Float32Array([
+        settings.affectAmount,
+        settings.bandMult,
++        settings.cellMult,
++        settings.cellBright,
+      ]),
+    );
+
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+</pre>
+<p>现在我们有了类似 CRT 颜色元素的效果。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>上面的效果并不意味着完美地代表 CRT 的工作原理。相反，它们只是被用来暗示看起来像 CRT，并且希望易于理解。你可以在网上找到更花哨的技术。</p>
+<h2 id="使用计算着色器"><a id="compute"></a> 使用计算着色器</h2>
+<p>有人会问，我们能用计算着色器做这个吗？而且，也许更重要的是，我们应该用吗？让我们先讨论"能不能"。</p>
+<p>我们在<a href="webgpu-storage-textures.html">关于存储纹理的文章</a>中介绍了使用计算着色器渲染到纹理。</p>
+<p>要将代码转换为使用计算着色器，我们需要将 <code class="notranslate" translate="no">STORAGE_BINDING</code> 用法添加到画布纹理，根据<a href="webgpu-storage-textures.html">前面提到的文章</a>，这需要检查我们是否可以并选择支持它的纹理格式。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">async function main() {
+  const adapter = await navigator.gpu?.requestAdapter();
++  const hasBGRA8UnormStorage = adapter?.features.has('bgra8unorm-storage');
+-  const device = await adapter?.requestDevice();
++  const device = await adapter?.requestDevice({
++    requiredFeatures: [
++      ...(hasBGRA8UnormStorage ? ['bgra8unorm-storage'] : []),
++    ],
++  });
+  if (!device) {
+    fail('need a browser that supports WebGPU');
+    return;
+  }
+
+  // 从画布获取 WebGPU 上下文并配置它
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+-  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
++  const presentationFormat = hasBGRA8UnormStorage
++    ? navigator.gpu.getPreferredCanvasFormat()
++    : 'rgab8unorm';
+  context.configure({
+    device,
+    format: presentationFormat,
++    usage: GPUTextureUsage.RENDER_ATTACHMENT |
++           GPUTextureUsage.TEXTURE_BINDING |
++           GPUTextureUsage.STORAGE_BINDING,
+  });
+</pre>
+<p>我们需要将着色器切换为写入存储纹理：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+-      struct VSOutput {
+-        @builtin(position) position: vec4f,
+-        @location(0) texcoord: vec2f,
+-      };
+-
+-      @vertex fn vs(
+-        @builtin(vertex_index) vertexIndex : u32,
+-      ) -&gt; VSOutput {
+-        var pos = array(
+-          vec2f(-1.0, -1.0),
+-          vec2f(-1.0,  3.0),
+-          vec2f( 3.0, -1.0),
+-        );
+-
+-        var vsOutput: VSOutput;
+-        let xy = pos[vertexIndex];
+-        vsOutput.position = vec4f(xy, 0.0, 1.0);
+-        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+-        return vsOutput;
+-      }
+
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
+        cellMult: f32,
+        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
++      @group(1) @binding(0) var outTexture: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+-      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+-        let banding = abs(sin(fsInput.position.y * uni.bandMult));
+-
+-        let cellNdx = u32(fsInput.position.x * uni.cellMult) % 3;
++      @compute @workgroup_size(1) fn cs(@builtin(global_invocation_id) gid: vec3u) {
++        let outSize = textureDimensions(outTexture);
++        let banding = abs(sin(f32(gid.y) * uni.bandMult));
++
++        let cellNdx = u32(f32(gid.x) * uni.cellMult) % 3;
+        var cellColor = vec3f(0);
+        cellColor[cellNdx] = 1.0;
+        let cMult = cellColor + uni.cellBright;
+
+        let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+-        let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+-        return vec4f(color.rgb * effect, color.a);
++        let uv = (vec2f(gid.xy) + 0.5) / vec2f(outSize);
++        let color = textureSampleLevel(postTexture2d, postSampler, uv, 0);
++        textureStore(outTexture, gid.xy, vec4f(color.rgb * effect, color.a));
+      }
+    `,
+  });
+</pre>
+<p>上面我们删除了顶点着色器和相关部分。我们也没有了 <code class="notranslate" translate="no">fsInput.position</code>，那是正在写入的像素的坐标。相反，我们有了 <code class="notranslate" translate="no">gid</code>，这是计算着色器单独调用的 <code class="notranslate" translate="no">global_invocation_id</code>。我们将使用它作为我们的纹理坐标。它是一个 <code class="notranslate" translate="no">vec3u</code>，所以我们需要在某些地方进行类型转换。我们也没有了 <code class="notranslate" translate="no">fsInput.texcoord</code>，但我们可以用 <code class="notranslate" translate="no">(vec2f(gid.xy) + 0.5) / vec2f(outSize)</code> 获得等效的结果。</p>
+<p>我们需要停止使用渲染通道，而是使用计算通道来进行后处理。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessPipeline = device.createRenderPipeline({
+    layout: 'auto',
+-    vertex: { module: postProcessModule },
+-    fragment: {
+-      module: postProcessModule,
+-      targets: [ { format: presentationFormat }],
+-    },
++    compute: { module: postProcessModule },
+  });
+
+  function postProcess(encoder, srcTexture, dstTexture) {
+    device.queue.writeBuffer(
+      postProcessUniformBuffer,
+      0,
+      new Float32Array([
+        settings.affectAmount,
+        settings.bandMult,
+        settings.cellMult,
+        settings.cellBright,
+      ]),
+    );
+
++    const outBindGroup = device.createBindGroup({
++      layout: postProcessPipeline.getBindGroupLayout(1),
++      entries: [
++        { binding: 0, resource: dstTexture },
++      ],
++    });
+
+-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+-    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
++    const pass = encoder.beginComputePass();
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+-    pass.draw(3);
++    pass.dispatchWorkgroups(dstTexture.width, dstTexture.height);
+    pass.end();
+  }
+</pre>
+<p>这样可以工作：</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03-compute.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03-compute.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>不幸的是，取决于 GPU，这很慢！我们在<a href="webgpu-compute-shaders-historgram.html">关于优化计算着色器的文章</a>中介绍了部分原因。使用工作组大小为 1 使事情变得简单，但很慢。</p>
+<p>我们可以更新为使用更大的工作组大小。这需要我们在超出边界时跳过写入纹理。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const workgroupSize = [16, 16];
+  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct Uniforms {
+        effectAmount: f32,
+        bandMult: f32,
+        cellMult: f32,
+        cellBright: f32,
+      };
+
+      @group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+      @group(0) @binding(1) var postSampler: sampler;
+      @group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+      @group(1) @binding(0) var outTexture: texture_storage_2d&lt;${presentationFormat}, write&gt;;
+
+-      @compute @workgroup_size(1) fn cs(@builtin(global_invocation_id) gid: vec3u) {
++      @compute @workgroup_size(${workgroupSize}) fn cs(@builtin(global_invocation_id) gid: vec3u) {
+        let outSize = textureDimensions(outTexture);
++        if (gid.x &gt;= outSize.x || gid.y &gt;= outSize.y) {
++          return;
++        }
+        let banding = abs(sin(f32(gid.y) * uni.bandMult));
+
+        let cellNdx = u32(f32(gid.x) * uni.cellMult) % 3;
+        var cellColor = vec3f(0);
+        cellColor[cellNdx] = 1.0;
+        let cMult = cellColor + uni.cellBright;
+
+        let effect = mix(vec3f(1), banding * cMult, uni.effectAmount);
+        let uv = (vec2f(gid.xy) + 0.5) / vec2f(outSize);
+        let color = textureSampleLevel(postTexture2d, postSampler, uv, 0);
+        textureStore(outTexture, gid.xy, vec4f(color.rgb * effect, color.a));
+      }
+    `,
+  });
+</pre>
+<p>然后我们需要分配更少的工作组：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const pass = encoder.beginComputePass();
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.setBindGroup(1, outBindGroup);
+-    pass.dispatchWorkgroups(dstTexture.width, dstTexture.height);
++    pass.dispatchWorkgroups(
++      Math.ceil(dstTexture.width / workgroupSize[0]),
++      Math.ceil(dstTexture.height / workgroupSize[1]),
++    );
+    pass.end();
+</pre>
+<p>这可以工作：</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-step-03-compute-workgroups.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-step-03-compute-workgroups.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>这快多了！但不幸的是，在某些 GPU 上，它仍然比使用渲染通道慢。</p>
+<div class="webgpu_center data-table">
+  <table>
+    <thead>
+      <tr><th>GPU</th><th>计算通道时间 vs<br>渲染通道时间<br>（越高越差）</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>M1 Mac                 </td><td>1x</td></tr>
+      <tr><td>AMD Radeon Pro 5300M   </td><td>1x</td></tr>
+      <tr><td>AMD Radeon Pro WX 32000</td><td>1.3x</td></tr>
+      <tr><td>Intel UHD Graphics 630 </td><td>1.7x</td></tr>
+      <tr><td>NVidia 2070 Super      </td><td>2x</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>深入探讨如何使其更快，对于这篇特定的文章来说是一个太大的话题。请参阅<a href="webgpu-compute-shaders-historgram.html">关于优化计算着色器的文章</a>，相同的规则适用。不幸的是，这些规则中没有真正与这个示例相关的。如果你尝试做的后处理可以从工作组共享内存中受益，那么使用计算着色器可能是有益的。访问模式也可能相关，以确保 GPU 不会出现大量缓存未命中。另一个可能是利用<a href="webgpu-subgroups.html">子组</a>。</p>
+<p>目前，建议你尝试不同的技术并检查它们的时间。或者，坚持使用渲染通道，除非你正在实现的算法真正可以从工作组和/或子组的共享数据中受益。GPU 渲染到纹理的时间比运行计算着色器的时间长得多，所以这个过程的许多方面都经过了高度优化。</p>
+<hr>
+<p>这篇文章介绍了<em>后处理</em>的概念。在下一篇文章中，我们将介绍一些<a href="webgpu-image-adjustments.html">常见的后处理图像调整</a>。</p>
+<!-- keep this at the bottom of the article -->
+<link href="../webgpu-post-processing.css" rel="stylesheet">
+<script type="module" src="../webgpu-post-processing.js"></script>
 
     </div>
     <div class="lesson-sidebar">
@@ -204,10 +860,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
@@ -220,16 +879,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">可选特性与限制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">计时与性能</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">工作原理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">兼容性模式</a></li>
         </ul>
   <li>3D数学</li>
         <ul>
@@ -262,7 +924,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </ul>
   <li>后处理</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
@@ -301,13 +963,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 后处理 - 基础 CRT 效果`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

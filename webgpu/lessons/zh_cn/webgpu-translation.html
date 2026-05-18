@@ -239,17 +239,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <!-- e4e2249b12b65aa20891d64bdedeeac60070d0fe -->
 <p>本文假设你已经阅读了<a href="webgpu-fundamentals.html">基础概念</a>，<a href="webgpu-uniforms.html">统一变量(Uniforms)</a>以及<a href="webgpu-vertex-buffers.html">顶点缓冲区</a>的相关文章。若尚未阅读，建议你先阅读这些内容后再返回继续。</p>
 <p>本文是系列文章中的第一篇，旨在帮助你学习 3D 数学知识。每篇文章都建立在前文基础之上，因此按顺序阅读可能更易于理解。</p>
-<ol>
-<li><a href="webgpu-translation.html">平移</a> ⬅ 你在此处</li>
-<li><a href="webgpu-rotation.html">旋转</a></li>
-<li><a href="webgpu-scale.html">缩放</a></li>
-<li><a href="webgpu-matrix-math.html">矩阵运算</a></li>
-<li><a href="webgpu-orthographic-projection.html">正交投影</a></li>
-<li><a href="webgpu-perspective-projection.html">透视投影</a></li>
-<li><a href="webgpu-cameras.html">相机</a></li>
-<li><a href="webgpu-matrix-stacks.html">矩阵堆栈</a></li>
-<li><a href="webgpu-scene-graphs.html">场景图</a></li>
-</ol>
+<p></p><ol>
+  <li><a href="webgpu-translation.html">平移(Translation)</a> ⬅ 你在此处</li>
+  <li><a href="webgpu-rotation.html">Rotation</a></li>
+  <li><a href="webgpu-scale.html">Scale</a></li>
+  <li><a href="webgpu-matrix-math.html">Matrix Math</a></li>
+  <li><a href="webgpu-orthographic-projection.html">Orthographic Projection</a></li>
+  <li><a href="webgpu-perspective-projection.html">Perspective Projection</a></li>
+  <li><a href="webgpu-cameras.html">Cameras</a></li>
+  <li><a href="webgpu-matrix-stacks.html">Matrix Stacks</a></li>
+  <li><a href="webgpu-scene-graphs.html">Scene Graphs</a></li>
+</ol><p></p>
 <p>我们将从类似于<a href="webgpu-vertex-buffers.html">顶点缓冲区文章</a>中的示例代码开始，但不再绘制多个圆形，而是改为绘制单个字母 F，并通过<a href="webgpu-vertex-buffers.html#a-index-buffers">索引缓冲区</a>来减少数据量。</p>
 <p>让我们在像素空间而非裁剪空间中进行操作，就像<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D">Canvas 2D API</a>那样。我们将构建一个由 6 个三角形组成的字母 F，具体结构如下所示</p>
 <div class="webgpu_center"><img src="../resources/f-polygons.svg" style="width: 600px;"></div>
@@ -562,7 +562,9 @@ struct VSOutput {
           <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
@@ -575,16 +577,19 @@ struct VSOutput {
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-bind-group-layouts.html">绑定组布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-copying-data.html">数据拷贝</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">Optional Features and Limits</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">Timing Performance</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-limits-and-features.html">可选特性与限制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-timing.html">计时与性能</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl.html">WGSL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">How It Works</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">Compatibility Mode</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-how-it-works.html">工作原理</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compatibility-mode.html">兼容性模式</a></li>
         </ul>
   <li>3D数学</li>
         <ul>
@@ -617,7 +622,7 @@ struct VSOutput {
         </ul>
   <li>后处理</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">Basic CRT Effect</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>

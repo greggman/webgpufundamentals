@@ -21,6 +21,7 @@ Lo sentimos, este artículo aún no ha sido traducido.
 [Aquí está el artículo original en inglés por ahora]({{{origLink}}}).
 `,
   toc: "Índice",
+  here: 'estás aquí',
   categoryMapping: {
     'basics': 'Lo básico',
     'misc': 'Miscelánea',

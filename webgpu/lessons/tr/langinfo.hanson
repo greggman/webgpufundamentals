@@ -23,6 +23,7 @@
   `,
   contribTemplate: '<a href="${html_url}"><img src="${avatar_url}">${login}</a>,<br><a href="https://github.com/${owner}/${repo}/commits?author=${login}">${contributions} katkıların</a> için sağ ol.',
   toc: 'İçindekiler',
+  here: 'buradasınız',
   categoryMapping: {
     'basics': 'Temel Bilgiler',
     'misc': 'Diğer Başlıklar',

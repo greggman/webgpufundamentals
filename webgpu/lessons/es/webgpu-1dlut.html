@@ -235,11 +235,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson">
     <div class="lesson-main">
       <p>Este artículo es el segundo de una breve serie sobre ajustes de imagen. Cada uno se basa en la lección anterior, por lo que puede que te resulte más fácil entenderlos leyéndolos en orden.</p>
-<ol>
-<li><a href="webgpu-image-adjustments.html">Ajustes de imagen</a></li>
-<li><a href="webgpu-1dlut.html">Tablas de búsqueda 1D</a> ⬅ estás aquí</li>
-<li><a href="webgpu-3dlut.html">Tablas de búsqueda 3D</a></li>
-</ol>
+<p></p><ol>
+  <li><a href="webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+  <li><a href="webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a></li>
+</ol><p></p>
 <p>Continuando donde lo dejamos, vamos a implementar un ajuste de imagen “duotono” (duotone). Aquí es donde usamos el brillo de una imagen para seleccionar entre 2 colores.</p>
 <div class="webgpu_center center"><div data-diagram="duotone" data-labels="{&quot;type&quot;: &quot;duotone&quot;}"></div></div>
 <p>En la imagen de arriba, la oscuridad selecciona el primer color y el brillo el segundo. Cuanto más oscuro, más cerca del primer color; cuanto más brillante, más cerca del segundo.</p>
@@ -773,7 +773,9 @@ fn apply1DLUT(
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -786,7 +788,10 @@ fn apply1DLUT(
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

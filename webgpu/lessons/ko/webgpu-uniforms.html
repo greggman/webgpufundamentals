@@ -235,7 +235,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>이전 글은 <a href="webgpu-inter-stage-variables.html">스테이지간 변수</a>에 관한 글이었습니다.
+      <p>이 글은 셰이더에 데이터를 전달하는 다양한 방법에 대한 시리즈 중 하나입니다.
+각 글은 이전 내용을 바탕으로 작성되었으므로 순서대로 읽는 것이 가장 이해하기 좋습니다.</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a> ⬅ 여기</li>
+  <li><a href="webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
+  <li><a href="webgpu-vertex-buffers.html">정점 버퍼</a></li>
+  <li><a href="webgpu-textures.html">텍스처</a></li>
+  <li><a href="webgpu-importing-textures.html">이미지 로딩</a></li>
+  <li><a href="webgpu-textures-external-video.html">비디오 사용하기</a></li>
+  <li><a href="webgpu-cube-maps.html">큐브맵(Cube Maps)</a></li>
+  <li><a href="webgpu-storage-textures.html">스토리지 텍스처</a></li>
+  <li><a href="webgpu-multisampling.html">멀티 샘플링 / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">상수(Constants)</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>이전 글은 <a href="webgpu-inter-stage-variables.html">스테이지간 변수</a>에 관한 글이었습니다.
 이번 글은 uniform에 관한 글입니다.</p>
 <p>uniform은 셰이더에서 사용하는 전역 변수같은 겁니다.
 셰이더를 실행하기 전에 값을 설정하고 그 값을 셰이더의 모든 반복 과정에서 사용할 수 있습니다.
@@ -668,7 +685,9 @@ device.queue.submit([commandBuffer]);
           <ul>  <li>기초</li>
         <ul>
           <li><a href="/webgpu/lessons/ko/webgpu-fundamentals.html">기초</a></li>
-<li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ko/webgpu-inter-stage-variables.html">스테이지간 변수(Inter-stage Variables)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-storage-buffers.html">스토리지 버퍼(Storage Buffers)</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-vertex-buffers.html">정점 버퍼</a></li>
@@ -681,7 +700,10 @@ device.queue.submit([commandBuffer]);
 <li><a href="/webgpu/lessons/ko/webgpu-storage-textures.html">스토리지 텍스처</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-multisampling.html">멀티 샘플링 / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/ko/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-constants.html">상수(Constants)</a></li>
+<li><a href="/webgpu/lessons/ko/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/ko/webgpu-memory-layout.html">데이터 메모리 레이아웃</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-transparency.html">Transparency and Blending</a></li>
 <li><a href="/webgpu/lessons/ko/webgpu-bind-group-layouts.html">바인드 그룹 레이아웃</a></li>

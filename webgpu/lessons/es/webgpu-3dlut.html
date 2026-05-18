@@ -235,11 +235,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson">
     <div class="lesson-main">
       <p>Este artículo es el tercero de una breve serie sobre ajustes de imagen. Cada uno se basa en la lección anterior, por lo que puede resultarte más fácil entenderlos leyéndolos en orden.</p>
-<ol>
-<li><a href="webgpu-image-adjustments.html">Ajustes de imagen</a></li>
-<li><a href="webgpu-1dlut.html">Tablas de búsqueda 1D</a></li>
-<li><a href="webgpu-3dlut.html">Tablas de búsqueda 3D</a> ⬅ estás aquí</li>
-</ol>
+<p></p><ol>
+  <li><a href="webgpu-image-adjustments.html">Ajustes de imagen</a></li>
+  <li><a href="webgpu-1dlut.html">Tablas de búsqueda 1D (1D-LUT)</a></li>
+  <li><a href="webgpu-3dlut.html">Tabla de búsqueda 3D (3D-LUT)</a> ⬅ estás aquí</li>
+</ol><p></p>
 <p>En el artículo anterior repasamos los <a href="webgpu-1dlut.html">mapas de degradado</a>, que también podríamos llamar tabla de búsqueda 1D o 1D-LUT para abreviar. Nuestras 1D-LUT eran de n píxeles de ancho por 1 de alto. Una 3D-LUT es la misma idea pero en 3D.</p>
 <p>Cómo funciona es que creamos un cubo de colores. Luego indexamos el cubo usando los colores de nuestra imagen de origen. Para cada píxel de la imagen original buscamos una posición en el cubo basada en los colores rojo, verde y azul del píxel original. El valor que extraemos de la 3D-LUT es el nuevo color.</p>
 <p>En Javascript podríamos hacerlo así. Imagina que los colores se especifican en enteros de 0 a 255 y tenemos un gran array tridimensional de tamaño 256x256x256. Entonces, para traducir un color a través de la tabla de búsqueda haríamos esto:</p>
@@ -762,7 +762,9 @@ const createLUTTextureFromImage = (function() {
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -775,7 +777,10 @@ const createLUTTextureFromImage = (function() {
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

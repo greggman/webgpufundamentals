@@ -235,17 +235,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson">
     <div class="lesson-main">
       <p>Este artículo es el octavo de una serie que esperamos que te enseñe sobre matemáticas 3D. Cada uno se basa en la lección anterior, por lo que es posible que te resulten más fáciles de entender leyéndolos en orden.</p>
-<ol>
-<li><a href="webgpu-translation.html">Traslación</a></li>
-<li><a href="webgpu-rotation.html">Rotación</a></li>
-<li><a href="webgpu-scale.html">Escalado</a></li>
-<li><a href="webgpu-matrix-math.html">Matemáticas de matrices</a></li>
-<li><a href="webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
-<li><a href="webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
-<li><a href="webgpu-cameras.html">Cámaras</a></li>
-<li><a href="webgpu-matrix-stacks.html">Pilas de matrices</a> ⬅ estás aquí</li>
-<li><a href="webgpu-scene-graphs.html">Grafos de escena</a></li>
-</ol>
+<p></p><ol>
+  <li><a href="webgpu-translation.html">Traslación</a></li>
+  <li><a href="webgpu-rotation.html">Rotación</a></li>
+  <li><a href="webgpu-scale.html">Escalado</a></li>
+  <li><a href="webgpu-matrix-math.html">Matemáticas de matrices</a></li>
+  <li><a href="webgpu-orthographic-projection.html">Proyección ortográfica</a></li>
+  <li><a href="webgpu-perspective-projection.html">Proyección en perspectiva</a></li>
+  <li><a href="webgpu-cameras.html">Cámaras</a></li>
+  <li><a href="webgpu-matrix-stacks.html">Pilas de matrices</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-scene-graphs.html">Grafos de escena</a></li>
+</ol><p></p>
 <p>Una pila de matrices (matrix stack) es exactamente lo que parece: una <a href="https://es.wikipedia.org/wiki/Pila_(inform%C3%A1tica)">pila (stack)</a> de matrices. Es útil para posicionar y orientar cosas unas respecto a otras. Para demostrarlo, vamos a crear un conjunto de archivadores. Usar una pila de matrices facilitará esta tarea.</p>
 <p>Para simplificarlo, los haremos a partir de cubos, comenzando con <a href="../webgpu-cameras#a-aim-fs">el último ejemplo del artículo anterior</a>.</p>
 <p>Lo primero que haremos es cambiar la F que hemos estado dibujando por un cubo unitario.</p>
@@ -1142,7 +1142,9 @@ function createConeVertices({radius = 1, height = 1, subdivisions = 6} = {}) {
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -1155,7 +1157,10 @@ function createConeVertices({radius = 1, height = 1, subdivisions = 6} = {}) {
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

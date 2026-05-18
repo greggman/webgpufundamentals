@@ -234,7 +234,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>El artículo anterior trató sobre las <a href="webgpu-inter-stage-variables.html">variables de etapa intermedia (inter-stage variables)</a>.
+      <p>Este artículo es parte de una serie sobre las diversas formas de proporcionar datos
+a un shader. Cada uno se basa en la lección anterior, por lo que te resultará
+más fácil entenderlos si los lees en orden.</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-storage-buffers.html">Storage Buffers</a></li>
+  <li><a href="webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li><a href="webgpu-textures.html">Texturas</a></li>
+  <li><a href="webgpu-importing-textures.html">Carga de imágenes</a></li>
+  <li><a href="webgpu-textures-external-video.html">Uso de video</a></li>
+  <li><a href="webgpu-cube-maps.html">Cubemaps</a></li>
+  <li><a href="webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
+  <li><a href="webgpu-multisampling.html">Multisampling / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">Constantes</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>El artículo anterior trató sobre las <a href="webgpu-inter-stage-variables.html">variables de etapa intermedia (inter-stage variables)</a>.
 Este artículo tratará sobre los uniforms.</p>
 <p>Los uniforms son algo así como variables globales para tu shader. Puedes establecer sus valores antes de ejecutar el shader y tendrán esos valores para cada iteración del shader. Puedes establecerlos con un valor diferente la próxima vez que le pidas a la GPU que ejecute el shader.</p>
 <p>Empezaremos de nuevo con el ejemplo del triángulo del <a href="webgpu-fundamentals.html">primer artículo</a> y lo modificaremos para usar algunos uniforms.</p>
@@ -641,7 +659,9 @@ device.queue.submit([commandBuffer]);
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -654,7 +674,10 @@ device.queue.submit([commandBuffer]);
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

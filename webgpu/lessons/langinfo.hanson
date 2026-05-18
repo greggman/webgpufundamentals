@@ -24,8 +24,10 @@ Sorry this article has not been translated yet.
   contribTemplate: 'Thank you <a href="${html_url}"><img src="${avatar_url}"> ${login}</a><br>for <a href="https://github.com/${owner}/${repo}/commits?author=${login}">${contributions} contributions</a>',
   needNewWebGPU: 'This browser is missing a few WebGPU features. Please update your browser.',
   toc: 'Table of Contents',
+  here: 'You are here',
   categoryMapping: {
     'basics': 'Basics',
+    'passing-data': 'Data for Shaders',
     'misc': 'Misc',
     'textures': 'Textures',
     'techniques': 'Techniques',

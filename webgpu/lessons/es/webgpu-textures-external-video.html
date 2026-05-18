@@ -234,7 +234,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>En el <a href="webgpu-importing-textures.html">artículo anterior</a>, cubrimos cómo cargar imágenes, canvases y video en una textura. Este artículo tratará sobre una forma más eficiente de usar video en WebGPU.</p>
+      <p>Este artículo es parte de una serie sobre las diversas formas de proporcionar datos
+a un shader. Cada uno se basa en la lección anterior, por lo que te resultará
+más fácil entenderlos si los lees en orden.</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">Storage Buffers</a></li>
+  <li><a href="webgpu-vertex-buffers.html">Vertex Buffers</a></li>
+  <li><a href="webgpu-textures.html">Texturas</a></li>
+  <li><a href="webgpu-importing-textures.html">Carga de imágenes</a></li>
+  <li><a href="webgpu-textures-external-video.html">Uso de video</a> ⬅ estás aquí</li>
+  <li><a href="webgpu-cube-maps.html">Cubemaps</a></li>
+  <li><a href="webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
+  <li><a href="webgpu-multisampling.html">Multisampling / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-constants.html">Constantes</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+</ol><p></p>
+<p>En el <a href="webgpu-importing-textures.html">artículo anterior</a>, cubrimos cómo cargar imágenes, canvases y video en una textura. Este artículo tratará sobre una forma más eficiente de usar video en WebGPU.</p>
 <p>En el artículo anterior cargamos datos de video en una textura de WebGPU llamando a <code class="notranslate" translate="no">copyExternalImageToTexture</code>. Esta función copia el frame actual del video desde el propio video a una textura preexistente que hayamos creado.</p>
 <p>WebGPU tiene otro método para usar video. Se llama <code class="notranslate" translate="no">importExternalTexture</code> y, como su nombre indica, proporciona una <a href="https://developer.mozilla.org/en-US/docs/Web/API/GPUExternalTexture"><code class="notranslate" translate="no">GPUExternalTexture</code></a>. Esta textura externa representa los datos del video directamente. No se realiza ninguna copia. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> Pasas un video a <code class="notranslate" translate="no">importExternalTexture</code> y te devuelve una textura lista para usar.</p>
 <p>Hay algunas advertencias importantes al usar una textura de <code class="notranslate" translate="no">importExternalTexture</code>.</p>
@@ -565,7 +583,9 @@ vvvvvvvv
           <ul>  <li>Lo básico</li>
         <ul>
           <li><a href="/webgpu/lessons/es/webgpu-fundamentals.html">Fundamentos</a></li>
-<li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/es/webgpu-inter-stage-variables.html">Variables entre etapas</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -578,7 +598,10 @@ vvvvvvvv
 <li><a href="/webgpu/lessons/es/webgpu-storage-textures.html">Texturas de almacenamiento (Storage Textures)</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/es/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-constants.html">Constantes</a></li>
+<li><a href="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/es/webgpu-memory-layout.html">Layout de memoria de datos</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-transparency.html">Transparencia y blending</a></li>
 <li><a href="/webgpu/lessons/es/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>

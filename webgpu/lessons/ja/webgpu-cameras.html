@@ -236,17 +236,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <div class="lesson-main">
       <div class="warn">この記事はGemini Code Assistによって自動翻訳されました。翻訳に問題がある場合は、お手数ですが<a href="https://github.com/webgpu/webgpufundamentals/pulls">こちら</a>からPull Requestを送信してください。</div>
 <p>この記事は、3D数学について学ぶことを目的とした一連の記事の7番目です。各記事は前のレッスンを基にしているので、順番に読むと最も理解しやすいかもしれません。</p>
-<ol>
-<li><a href="webgpu-translation.html">平行移動</a></li>
-<li><a href="webgpu-rotation.html">回転</a></li>
-<li><a href="webgpu-scale.html">スケーリング</a></li>
-<li><a href="webgpu-matrix-math.html">行列演算</a></li>
-<li><a href="webgpu-orthographic-projection.html">正射影</a></li>
-<li><a href="webgpu-perspective-projection.html">透視投影</a></li>
-<li><a href="webgpu-cameras.html">カメラ</a> ⬅ ここです</li>
-<li><a href="webgpu-matrix-stacks.html">行列スタック</a></li>
-<li><a href="webgpu-scene-graphs.html">シーングラフ</a></li>
-</ol>
+<p></p><ol>
+  <li><a href="webgpu-translation.html">平行移動</a></li>
+  <li><a href="webgpu-rotation.html">回転</a></li>
+  <li><a href="webgpu-scale.html">スケール</a></li>
+  <li><a href="webgpu-matrix-math.html">行列演算</a></li>
+  <li><a href="webgpu-orthographic-projection.html">正射影</a></li>
+  <li><a href="webgpu-perspective-projection.html">透視投影</a></li>
+  <li><a href="webgpu-cameras.html">カメラ</a> ⬅ ここです</li>
+  <li><a href="webgpu-matrix-stacks.html">行列スタック</a></li>
+  <li><a href="webgpu-scene-graphs.html">シーングラフ</a></li>
+</ol><p></p>
 <p>前回の投稿では、<code class="notranslate" translate="no">mat4.perspective</code>関数が視点を原点(0, 0, 0)に置き、錐台内のオブジェクトがその手前の<code class="notranslate" translate="no">-zNear</code>から<code class="notranslate" translate="no">-zFar</code>の間に配置されるため、Fを錐台の前に移動させる必要がありました。これは、表示させたいものはすべてこの空間に配置する必要があることを意味します。</p>
 <p>現実世界では、通常、カメラを動かしてあるオブジェクトの写真を撮ります。</p>
 <div class="webgpu_center" style="width: 512px">
@@ -1016,7 +1016,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           <ul>  <li>基本</li>
         <ul>
           <li><a href="/webgpu/lessons/ja/webgpu-fundamentals.html">基本</a></li>
-<li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/ja/webgpu-inter-stage-variables.html">inter-stage変数</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-uniforms.html">ユニフォーム</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-storage-buffers.html">ストレージバッファ</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-vertex-buffers.html">頂点バッファ</a></li>
@@ -1029,7 +1031,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/ja/webgpu-storage-textures.html">ストレージテクスチャ</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-multisampling.html">マルチサンプリング / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/ja/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-constants.html">定数</a></li>
+<li><a href="/webgpu/lessons/ja/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/ja/webgpu-memory-layout.html">構造体とメモリレイアウト</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-transparency.html">透明度とブレンディング</a></li>
 <li><a href="/webgpu/lessons/ja/webgpu-bind-group-layouts.html">バインドグループレイアウト</a></li>

@@ -590,8 +590,8 @@ struct VSOutput {
 <p>This code has 3 fragment shaders, one for each of <code class="notranslate" translate="no">'2d'</code>, <code class="notranslate" translate="no">'2d-array'</code>, <code class="notranslate" translate="no">'cube'</code>.
 It uses the <a href="webgpu-large-triangle-to-cover-clip-space.html">large triangle to cover clip space</a> technique
 <a href="webgpu-large-triangle-to-cover-clip-space.html">covered elsewhere</a> to draw.
-It also uses <code class="notranslate" translate="no">@builtin(instance_index)</code> to select the layer. This is an interesting and quick way
-to pass in a single integer value to a shader without having to use a uniform buffer.
+It also uses <code class="notranslate" translate="no">@builtin(instance_index)</code> to select the layer. This is <a href="webgpu-miscellaneous-input.html">an interesting and quick way
+to pass in a single integer value to a shader without having to use a uniform buffer</a>.
 When we call <code class="notranslate" translate="no">draw</code>, the 4th parameter is the first instance which will be passed
 to the shader as <code class="notranslate" translate="no">@builtin(instance_index)</code>. We pass that from the vertex shader to fragment
 shader via <code class="notranslate" translate="no">VSOutput.baseArrayLayer</code> which we can reference has <code class="notranslate" translate="no">fsInput.baseArrayLayer</code>
@@ -1178,7 +1178,9 @@ the future with minor adjustments.</p>
           <ul>  <li>Basics</li>
         <ul>
           <li><a href="/webgpu/lessons/webgpu-fundamentals.html">Fundamentals</a></li>
-<li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
+  <li>Data for Shaders</li>
+        <ul>
+          <li><a href="/webgpu/lessons/webgpu-inter-stage-variables.html">Inter-stage Variables</a></li>
 <li><a href="/webgpu/lessons/webgpu-uniforms.html">Uniforms</a></li>
 <li><a href="/webgpu/lessons/webgpu-storage-buffers.html">Storage Buffers</a></li>
 <li><a href="/webgpu/lessons/webgpu-vertex-buffers.html">Vertex Buffers</a></li>
@@ -1191,7 +1193,10 @@ the future with minor adjustments.</p>
 <li><a href="/webgpu/lessons/webgpu-storage-textures.html">Storage Textures</a></li>
 <li><a href="/webgpu/lessons/webgpu-multisampling.html">Multisampling / MSAA</a></li>
         </ul>
+<li><a href="/webgpu/lessons/webgpu-immediates.html">Immediates</a></li>
 <li><a href="/webgpu/lessons/webgpu-constants.html">Constants</a></li>
+<li><a href="/webgpu/lessons/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+        </ul>
 <li><a href="/webgpu/lessons/webgpu-memory-layout.html">Data Memory Layout</a></li>
 <li><a href="/webgpu/lessons/webgpu-transparency.html">Transparency and Blending</a></li>
 <li><a href="/webgpu/lessons/webgpu-bind-group-layouts.html">Bind Group Layouts</a></li>
