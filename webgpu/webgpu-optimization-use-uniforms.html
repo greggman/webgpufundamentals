@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>WebGPU Optimization - Use Uniforms</title>
+    <style>
+      @import url(resources/webgpu-lesson.css);
+html, body {
+  margin: 0;       /* remove the default margin          */
+  height: 100%;    /* make the html,body fill the page   */
+}
+canvas {
+  display: block;  /* make the canvas act like a block   */
+  width: 100%;     /* make the canvas fill its container */
+  height: 100%;
+}
+:root {
+  --bg-color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #000;
+  }
+}
+canvas {
+  background-color: var(--bg-color);
+}
+#info {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0.5em;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  min-width: 8em;
+}
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <pre id="info"></pre>
+  </body>
+  <script type="module">
+import GUI from '../3rdparty/muigui-0.x.module.js';
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
+import TimingHelper from './resources/js/timing-helper.js';
+// see https://webgpufundamentals.org/webgpu/lessons/webgpu-timing.html
+import NonNegativeRollingAverage from './resources/js/non-negative-rolling-average.js';
+
+const fpsAverage = new NonNegativeRollingAverage();
+const jsAverage = new NonNegativeRollingAverage();
+const gpuAverage = new NonNegativeRollingAverage();
+const mathAverage = new NonNegativeRollingAverage();
+
+/** Given a css color string, return an array of 4 values from 0 to 255 */
+const cssColorToRGBA8 = (() => {
+  const canvas = new OffscreenCanvas(1, 1);
+  const ctx = canvas.getContext('2d', {willReadFrequently: true});
+  return cssColor => {
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = cssColor;
+    ctx.fillRect(0, 0, 1, 1);
+    return Array.from(ctx.getImageData(0, 0, 1, 1).data);
+  };
+})();
+
+/** Given a css color string, return an array of 4 values from 0 to 1 */
+const cssColorToRGBA = cssColor => cssColorToRGBA8(cssColor).map(v => v / 255);
+
+/**
+ * Given hue, saturation, and luminance values in the range of 0 to 1
+ * return the corresponding CSS hsl string
+ */
+const hsl = (h, s, l) => `hsl(${h * 360 | 0}, ${s * 100}%, ${l * 100 | 0}%)`;
+
+/**
+ * Given hue, saturation, and luminance values in the range of 0 to 1
+ * returns an array of 4 values from 0 to 1
+ */
+const hslToRGBA = (h, s, l) => cssColorToRGBA(hsl(h, s, l));
+
+/**
+ * Returns a random number between min and max.
+ * If min and max are not specified, returns 0 to 1
+ * If max is not specified, return 0 to min.
+ */
+function rand(min, max) {
+  if (min === undefined) {
+    max = 1;
+    min = 0;
+  } else if (max === undefined) {
+    max = min;
+    min = 0;
+  }
+  return Math.random() * (max - min) + min;
+}
+
+/** Rounds up v to a multiple of alignment */
+const roundUp = (v, alignment) => Math.ceil(v / alignment) * alignment;
+
+async function main() {
+  const adapter = await navigator.gpu?.requestAdapter({powerPreference: 'high-performance'});
+  const canTimestamp = adapter.features.has('timestamp-query');
+  const device = await adapter?.requestDevice({
+    requiredFeatures: [
+      ...(canTimestamp ? ['timestamp-query'] : []),
+     ],
+  });
+  if (!device) {
+    fail('could not init WebGPU');
+  }
+
+  const timingHelper = new TimingHelper(device);
+  const infoElem = document.querySelector('#info');
+
+  // Get a WebGPU context from the canvas and configure it
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+    alphaMode: 'premultiplied',
+  });
+
+  const module = device.createShaderModule({
+    code: /* wgsl */ `
+      struct PerObjectUniforms {
+        offset: vec2f,
+        scale: vec2f,
+        color: vec4f,
+      };
+
+      @group(0) @binding(0) var<uniform> u: PerObjectUniforms;
+
+      @vertex fn vs(@builtin(vertex_index) vNdx: u32) -> @builtin(position) vec4f {
+        let pos = array(
+          vec2f(-1, -1), vec2f(1, -1), vec2f(-1, 1),
+          vec2f(-1, 1), vec2f(1, -1), vec2f(1, 1),
+        );
+        return vec4f(pos[vNdx] * u.scale + u.offset, 0, 1);
+      }
+
+      @fragment fn fs() -> @location(0) vec4f {
+        return u.color;
+      }
+    `,
+  });
+
+  const pipeline = device.createRenderPipeline({
+    label: 'quad with scale offset color',
+    layout: 'auto',
+    vertex: {
+      module,
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+
+  const maxObjects = 100000;
+  const objectInfos = [];
+
+  const uniformBufferSize = (8) * 4;
+  const uniformBufferSpace = roundUp(uniformBufferSize, device.limits.minUniformBufferOffsetAlignment);
+  const uniformBuffer = device.createBuffer({
+    label: 'uniforms',
+    size: uniformBufferSpace * maxObjects,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+
+  const mappedTransferBuffers = [];
+  const getMappedTransferBuffer = () => {
+    return mappedTransferBuffers.pop() || device.createBuffer({
+      label: 'transfer buffer',
+      size: uniformBufferSpace * maxObjects,
+      usage: GPUBufferUsage.MAP_WRITE | GPUBufferUsage.COPY_SRC,
+      mappedAtCreation: true,
+    });
+  };
+
+  for (let i = 0; i < maxObjects; ++i) {
+    const uniformBufferOffset = i * uniformBufferSpace;
+
+    const bindGroup = device.createBindGroup({
+      label: 'bind group for object',
+      layout: pipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: uniformBuffer, offset: uniformBufferOffset, size: uniformBufferSize }},
+      ],
+    });
+
+    const offset = [rand(-1, 1), rand(-1, 1)];
+    const speed = [rand(-0.4, 0.4), rand(-0.4, 0.4)];
+    const scale = rand(0.01, 0.02);
+    const color = hslToRGBA(rand(), 0.5, 0.5);
+
+    objectInfos.push({
+      bindGroup,
+      offset,
+      speed,
+      scale,
+      color,
+    });
+  }
+
+  const renderPassDescriptor = {
+    label: 'our basic canvas renderPass',
+    colorAttachments: [
+      {
+        // view: <- to be filled out when we render
+        clearValue: [0.3, 0.3, 0.3, 1],
+        loadOp: 'clear',
+        storeOp: 'store',
+      },
+    ],
+  };
+
+  const canvasToSizeMap = new WeakMap();
+
+  const settings = {
+    numObjects: 1000,
+    render: true,
+  };
+
+  const gui = new GUI();
+  gui.add(settings, 'numObjects', { min: 0, max: maxObjects, step: 1});
+  gui.add(settings, 'render');
+
+  let then = 0;
+
+  function render(time) {
+    time *= 0.001;  // convert to seconds
+    const deltaTime = time - then;
+    then = time;
+
+    const startTimeMs = performance.now();
+
+    const {width, height} = settings.render
+       ? canvasToSizeMap.get(canvas) ?? canvas
+       : { width: 1, height: 1 };
+
+    // Don't set the canvas size if it's already that size as it may be slow.
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    // Get the current texture from the canvas context and
+    // set it as the texture to render to.
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+
+    const encoder = device.createCommandEncoder();
+
+    let mathElapsedTimeMs = 0;
+
+    const transferBuffer = getMappedTransferBuffer();
+    const uniformValues = new Float32Array(transferBuffer.getMappedRange());
+
+    // copy the uniform values from the transfer buffer to the uniform buffer
+    if (settings.numObjects) {
+      // Remember, this is just encoding a command that will happen later.
+      const size = (settings.numObjects - 1) * uniformBufferSpace + uniformBufferSize;
+      encoder.copyBufferToBuffer(transferBuffer, 0, uniformBuffer, 0, size);
+    }
+
+    const pass = timingHelper.beginRenderPass(encoder, renderPassDescriptor);
+    pass.setPipeline(pipeline);
+
+    for (let i = 0; i < settings.numObjects; ++i) {
+      const {
+        bindGroup,
+        offset,
+        color,
+        scale,
+        speed,
+      } = objectInfos[i];
+      const mathTimeStartMs = performance.now();
+
+      for (let j = 0; j < 2; ++j) {
+        offset[j] += deltaTime * speed[j];
+        if (offset[j] > 1) {
+          offset[j] = -1;
+        } else if (offset[j] < -1) {
+          offset[j] = 1;
+        }
+      }
+
+      // Make views into the mapped buffer.
+      const uniformBufferOffset = i * uniformBufferSpace;
+      const f32Offset = uniformBufferOffset / 4;
+      uniformValues[f32Offset] = offset[0];
+      uniformValues[f32Offset + 1] = offset[1];
+      uniformValues[f32Offset + 2] = scale;
+      uniformValues[f32Offset + 3] = scale;
+      uniformValues[f32Offset + 4] = color[0];
+      uniformValues[f32Offset + 5] = color[1];
+      uniformValues[f32Offset + 6] = color[2];
+      uniformValues[f32Offset + 7] = color[3];
+
+      mathElapsedTimeMs += performance.now() - mathTimeStartMs;
+
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);
+    }
+    transferBuffer.unmap();
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    transferBuffer.mapAsync(GPUMapMode.WRITE).then(() => {
+      mappedTransferBuffers.push(transferBuffer);
+    });
+
+    timingHelper.getResult().then(gpuTime => {
+      gpuAverage.addSample(gpuTime / 1000);
+    });
+
+    const elapsedTimeMs = performance.now() - startTimeMs;
+    fpsAverage.addSample(1 / deltaTime);
+    jsAverage.addSample(elapsedTimeMs);
+    mathAverage.addSample(mathElapsedTimeMs);
+
+    infoElem.textContent = `\
+js  : ${jsAverage.get().toFixed(1)}ms
+math: ${mathAverage.get().toFixed(1)}ms
+fps : ${fpsAverage.get().toFixed(0)}
+gpu : ${canTimestamp ? `${(gpuAverage.get() / 1000).toFixed(1)}ms` : 'N/A'}
+`;
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  const observer = new ResizeObserver(entries => {
+    entries.forEach(entry => {
+      canvasToSizeMap.set(entry.target, {
+        width: Math.max(1, Math.min(entry.contentBoxSize[0].inlineSize, device.limits.maxTextureDimension2D)),
+        height: Math.max(1, Math.min(entry.contentBoxSize[0].blockSize, device.limits.maxTextureDimension2D)),
+      });
+    });
+  });
+  observer.observe(canvas);
+}
+
+function fail(msg) {
+  alert(msg);
+}
+
+main();
+  </script>
+</html>
