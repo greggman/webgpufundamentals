@@ -23,7 +23,7 @@ TOC: リソース / 参考文献
 * [WebGPU遅延レンダリング](https://github.com/toji/burrow)
 * [WebGPUシャドウプレイグラウンド](https://toji.github.io/webgpu-shadow-playground/)
 * [WebGPUメタボール](https://toji.github.io/webgpu-metaballs/)
-* [WebGPUでのShadertoyの例](https://jsgist.org/?src=a17b03b88c86c08ac621298dae50e30b)
+* [WebGPUでのShadertoyの例](https://codepen.io/greggman/pen/xbqYQKK?editors=101)
 * [シェーダーグラフWGSL](https://deepkolos.github.io/shader-graph-wgsl/)
 * [コンピュートトイ](https://compute.toys)
 

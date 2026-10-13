@@ -21,7 +21,7 @@ TOC: 资源 / 参考
 * [WebGPU 延迟渲染](https://github.com/toji/burrow)
 * [WebGPU 阴影游乐场](https://toji.github.io/webgpu-shadow-playground/)
 * [WebGPU 变形球](https://toji.github.io/webgpu-metaballs/)
-* [WebGPU 中的 Shadertoy 示例](https://jsgist.org/?src=a17b03b88c86c08ac621298dae50e30b)
+* [WebGPU 中的 Shadertoy 示例](https://codepen.io/greggman/pen/xbqYQKK?editors=101)
 * [着色器图 WGSL](https://deepkolos.github.io/shader-graph-wgsl/)
 * [计算玩具](https://compute.toys)
 

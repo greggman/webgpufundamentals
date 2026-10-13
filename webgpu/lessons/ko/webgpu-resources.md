@@ -21,7 +21,7 @@ TOC: 리소스 / 참고자료
 * [WebGPU Deferred Rendering](https://github.com/toji/burrow) - WebGPU 지연 렌더링
 * [WebGPU Shadow Playground](https://toji.github.io/webgpu-shadow-playground/) - WebGPU 그림자 플레이그라운드
 * [WebGPU Metaballs](https://toji.github.io/webgpu-metaballs/) - WebGPU 메타볼
-* [Shadertoy example in WebGPU](https://jsgist.org/?src=a17b03b88c86c08ac621298dae50e30b) - WebGPU로 만든 Shadertoy 예제
+* [Shadertoy example in WebGPU](https://codepen.io/greggman/pen/xbqYQKK?editors=101) - WebGPU로 만든 Shadertoy 예제
 * [Shader Graph WGSL](https://deepkolos.github.io/shader-graph-wgsl/) - 셰이더 그래프 WGSL
 * [Compute Toys](https://compute.toys) - 컴퓨트 토이즈
 
