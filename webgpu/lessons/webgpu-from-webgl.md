@@ -941,9 +941,7 @@ const canvasInfo = {
   presentationFormat,
   // these are filled out in resizeToDisplaySize
   renderTarget: undefined,
-  renderTargetView: undefined,
   depthTexture: undefined,
-  depthTextureView: undefined,
   sampleCount: 4,  // can be 1 or 4
 };
 
@@ -983,7 +981,6 @@ function resizeToDisplaySize(device, canvasInfo) {
         usage: GPUTextureUsage.RENDER_ATTACHMENT,
       });
       canvasInfo.renderTarget = newRenderTarget;
-      canvasInfo.renderTargetView = newRenderTarget.createView();
     }
 
     const newDepthTexture = device.createTexture({
@@ -993,7 +990,6 @@ function resizeToDisplaySize(device, canvasInfo) {
       usage: GPUTextureUsage.RENDER_ATTACHMENT,
     });
     canvasInfo.depthTexture = newDepthTexture;
-    canvasInfo.depthTextureView = newDepthTexture.createView();
   }
   return needResize;
 }
@@ -1078,12 +1074,12 @@ gl.drawElements(gl.TRIANGLES, 6 * 6, gl.UNSIGNED_SHORT, 0);
 <pre class="prettyprint lang-javascript"><code>{{#escapehtml}}
 if (canvasInfo.sampleCount === 1) {
     const colorTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = colorTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = colorTexture;
 } else {
-  renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTargetView;
-  renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture().createView();
+  renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTarget;
+  renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture();
 }
-renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTextureView;
+renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTexture;
 
 const commandEncoder = device.createCommandEncoder();
 const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
@@ -1293,12 +1289,12 @@ copy those to the corresponding uniform buffer, and encode the command to draw i
 
     if (canvasInfo.sampleCount === 1) {
         const colorTexture = context.getCurrentTexture();
-        renderPassDescriptor.colorAttachments[0].view = colorTexture.createView();
+        renderPassDescriptor.colorAttachments[0].view = colorTexture;
     } else {
-      renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTargetView;
-      renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture().createView();
+      renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTarget;
+      renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture();
     }
-    renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTextureView;
+    renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTexture;
 
     const commandEncoder = device.createCommandEncoder();
     const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);

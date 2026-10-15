@@ -224,7 +224,7 @@ El nuevo código de renderizado es:
     // Obtén la textura actual del contexto del canvas y
     // establécela como la textura sobre la que renderizar.
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder();
     const pass = encoder.beginRenderPass(renderPassDescriptor);

@@ -768,7 +768,7 @@ WebGPU용으로 구성된 캔버스가 필요합니다.
       label: 'our basic canvas renderPass',
       colorAttachments: [
         {
-          view: context.getCurrentTexture().createView(),
+          view: context.getCurrentTexture(),
           clearValue: [0.3, 0.3, 0.3, 1],
           loadOp: 'clear',
           storeOp: 'store',
@@ -1022,7 +1022,7 @@ y에 -2를 곱하고 1을 더하여 Y를 뒤집습니다. 또한 스케일하여
 ```js
     // 캔버스에 그리기
     {
-      const canvasTexture = context.getCurrentTexture().createView();
+      const canvasTexture = context.getCurrentTexture();
       renderPassDescriptor.colorAttachments[0].view = canvasTexture;
       const pass = encoder.beginRenderPass(renderPassDescriptor);
 

@@ -211,7 +211,7 @@ Luego, al renderizar, podemos actualizar el uniform buffer con la resolución ac
     // establécela como la textura en la que renderizar.
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    // Actualiza la resolución en el uniform buffer
 +    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
@@ -602,7 +602,7 @@ Y el código para dibujar usando una matriz de proyección, cámara y otras mate
     // establécela como la textura en la que renderizar.
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     // Establece la matriz en el uniform buffer
     const fov = 90 * Math.PI / 180;

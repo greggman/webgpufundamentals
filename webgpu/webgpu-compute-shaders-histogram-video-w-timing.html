@@ -570,7 +570,7 @@ async function main() {
 
     // Draw to canvas
     {
-      const canvasTexture = context.getCurrentTexture().createView();
+      const canvasTexture = context.getCurrentTexture();
       renderPassDescriptor.colorAttachments[0].view = canvasTexture;
       const pass = timingHelper2.beginRenderPass(encoder, renderPassDescriptor);
 

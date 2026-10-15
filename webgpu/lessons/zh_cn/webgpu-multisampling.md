@@ -137,14 +137,14 @@ MSAA 是多重采样抗锯齿（Multi-Sampling Anti-aliasing）的缩写。抗�
 -    // 从画布上下文获取当前纹理，并
 -    // 将其设置为渲染目标
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 
 +    // 将多重采样纹理设置为渲染目标
 +    renderPassDescriptor.colorAttachments[0].view =
-+        multisampleTexture.createView();
++        multisampleTexture;
 +    // 将画布纹理设置为"解析"多重采样纹理的目标
 +    renderPassDescriptor.colorAttachments[0].resolveTarget =
-+        canvasTexture.createView();
++        canvasTexture;
 ```
 
 *解析*是将多重采样纹理转换为我们真正想要的纹理大小的过程。在这种情况下，就是我们的画布。在上面的 4 倍版本中，我们手动执行了这个步骤：将 4 倍纹理双线性过滤到 1 倍纹理。这是一个类似的过程，但多重采样纹理的解析实际上不是双线性过滤。[参见下文](#a-not-a-grid)

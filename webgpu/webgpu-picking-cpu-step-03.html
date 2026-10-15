@@ -835,7 +835,7 @@ async function main() {
   }
 
   function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -1610,7 +1610,7 @@ async function main() {
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     // If we don't have a depth texture OR if its size is different
     // from the canvasTexture when make a new depth texture
@@ -1620,7 +1620,7 @@ async function main() {
       'depth24plus',
       GPUTextureUsage.RENDER_ATTACHMENT,
     );
-    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 
     root.updateWorldMatrix();
     const viewProjectionMatrix = getViewProjectionMatrix(orbitCamera, canvas);
@@ -1649,7 +1649,7 @@ async function main() {
       );
       setupPostProcess(postTexture);
 
-      renderPassDescriptor.colorAttachments[0].view = postTexture.createView();
+      renderPassDescriptor.colorAttachments[0].view = postTexture;
       const pass = encoder.beginRenderPass(renderPassDescriptor);
       pass.setPipeline(pipeline);
 

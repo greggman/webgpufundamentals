@@ -211,7 +211,7 @@ struct VSOutput {
     // 将其设置为要渲染的纹理。
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    // 在 uniform 缓冲区中更新分辨率
 +    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
@@ -602,7 +602,7 @@ struct VSOutput {
     // 将其设置为要渲染的纹理。
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     // 在 uniform 缓冲区中设置矩阵
     const fov = 90 * Math.PI / 180;

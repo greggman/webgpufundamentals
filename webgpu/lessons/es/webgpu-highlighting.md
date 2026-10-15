@@ -203,7 +203,7 @@ Ahora que tenemos un shader, necesitamos el código de configuración de post-pr
 -      format: 'rgba8unorm',
 -      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
 -    });
--    const renderTargetView = renderTarget.createView();
+-    const renderTargetView = renderTarget;
 -    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
 
 +    if (!postProcessBindGroup || texture !== lastPostProcessTexture) {
@@ -232,7 +232,7 @@ Ahora que tenemos un shader, necesitamos el código de configuración de post-pr
 -      ]),
 -    );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -303,7 +303,7 @@ También necesitamos usar los objetos de post-procesamiento al renderizar.
 +       }
 +      setupPostProcess(postTexture);
 +
-+      renderPassDescriptor.colorAttachments[0].view = postTexture.createView();
++      renderPassDescriptor.colorAttachments[0].view = postTexture;
 +      const pass = encoder.beginRenderPass(renderPassDescriptor);
 +      pass.setPipeline(pipeline);
 +

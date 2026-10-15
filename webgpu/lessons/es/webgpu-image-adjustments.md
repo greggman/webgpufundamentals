@@ -248,7 +248,7 @@ El código de post-procesamiento es prácticamente el mismo que en el primer eje
       format: 'rgba8unorm',
       usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     });
-    const renderTargetView = renderTarget.createView();
+    const renderTargetView = renderTarget;
     renderPassDescriptor.colorAttachments[0].view = renderTargetView;
 
     postProcessBindGroup = device.createBindGroup({
@@ -262,7 +262,7 @@ El código de post-procesamiento es prácticamente el mismo que en el primer eje
   }
 
   function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -479,7 +479,7 @@ Luego necesitamos establecer el brillo.
 +      ]),
 +    );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -575,7 +575,7 @@ Nuevamente, necesitamos crear una forma de establecer el nuevo ajuste.
       ]),
     );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -731,7 +731,7 @@ Para usar esto, todavía necesitamos actualizar el JavaScript para establecer lo
        ]),
      );
 
-     postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+     postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
      const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
      pass.setPipeline(postProcessPipeline);
      pass.setBindGroup(0, postProcessBindGroup);

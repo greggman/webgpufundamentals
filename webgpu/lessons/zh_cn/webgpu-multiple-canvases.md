@@ -34,7 +34,7 @@ TOC: 多画布
     // 从画布上下文获取当前纹理，并
     // 将其设置为要渲染的纹理。
 *    renderPassDescriptor.colorAttachments[0].view =
-*        context.getCurrentTexture().createView();
+*        context.getCurrentTexture();
 
     // 创建一个命令编码器来开始编码命令
     const encoder = device.createCommandEncoder({ label: 'our encoder' });
@@ -89,7 +89,7 @@ TOC: 多画布
       // 从画布上下文获取当前纹理，并
       // 将其设置为要渲染的纹理。
       renderPassDescriptor.colorAttachments[0].view =
-          context.getCurrentTexture().createView();
+          context.getCurrentTexture();
 
       // 创建一个渲染通道编码器来编码渲染相关命令
       const pass = encoder.beginRenderPass(renderPassDescriptor);
@@ -323,7 +323,7 @@ TOC: 多画布
       // 从画布上下文获取当前纹理，并
       // 将其设置为要渲染的纹理。
       renderPassDescriptor.colorAttachments[0].view =
-          context.getCurrentTexture().createView();
+          context.getCurrentTexture();
 +      renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
 +
 +      const { canvas } = context;
@@ -519,7 +519,7 @@ TOC: 多画布
       // 从画布上下文获取当前纹理，并
       // 将其设置为要渲染的纹理。
       renderPassDescriptor.colorAttachments[0].view =
-          context.getCurrentTexture().createView();
+          context.getCurrentTexture();
       renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
 
 -      const { canvas } = context;

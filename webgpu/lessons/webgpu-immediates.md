@@ -91,7 +91,7 @@ location.
 ```js
   function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder({ label: 'our encoder' });
     const pass = encoder.beginRenderPass(renderPassDescriptor);
@@ -408,7 +408,7 @@ it to the shared buffer.
 ```js
   function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
 +    const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
 +    mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);
@@ -420,7 +420,7 @@ Then we can render all of our models
 ```js
   function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
     mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);

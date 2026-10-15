@@ -34,7 +34,7 @@ Para dibujar en el canvas, usamos ese contexto para obtener una textura para el 
     // Obtén la textura actual del contexto del canvas y
     // establécela como la textura en la que renderizar.
 *    renderPassDescriptor.colorAttachments[0].view =
-*        context.getCurrentTexture().createView();
+*        context.getCurrentTexture();
 
     // crea un encoder de comandos para empezar a codificar comandos
     const encoder = device.createCommandEncoder({ label: 'nuestro encoder' });
@@ -90,7 +90,7 @@ Y finalmente, rendericemos en todos ellos:
       // Obtén la textura actual del contexto del canvas y
       // establécela como la textura en la que renderizar.
       renderPassDescriptor.colorAttachments[0].view =
-          context.getCurrentTexture().createView();
+          context.getCurrentTexture();
 
       // crea un encoder de render pass para codificar comandos específicos de renderizado
       const pass = encoder.beginRenderPass(renderPassDescriptor);
@@ -324,7 +324,7 @@ Y necesitamos actualizar la matriz de cada canvas, subir los nuevos valores al u
       // Obtén la textura actual del contexto del canvas y
       // establécela como la textura en la que renderizar.
       renderPassDescriptor.colorAttachments[0].view =
-          context.getCurrentTexture().createView();
+          context.getCurrentTexture();
 +      renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
 +
 +      const { canvas } = context;
@@ -521,7 +521,7 @@ En nuestra función de renderizado, podemos renderizar solo los canvas visibles:
        // Obtén la textura actual del contexto del canvas y
        // establécela como la textura en la que renderizar.
        renderPassDescriptor.colorAttachments[0].view =
-           context.getCurrentTexture().createView();
+           context.getCurrentTexture();
        renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
 
 -      const { canvas } = context;

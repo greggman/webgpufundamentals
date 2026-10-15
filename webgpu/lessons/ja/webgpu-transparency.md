@@ -59,8 +59,7 @@ async function main() {
   function render() {
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     const pass = encoder.beginRenderPass(renderPassDescriptor);
     pass.end();
@@ -120,8 +119,7 @@ canvas {
   function render() {
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
 +    const { alpha } = settings;
 +    clearValue[3] = alpha;
@@ -784,8 +782,7 @@ const dstCanvas = createDestinationImage(size);
     const canvasTexture = context.getCurrentTexture();
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
-    renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
 +    function updateUniforms(uniform, canvasTexture, texture) {
 +      const projectionMatrix = mat4.ortho(0, canvasTexture.width, canvasTexture.height, 0, -1, 1);
@@ -1113,8 +1110,7 @@ const dstCanvas = createDestinationImage(size);
     const canvasTexture = context.getCurrentTexture();
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
-    renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
 ```
 
@@ -1148,8 +1144,7 @@ const dstCanvas = createDestinationImage(size);
     const canvasTexture = context.getCurrentTexture();
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
-    renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
 +    {
 +      const { alpha, color, premultiply } = clear;

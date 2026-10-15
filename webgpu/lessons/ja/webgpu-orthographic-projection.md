@@ -1033,9 +1033,9 @@ WebGPUがカラーピクセルを描画する前に、対応する深度ピク�
     // キャンバスコンテキストから現在のテクスチャを取得し、
     // レンダリングするテクスチャとして設定します。
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 +    const canvasTexture = context.getCurrentTexture();
-+    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
++    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
 +    // 深度テクスチャがない場合、またはそのサイズが
 +    // キャンバステクスチャと異なる場合は、新しい深度テクスチャを作成します。
@@ -1051,7 +1051,7 @@ WebGPUがカラーピクセルを描画する前に、対応する深度ピク�
 +        usage: GPUTextureUsage.RENDER_ATTACHMENT,
 +      });
 +    }
-+    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
++    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 
   ...
 ```

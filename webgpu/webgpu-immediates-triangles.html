@@ -98,7 +98,7 @@ async function main() {
 
   function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder({ label: 'our encoder' });
     const pass = encoder.beginRenderPass(renderPassDescriptor);

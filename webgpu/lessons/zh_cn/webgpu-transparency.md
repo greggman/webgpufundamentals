@@ -58,7 +58,7 @@ async function main() {
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     const pass = encoder.beginRenderPass(renderPassDescriptor);
     pass.end();
@@ -119,7 +119,7 @@ canvas {
     const encoder = device.createCommandEncoder({ label: 'clear encoder' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +   const { alpha } = settings;
 +   clearValue[3] = alpha;
@@ -783,7 +783,7 @@ const dstCanvas = createDestinationImage(size);
     // 从画布上下文获取当前纹理，并
     // 将其设置为要渲染的纹理。
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +   function updateUniforms(uniform, canvasTexture, texture) {
 +     const projectionMatrix = mat4.ortho(0, canvasTexture.width, canvasTexture.height, 0, -1, 1);
@@ -1063,7 +1063,7 @@ const dstCanvas = createDestinationImage(size);
     // 从画布上下文获取当前纹理，并
     // 将其设置为要渲染的纹理。
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 ```
 
@@ -1098,7 +1098,7 @@ const dstCanvas = createDestinationImage(size);
     // 从画布上下文获取当前纹理，并
     // 将其设置为要渲染的纹理。
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +   {
 +     const { alpha, color, premultiply } = clear;

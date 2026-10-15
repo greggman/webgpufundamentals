@@ -87,7 +87,7 @@ Immediates（即时变量）是一种便捷的方式，可以轻松地向着色�
 ```js
   function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder({ label: 'our encoder' });
     const pass = encoder.beginRenderPass(renderPassDescriptor);
@@ -392,7 +392,7 @@ var<immediate> imm: MyImmediates;
 ```js
   function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
 +    const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
 +    mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);
@@ -404,7 +404,7 @@ var<immediate> imm: MyImmediates;
 ```js
   function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
     mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);

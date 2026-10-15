@@ -364,7 +364,7 @@ Ahora es el momento de renderizar.
     // Obtener la textura actual del contexto del canvas y
     // establecerla como la textura en la que renderizar.
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     // crear un codificador de comandos para comenzar a codificar comandos
     const encoder = device.createCommandEncoder({ label: 'nuestro encoder' });

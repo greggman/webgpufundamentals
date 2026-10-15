@@ -400,7 +400,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: { buffer: uniformBuffer }},
       ],
@@ -494,7 +494,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
     // 캔버스 컨텍스트에서 현재 텍스처를 가져와
     // 렌더링할 텍스처로 설정합니다.
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     // 깊이 텍스처가 없거나 크기가 canvasTexture와 다르면
     // 새 깊이 텍스처를 만듭니다
@@ -510,7 +510,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
         usage: GPUTextureUsage.RENDER_ATTACHMENT,
       });
     }
-    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 ```
 
 커맨드 버퍼와 렌더 패스를 시작하고 정점 및 인덱스 버퍼를 설정합니다.
@@ -647,7 +647,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
     // 캔버스 컨텍스트에서 현재 텍스처를 가져와
     // 렌더링할 텍스처로 설정합니다.
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     ...
 
@@ -1308,7 +1308,7 @@ struct PerObjectUniforms {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: { buffer: uniformBuffer }},
 +        { binding: 3, resource: { buffer: globalUniformBuffer }},
@@ -1612,7 +1612,7 @@ struct PerObjectUniforms {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: { buffer: uniformBuffer }},
         { binding: 3, resource: { buffer: globalUniformBuffer }},
@@ -1755,7 +1755,7 @@ struct PerObjectUniforms {
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
 -        { binding: 2, resource: { buffer: uniformBuffer }},
 +        {
@@ -1906,7 +1906,7 @@ WebGPU 매핑은 비동기적으로 발생하므로 버퍼를 매핑하고 준�
       label: 'bind group for object',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: { buffer: uniformBuffer, offset: uniformBufferOffset, size: uniformBufferSize }},
         { binding: 3, resource: { buffer: globalUniformBuffer }},

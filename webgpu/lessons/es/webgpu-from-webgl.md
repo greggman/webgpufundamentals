@@ -821,7 +821,7 @@ function resizeToDisplaySize(device, canvasInfo) {
         usage: GPUTextureUsage.RENDER_ATTACHMENT,
       });
       canvasInfo.renderTarget = newRenderTarget;
-      canvasInfo.renderTargetView = newRenderTarget.createView();
+      canvasInfo.renderTargetView = newRenderTarget;
     }
 
     const newDepthTexture = device.createTexture({
@@ -831,7 +831,7 @@ function resizeToDisplaySize(device, canvasInfo) {
       usage: GPUTextureUsage.RENDER_ATTACHMENT,
     });
     canvasInfo.depthTexture = newDepthTexture;
-    canvasInfo.depthTextureView = newDepthTexture.createView();
+    canvasInfo.depthTextureView = newDepthTexture;
   }
   return needResize;
 }
@@ -903,10 +903,10 @@ gl.drawElements(gl.TRIANGLES, 6 * 6, gl.UNSIGNED_SHORT, 0);
 <pre class="prettyprint lang-javascript"><code>{{#escapehtml}}
 if (canvasInfo.sampleCount === 1) {
     const colorTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = colorTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = colorTexture;
 } else {
   renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTargetView;
-  renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture().createView();
+  renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture();
 }
 renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTextureView;
 
@@ -1095,10 +1095,10 @@ Para renderizar, configuraremos las partes compartidas; luego, para cada objeto,
 
     if (canvasInfo.sampleCount === 1) {
         const colorTexture = context.getCurrentTexture();
-        renderPassDescriptor.colorAttachments[0].view = colorTexture.createView();
+        renderPassDescriptor.colorAttachments[0].view = colorTexture;
     } else {
       renderPassDescriptor.colorAttachments[0].view = canvasInfo.renderTargetView;
-      renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture().createView();
+      renderPassDescriptor.colorAttachments[0].resolveTarget = context.getCurrentTexture();
     }
     renderPassDescriptor.depthStencilAttachment.view = canvasInfo.depthTextureView;
 

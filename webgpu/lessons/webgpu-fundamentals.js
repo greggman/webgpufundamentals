@@ -145,7 +145,7 @@ async function initWebGPUPixelRender(webgpuCanvas) {
     device.queue.writeBuffer(vertexBuffer, 0, new Float32Array(points.flat()));
 
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder({
       label: 'render quad encoder',

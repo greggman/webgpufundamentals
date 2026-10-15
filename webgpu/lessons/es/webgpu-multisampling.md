@@ -167,15 +167,15 @@ para convertirla en una textura de multisampling.
 -    // Obtener la textura actual del contexto del canvas y
 -    // establecerla como la textura en la que renderizar.
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 
 +    // Establecer la textura de multisampling como la textura en la que renderizar
 +    renderPassDescriptor.colorAttachments[0].view =
-+        multisampleTexture.createView();
++        multisampleTexture;
 +    // Establecer la textura del canvas como la textura a la que "resolver" (resolve)
 +    // la textura de multisampling.
 +    renderPassDescriptor.colorAttachments[0].resolveTarget =
-+        canvasTexture.createView();
++        canvasTexture;
 ```
 
 *Resolver* (resolving) es el proceso de tomar la textura de multisampling y convertirla al

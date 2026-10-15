@@ -435,7 +435,7 @@ WebGPUで生成するオブジェクトは、ほぼすべてについて`label`�
     // canvasのコンテキストから、カレントテクスチャを得る。
 	// それをレンダーパスに設定して、描画対象として指定する。
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     // コマンドエンコーダを生成する。コマンドのエンコードができる状態にする。
 	const encoder = device.createCommandEncoder({ label: 'our encoder' });
@@ -452,8 +452,8 @@ WebGPUで生成するオブジェクトは、ほぼすべてについて`label`�
 
   render();
 ```
-最初に`context.getCurrentTexture()`を呼んで、canvasが持っているテクスチャを取得しています。`createView`では、テクスチャの一部の範囲だけを切り出す指定ができますが、ここでは引数なし＝デフォルトの範囲、としています。
-今回は、配列`colorAttachments`の要素はひとつだけとしていました。この`colorAttachments[0]`に、先ほど取得したcanvasのテクスチャ(texture view)を設定します。
+最初に`context.getCurrentTexture()`を呼んで、canvasが持っているテクスチャを取得しています。
+今回は、配列`colorAttachments`の要素はひとつだけとしていました。この`colorAttachments[0]`に、先ほど取得したcanvasのテクスチャを設定します。
 先だって述べたように、この`colorAttachments[0]`は、フラグメントシェーダの返り値の設定で記述した`location(0)`に対応するものです。
 
 次の部分では、コマンドエンコーダを用意しています。コマンドエンコーダは、コマンドバッファを生成するために使われます。コマンドエンコーダを使って、各種コマンドをコマンドバッファに並べて行きます。"submit"でコマンドバッファを送信すると、コマンドが実行されます。

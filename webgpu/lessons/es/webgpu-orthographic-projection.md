@@ -1151,9 +1151,9 @@ Finalmente, necesitamos crear una textura de profundidad. El inconveniente es qu
      // Obtener la textura actual del contexto del canvas y
      // establecerla como la textura en la que renderizar.
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 +    const canvasTexture = context.getCurrentTexture();
-+    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
++    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
 +    // Si no tenemos una textura de profundidad O si su tamaño es diferente
 +    // al de canvasTexture, creamos una nueva textura de profundidad.
@@ -1169,7 +1169,7 @@ Finalmente, necesitamos crear una textura de profundidad. El inconveniente es qu
 +        usage: GPUTextureUsage.RENDER_ATTACHMENT,
 +      });
 +    }
-+    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
++    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 
    ...
 ```

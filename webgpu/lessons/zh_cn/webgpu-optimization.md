@@ -362,7 +362,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
       label: '物体的 bind group',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
       ],
@@ -454,7 +454,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
     // 从画布上下文获取当前纹理
     // 并将其设置为要渲染到的纹理
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     // 如果没有深度纹理或其大小与 canvasTexture 不同
     // 则创建一个新的深度纹理
@@ -470,7 +470,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
         usage: GPUTextureUsage.RENDER_ATTACHMENT,
       });
     }
-    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 ```
 
 启动命令缓冲区和渲染通道，并设置顶点和索引缓冲区。
@@ -602,7 +602,7 @@ const randomArrayElement = arr => arr[Math.random() * arr.length | 0];
     // 从画布上下文获取当前纹理
     // 并将其设置为要渲染到的纹理
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     ...
 
@@ -1231,7 +1231,7 @@ struct PerObjectUniforms {
       label: '物体的 bind group',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
 +        { binding: 3, resource: globalUniformBuffer },
@@ -1528,7 +1528,7 @@ struct PerObjectUniforms {
       label: '物体的 bind group',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
         { binding: 3, resource: globalUniformBuffer },
@@ -1662,7 +1662,7 @@ struct PerObjectUniforms {
       label: '物体的 bind group',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
 -        { binding: 2, resource: uniformBuffer },
 +        {
@@ -1801,7 +1801,7 @@ WebGPU 的映射是异步的，所以不是映射一个缓冲区并等待它就�
       label: '物体的 bind group',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: { buffer: uniformBuffer, offset: uniformBufferOffset, size: uniformBufferSize }},
         { binding: 3, resource: globalUniformBuffer },

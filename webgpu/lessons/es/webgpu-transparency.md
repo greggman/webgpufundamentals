@@ -67,7 +67,7 @@ async function main() {
     const encoder = device.createCommandEncoder({ label: 'encoder de limpieza' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
     const pass = encoder.beginRenderPass(renderPassDescriptor);
     pass.end();
@@ -129,7 +129,7 @@ valor de limpieza, así como si está premultiplicado o no:
     const encoder = device.createCommandEncoder({ label: 'encoder de limpieza' });
     const canvasTexture = context.getCurrentTexture();
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    const { alpha } = settings;
 +    clearValue[3] = alpha;
@@ -875,7 +875,7 @@ la textura de origen (src) con el `srcPipeline` (con blending).
     // Obtener la textura actual del contexto del canvas y
     // establecerla como la textura en la que renderizar.
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    function updateUniforms(uniform, canvasTexture, texture) {
 +      const projectionMatrix = mat4.ortho(0, canvasTexture.width, canvasTexture.height, 0, -1, 1);
@@ -1159,7 +1159,7 @@ También permitamos elegir la configuración del canvas para `alphaMode`.
     // Obtener la textura actual del contexto del canvas y
     // establecerla como la textura en la que renderizar.
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 ```
 
@@ -1194,7 +1194,7 @@ Y finalmente, permitamos elegir el `clearValue` para el render pass.
     // Obtener la textura actual del contexto del canvas y
     // establecerla como la textura en la que renderizar.
     renderPassDescriptor.colorAttachments[0].view =
-        canvasTexture.createView();
+        canvasTexture;
 
 +    {
 +      const { alpha, color, premultiply } = clear;

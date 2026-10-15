@@ -90,7 +90,7 @@ Finally, we just need to update our call to `draw` to draw
       // Get the current texture from the canvas context and
       // set it as the texture to render to.
       renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
       const encoder = device.createCommandEncoder({ label: 'our encoder' });
       const pass = encoder.beginRenderPass(renderPassDescriptor);

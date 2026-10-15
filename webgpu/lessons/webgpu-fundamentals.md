@@ -512,7 +512,7 @@ Now it's time to render.
     // Get the current texture from the canvas context and
     // set it as the texture to render to.
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     // make a command encoder to start encoding commands
     const encoder = device.createCommandEncoder({ label: 'our encoder' });
@@ -531,9 +531,7 @@ Now it's time to render.
 ```
 
 First, we call `context.getCurrentTexture()` to get a texture that will appear in the
-canvas. Calling `createView` gets a view into a specific part of a texture but
-with no parameters, it will return the default part which is what we want in this
-case. For now, our only `colorAttachment` is a texture view from our
+canvas. For now, our only `colorAttachment` is a texture from our
 canvas which we get via the context we created at the start. Again, element 0 of
 the `colorAttachments` array corresponds to `@location(0)` as we specified for
 the return value of the fragment shader.

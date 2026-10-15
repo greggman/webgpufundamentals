@@ -78,7 +78,7 @@ pass.drawIndexed(indexCount,
       // 从画布上下文获取当前纹理，并
       // 将其设置为要渲染的纹理。
       renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
       const encoder = device.createCommandEncoder({ label: 'our encoder' });
       const pass = encoder.beginRenderPass(renderPassDescriptor);

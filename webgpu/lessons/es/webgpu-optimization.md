@@ -409,7 +409,7 @@ para posicionar y animar cada objeto.
       label: 'bind group para el objeto',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
       ],
@@ -505,7 +505,7 @@ tenemos tiene un tamaño diferente al de nuestra textura del canvas. Hicimos est
     // Obtener la textura actual del contexto del canvas y
     // establecerla como la textura en la que renderizar.
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     // Si no tenemos una textura de profundidad O si su tamaño es diferente
     // de la canvasTexture, creamos una nueva textura de profundidad
@@ -521,7 +521,7 @@ tenemos tiene un tamaño diferente al de nuestra textura del canvas. Hicimos est
         usage: GPUTextureUsage.RENDER_ATTACHMENT,
       });
     }
-    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 ```
 
 Iniciaremos un buffer de comandos (command buffer) y un pase de renderizado (render pass) y estableceremos nuestros buffers de vértices e índices.
@@ -658,7 +658,7 @@ Quedan algunas cosas por hacer. Añadamos el cambio de tamaño (resizing).
     // Obtener la textura actual del contexto del canvas y
     // establecerla como la textura en la que renderizar.
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     ...
 
@@ -1323,7 +1323,7 @@ global uniform buffer al bind group de cada objeto.
       label: 'bind group para el objeto',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
 +        { binding: 3, resource: globalUniformBuffer },
@@ -1630,7 +1630,7 @@ bind group del objeto.
       label: 'bind group para el objeto',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
         { binding: 2, resource: uniformBuffer },
         { binding: 3, resource: globalUniformBuffer },
@@ -1774,7 +1774,7 @@ También podemos configurar el bind group para que use la porción correcta del 
       label: 'bind group para el objeto',
       layout: pipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: material.texture.createView() },
+        { binding: 0, resource: material.texture },
         { binding: 1, resource: material.sampler },
 -        { binding: 2, resource: uniformBuffer },
 +        {
@@ -1928,7 +1928,7 @@ crear nuevas vistas de typedarray después de mapear.
        label: 'bind group para el objeto',
        layout: pipeline.getBindGroupLayout(0),
        entries: [
-         { binding: 0, resource: material.texture.createView() },
+         { binding: 0, resource: material.texture },
          { binding: 1, resource: material.sampler },
          { binding: 2, resource: { buffer: uniformBuffer, offset: uniformBufferOffset, size: uniformBufferSize }},
          { binding: 3, resource: globalUniformBuffer },
