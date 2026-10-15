@@ -28,7 +28,7 @@ async function main() {
 
   const numThreadsPerWorkgroup = arrayProd(workgroupSize);
 
-  const code = `
+  const code = /* wgsl */ `
   // NOTE!: vec3u is padded to by 4 bytes
   @group(0) @binding(0) var<storage, read_write> globalResult: array<vec3u>;
   @group(0) @binding(1) var<storage, read_write> id: atomic<u32>;

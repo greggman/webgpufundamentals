@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-immediates.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,13 +29,20 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="即时变量">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-immediates_zh-cn.jpg">
+
 <meta property="og:title" content="WebGPU Immediates">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Immediates">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-immediates_zh-cn.jpg">
+<meta property="og:description" content="即时变量">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-immediates.html">
 
 <meta name="twitter:card" content="summary_large_image">
@@ -44,12 +51,51 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <meta name="twitter:domain" content="webgpufundamentals.org">
 <meta name="twitter:title" content="WebGPU Immediates">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-immediates.html">
-<meta name="twitter:description" content="Immediates">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="即时变量">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-immediates_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-immediates.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-immediates_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-immediates.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-immediates.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU Immediates",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-immediates.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
 <title>WebGPU Immediates</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -60,6 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-immediates.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-immediates.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-immediates.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-immediates.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-immediates.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-immediates.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-immediates.html">Українська
@@ -184,11 +231,411 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="lesson-title">
     <h1>WebGPU Immediates</h1>
   </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
+  </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-immediates.html">英文原版地址</a></p>
+      <p>本文是系列文章之一，介绍了向着色器传递数据的各种方法。每一篇都建立在前一篇的基础之上，因此按顺序阅读将有助于您更好地理解。</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
+  <li><a href="webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
+  <li><a href="webgpu-textures.html">纹理</a></li>
+  <li><a href="webgpu-importing-textures.html">加载图像</a></li>
+  <li><a href="webgpu-textures-external-video.html">高效使用视频</a></li>
+  <li><a href="webgpu-cube-maps.html">立方体贴图</a></li>
+  <li><a href="webgpu-storage-textures.html">存储纹理</a></li>
+  <li><a href="webgpu-multisampling.html">多重采样 / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">即时变量</a> ⬅ 你在此处</li>
+  <li><a href="webgpu-constants.html">常量</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
+</ol><p></p>
+<div class="warn">
+Immediates（即时变量）是 WebGPU 的一项新功能（2026年）。它被设计为一个**核心**特性，
+意味着无论使用什么设备，它都应该可用。
+希望到 2026 年底，所有浏览器都能支持它。
+你可以通过检查是否存在设置即时变量的函数来判断浏览器是否支持：
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const canUseImmediates = !!GPURenderPassEncoder?.prototype.setImmediates;
+</pre>
+<p>理想情况下，到 2027 年，你将不再需要这个检查。</p>
+</div>
+<p>Immediates（即时变量）是一种便捷的方式，可以轻松地向着色器传递少量数据。
+在<a href="webgpu-uniforms.html">uniforms 文章</a>和<a href="webgpu-storage-buffers.html">存储缓冲区文章</a>中，
+我们介绍了如何通过缓冲区向着色器传递数据。我们在着色器中定义了 <code class="notranslate" translate="no">var&lt;uniform&gt;</code> 或 <code class="notranslate" translate="no">var&lt;storage, ...&gt;</code> 绑定，
+并将缓冲区绑定到这些绑定点上。而使用即时变量时，我们使用 <code class="notranslate" translate="no">var&lt;immediate&gt;</code>，无需绑定。</p>
+<p><code class="notranslate" translate="no">var&lt;immediate&gt;</code> 与 <code class="notranslate" translate="no">var&lt;uniform&gt;</code> 和 <code class="notranslate" translate="no">var&lt;storage&gt;</code> 的区别：</p>
+<ul>
+<li>
+<p>每个着色器只能有一个 <code class="notranslate" translate="no">var&lt;immediate&gt;</code></p>
+<p>使用 <code class="notranslate" translate="no">var&lt;uniform&gt;</code> 和 <code class="notranslate" translate="no">var&lt;storage, ...&gt;</code> 可以声明多个绑定。
+使用 <code class="notranslate" translate="no">var&lt;immediate&gt;</code> 只能有一个。</p>
+</li>
+<li>
+<p>即时变量总共只能使用 64 字节 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+</li>
+</ul>
+<ul>
+<li>
+<p>你必须初始化所有即时变量</p>
+<p>使用缓冲区时，缓冲区的内容会初始化为 0。而即时变量是未初始化的，
+你必须显式初始化它们。如果不这样做，会收到验证错误。</p>
+</li>
+<li>
+<p>即时变量在以下情况下会重置为 undefined</p>
+<ul>
+<li>开始新的计算或渲染通道时</li>
+<li>执行渲染束时</li>
+<li>执行渲染束之后。</li>
+</ul>
+</li>
+</ul>
+<p>你可以把即时变量想象成一个迷你的 uniform 缓冲区。
+它只有一个，而且很小。你通过 <code class="notranslate" translate="no">passEncoder.setImmediates</code> 来设置它。</p>
+<p>让我们以<a href="webgpu-fundamentals.html#a-resizing">基础文章底部</a>中的简单三角形示例为例，
+并更新它，使用即时变量来绘制三个不同颜色的三角形。</p>
+<p>首先，让我们在着色器中添加偏移量和颜色</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct MyImmediates {
++  color: vec4f,
++  offset: vec2f,
++};
++
++var&lt;immediate&gt; myImmediates: MyImmediates;
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32
+) -&gt; @builtin(position) vec4f {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // top center
+    vec2f(-0.5, -0.5),  // bottom left
+    vec2f( 0.5, -0.5)   // bottom right
+  );
+
+-  return vec4f(pos[vertexIndex], 0.0, 1.0);
++  return vec4f(pos[vertexIndex] + myImmediates.offset, 0.0, 1.0);
+}
+
+@fragment fn fs() -&gt; @location(0) vec4f {
+-  return vec4f(1, 0, 0, 1);
++  return myImmediates.color;
+}
+</pre>
+<p>然后我们可以更新 JavaScript 来绘制三次，每次使用 <code class="notranslate" translate="no">setImmediates</code> 设置即时变量，
+以不同的颜色和不同的位置绘制。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
++    pass.setImmediates(0, new Float32Array([
++      1, 0, 0, 1,  // color
++      -0.4, -0.2,  // offset
++    ]));
+    pass.draw(3);
+
++    pass.setImmediates(0, new Float32Array([
++      0, 1, 0, 1,  // color
++      0.4, -0.2,   // offset
++    ]));
++    pass.draw(3);
++
++    pass.setImmediates(0, new Float32Array([
++      0, 0, 1, 1,  // color
++      0.0, 0.2,    // offset
++    ]));
++    pass.draw(3);
+
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>与 <code class="notranslate" translate="no">var&lt;uniform&gt;</code> 和 <code class="notranslate" translate="no">var&lt;storage, ...&gt;</code> 一样，即时变量中的数据遵循相同的<a href="webgpu-memory-layout.html">内存布局规则</a>。
+<code class="notranslate" translate="no">setImmediates</code> 的参数如下：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">passEncoder.setImmediates(
+  byteOffset,  // 即时变量中的偏移量
+  src,         // ArrayBufferView 或 ArrayBuffer
+  srcOffset?,  // src 中元素的偏移量
+  size?,       // 元素数量
+);
+</pre>
+<p>在我们的例子中，每次调用 <code class="notranslate" translate="no">setImmediates</code> 时都传入了整个 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array"><code class="notranslate" translate="no">Float32Array</code></a>，
+所以不需要最后两个可选参数。<code class="notranslate" translate="no">srcOffset</code> 默认为 0，
+<code class="notranslate" translate="no">size</code> 默认为 <code class="notranslate" translate="no">src</code> 的大小。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-immediates-triangles.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-immediates-triangles.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>你可能在想，限制在 64 字节内，即时变量的用途是什么呢？</p>
+<p>最常见的用法可能是传递指向其他数据的索引。
+想象一下，创建一个 per-model 存储缓冲区数组和一个 per-material
+存储缓冲区数组：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct PerModel {
+  matrix: mat4x4f,
+};
+
+struct Material {
+  color: vec4f,
+  shininess: f32,
+};
+
+@group(0) @binding(0) var&lt;storage, read&gt; models: array&lt;PerModel&gt;;
+@group(0) @binding(1) var&lt;storage, read&gt; materials: array&lt;Material&gt;;
+...
+</pre>
+<p>然后你可以使用即时变量来选择 <code class="notranslate" translate="no">PerModel</code> 和 <code class="notranslate" translate="no">Material</code> 的值：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct RenderIndices {
+  modelNdx: u32,
+  materialNdx: u32,
+};
+var&lt;immediate&gt; renderIndices: RenderIndices;
+
+... 在顶点着色器中 ...
+
+   let modelMatrix = models[renderIndices.modelNdx];
+
+... 在片元着色器中 ...
+
+   let material = materials[renderIndices.materialNdx];
+
+</pre>
+<p>现在在渲染时，你只需传入索引就可以选择 per-model 数据
+和 material 数据：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   pass.setImmediates(0, new Uint32Array([modelNdx, materialNdx]))
+</pre>
+<p>这是一种<a href="webgpu-optimization.html">优化方法</a>，因为你不需要为每个模型和每个材质管理一个 uniform 缓冲区。</p>
+<p>下面是一个完整的着色器示例：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Material {
+  color: vec4f,
+};
+
+struct PerModel {
+  matrix: mat4x4f,
+};
+
+struct Globals {
+  viewProjection: mat4x4f,
+};
+
+struct Vertex {
+  @location(0) position: vec4f,
+};
+
+struct MyImmediates {
+  modelNdx: u32,
+  materialNdx: u32,
+};
+
+@group(0) @binding(0) var&lt;storage, read&gt; materials: array&lt;Material&gt;;
+@group(0) @binding(1) var&lt;storage, read&gt; perModel: array&lt;PerModel&gt;;
+@group(0) @binding(2) var&lt;uniform&gt; glb: Globals;
+
+var&lt;immediate&gt; imm: MyImmediates;
+
+@vertex fn vs(v: Vertex) -&gt; @builtin(position) vec4f {
+  let model = perModel[imm.modelNdx];
+  return glb.viewProjection * model.matrix * v.position;
+}
+
+@fragment fn fs() -&gt; @location(0) vec4f {
+  let material = materials[imm.materialNdx];
+  return material.color;
+}
+</pre>
+<p>上面的着色器使用即时变量来选择材质和 per-model 数据。它使用<a href="webgpu-matrix-math.html">矩阵数学</a>来定位顶点。</p>
+<p>它还有一个全局 uniform 缓冲区，用于所有模型共享的数据。在这种情况下，它使用共享的<a href="webgpu-orthographic-projection.html">视图投影矩阵</a>。</p>
+<p>我们创建一个使用此着色器的管线，并指定每个顶点使用 2 个浮点数的<a href="webgpu-vertex-buffers.html">顶点缓冲区</a>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: 'our select model and material via immediates pipeline',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        // position
+        {
+          arrayStride: 2 * 4, // 2 个浮点数，每个 4 字节
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>我们为三种不同的形状创建顶点缓冲区：三角形、正方形和圆形。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const squareVertices = [
+    -0.5, -0.5,
+     0.5, -0.5,
+    -0.5,  0.5,
+    -0.5,  0.5,
+     0.5, -0.5,
+     0.5,  0.5,
+  ];
+  const triangleVertices = [
+     0,    0.5,
+    -0.5, -0.5,
+     0.5, -0.5,
+  ];
+  const circleVertices = [];
+  const numCircleTriangles = 100;
+  for (let i = 0; i &lt; numCircleTriangles; ++i) {
+    const angle0 = (i + 0) / numCircleTriangles * 2 * Math.PI;
+    const angle1 = (i + 1) / numCircleTriangles * 2 * Math.PI;
+    circleVertices.push(Math.cos(angle0) * 0.5, Math.sin(angle0) * 0.5);
+    circleVertices.push(Math.cos(angle1) * 0.5, Math.sin(angle1) * 0.5);
+    circleVertices.push(0, 0);
+  }
+
+  function createVertexBuffer(device, data) {
+    const buffer = device.createBuffer({
+      size: data.byteLength,
+      usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(buffer, 0, data);
+    return { buffer, numVertices: data.length / 2 };
+  }
+
+  const vertices = [
+    createVertexBuffer(
+      device, new Float32Array(triangleVertices)),
+    createVertexBuffer(
+      device, new Float32Array(circleVertices)),
+    createVertexBuffer(
+      device, new Float32Array(squareVertices)),
+  ];
+</pre>
+<p>然后我们创建一个包含 6 种材质的存储缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const materialData = new Float32Array([
+    1.0, 0.5, 0.5, 1.0,  // red
+    0.5, 1.0, 0.5, 1.0,  // green
+    0.5, 0.5, 1.0, 1.0,  // blue
+    1.0, 1.0, 0.5, 1.0,  // yellow
+    1.0, 0.5, 1.0, 1.0,  // magenta
+    0.5, 1.0, 1.0, 1.0,  // cyan
+  ]);
+  const numMaterials = materialData.length / 4;
+  const materialBuffer = device.createBuffer({
+    label: 'our material buffer',
+    size: materialData.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(materialBuffer, 0, materialData);
+</pre>
+<p>我们定义了 200 个"模型"，其中每个模型由顶点缓冲区、材质和 per-model 数据组成。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const models = [];
+  const numModels = 200;
+  const modelData = new Float32Array(numModels * 16);
+  for (let i = 0; i &lt; numModels; ++i) {
+    const modelNdx = i;
+    const materialNdx = randInt(numMaterials);
+    const geometryNdx = randInt(vertices.length);
+    const {buffer, numVertices} = vertices[geometryNdx];
+
+    const mat = mat4.translation([(Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2, 0]);
+    mat4.rotateZ(mat, Math.random() * Math.PI  * 2, mat);
+    mat4.scale(mat, [Math.random() * 0.1 + 0.1, Math.random() * 0.1 + 0.1, 1], mat);
+
+    modelData.set(mat, i * 16);
+
+    models.push({
+      numVertices,
+      vertexBuffer: buffer,
+      immediates: new Uint32Array([
+        modelNdx,
+        materialNdx,
+      ]),
+    });
+  }
+</pre>
+<p>上面我们使用<a href="webgpu-matrix-math.html">数学库</a>来随机选择位置、缩放比例和朝向。这些数据存储在模型数据中。</p>
+<p>然后我们需要将这些数据上传到一个存储缓冲区：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const perModelBuffer = device.createBuffer({
+    label: 'our per model buffer',
+    size: modelData.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(perModelBuffer, 0, modelData);
+</pre>
+<p>我们还有一个所有模型都会使用的共享缓冲区。这将存储我们的<a href="webgpu-orthographic-projection.html">投影矩阵</a>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const sharedData = new Float32Array(16);
+  const sharedBuffer = device.createBuffer({
+    label: 'our shared data buffer',
+    size: sharedData.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+</pre>
+<p>然后我们创建一个引用三个缓冲区的绑定组：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    label: 'our bind group',
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: materialBuffer },
+      { binding: 1, resource: perModelBuffer },
+      { binding: 2, resource: sharedBuffer },
+    ],
+  });
+</pre>
+<p>最后我们可以进行渲染了。首先我们计算一个<a href="webgpu-orthographic-projection.html">正交矩阵</a>，
+使渲染适应画布的宽高比，然后将其上传到共享缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
++    const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
++    mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);
++    device.queue.writeBuffer(sharedBuffer, 0, sharedData);
+</pre>
+<p>然后我们可以渲染所有模型：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+    const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
+    mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);
+    device.queue.writeBuffer(sharedBuffer, 0, sharedData);
+
+    const encoder = device.createCommandEncoder({ label: 'our encoder' });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+*    pass.setBindGroup(0, bindGroup);
+*    for (let i = 0; i &lt; numModels; ++i) {
+*      const { immediates, vertexBuffer, numVertices } = models[i];
+*      pass.setImmediates(0, immediates);
+*      pass.setVertexBuffer(0, vertexBuffer);
+*      pass.draw(numVertices);
+*    }
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>这样，我们就使用即时变量绘制了多个模型并选择了材质和 per-model 数据。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-immediates-models.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-immediates-models.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>希望这能让你了解如何使用即时变量。由于它们只有 64 字节的限制，
+通常需要发挥创意才能充分利用它们。</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>限制 <code class="notranslate" translate="no">maxImmediateSize</code> 可能允许你<a href="webgpu-limits-and-features.html">申请</a>超过 64 字节的容量。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -197,6 +644,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-immediates.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-immediates.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-immediates.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-immediates.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-immediates.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-immediates.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-immediates.html">Українська
@@ -204,10 +652,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-  <li>Data for Shaders</li>
+  <li>着色器数据传递</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
@@ -222,9 +671,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">即时变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
         </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
@@ -268,32 +717,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">一维查找表（1D-LUT）</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">三维查找表（3D-LUT）</a></li>
         </ul>
-  <li>Editor</li>
+  <li>编辑器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">高亮显示</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">拾取</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">计算着色器基础</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">图像直方图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">图像直方图 进阶</a></li>
         </ul>
   <li>杂项</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">多画布</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">点</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGL 到 WebGPU</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">速度与优化</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">调试与错误</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">资源 / 参考</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -306,13 +755,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU Immediates`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

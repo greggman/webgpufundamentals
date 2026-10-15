@@ -106,6 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-textures.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-textures.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-storage-textures.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-storage-textures.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-storage-textures.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-storage-textures.html">Українська
@@ -248,9 +249,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="webgpu-cube-maps.html">立方体贴图</a></li>
   <li><a href="webgpu-storage-textures.html">存储纹理</a> ⬅ 你在此处</li>
   <li><a href="webgpu-multisampling.html">多重采样 / MSAA</a></li>
-  <li><a href="webgpu-immediates.html">Immediates</a></li>
+  <li><a href="webgpu-immediates.html">即时变量</a></li>
   <li><a href="webgpu-constants.html">常量</a></li>
-  <li><a href="webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
 </ol><p></p>
 <p>存储纹理本质上就是<a href="webgpu-textures.html">纹理</a>，只不过你可以直接向其写入或"存储"数据。通常我们在顶点着色器中指定三角形，由 GPU 间接更新纹理，而使用存储纹理则可以直接向纹理的任意位置写入数据。</p>
 <p>存储纹理并不是一种特殊的纹理类型，它就是你使用 <code class="notranslate" translate="no">createTexture</code> 创建的普通纹理。只要添加 <code class="notranslate" translate="no">STORAGE_BINDING</code> 用法标志，就可以将纹理作为存储纹理使用，同时保留其他所需的所有用法标志。</p>
@@ -466,6 +467,7 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
     </option><option value="/webgpu/lessons/es/webgpu-storage-textures.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-storage-textures.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-storage-textures.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-storage-textures.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-storage-textures.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-storage-textures.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-storage-textures.html">Українська
@@ -477,7 +479,7 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
           <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-  <li>Data for Shaders</li>
+  <li>着色器数据传递</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
@@ -492,9 +494,9 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">即时变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
         </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
@@ -538,32 +540,32 @@ fn storeValueToBuffer(pos: vec2u, v: f32) {
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">一维查找表（1D-LUT）</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">三维查找表（3D-LUT）</a></li>
         </ul>
-  <li>Editor</li>
+  <li>编辑器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">高亮显示</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">拾取</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">计算着色器基础</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">图像直方图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">图像直方图 进阶</a></li>
         </ul>
   <li>杂项</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">多画布</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">点</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGL 到 WebGPU</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">速度与优化</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">调试与错误</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">资源 / 参考</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>

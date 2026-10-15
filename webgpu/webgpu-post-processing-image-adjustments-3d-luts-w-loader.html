@@ -147,7 +147,7 @@ async function main() {
   });
 
   const module = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VSOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,
@@ -236,7 +236,7 @@ async function main() {
   updateBindGroup();
 
   const postProcessModule = device.createShaderModule({
-    code: `
+    code: /* wgsl */ `
       struct VSOutput {
         @builtin(position) position: vec4f,
         @location(0) texcoord: vec2f,

@@ -11,6 +11,17 @@
   here: 'вы здесь',
   categoryMapping: {
     'basics': "Основы",
+    'passing-data': 'Данные для шейдеров',
     'misc': "Разное",
+    'textures': 'Текстуры',
+    'techniques': 'Техники',
+    '3d': '3D',
+    '2d': '2D',
+    'reference': 'Справочник',
+    '3d-math': '3D Математика',
+    'lighting': 'Освещение',
+    'compute-shaders': 'Вычислительные шейдеры',
+    'post-processing': 'Постобработка',
+    'editor': 'Редактор',
   },
 }

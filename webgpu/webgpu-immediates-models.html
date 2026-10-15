@@ -21,7 +21,6 @@ canvas {
     <canvas></canvas>
   </body>
   <script type="module">
-/* global GPURenderPassEncoder */
 // see https://webgpufundamentals.org/webgpu/lessons/webgpu-utils.html#wgpu-matrix
 import {mat4} from '../3rdparty/wgpu-matrix.module.js';
 
@@ -34,8 +33,7 @@ async function main() {
   }
 
   // You can probably remove this check by 2027 🙏
-  const canUseImmediates = !!GPURenderPassEncoder?.prototype.setImmediates;
-  if (!canUseImmediates) {
+  if (!navigator.gpu.wgslLanguageFeatures.has('immediate_address_space')) {
     fail('need a browser that supports WebGPU immediates');
     return;
   }

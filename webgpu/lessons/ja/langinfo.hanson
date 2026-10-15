@@ -11,6 +11,8 @@
 	here: 'ここです',
 	categoryMapping: {
 		'basics': "基本",
+		'passing-data': "シェーダへのデータ渡し",
+		'editor': 'エディタ',
 		'misc': "その他のトピック",
 		'textures': 'テクスチャ',
 		'techniques': 'テクニック',

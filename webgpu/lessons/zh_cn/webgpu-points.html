@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-points.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Points">
+
+<meta name="description" content="在 WebGPU 中绘制点">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 点">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Drawing Points in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_zh-cn.jpg">
+<meta property="og:description" content="在 WebGPU 中绘制点">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-points.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Points">
+<meta name="twitter:title" content="WebGPU 点">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-points.html">
-<meta name="twitter:description" content="Drawing Points in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="在 WebGPU 中绘制点">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-points.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-points_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-points.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-points.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 点",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-points.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Points</title>
+<title>WebGPU 点</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -60,6 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-points.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-points.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-points.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-points.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-points.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-points.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-points.html">Українська
@@ -182,13 +229,742 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Points</h1>
+    <h1>WebGPU 点</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-points.html">英文原版地址</a></p>
+      <p>WebGPU 支持绘制点。我们通过在渲染管线中将图元拓扑设置为 <code class="notranslate" translate="no">'point-list'</code> 来实现这一点。</p>
+<p>让我们从一个简单的随机点示例开始，借鉴<a href="webgpu-vertex-buffers.html">顶点缓冲区文章</a>中的思路。</p>
+<p>首先，一个简单的顶点着色器和片段着色器。为简单起见，我们只使用裁剪空间坐标作为位置，并在片段着色器中硬编码颜色为黄色。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@vertex fn vs(vert: Vertex,) -&gt; VSOutput {
+  var vsOut: VSOutput;
+  vsOut.position = vert.position;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 1, 0, 1); // 黄色
+}
+</pre>
+<p>然后，在创建管线时，我们将拓扑设置为 <code class="notranslate" translate="no">'point-list'</code>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '1 像素大小的点',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: 2 * 4, // 2 个 float，每个 4 字节
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
++    primitive: {
++      topology: 'point-list',
++    },
+  });
+</pre>
+<p>让我们用一些随机裁剪空间点填充顶点缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const rand = (min, max) =&gt; min + Math.random() * (max - min);
+
+  const kNumPoints = 100;
+  const vertexData = new Float32Array(kNumPoints * 2);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+    const offset = i * 2;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
+  }
+
+  const vertexBuffer = device.createBuffer({
+    label: '顶点缓冲区顶点',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+</pre>
+<p>然后绘制。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.draw(kNumPoints);
+    pass.end();
+</pre>
+<p>这样我们就得到了 100 个随机黄色点。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>不幸的是，它们都只有 1 像素大小。1 像素大小的点是 WebGPU 所支持的唯一大小。如果我们想要更大的点，需要自己实现。幸运的是，这很容易做到。我们只需要创建一个四边形并使用<a href="webgpu-vertex-buffers.html#a-instancing">实例化</a>。</p>
+<p>让我们在顶点着色器中添加一个四边形和一个尺寸属性。我们还要添加一个 uniform 来传入我们要绘制到的纹理大小。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
++  @location(1) size: f32,
+};
+
++struct Uniforms {
++  resolution: vec2f,
++};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
++@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
++    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
++  let points = array(
++    vec2f(-1, -1),
++    vec2f( 1, -1),
++    vec2f(-1,  1),
++    vec2f(-1,  1),
++    vec2f( 1, -1),
++    vec2f( 1,  1),
++  );
+  var vsOut: VSOutput;
++  let pos = points[vNdx];
+-  vsOut.position = vec4f(vert.position, 0, 1);
++  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 1, 0, 1); // 黄色
+}
+</pre>
+<p>在 JavaScript 中，我们需要为每个点添加一个尺寸属性，通过设置 <code class="notranslate" translate="no">stepMode: 'instance'</code> 来让属性每个实例前进一次，我们可以移除拓扑设置，因为我们需要的是默认的 <code class="notranslate" translate="no">'triangle-list'</code>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '可变大小的点',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: 2 * 4, // 2 个 float，每个 4 字节
++          arrayStride: (2 + 1) * 4, // 3 个 float，每个 4 字节
++          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
++            {shaderLocation: 1, offset: 8, format: 'float32'},  // size
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [{ format: presentationFormat }],
+    },
+-    primitive: {
+-      topology: 'point-list',
+-    },
+  });
+</pre>
+<p>让我们为顶点数据中的每个点添加一个随机大小。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumPoints = 100;
+-  const vertexData = new Float32Array(kNumPoints * 2);
++  const vertexData = new Float32Array(kNumPoints * 3);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+-    const offset = i * 2;
++    const offset = i * 3;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
++    vertexData[offset + 2] = rand(1, 32);
+  }
+</pre>
+<p>我们需要创建一个 uniform 缓冲区，以便传入分辨率。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const uniformValues = new Float32Array(2);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kResolutionOffset = 0;
+  const resolutionValue = uniformValues.subarray(
+      kResolutionOffset, kResolutionOffset + 2);
+</pre>
+<p>然后我们需要创建一个绑定组来绑定 uniform 缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+    ],
+  });
+</pre>
+<p>然后在渲染时，我们可以使用当前分辨率更新 uniform 缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // 从画布上下文获取当前纹理，并
+    // 将其设置为要渲染的纹理。
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
++    // 在 uniform 缓冲区中更新分辨率
++    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
++    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>然后设置绑定组，并为每个点渲染一个实例。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
++    pass.setBindGroup(0, bindGroup);
+-    pass.draw(kNumPoints);
++    pass.draw(6, kNumPoints);
+    pass.end();
+</pre>
+<p>现在我们有了可变大小的点。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-size.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-size.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>如果我们想为点添加纹理呢？我们只需要将纹理坐标从顶点着色器传递到片段着色器。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) size: f32,
+};
+
+struct Uniforms {
+  resolution: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
++  @location(0) texcoord: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
+  let points = array(
+    vec2f(-1, -1),
+    vec2f( 1, -1),
+    vec2f(-1,  1),
+    vec2f(-1,  1),
+    vec2f( 1, -1),
+    vec2f( 1,  1),
+  );
+  var vsOut: VSOutput;
+  let pos = points[vNdx];
+  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
++  vsOut.texcoord = pos * 0.5 + 0.5;
+  return vsOut;
+}
+</pre>
+<p>当然，在片段着色器中使用纹理。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+@group(0) @binding(1) var s: sampler;
++@group(0) @binding(2) var t: texture_2d&lt;f32&gt;;
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+-  return vec4f(1, 1, 0, 1); // 黄色
++  return textureSample(t, s, vsOut.texcoord);
+}
+</pre>
+<p>我们将使用 Canvas 创建一个简单的纹理，就像在<a href="webgpu-importing-textures.html">导入纹理文章</a>中介绍的那样。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const ctx = new OffscreenCanvas(32, 32).getContext('2d');
+  ctx.font = '27px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🥑', 16, 16);
+
+  const texture = device.createTexture({
+    size: [32, 32],
+    format: 'rgba8unorm',
+    usage: GPUTextureUsage.TEXTURE_BINDING |
+           GPUTextureUsage.COPY_DST |
+           GPUTextureUsage.RENDER_ATTACHMENT,
+  });
+  device.queue.copyExternalImageToTexture(
+    { source: ctx.canvas, flipY: true },
+    { texture, premultipliedAlpha: true },
+    [32, 32],
+  );
+</pre>
+<p>我们需要一个采样器，并且需要将它们添加到绑定组中。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const sampler = device.createSampler({
+    minFilter: 'linear',
+    magFilter: 'linear',
+  });
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
++      { binding: 1, resource: sampler },
++      { binding: 2, resource: texture },
+    ],
+  });
+</pre>
+<p>我们还要开启混合，以便获得<a href="webgpu-transparency.html">透明度</a>。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '带纹理的可变大小点',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (2 + 1) * 4, // 3 个 float，每个 4 字节
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+            {shaderLocation: 1, offset: 8, format: 'float32'},  // size
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+-      targets: [{ format: presentationFormat }],
++      targets: [
++        {
++         format: presentationFormat,
++          blend: {
++            color: {
++              srcFactor: 'one',
++              dstFactor: 'one-minus-src-alpha',
++              operation: 'add',
++            },
++            alpha: {
++              srcFactor: 'one',
++              dstFactor: 'one-minus-src-alpha',
++              operation: 'add',
++            },
++          },
++        },
++      ],
+    },
+  });
+</pre>
+<p>现在我们有了带纹理的点。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-texture.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-texture.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>我们可以继续扩展，比如每个点一个旋转？使用我们在<a href="webgpu-matrix-math.html">矩阵数学文章</a>中介绍的数学。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec2f,
+  @location(1) size: f32,
++  @location(2) rotation: f32,
+};
+
+struct Uniforms {
+  resolution: vec2f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
+  let points = array(
+    vec2f(-1, -1),
+    vec2f( 1, -1),
+    vec2f(-1,  1),
+    vec2f(-1,  1),
+    vec2f( 1, -1),
+    vec2f( 1,  1),
+  );
+  var vsOut: VSOutput;
+  let pos = points[vNdx];
++  let c = cos(vert.rotation);
++  let s = sin(vert.rotation);
++  let rot = mat2x2f(
++     c, s,
++    -s, c,
++  );
+-  vsOut.position = vec4f(vert.position + pos * vert.size / uni.resolution, 0, 1);
++  vsOut.position = vec4f(vert.position + rot * pos * vert.size / uni.resolution, 0, 1);
+  vsOut.texcoord = pos * 0.5 + 0.5;
+  return vsOut;
+      }
+</pre>
+<p>我们需要在管线中添加旋转属性。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '带纹理的可变大小可旋转点',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+-          arrayStride: (2 + 1) * 4, // 3 个 float，每个 4 字节
++          arrayStride: (2 + 1 + 1) * 4, // 4 个 float，每个 4 字节
+          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x2'},  // position
+            {shaderLocation: 1, offset: 8, format: 'float32'},  // size
++            {shaderLocation: 2, offset: 12, format: 'float32'},  // rotation
+          ],
+        },
+      ],
+    },
+    ...
+</pre>
+<p>我们需要在顶点数据中添加旋转。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const kNumPoints = 100;
+-  const vertexData = new Float32Array(kNumPoints * 3);
++  const vertexData = new Float32Array(kNumPoints * 4);
+  for (let i = 0; i &lt; kNumPoints; ++i) {
+-    const offset = i * 3;
++    const offset = i * 4;
+    vertexData[offset + 0] = rand(-1, 1);
+    vertexData[offset + 1] = rand(-1, 1);
+*    vertexData[offset + 2] = rand(10, 64);
++    vertexData[offset + 3] = rand(0, Math.PI * 2);
+  }
+
+</pre>
+<p>我们还要把纹理从 🥑 换成 👉。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  ctx.fillText('🥑', 16, 16);
++  ctx.fillText('👉', 16, 16);
+</pre>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-w-rotation.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-w-rotation.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<h1 id="3d-中的点呢？">3D 中的点呢？</h1>
+<p>简单答案是，在完成<a href="webgpu-perspective-projection.html">顶点的 3D 数学运算</a>之后，只需将四边形值加入即可。</p>
+<p>例如，下面是一些为 <a href="https://www.google.com/search?q=fibonacci+sphere">fibonacci 球体</a> 创建 3D 位置的代码。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function createFibonacciSphereVertices({
+  numSamples,
+  radius,
+}) {
+  const vertices = [];
+  const increment = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i &lt; numSamples; ++i) {
+    const offset = 2 / numSamples;
+    const y = ((i * offset) - 1) + (offset / 2);
+    const r = Math.sqrt(1 - Math.pow(y, 2));
+    const phi = (i % numSamples) * increment;
+    const x = Math.cos(phi) * r;
+    const z = Math.sin(phi) * r;
+    vertices.push(x * radius, y * radius, z * radius);
+  }
+  return new Float32Array(vertices);
+}
+</pre>
+<p>我们可以通过像<a href="../webgpu-cameras.js">3D 数学系列</a>中那样对顶点应用 3D 数学来绘制这些顶点。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec4f,
+};
+
+struct Uniforms {
+*  matrix: mat4x4f,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
+) -&gt; VSOutput {
+  var vsOut: VSOutput;
+*  let clipPos = uni.matrix * vert.position;
+  vsOut.position = clipPos;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 0.5, 0.2, 1);  // 橙色
+}
+</pre>
+<p>这是我们的管线和顶点缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '固定大小的 3D 点',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (3) * 4, // 3 个 float，每个 4 字节
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [
+        {
+         format: presentationFormat,
+        },
+      ],
+    },
+    primitive: {
+      topology: 'point-list',
+    },
+  });
+
+  const vertexData = createFibonacciSphereVertices({
+    radius: 1,
+    numSamples: 1000,
+  });
+  const kNumPoints = vertexData.length / 3;
+
+  const vertexBuffer = device.createBuffer({
+    label: '顶点缓冲区顶点',
+    size: vertexData.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+  });
+  device.queue.writeBuffer(vertexBuffer, 0, vertexData);
+</pre>
+<p>还有，一个 uniform 缓冲区和用于矩阵的 uniform 值，以及一个绑定组来将 uniform 缓冲区传递给着色器。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const uniformValues = new Float32Array(16);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kMatrixOffset = 0;
+  const matrixValue = uniformValues.subarray(
+      kMatrixOffset, kMatrixOffset + 16);
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: uniformBuffer },
+    ],
+  });
+</pre>
+<p>以及使用投影矩阵、相机和其他 3D 数学进行绘制的代码。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    time *= 0.001;
+
+    // 从画布上下文获取当前纹理，并
+    // 将其设置为要渲染的纹理。
+    const canvasTexture = context.getCurrentTexture();
+    renderPassDescriptor.colorAttachments[0].view =
+        canvasTexture.createView();
+
+    // 在 uniform 缓冲区中设置矩阵
+    const fov = 90 * Math.PI / 180;
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(fov, aspect, 0.1, 50);
+    const view = mat4.lookAt(
+      [0, 0, 1.5],  // 位置
+      [0, 0, 0],    // 目标
+      [0, 1, 0],    // 向上
+    );
+    const viewProjection = mat4.multiply(projection, view);
+    mat4.rotateY(viewProjection, time, matrixValue);
+    mat4.rotateX(matrixValue, time * 0.5, matrixValue);
+
+    // 将 uniform 值复制到 GPU
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+
+    const encoder = device.createCommandEncoder();
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(pipeline);
+    pass.setVertexBuffer(0, vertexBuffer);
+    pass.setBindGroup(0, bindGroup);
+    pass.draw(kNumPoints);
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+</pre>
+<p>我们还切换到了 <code class="notranslate" translate="no">requestAnimationFrame</code> 循环。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d-1px.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d-1px.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>这很难看到，所以，要应用上面的技术，我们只需要像之前那样添加四边形位置。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Vertex {
+  @location(0) position: vec4f,
+};
+
+struct Uniforms {
+  matrix: mat4x4f,
++  resolution: vec2f,
++  size: f32,
+};
+
+struct VSOutput {
+  @builtin(position) position: vec4f,
+};
+
+@group(0) @binding(0) var&lt;uniform&gt; uni: Uniforms;
+
+@vertex fn vs(
+    vert: Vertex,
++    @builtin(vertex_index) vNdx: u32,
+) -&gt; VSOutput {
++  let points = array(
++    vec2f(-1, -1),
++    vec2f( 1, -1),
++    vec2f(-1,  1),
++    vec2f(-1,  1),
++    vec2f( 1, -1),
++    vec2f( 1,  1),
++  );
+  var vsOut: VSOutput;
++  let pos = points[vNdx];
+  let clipPos = uni.matrix * vert.position;
++  let pointPos = vec4f(pos * uni.size / uni.resolution, 0, 0);
+-  vsOut.position = clipPos;
++  vsOut.position = clipPos + pointPos;
+  return vsOut;
+}
+
+@fragment fn fs(vsOut: VSOutput) -&gt; @location(0) vec4f {
+  return vec4f(1, 0.5, 0.2, 1);
+}
+</pre>
+<p>与之前的示例不同，我们不会为每个顶点使用不同的大小。相反，我们将为所有顶点传递一个单一的大小。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const uniformValues = new Float32Array(16);
++  const uniformValues = new Float32Array(16 + 2 + 1 + 1);
+  const uniformBuffer = device.createBuffer({
+    size: uniformValues.byteLength,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+  });
+  const kMatrixOffset = 0;
++  const kResolutionOffset = 16;
++  const kSizeOffset = 18;
+  const matrixValue = uniformValues.subarray(
+      kMatrixOffset, kMatrixOffset + 16);
++  const resolutionValue = uniformValues.subarray(
++      kResolutionOffset, kResolutionOffset + 2);
++  const sizeValue = uniformValues.subarray(
++      kSizeOffset, kSizeOffset + 1);
+</pre>
+<p>我们需要像上面那样设置分辨率，并且需要设置一个大小。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render(time) {
+    ...
++    // 在 uniform 缓冲区中设置大小
++    sizeValue[0] = 10;
+
+    const fov = 90 * Math.PI / 180;
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(fov, aspect, 0.1, 50);
+    const view = mat4.lookAt(
+      [0, 0, 1.5],  // 位置
+      [0, 0, 0],    // 目标
+      [0, 1, 0],    // 向上
+    );
+    const viewProjection = mat4.multiply(projection, view);
+    mat4.rotateY(viewProjection, time, matrixValue);
+    mat4.rotateX(matrixValue, time * 0.5, matrixValue);
+
++    // 在 uniform 缓冲区中更新分辨率
++    resolutionValue.set([canvasTexture.width, canvasTexture.height]);
+
+    // 将 uniform 值复制到 GPU
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
+</pre>
+<p>而且，和之前一样，我们需要从绘制点切换到绘制实例化的四边形。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const pipeline = device.createRenderPipeline({
+    label: '3D 点',
+    layout: 'auto',
+    vertex: {
+      module,
+      buffers: [
+        {
+          arrayStride: (3) * 4, // 3 个 float，每个 4 字节
++          stepMode: 'instance',
+          attributes: [
+            {shaderLocation: 0, offset: 0, format: 'float32x3'},  // position
+          ],
+        },
+      ],
+    },
+    fragment: {
+      module,
+      targets: [
+        {
+         format: presentationFormat,
+        },
+      ],
+    },
+-    primitive: {
+-      topology: 'point-list',
+-    },
+  });
+
+  ...
+
+  function render(time) {
+
+    ...
+
+-    pass.draw(kNumPoints);
++    pass.draw(6, kNumPoints);
+
+    ...
+</pre>
+<p>这给了我们 3D 中的点。它们甚至会根据与相机的距离进行缩放。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<h2 id="固定大小的-3d-点"><a id="a-fixed-size-3d-points"></a> 固定大小的 3D 点</h2>
+<p>如果我们想让点保持固定大小呢？</p>
+<p>回顾<a href="webgpu-perspective-projection.html">透视投影文章</a>，GPU 会将我们从顶点着色器返回的位置除以 W。这个除法通过使远处的东西看起来更小来产生透视效果。因此，对于我们不想改变大小的点，我们只需要将它们乘以那个 W，这样当它们被除以后，它们就是我们真正想要的值。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    var vsOut: VSOutput;
+    let pos = points[vNdx];
+    let clipPos = uni.matrix * vert.position;
+-    let pointPos = vec4f(pos * uni.size / uni.resolution, 0, 0);
++    let pointPos = vec4f(pos * uni.size / uni.resolution * clipPos.w, 0, 0);
+    vsOut.position = clipPos + pointPos;
+    return vsOut;
+</pre>
+<p>现在它们保持相同的大小。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-points-3d-fixed-size.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-points-3d-fixed-size.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<div class="webgpu_bottombar">
+<h3>为什么 WebGPU 不支持大于 1x1 像素的点？</h3>
+<p>WebGPU 基于原生 GPU API，如 Vulkan、Metal、DirectX 甚至 OpenGL。不幸的是，这些 API 在支持绘制点的含义上并不一致。一些 API 对点的大小有设备相关的限制。一些 API 如果点的中心在裁剪空间之外则不绘制点，而另一些则绘制。在一些 API 中，第二个问题取决于驱动程序。所有这些意味着 WebGPU 决定做可移植的事情，只支持 1x1 大小的像素。</p>
+<p>好消息是，正如上面所示，自己支持更大的点很容易。上述解决方案在设备间是可移植的，它们对点的大小没有限制，并且在设备间一致地对点进行裁剪。它们绘制任何在裁剪空间内的点部分，无论点的中心是否在裁剪空间之外。</p>
+<p>更好的是，这些解决方案更加灵活。例如，旋转点在原生 API 中不是一项受支持的功能。通过实现我们自己的解决方案，我们可以轻松添加更多功能，使事情变得更加灵活。</p>
+</div>
 
     </div>
     <div class="lesson-sidebar">
@@ -197,6 +973,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-points.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-points.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-points.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-points.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-points.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-points.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-points.html">Українська
@@ -204,10 +981,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-  <li>Data for Shaders</li>
+  <li>着色器数据传递</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
@@ -222,9 +1000,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">即时变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
         </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
@@ -268,32 +1046,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">一维查找表（1D-LUT）</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">三维查找表（3D-LUT）</a></li>
         </ul>
-  <li>Editor</li>
+  <li>编辑器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">高亮显示</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">拾取</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">计算着色器基础</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">图像直方图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">图像直方图 进阶</a></li>
         </ul>
   <li>杂项</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">多画布</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">点</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGL 到 WebGPU</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">速度与优化</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">调试与错误</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">资源 / 参考</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -306,13 +1084,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 点`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

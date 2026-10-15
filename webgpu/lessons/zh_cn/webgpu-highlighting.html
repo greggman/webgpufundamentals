@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-highlighting.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Highlighting">
+
+<meta name="description" content="高亮显示所选对象">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-highlighting_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 高亮显示">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Highlighting Selected Objects">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-highlighting_zh-cn.jpg">
+<meta property="og:description" content="高亮显示所选对象">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-highlighting.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Highlighting">
+<meta name="twitter:title" content="WebGPU 高亮显示">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-highlighting.html">
-<meta name="twitter:description" content="Highlighting Selected Objects">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="高亮显示所选对象">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-highlighting_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-highlighting.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-highlighting_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-highlighting.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-highlighting.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 高亮显示",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-highlighting.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Highlighting</title>
+<title>WebGPU 高亮显示</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -60,6 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-highlighting.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-highlighting.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-highlighting.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-highlighting.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-highlighting.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-highlighting.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-highlighting.html">Українська
@@ -182,13 +229,442 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Highlighting</h1>
+    <h1>WebGPU 高亮显示</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-highlighting.html">英文原版地址</a></p>
+      <p>本文是关于制作 3D 编辑器组件的短系列文章的第一篇。每个章节都建立在前一篇的基础上，因此你可能会发现按顺序阅读更容易理解。
+本文假设你已经阅读过
+<a href="webgpu-scene-graphs.html">场景图相关文章</a>以及
+<a href="webgpu-post-processing.html">后处理相关文章</a>。</p>
+<ol>
+<li><a href="webgpu-highlighting.html">高亮显示</a> ⬅ 你在这里</li>
+<li><a href="webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="webgpu-picking.html">拾取</a></li>
+</ol>
+<p>假设我们想制作一个类似 Blender、Maya、Unity 或 Unreal 的简单 3D 编辑器。我们希望它能够选择和操作 3D 中的对象。我们其实在
+<a href="webgpu-scene-graphics.html">场景图相关文章</a>中已经开始了这条路，当时我们有节点，可以通过 UI 中的按钮选择一个节点，并编辑该节点的平移、旋转和缩放。如果能直观地看到哪个对象被选中了，那就更好了。让我们来实现这个功能。</p>
+<p>从<a href="webgpu-scene-graphs.html#a-gui">第一个添加选择节点功能的示例</a>开始，我们的场景是这样的：</p>
+<div class="webgpu_center center">
+  <div data-diagram="standardPass" style="width: 600px"></div>
+</div>
+<p>为了高亮显示所选内容，我们可以只将所选内容渲染到一个单独的纹理中。</p>
+<div class="webgpu_center center">
+  <div data-diagram="selectedPass" style="width: 600px"></div>
+</div>
+<p>Alpha 值实际上会形成所选对象的轮廓剪影。</p>
+<div class="webgpu_center center">
+  <div data-diagram="alpha" style="width: 600px"></div>
+</div>
+<p>然后我们可以将这个 Alpha 遮罩作为输入传递给一个类似后处理的通道，如果遮罩的 Alpha 为 0 但附近有非零值，就绘制高亮颜色。这会有效地给我们一个轮廓线。</p>
+<div class="webgpu_center center">
+  <div data-diagram="outline" style="width: 600px"></div>
+</div>
+<p>下面是一个类似后处理的着色器，给定 Alpha 遮罩后会绘制轮廓：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VSOutput {
+  @builtin(position) position: vec4f,
+  @location(0) texcoord: vec2f,
+};
+
+@vertex fn vs(
+  @builtin(vertex_index) vertexIndex : u32,
+) -&gt; VSOutput {
+  var pos = array(
+    vec2f(-1.0, -1.0),
+    vec2f(-1.0,  3.0),
+    vec2f( 3.0, -1.0),
+  );
+
+  var vsOutput: VSOutput;
+  let xy = pos[vertexIndex];
+  vsOutput.position = vec4f(xy, 0.0, 1.0);
+  vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+  return vsOutput;
+}
+
+@group(0) @binding(0) var mask: texture_2d&lt;f32&gt;;
+
+fn isOnEdge(pos: vec2i) -&gt; bool {
+  // 注意：我们需要确保不会使用越界的
+  // 纹理坐标，因为 textureLoad 在不同 GPU 上
+  // 返回的结果不同
+  let size = vec2i(textureDimensions(mask, 0));
+  let start = max(pos - 2, vec2i(0));
+  let end = min(pos + 2, size);
+
+  for (var y = start.y; y &lt;= end.y; y++) {
+    for (var x = start.x; x &lt;= end.x; x++) {
+      let s = textureLoad(mask, vec2i(x, y), 0).a;
+      if (s &gt; 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+@fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+  let pos = vec2i(fsInput.position.xy);
+
+  // 获取当前像素。
+  // 如果不为 0，说明在所选对象内部
+  let s = textureLoad(mask, pos, 0).a;
+  if (s &gt; 0) {
+    discard;
+  }
+
+  let hit = isOnEdge(pos);
+  if (!hit) {
+    discard;
+  }
+  return vec4f(1, 0.5, 0, 1); // 橙色
+}
+</pre>
+<p>着色器首先检查遮罩中的像素是否大于 0。如果是，
+那么它在代表所选对象的遮罩内部，
+因此我们不想绘制任何东西，所以执行 <code class="notranslate" translate="no">discard</code>。</p>
+<p>否则，它调用 <code class="notranslate" translate="no">isOnEdge</code> 检查相邻像素。
+如果相邻像素都不大于 0，则它不在边缘，
+因此我们通过 <code class="notranslate" translate="no">discard</code> 不绘制任何内容。</p>
+<p>否则我们就在边缘上，绘制橙色。</p>
+<p>现在我们有了着色器，接下来需要从
+<a href="webgpu-post-processing.html">后处理文章</a>中获取后处理设置的代码。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const postProcessModule = device.createShaderModule({
+    code: /* wgsl */ `
+      struct VSOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32,
+      ) -&gt; VSOutput {
+        var pos = array(
+          vec2f(-1.0, -1.0),
+          vec2f(-1.0,  3.0),
+          vec2f( 3.0, -1.0),
+        );
+
+        var vsOutput: VSOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy * vec2f(0.5, -0.5) + vec2f(0.5);
+        return vsOutput;
+      }
+
+      @group(0) @binding(0) var mask: texture_2d&lt;f32&gt;;
+
+      fn isOnEdge(pos: vec2i) -&gt; bool {
+        // 注意：我们需要确保不会使用越界的
+        // 纹理坐标，因为 textureLoad 在不同 GPU 上
+        // 返回的结果不同
+        let size = vec2i(textureDimensions(mask, 0));
+        let start = max(pos - 2, vec2i(0));
+        let end = min(pos + 2, size);
+
+        for (var y = start.y; y &lt;= end.y; y++) {
+          for (var x = start.x; x &lt;= end.x; x++) {
+            let s = textureLoad(mask, vec2i(x, y), 0).a;
+            if (s &gt; 0) {
+              return true;
+            }
+          }
+        }
+        return false;
+      };
+
+      @fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+        let pos = vec2i(fsInput.position.xy);
+
+        // 获取当前像素。如果不为 0，说明在所选对象内部
+        let s = textureLoad(mask, pos, 0).a;
+        if (s &gt; 0) {
+          discard;
+        }
+
+        let hit = isOnEdge(pos);
+        if (!hit) {
+          discard;
+        }
+        return vec4f(1, 0.5, 0, 1);
+      }
+    `,
+  });
+
+  const postProcessPipeline = device.createRenderPipeline({
+    layout: 'auto',
+    vertex: { module: postProcessModule },
+    fragment: {
+      module: postProcessModule,
+      targets: [ { format: presentationFormat }],
+    },
+  });
+
+-  const postProcessSampler = device.createSampler({
+-    minFilter: 'linear',
+-    magFilter: 'linear',
+-  });
+
+  const postProcessRenderPassDescriptor = {
+    label: 'post process render pass',
+    colorAttachments: [
+-      { loadOp: 'clear', storeOp: 'store' },
++      { loadOp: 'load', storeOp: 'store' },
+    ],
+  };
+
+-  let renderTarget;
+  let postProcessBindGroup;
++  let lastPostProcessTexture;
+
+  function setupPostProcess(texture) {
+-    if (renderTarget?.width === canvasTexture.width &amp;&amp;
+-        renderTarget?.height === canvasTexture.height) {
+-      return;
+-    }
+-
+-    renderTarget?.destroy();
+-    renderTarget = device.createTexture({
+-      size: canvasTexture,
+-      format: 'rgba8unorm',
+-      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+-    });
+-    const renderTargetView = renderTarget.createView();
+-    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
++
++    if (!postProcessBindGroup || texture !== lastPostProcessTexture) {
++      lastPostProcessTexture = texture;
+*      postProcessBindGroup = device.createBindGroup({
+*        layout: postProcessPipeline.getBindGroupLayout(0),
+*        entries: [
+-          { binding: 0, resource: renderTargetView },
+-          { binding: 1, resource: postProcessSampler },
+-          { binding: 2, resource: postProcessUniformBuffer },
++          { binding: 0, resource: texture },
+*        ],
+*      });
++    }
+  }
+
+  function postProcess(encoder, srcTexture, dstTexture) {
+-    device.queue.writeBuffer(
+-      postProcessUniformBuffer,
+-      0,
+-      new Float32Array([
+-        settings.affectAmount,
+-        settings.bandMult,
+-        settings.cellMult,
+-        settings.cellBright,
+-      ]),
+-    );
+
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+</pre>
+<p>在渲染时我们还需要使用后处理对象。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  let selectedMeshes = [];
+
+  function render() {
+
+    ...
+
+-    const encoder = device.createCommandEncoder();
+-    const pass = encoder.beginRenderPass(renderPassDescriptor);
+-    pass.setPipeline(pipeline);
+
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const projection = mat4.perspective(
+        degToRad(60), // fieldOfView,
+        aspect,
+        1,      // zNear
+        2000,   // zFar
+    );
+
+    // 从我们计算的矩阵中获取相机的位置
+    const cameraMatrix = mat4.identity();
+    mat4.translate(cameraMatrix, [120, 100, 0], cameraMatrix);
+    mat4.rotateY(cameraMatrix, settings.cameraRotation, cameraMatrix);
+    mat4.translate(cameraMatrix, [60, 0, 300], cameraMatrix);
+
+    // 计算视图矩阵
+    const viewMatrix = mat4.inverse(cameraMatrix);
+
+    // 合并视图和投影矩阵
+    const viewProjectionMatrix = mat4.multiply(projection, viewMatrix);
+
++    const encoder = device.createCommandEncoder();
++    {
++      const pass = encoder.beginRenderPass(renderPassDescriptor);
++      pass.setPipeline(pipeline);
+
+*      const ctx = { pass, viewProjectionMatrix };
+*      root.updateWorldMatrix();
+*      for (const mesh of meshes) {
+*        drawMesh(ctx, mesh);
+*      }
+*
+*      pass.end();
++    }
+
++    // 将所选对象绘制到 postTexture
++    {
++       if (!postTexture ||
++            postTexture.width !== canvasTexture.width)
++            postTexture.height !== canvasTexture.height) {
++         postTexture?.destroy();
++         postTexture = device.createTexture({
++          format: canvasTexture.format,
++          canvasTexture, // 用于尺寸
++          usage: GPUTextureUsage.RENDER_ATTACHMENT |
++                 GPUTextureUsage.TEXTURE_BINDING,
++         });
++       }
++      setupPostProcess(postTexture);
++
++      renderPassDescriptor.colorAttachments[0].view = postTexture.createView();
++      const pass = encoder.beginRenderPass(renderPassDescriptor);
++      pass.setPipeline(pipeline);
++
++      const ctx = { pass, viewProjectionMatrix };
++      for (const mesh of selectedMeshes) {
++        drawMesh(ctx, mesh);
++      }
++
++      pass.end();
++
++      // 基于 postTexture 的 Alpha 值
++      // 在 canvasTexture 上绘制轮廓
++      postProcess(encoder, undefined, canvasTexture);
++    }
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>上面的代码首先绘制原始场景。然后将 <code class="notranslate" translate="no">selectedMeshes</code> 绘制到 <code class="notranslate" translate="no">postTexture</code>。我们将 <code class="notranslate" translate="no">postTexture</code> 传递给后处理代码，绘制轮廓到 <code class="notranslate" translate="no">canvasTexture</code>。</p>
+<p>由于有两处代码在另一个纹理的尺寸变化时重新创建纹理，我们可以添加一个辅助函数来简化代码。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function makeNewTextureIfSizeDifferent(texture, size, format, usage) {
++    if (!texture ||
++        texture.width !== size.width ||
++        texture.height !== size.height) {
++      texture?.destroy();
++      texture = device.createTexture({
++        format,
++        size,
++        usage,
++      });
++    }
++    return texture;
++  }
+
+...
+
+  function render() {
+    ...
+
+    // 如果没有深度纹理或其尺寸与 canvasTexture 不同
+    // 则创建一个新的深度纹理
+-    if (!depthTexture ||
+-        depthTexture.width !== canvasTexture.width ||
+-        depthTexture.height !== canvasTexture.height) {
+-      if (depthTexture) {
+-        depthTexture.destroy();
+-      }
+-      depthTexture = device.createTexture({
+-        size: [canvasTexture.width, canvasTexture.height],
+-        format: 'depth24plus',
+-        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+-      });
+-    }
++    depthTexture = makeNewTextureIfSizeDifferent(
++      depthTexture,
++      canvasTexture, // 用于尺寸
++      'depth24plus',
++      GPUTextureUsage.RENDER_ATTACHMENT,
++    );
+
+...
+
+    // 将所选对象绘制到 postTexture
+    {
+-      if (!postTexture ||
+-           postTexture.width !== canvasTexture.width)
+-           postTexture.height !== canvasTexture.height) {
+-        postTexture?.destroy();
+-        postTexture = device.createTexture({
+-         format: canvasTexture.format,
+-         canvasTexture, // 用于尺寸
+-         usage: GPUTextureUsage.RENDER_ATTACHMENT |
+-                GPUTextureUsage.TEXTURE_BINDING,
+-        });
+-      }
++      postTexture = makeNewTextureIfSizeDifferent(
++        postTexture,
++        canvasTexture, // 用于尺寸
++        canvasTexture.format,
++        GPUTextureUsage.RENDER_ATTACHMENT |
++        GPUTextureUsage.TEXTURE_BINDING,
++      );
+      setupPostProcess(postTexture);
+</pre>
+<p>剩下的就是我们需要一种方式来填充 <code class="notranslate" translate="no">selectedMeshes</code>。
+这稍微有点复杂，因为我们将所有东西都用立方体构成，默认情况下会隐藏一些节点。在设置 <code class="notranslate" translate="no">selectedMeshes</code> 时，我们会考虑到这些隐藏，通过检查一个节点的所有子节点来获取更多网格。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  function meshUsesNode(mesh, node) {
++    if (!node) {
++      return false;
++    }
++    if (mesh.node === node) {
++      return true;
++    }
++    for (const child of node.children) {
++      if (meshUsesNode(mesh, child)) {
++        return true;
++      }
++    }
++    return false;
++  }
+
+  const kUnelected = '\u3000'; // 全角空格
+  const kSelected = '➡️';
+  const prefixRE = new RegExp(`^(?:${kUnelected}|${kSelected})`);
+
+  function setCurrentSceneGraphNode(node) {
+    trsUIHelper.setTRS(node.source);
+    trsFolder.name(`orientation: ${node.name}`);
+    trsFolder.updateDisplay();
+
+    // 标记哪个节点被选中了
+    for (const b of nodeButtons) {
+      const name = b.button.getName().replace(prefixRE, '');
+      b.button.name(`${b.node === node ? kSelected : kUnelected}${name}`);
+    }
+
++    selectedMeshes = meshes.filter(mesh =&gt; meshUsesNode(mesh, node));
+
++    render();
+  }
+</pre>
+<p>有了这些，所选对象就被高亮显示了。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-highlighting.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-highlighting.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>现在我们能够高亮显示选中了，接下来让我们实现
+<a href="webgpu-camera-controls.html">通过拖动来移动相机</a>，
+而不是使用 UI 中的按钮。</p>
+<!-- keep this at the bottom of the article -->
+<link href="../webgpu-highlighting.css" rel="stylesheet">
+<script type="module" src="../webgpu-highlighting.js"></script>
 
     </div>
     <div class="lesson-sidebar">
@@ -197,6 +673,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-highlighting.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-highlighting.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-highlighting.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-highlighting.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-highlighting.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-highlighting.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-highlighting.html">Українська
@@ -204,10 +681,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-  <li>Data for Shaders</li>
+  <li>着色器数据传递</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
@@ -222,9 +700,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">即时变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
         </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
@@ -268,32 +746,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">一维查找表（1D-LUT）</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">三维查找表（3D-LUT）</a></li>
         </ul>
-  <li>Editor</li>
+  <li>编辑器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">高亮显示</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">拾取</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">计算着色器基础</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">图像直方图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">图像直方图 进阶</a></li>
         </ul>
   <li>杂项</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">多画布</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">点</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGL 到 WebGPU</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">速度与优化</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">调试与错误</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">资源 / 参考</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -306,13 +784,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 高亮显示`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

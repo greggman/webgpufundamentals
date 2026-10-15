@@ -26,6 +26,7 @@
   here: 'buradasınız',
   categoryMapping: {
     'basics': 'Temel Bilgiler',
+    'passing-data': 'Gölgelendiriciler için Veriler',
     'misc': 'Diğer Başlıklar',
     'textures': 'Dokular',
     'techniques': 'Teknikler',
@@ -35,6 +36,8 @@
     '3d-math': '3B Matematik',
     'lighting': 'Işıklandırma',
     'compute-shaders': 'Hesap Gölgelendiricileri',
+    'post-processing': 'Son İşleme',
+    'editor': 'Editör',
   },
 }
 

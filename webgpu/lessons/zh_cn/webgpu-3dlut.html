@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-3dlut.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Post Processing - 3d lookup table (LUT)">
+
+<meta name="description" content="三维查找表（3D-LUT）">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-3dlut_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 后处理 - 三维查找表（3D-LUT）">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="3D lookup table (LUT)">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-3dlut_zh-cn.jpg">
+<meta property="og:description" content="三维查找表（3D-LUT）">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-3dlut.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Post Processing - 3d lookup table (LUT)">
+<meta name="twitter:title" content="WebGPU 后处理 - 三维查找表（3D-LUT）">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-3dlut.html">
-<meta name="twitter:description" content="3D lookup table (LUT)">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="三维查找表（3D-LUT）">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-3dlut_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-3dlut.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-3dlut_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-3dlut.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-3dlut.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 后处理 - 三维查找表（3D-LUT）",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-3dlut.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Post Processing - 3d lookup table (LUT)</title>
+<title>WebGPU 后处理 - 三维查找表（3D-LUT）</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -60,6 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-3dlut.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-3dlut.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-3dlut.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-3dlut.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-3dlut.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-3dlut.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-3dlut.html">Українська
@@ -182,13 +229,522 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Post Processing - 3d lookup table (LUT)</h1>
+    <h1>WebGPU 后处理 - 三维查找表（3D-LUT）</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-3dlut.html">英文原版地址</a></p>
+      <p>本文是关于图像调整的短系列文章的第三篇。每个章节都建立在前一篇的基础上，因此你可能会发现按顺序阅读更容易理解。</p>
+<ol>
+<li><a href="webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="webgpu-1dlut.html">一维查找表</a></li>
+<li><a href="webgpu-3dlut.html">三维查找表</a> ⬅ 你在这里</li>
+</ol>
+<p>在上一篇文章中，我们介绍了<a href="webgpu-1dlut.html">渐变映射</a>，也可以称之为一维查找表或 1D-LUT。我们的 1D-LUT 是 n 像素宽、1 像素高。而 3D-LUT 就是同样的思路，但扩展到三维。</p>
+<p>它的工作原理是：制作一个颜色的立方体，然后用原图像的颜色作为索引来查询这个立方体。对于原图像中的每个像素，我们根据该像素的红、绿、蓝颜色在立方体中查找一个位置。从 3D-LUT 中取出的值就是新的颜色。</p>
+<p>在 JavaScript 中我们可以这样理解。假设颜色用 0 到 255 的整数表示，我们有一个很大的三维数组，大小为 256×256×256。那么要通过查找表转换颜色，我们只需要这样做：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const newColor = lut[origColor.red][origColor.green][origColor.blue];
+</pre>
+<p>当然，256×256×256 的数组会非常大，但正如我们在<a href="webgpu-textures.html">纹理相关文章</a>中指出的，纹理的值引用范围是 0.0 到 1.0，与纹理的实际尺寸无关。</p>
+<p>让我们想象一个 8×8×8 的立方体。</p>
+<div class="webgpu_center"><img src="../resources/images/3dlut-rgb.svg" class="noinvertdark" style="width: 500px"></div>
+<p>首先我们用特定颜色填充各个角：0,0,0 角为纯黑色，对角的 1,1,1 角为纯白色。1,0,0 为纯<span style="color:red;">红色</span>。0,1,0 为纯<span style="color:green;">绿色</span>，0,0,1 为<span style="color:blue;">蓝色</span>。</p>
+<div class="webgpu_center"><img src="../resources/images/3dlut-axis.svg" class="noinvertdark" style="width: 500px"></div>
+<p>然后我们在每条轴上填充颜色。</p>
+<div class="webgpu_center"><img src="../resources/images/3dlut-edges.svg" class="noinvertdark" style="width: 500px"></div>
+<p>以及使用两个或更多通道的边上的颜色。</p>
+<div class="webgpu_center"><img src="../resources/images/3dlut-standard.svg" class="noinvertdark" style="width: 500px"></div>
+<p>最后填充中间的所有颜色。这是一个"恒等"3D-LUT。它的输出与输入完全相同。如果你查询一种颜色，得到的是同一种颜色。</p>
+<div class="webgpu_center"><object type="image/svg+xml" data="resources/images/3dlut-standard-lookup.svg" class="noinvertdark" data-diagram="lookup" style="width: 600px"></object></div>
+<p>但如果我们把立方体改成琥珀色调，那么当我们查询颜色时，虽然在 3D 查找表中查询的位置相同，但会产生不同的输出。</p>
+<div class="webgpu_center"><object type="image/svg+xml" data="resources/images/3dlut-amber-lookup.svg" class="noinvertdark" data-diagram="lookup" style="width: 600px"></object></div>
+<p>使用这种技术，通过提供不同的查找表，我们可以应用各种效果。基本上，任何可以仅基于单一颜色输入计算的效果都可以实现。这些效果包括前几篇文章中我们做过的所有调整：色相、对比度、饱和度、色彩偏移、 tint、亮度、曝光、色阶、曲线、色阶分离、阴影、高光，以及更多。更好的是，它们都可以合并到单个查找表中。</p>
+<p>以下是需要的 WGSL 代码。它与 <code class="notranslate" translate="no">apply1DLUT</code> 函数非常相似：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">fn apply1DLUT(
+    color: vec3f,
+    lut: texture_2d&lt;f32&gt;,
+    smp: sampler) -&gt; vec3f {
+  let l = luminance(color);
+  let width = f32(textureDimensions(lut, 0).x);
+  let range = (width - 1) / width;
+  let u = 0.5 / width + l * range;
+  return textureSample(lut, smp, vec2f(u, 0.5)).rgb;
+}
+
++fn apply3DLUT(
++    color: vec3f,
++    lut: texture_3d&lt;f32&gt;,
++    smp: sampler) -&gt; vec3f {
++  let size = vec3f(textureDimensions(lut, 0));
++  let range = (size - 1) / size;
++  let uvw = 0.5 / size + color * range;
++  return textureSample(lut, smp, uvw).rgb;
++}
+</pre>
+<p>让我们把它应用到着色器中。同时让我们移除其他所有调整功能：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+-  brightness: f32,
+-  contrast: f32,
+  lutAmount: f32,
+};
+
+@group(0) @binding(0) var postTexture2d: texture_2d&lt;f32&gt;;
+@group(0) @binding(1) var postSampler: sampler;
+@group(0) @binding(2) var&lt;uniform&gt; uni: Uniforms;
+-@group(1) @binding(0) var lut: texture_2d&lt;f32&gt;;
++@group(1) @binding(0) var lut: texture_3d&lt;f32&gt;;
+@group(1) @binding(1) var lutSampler: sampler;
+
+@fragment fn fs2d(fsInput: VSOutput) -&gt; @location(0) vec4f {
+  let color = textureSample(postTexture2d, postSampler, fsInput.texcoord);
+  var rgb = color.rgb;
+-  rgb = adjustBrightness(rgb, uni.brightness);
+-  rgb = adjustContrast(rgb, uni.contrast);
+-  rgb = mix(rgb, apply1DLUT(rgb, lut, lutSampler), uni.lutAmount);
++  rgb = mix(rgb, apply3DLUT(rgb, lut, lutSampler), uni.lutAmount);
+  return vec4f(rgb, color.a);
+}
+</pre>
+<p>要使用它，我们需要创建一个 3D 纹理。最简单的 3D-LUT 是一个 2×2×2 的恒等 LUT，<em>恒等</em>意味着什么都不发生。这类似于乘以 1 或什么都不做，尽管我们每次都在 LUT 中查找颜色，但每种颜色都会映射到相同的颜色输出。</p>
+<div class="webgpu_center"><img src="../resources/images/3dlut-standard-2x2.svg" class="noinvertdark" style="width: 200px"></div>
+<p>以下是创建 2ˣ2ˣ2 3D 纹理并包含恒等 LUT 所需颜色的代码：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeIdentityLutTexture(device) {
+  const texture = device.createTexture({
+    size: [2, 2, 2],
+    dimension: '3d',
+    format: 'rgba8unorm',
+    usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+  });
+
+  const identityLUT = new Uint8Array([
+      0,   0,   0, 255,  // 黑色
+    255,   0,   0, 255,  // 红色
+      0, 255,   0, 255,  // 绿色
+    255, 255,   0, 255,  // 黄色
+      0,   0, 255, 255,  // 蓝色
+    255,   0, 255, 255,  // 品红色
+      0, 255, 255, 255,  // 青色
+    255, 255, 255, 255,  // 白色
+  ]);
+
+  device.queue.writeTexture(
+    { texture },
+    identityLUT,
+    { bytesPerRow: 8, rowsPerImage: 2 },
+    [2, 2, 2],
+  );
+
+  return texture;
+}
+</pre>
+<p>我们还需要一些代码来使用它。让我们用两次，一次用线性过滤，一次不用：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const lutNearestSampler = device.createSampler();
+  const lutLinearSampler = device.createSampler({
+    magFilter: 'linear',
+    minFilter: 'linear',
+  });
+
+  function makeLutBindGroup(texture, sampler) {
+    return device.createBindGroup({
+      layout: postProcessPipeline.getBindGroupLayout(1),
+      entries: [
+        { binding: 0, resource: texture },
+        { binding: 1, resource: sampler },
+      ],
+    });
+  }
+
+  const identityLutTexture = makeIdentityLutTexture(device);
+  const lutBindGroups = [
+    {
+      name: 'identity',
+      bindGroup: makeLutBindGroup(identityLutTexture, lutLinearSampler),
+    },
+    {
+      name: 'identity (nearest)',
+      bindGroup: makeLutBindGroup(identityLutTexture, lutNearestSampler),
+    },
+  ];
+
+  ...
+
+  function postProcess(encoder, srcTexture, dstTexture) {
+    device.queue.writeBuffer(
+      postProcessUniformBuffer,
+      0,
+      new Float32Array([
+-        settings.brightness,
+-        settings.contrast,
+        settings.lutAmount,
+      ]),
+    );
+
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
+    pass.setPipeline(postProcessPipeline);
+    pass.setBindGroup(0, postProcessBindGroup);
+-    pass.setBindGroup(1, lutBindGroups[settings.lut]);
++    pass.setBindGroup(1, lutBindGroups[settings.lut].bindGroup);
+    pass.draw(3);
+    pass.end();
+  }
+
+  const settings = {
+-    brightness: 0,
+-    contrast: 0,
+    lutAmount: 1,
+    lut: 0,
+  };
+
+  const gui = new GUI();
+  gui.onChange(render);
+-  gui.add(settings, 'brightness', -1, 1);
+-  gui.add(settings, 'contrast', -1, 10);
+  gui.add(settings, 'lutAmount', 0, 1);
++  const keyValues = Object.fromEntries(lutBindGroups.map(({name}, i) =&gt; [name, i]));
++  gui.add(settings, 'lut', { keyValues });
+
+-  const uiElem = document.querySelector('#ui');
+-  gradients.forEach((stops, i) =&gt; {
+-    const div = document.createElement('div');
+-    div.className = 'gradient';
+-    div.style.background = `linear-gradient(to right,
+-      ${stops.map(([r, g, b, stop]) =&gt; `rgb(${r}, ${g}, ${b}) ${stop * 100}%`).join(',')}
+-    )`;
+-    div.addEventListener('click', () =&gt; {
+-      settings.lut = i;
+-      render();
+-    });
+-    uiElem.append(div);
+-  });
+</pre>
+<p>这样我们就得到了恒等 LUT，它没有任何效果 😂 但至少我们可以在没有过滤的情况下试试看，会看到明显的效果。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-image-adjustments-3d-lut.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-image-adjustments-3d-lut.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>首先确定你想要的 LUT 分辨率，然后使用一个简单的脚本生成颜色立方体的切片：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const ctx = document.querySelector('canvas').getContext('2d');
+
+function drawColorCubeImage(ctx, size) {
+  const canvas = ctx.canvas;
+  canvas.width = size * size;
+  canvas.height = size;
+
+  for (let zz = 0; zz &lt; size; ++zz) {
+    for (let yy = 0; yy &lt; size; ++yy) {
+      for (let xx = 0; xx &lt; size; ++xx) {
+        const r = Math.floor(xx / (size - 1) * 255);
+        const g = Math.floor(yy / (size - 1) * 255);
+        const b = Math.floor(zz / (size - 1) * 255);
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(zz * size + xx, yy, 1, 1);
+      }
+    }
+  }
+}
+
+drawColorCubeImage(ctx, 8);
+</pre>
+<p>然后我们还需要一些 HTML：</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;h1&gt;颜色立方体图像生成器&lt;/h1&gt;
+&lt;div&gt;尺寸：&lt;input id="size" type="number" value="8" min="2" max="64"/&gt;&lt;/div&gt;
+&lt;p&gt;&lt;button type="button"&gt;保存...&lt;/button&gt;&lt;/p&gt;
+&lt;div id="cube"&gt;&lt;canvas&gt;&lt;/canvas&gt;&lt;/div&gt;
+&lt;div&gt;（注意：实际图像尺寸为
+&lt;span id="width"&gt;&lt;/span&gt;×&lt;span id="height"&gt;&lt;/span&gt;）&lt;/div&gt;
+</pre>
+<p>以及用于创建 UI 的 JS 代码：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function update(size) {
+  drawColorCubeImage(ctx, size);
+  document.querySelector('#width').textContent = ctx.canvas.width;
+  document.querySelector('#height').textContent = ctx.canvas.height;
+}
+update(8);
+
+function handleSizeChange(event) {
+  const elem = event.target;
+  elem.style.background = '';
+  try {
+    const size = parseInt(elem.value);
+    if (size &gt;= 2 &amp;&amp; size &lt;= 64) {
+      update(size);
+    }
+  } catch (e) {
+    elem.style.background = 'red';
+  }
+}
+
+const sizeElem = document.querySelector('#size');
+sizeElem.addEventListener('change', handleSizeChange, true);
+
+const saveData = (function() {
+  const a = document.createElement('a');
+  document.body.appendChild(a);
+  a.style.display = 'none';
+  return function saveData(blob, fileName) {
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+  };
+}());
+
+document.querySelector('button').addEventListener('click', () =&gt; {
+  ctx.canvas.toBlob((blob) =&gt; {
+    saveData(blob, `identity-lut-s${ctx.canvas.height}.png`);
+  });
+});
+</pre>
+<p>现在我们可以为任意尺寸生成恒等 3D 查找表了。<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2F3dlut-base-cube-maker.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../3dlut-base-cube-maker.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>分辨率越大，我们可以做的精细调整就越多，但作为数据立方体，所需的存储空间增长很快。尺寸为 8 的立方体只需要 2KB，但尺寸为 64 的立方体需要 1MB。所以使用能够重现你想要效果的最小尺寸。</p>
+<p>让我们把尺寸设为 16，然后点击保存文件，会得到这样一个文件：</p>
+<div class="webgpu_center"><img src="../resources/images/identity-lut-s16.png" style="image-rendering: pixelated; width: 256px;"></div>
+<p>然后我们用图像编辑器打开它，我用的是 Photoshop，加载一张示例图像，把 3D-LUT 粘贴到左上角：</p>
+<blockquote>
+<p>注意：我最初尝试把立方体文件直接拖放到 Photoshop 的图像上，但没起作用。Photoshop 把图像变成了两倍大。
+我猜它是在尝试匹配 DPI 之类的设置。后来先单独加载立方体文件，然后把屏幕截图复制粘贴进去才成功了。</p>
+</blockquote>
+<div class="webgpu_center"><img class="nobg" src="../resources/images/3d-lut-photoshop-before.png" style="width: 1100px"></div>
+<p>然后我们使用任何基于颜色的全图像调整功能来调整图像。对于 Photoshop，大多数可用的调整功能都在"调整"标签页中。</p>
+<div class="webgpu_center"><img class="nobg" src="../resources/images/3d-lut-photoshop-after.png" style="width: 1100px"></div>
+<p>调整完图像后，你可以看到放在左上角的立方体切片也应用了同样的调整。</p>
+<p>好，但我们怎么使用它呢？</p>
+<p>首先我把它保存为 <code class="notranslate" translate="no">3d-lut-orange-to-green-s16.png</code>。为了节省内存，我们可以把 LUT 表的左上角 256ˣ16 部分裁剪出来，但为了好玩，我们选择在加载后再裁剪。这种方法的好处是，我们可以通过查看 .png 文件大致了解 LUT 的效果。坏处当然就是浪费了带宽。</p>
+<p>以下是加载它的代码。代码加载图像，从画布中只复制出 3D-LUT 部分，获取画布中的数据，然后逐切片上传到纹理中：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">/**
+ * 从图像 URL 创建 LUT 纹理。你必须传入 LUT 的尺寸。
+ * 假设图像左上角就是 LUT 数据。
+ *
+ * +---------+---------+---------+---------+---------+---------+---&gt;
+ * |         |         |         |         |         |         |
+ * |  层 0   |  层 1   |  层 2   |  层 3   |   ...   |  层 n   |
+ * |         |         |         |         |         |         |
+ * +---------+---------+---------+---------+---------+---------+--------+
+ * |
+ * ↓
+ */
+const createLUTTextureFromImage = (function() {
+  const ctx = new OffscreenCanvas(1, 1).getContext('2d', { willReadFrequently: true });
+
+  return async function createLUTTextureFromImage(device, url, lutSize) {
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    ctx.canvas.width = lutSize * lutSize;
+    ctx.canvas.height = lutSize;
+    ctx.drawImage(img, 0, 0);
+    const imgData = ctx.getImageData(0, 0, lutSize * lutSize, lutSize);
+
+    const texture = device.createTexture({
+      size: [lutSize, lutSize, lutSize],
+      dimension: '3d',
+      format: 'rgba8unorm',
+      usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
+    });
+
+    for (let z = 0; z &lt; lutSize; ++z) {
+      device.queue.writeTexture(
+        { texture, origin: [0, 0, z] },
+        imgData.data,
+        { offset: z * lutSize * 4, bytesPerRow: imgData.width * 4 },
+        [lutSize, lutSize],
+      );
+    }
+    return texture;
+  };
+})();
+</pre>
+<p>让我们把自定义的 LUT 添加到现有的 LUT 列表中：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  const lutTextures = [
++    { name: 'custom',          url: 'resources/images/lut/3d-lut-orange-to-green-s16.png'},
++  ];
++  lutBindGroups.push(...await Promise.all(lutTextures.map(async({name, url}) =&gt; {
++    // 假设文件名以 '-s&lt;数字&gt;[n]' 结尾
++    // &lt;数字&gt; 是 3DLUT 立方体的尺寸
++    // [n] 表示'不过滤'或'nearest'
++    //
++    // 示例：
++    //    'foo-s16.png' = 尺寸:16, 过滤: true
++    //    'bar-s8n.png' = 尺寸:8, 过滤: false
++    const m = /-s(\d+)(n*)\.[^.]+$/.exec(url);
++    const size = parseInt(m[1]);
++    const filter = m[2] === '';
++
++    const texture = await createLUTTextureFromImage(device, url, size);
++    const sampler = filter
++      ? lutLinearSampler
++      : lutNearestSampler;
++    return {name, bindGroup: makeLutBindGroup(texture, sampler)};
++  })));
+</pre>
+<p>如上所示，我们在文件名末尾编码了 LUT 的尺寸。这样更容易把 LUT 作为 png 文件传递。</p>
+<p>同时，让我们加载更多的基于图像的 3D-LUT：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const lutTextures = [
+    { name: 'custom',          url: 'resources/images/lut/3d-lut-orange-to-green-s16.png'},
++    { name: 'monochrome',      url: 'resources/images/lut/monochrome-s8.png' },
++    { name: 'sepia',           url: 'resources/images/lut/sepia-s8.png' },
++    { name: 'saturated',       url: 'resources/images/lut/saturated-s8.png', },
++    { name: 'posterize',       url: 'resources/images/lut/posterize-s8n.png', },
++    { name: 'posterize-3-rgb', url: 'resources/images/lut/posterize-3-rgb-s8n.png', },
++    { name: 'posterize-3-lab', url: 'resources/images/lut/posterize-3-lab-s8n.png', },
++    { name: 'posterize-4-lab', url: 'resources/images/lut/posterize-4-lab-s8n.png', },
++    { name: 'posterize-more',  url: 'resources/images/lut/posterize-more-s8n.png', },
++    { name: 'inverse',         url: 'resources/images/lut/inverse-s8.png', },
++    { name: 'color negative',  url: 'resources/images/lut/color-negative-s8.png', },
++    { name: 'funky contrast',  url: 'resources/images/lut/funky-contrast-s8.png', },
++    { name: 'nightvision',     url: 'resources/images/lut/nightvision-s8.png', },
++    { name: 'thermal',         url: 'resources/images/lut/thermal-s8.png', },
++    { name: 'b/w',             url: 'resources/images/lut/black-white-s8n.png', },
++    { name: 'hue +60',         url: 'resources/images/lut/hue-plus-60-s8.png', },
++    { name: 'hue +180',        url: 'resources/images/lut/hue-plus-180-s8.png', },
++    { name: 'hue -60',         url: 'resources/images/lut/hue-minus-60-s8.png', },
++    { name: 'red to cyan',     url: 'resources/images/lut/red-to-cyan-s8.png' },
++    { name: 'blues',           url: 'resources/images/lut/blues-s8.png' },
++    { name: 'infrared',        url: 'resources/images/lut/infrared-s8.png' },
++    { name: 'radioactive',     url: 'resources/images/lut/radioactive-s8.png' },
++    { name: 'goolgey',         url: 'resources/images/lut/googley-s8.png' },
++    { name: 'bgy',             url: 'resources/images/lut/bgy-s8.png' },
+  ];
+</pre>
+<p>这里有一堆 LUT 可以尝试：</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-image-adjustments-3d-luts.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-image-adjustments-3d-luts.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>以下是所有 LUT 应用到我们图像上的效果：</p>
+<div class="webgpu_center">
+   <div data-diagram="imageLuts" class="fill-container"></div>
+</div>
+<p>最后一件事，纯粹为了好玩，原来 Adobe 定义了一个标准的 LUT 格式。如果你<a href="https://www.google.com/search?q=lut+files">在网上搜索可以找到很多这类 LUT 文件</a>。例如<a href="https://freshluts.com/">这个网站</a>有很多 LUT。</p>
+<p>我写了一个快速加载器。不幸的是这个格式有 4 种变体，但我只找到了 1 种变体的示例，所以无法轻松测试所有变体是否都能正常工作。</p>
+<p>让我们实现拖放 LUT 文件的功能，这样文件就会被应用：</p>
+<p>首先我们需要这个库：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as lutParser from './resources/lut-reader.js';
+</pre>
+<p>然后我们可以这样使用它们：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  dragAndDrop.setup({msg: 'Drop Image File here'});
+-  dragAndDrop.onDropFile(readImageFile);
++  dragAndDrop.setup({msg: 'Drop LUT or Img File here'});
++  dragAndDrop.onDropFile(readLUTOrImgFile);
+
++  function ext(s) {
++    return s.substr(s.lastIndexOf('.') + 1);
++  }
++
++  function readLUTOrImgFile(file) {
++    const type = ext(file.name);
++    switch (type.toLowerCase()) {
++      case 'jpg':
++      case 'jpeg':
++      case 'png':
++      case 'webp':
++        readImageFile(file);
++        break;
++      default:
++        readLUTFile(file);
++        break;
++    }
++  }
+
+  async function readImageFile(file) {
+    const newImageTexture = await createTextureFromImage(device, URL.createObjectURL(file));
+    imageTexture.destroy();
+    imageTexture = newImageTexture;
+    updateBindGroup();
+    render();
+  }
+
++  function readLUTFile(file) {
++    const reader = new FileReader();
++    reader.onload = (e) =&gt; {
++      const type = ext(file.name);
++      const name = file.name.substring(file.name.lastIndexOf('/'));
++      const {size, data} = lutParser.lutTo2D3Drgba8(lutParser.parse(e.target.result, type));
++      const texture = device.createTexture({
++        size: [size, size, size],
++        dimension: '3d',
++        format: 'rgba8unorm',
++        usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
++      });
++      device.queue.writeTexture(
++        { texture },
++        data,
++        { bytesPerRow: size * 4, rowsPerImage: size },
++        [size, size, size],
++      );
++      lutBindGroups.push({
++        name: (name &amp;&amp; name.toLowerCase().trim() !== 'untitled')
++          ? name
++          : file.name,
++        bindGroup: makeLutBindGroup(texture, lutLinearSampler),
++      });
++      settings.lut = lutBindGroups.length - 1;
++      updateGUI();
++      render();
++    };
++
++    reader.readAsText(file);
++  }
+</pre>
+<p>然后我们需要让 GUI 在有新文件时更新：</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const gui = new GUI();
+  gui.name('Choose LUT or Drag&amp;Drop LUT File(s)');
+  gui.onChange(render);
+  gui.add(settings, 'amount', 0, 1);
+-  const keyValues = Object.fromEntries(lutBindGroups.map(({name}, i) =&gt; [name, i]));
+-  gui.add(settings, 'lut', { keyValues });
+
++  let lutGUI;
++  function updateGUI() {
++    if (lutGUI) {
++      gui.remove(lutGUI);
++    }
++    const keyValues = Object.fromEntries(lutBindGroups.map(({name}, i) =&gt; [name, i]));
++    lutGUI = gui.add(settings, 'lut', { keyValues });
++  }
++  updateGUI();
+</pre>
+<p>这样你应该能够<a href="https://www.google.com/search?q=lut+files">下载一个 Adobe LUT</a>，然后把它拖放到下面的示例中。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-post-processing-image-adjustments-3d-luts-w-loader.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-post-processing-image-adjustments-3d-luts-w-loader.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>以下是一些我从网上找到的 LUT 并应用到图像上的效果：</p>
+<div class="webgpu_center">
+   <div data-diagram="cubeLuts" class="fill-container" style="max-width: 1200px"></div>
+</div>
+<p>注意，Adobe LUT 不是为在线使用设计的。它们是大型文件。（约 1MB）。你可以通过拖放到下面的示例中并点击"保存…"来将它们转换为更小的 PNG 格式。PNG 文件通常小约 20 倍，约 50KB。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fadobe-lut-to-png-converter.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../adobe-lut-to-png-converter.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<!-- keep this at the bottom of the article -->
+<link href="../webgpu-3dlut.css" rel="stylesheet">
+<script type="module" src="../webgpu-3dlut.js"></script>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Adobe 的 .cube 文件通常是 33ˣ33ˣ33 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
     </div>
     <div class="lesson-sidebar">
@@ -197,6 +753,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-3dlut.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-3dlut.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-3dlut.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-3dlut.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-3dlut.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-3dlut.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-3dlut.html">Українська
@@ -204,10 +761,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-  <li>Data for Shaders</li>
+  <li>着色器数据传递</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
@@ -222,9 +780,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">即时变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
         </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
@@ -268,32 +826,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">一维查找表（1D-LUT）</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">三维查找表（3D-LUT）</a></li>
         </ul>
-  <li>Editor</li>
+  <li>编辑器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">高亮显示</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">拾取</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">计算着色器基础</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">图像直方图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">图像直方图 进阶</a></li>
         </ul>
   <li>杂项</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">多画布</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">点</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGL 到 WebGPU</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">速度与优化</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">调试与错误</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">资源 / 参考</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -306,13 +864,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 后处理 - 三维查找表（3D-LUT）`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

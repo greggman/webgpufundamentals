@@ -19,6 +19,8 @@
   here: '你在此处',
   categoryMapping: {
     'basics': "基础概念",
+    'passing-data': '着色器数据传递',
+    'editor': '编辑器',
     'misc': "杂项",
     'textures': '纹理',
     'techniques': '技术',

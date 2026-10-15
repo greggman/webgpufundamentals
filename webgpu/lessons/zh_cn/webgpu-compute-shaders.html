@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-compute-shaders.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Compute Shader Basics">
+
+<meta name="description" content="如何在 WebGPU 中使用计算着色器">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 计算着色器基础">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="How to use compute shaders in WebGPU">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders_zh-cn.jpg">
+<meta property="og:description" content="如何在 WebGPU 中使用计算着色器">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Compute Shader Basics">
+<meta name="twitter:title" content="WebGPU 计算着色器基础">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">
-<meta name="twitter:description" content="How to use compute shaders in WebGPU">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="如何在 WebGPU 中使用计算着色器">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 计算着色器基础",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Compute Shader Basics</title>
+<title>WebGPU 计算着色器基础</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -60,6 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-compute-shaders.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-compute-shaders.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-compute-shaders.html">Українська
@@ -182,13 +229,269 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Compute Shader Basics</h1>
+    <h1>WebGPU 计算着色器基础</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-compute-shaders.html">英文原版地址</a></p>
+      <p>本文是<a href="webgpu-fundamentals.html">基础理论文章</a>的续篇。我们将从计算着色器的一些基础知识开始，然后逐步深入到解决实际问题的示例中。</p>
+<p>在<a href="webgpu-fundamentals.html">上一篇文章</a>中，我们实现了一个非常简单的计算着色器，它将数字原地翻倍。</p>
+<p>以下是着色器代码</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; data: array&lt;f32&gt;;
+
+@compute @workgroup_size(1) fn computeSomething(
+  @builtin(global_invocation_id) id: vec3&lt;u32&gt;
+) {
+  let i = id.x;
+  data[i] = data[i] * 2.0;
+}
+</pre>
+<p>然后我们实际上是这样运行计算着色器的</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
+  pass.dispatchWorkgroups(count);
+</pre>
+<p>接下来我们需要讲解 workgroup（工作小组）的定义。</p>
+<h2 id="什么是-workgroup">什么是 Workgroup</h2>
+<p>你可以把 workgroup 看作是一小组并行运行的线程集合。你需要在 WGSL 中静态定义 workgroup 的大小。Workgroup 的大小是三维的，但默认为 1，所以我们的 <code class="notranslate" translate="no">@workgroup_size(1)</code> 等同于 <code class="notranslate" translate="no">@workgroup_size(1, 1, 1)</code>。</p>
+<p><a id="a-local-invocation-id"></a>如果我们定义一个 workgroup 为 <code class="notranslate" translate="no">@workgroup_size(3, 4, 2)</code>，那么我们实际上定义的是 3 * 4 * 2 = 24 个线程，或者说是一个 24 线程的 workgroup。</p>
+<div class="webgpu_center">
+  <img src="../resources/gpu-workgroup.svg" style="width: 500px;">
+  <div>workgroup 中线程的 <code class="notranslate" translate="no">local_invocation_id</code></div>
+</div>
+<p><a id="a-workgroup-id"></a>然后如果我们调用 <code class="notranslate" translate="no">pass.dispatchWorkgroups(4, 3, 2)</code>，意思是说，执行一个包含 24 个线程的 workgroup，执行 4 * 3 * 2 = 24 次，总共 576 个线程。</p>
+<div class="webgpu_center">
+  <img src="../resources/gpu-workgroup-dispatch.svg" style="width: 500px;">
+  <div>分发的 workgroup 的 <code class="notranslate" translate="no">workgroup_id</code></div>
+</div>
+<p>在每个计算着色器的"调用"中，以下内置变量是可用的。</p>
+<ul>
+<li>
+<p><code class="notranslate" translate="no">local_invocation_id</code>：该线程在 workgroup 内的 ID</p>
+<p><a href="#a-local-invocation-id">参见上图</a>。</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">workgroup_id</code>：该 workgroup 的 ID。</p>
+<p>workgroup 中的每个线程都会有相同的 workgroup_id。
+<a href="#a-workgroup-id">参见上图</a>。</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">global_invocation_id</code>：每个线程的唯一 ID</p>
+<p>你可以把它理解为</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">global_invocation_id = workgroup_id * workgroup_size + local_invocation_id
+</pre>
+</li>
+<li>
+<p><code class="notranslate" translate="no">num_workgroups</code>：传递给 <code class="notranslate" translate="no">pass.dispatchWorkgroups</code> 的参数</p>
+</li>
+<li>
+<p><code class="notranslate" translate="no">local_invocation_index</code>：该线程的线性化 ID</p>
+<p>你可以把它理解为</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">rowSize = workgroup_size.x
+sliceSize = rowSize * workgroup_size.y
+local_invocation_index =
+      local_invocation_id.x +
+      local_invocation_id.y * rowSize +
+      local_invocation_id.z * sliceSize
+</pre>
+</li>
+</ul>
+<p>让我们写一个示例来使用这些值。我们将把每个调用中的值写入缓冲区，然后打印出来</p>
+<p>以下是着色器代码</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const dispatchCount = [4, 3, 2];
+const workgroupSize = [2, 3, 4];
+
+// 将数组的所有元素相乘
+const arrayProd = arr =&gt; arr.reduce((a, b) =&gt; a * b);
+
+const numThreadsPerWorkgroup = arrayProd(workgroupSize);
+
+const code = `
+// 注意!: vec3u 按 4 字节对齐
+@group(0) @binding(0) var&lt;storage, read_write&gt; workgroupResult: array&lt;vec3u&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; localResult: array&lt;vec3u&gt;;
+@group(0) @binding(2) var&lt;storage, read_write&gt; globalResult: array&lt;vec3u&gt;;
+
+@compute @workgroup_size(${workgroupSize}) fn computeSomething(
+    @builtin(workgroup_id) workgroup_id : vec3&lt;u32&gt;,
+    @builtin(local_invocation_id) local_invocation_id : vec3&lt;u32&gt;,
+    @builtin(global_invocation_id) global_invocation_id : vec3&lt;u32&gt;,
+    @builtin(local_invocation_index) local_invocation_index: u32,
+    @builtin(num_workgroups) num_workgroups: vec3&lt;u32&gt;
+) {
+  // workgroup_index 类似于 local_invocation_index，但它是针对
+  // workgroup 而不是 workgroup 内的线程。
+  // 它不是内置变量，所以我们需要自己计算。
+
+  let workgroup_index =
+     workgroup_id.x +
+     workgroup_id.y * num_workgroups.x +
+     workgroup_id.z * num_workgroups.x * num_workgroups.y;
+
+  // global_invocation_index 类似于 local_invocation_index
+  // 只不过它是跨所有分发的 workgroup 的所有调用线性化的。
+  // 它不是内置变量，所以我们需要自己计算。
+
+  let global_invocation_index =
+     workgroup_index * ${numThreadsPerWorkgroup} +
+     local_invocation_index;
+
+  // 现在我们可以把这些内置变量的值写入缓冲区。
+  workgroupResult[global_invocation_index] = workgroup_id;
+  localResult[global_invocation_index] = local_invocation_id;
+  globalResult[global_invocation_index] = global_invocation_id;
+`;
+</pre>
+<p>我们使用 JavaScript 模板字符串，以便从 JavaScript 变量 <code class="notranslate" translate="no">workgroupSize</code> 中设置 workgroup 大小。这样最终会被硬编码到着色器中。</p>
+<p>现在我们有了着色器，可以创建 3 个缓冲区来存储这些结果。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numWorkgroups = arrayProd(dispatchCount);
+  const numResults = numWorkgroups * numThreadsPerWorkgroup;
+  const size = numResults * 4 * 4;  // vec3f * u32
+
+  let usage = GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC;
+  const workgroupBuffer = device.createBuffer({size, usage});
+  const localBuffer = device.createBuffer({size, usage});
+  const globalBuffer = device.createBuffer({size, usage});
+</pre>
+<p>正如我们之前指出的，我们不能将存储缓冲区映射到 JavaScript，所以需要一些缓冲区来映射。我们将把结果从存储缓冲区复制到这些可映射的结果缓冲区，然后再读取结果。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  usage = GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST;
+  const workgroupReadBuffer = device.createBuffer({size, usage});
+  const localReadBuffer = device.createBuffer({size, usage});
+  const globalReadBuffer = device.createBuffer({size, usage});
+</pre>
+<p>我们创建一个 bind group 来绑定所有存储缓冲区</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: workgroupBuffer },
+      { binding: 1, resource: localBuffer },
+      { binding: 2, resource: globalBuffer },
+    ],
+  });
+</pre>
+<p>我们启动一个编码器和一个计算通道编码器，与之前的示例相同，然后添加运行计算着色器的命令。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 编码执行计算的命令
+  const encoder = device.createCommandEncoder({ label: 'compute builtin encoder' });
+  const pass = encoder.beginComputePass({ label: 'compute builtin pass' });
+
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(...dispatchCount);
+  pass.end();
+</pre>
+<p>我们需要把结果从存储缓冲区复制到可映射的结果缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  encoder.copyBufferToBuffer(workgroupBuffer, 0, workgroupReadBuffer, 0, size);
+  encoder.copyBufferToBuffer(localBuffer, 0, localReadBuffer, 0, size);
+  encoder.copyBufferToBuffer(globalBuffer, 0, globalReadBuffer, 0, size);
+</pre>
+<p>然后结束编码器并提交命令缓冲区。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 完成编码并提交命令
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+</pre>
+<p>和之前一样，要读取结果，我们需要映射缓冲区，一旦它们准备好了，就可以获取它们内容的类型化数组视图。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 读取结果
+   await Promise.all([
+    workgroupReadBuffer.mapAsync(GPUMapMode.READ),
+    localReadBuffer.mapAsync(GPUMapMode.READ),
+    globalReadBuffer.mapAsync(GPUMapMode.READ),
+  ]);
+
+  const workgroup = new Uint32Array(workgroupReadBuffer.getMappedRange());
+  const local = new Uint32Array(localReadBuffer.getMappedRange());
+  const global = new Uint32Array(globalReadBuffer.getMappedRange());
+</pre>
+<blockquote>
+<p>重要提示：这里我们映射了 3 个缓冲区，并使用 <code class="notranslate" translate="no">await Promise.all</code> 来等待它们全部就绪。<strong>不能</strong>只等待最后一个缓冲区。你必须等待所有 3 个缓冲区。</p>
+</blockquote>
+<p>最后我们可以打印出来</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const get3 = (arr, i) =&gt; {
+    const off = i * 4;
+    return `${arr[off]}, ${arr[off + 1]}, ${arr[off + 2]}`;
+  };
+
+  for (let i = 0; i &lt; numResults; ++i) {
+    if (i % numThreadsPerWorkgroup === 0) {
+      log(`\
+ ---------------------------------------
+ global                 local     global   dispatch: ${i / numThreadsPerWorkgroup}
+ invoc.    workgroup    invoc.    invoc.
+ index     id            id        id
+ ---------------------------------------`);
+    }
+    log(` ${i.toString().padStart(3)}:      ${get3(workgroup, i)}      ${get3(local, i)}   ${get3(global, i)}`)
+  }
+}
+
+function log(...args) {
+  const elem = document.createElement('pre');
+  elem.textContent = args.join(' ');
+  document.body.appendChild(elem);
+}
+</pre>
+<p>运行结果如下</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-builtins.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-builtins.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>这些内置变量通常是对于一次 <code class="notranslate" translate="no">pass.dispatchWorkgroups</code> 调用，每个计算着色器线程唯一会改变输入，所以要有效地设计一个计算着色器函数，你需要弄清楚如何使用这些 <code class="notranslate" translate="no">..._id</code> 内置变量作为输入来实现你想要的功能。</p>
+<h2 id="工作组大小（workgroup-size）">工作组大小（Workgroup Size）</h2>
+<p>你应该把工作组设成多大？这个问题经常出现。为什么不总是使用 <code class="notranslate" translate="no">@workgroup_size(1, 1, 1)</code>，然后只需要通过 <code class="notranslate" translate="no">pass.dispatchWorkgroups</code> 的参数来决定运行多少次迭代，这样会更简单。</p>
+<p>原因是 workgroup 内的多个线程比单独分发运行得更快。</p>
+<p>一方面，workgroup 内的线程通常以锁步（lockstep）方式运行，所以同时运行 16 个和运行 1 个的速度是一样的。</p>
+<p>WebGPU 的默认限制如下</p>
+<ul>
+<li><code class="notranslate" translate="no">maxComputeInvocationsPerWorkgroup</code>：256</li>
+<li><code class="notranslate" translate="no">maxComputeWorkgroupSizeX</code>：256</li>
+<li><code class="notranslate" translate="no">maxComputeWorkgroupSizeY</code>：256</li>
+<li><code class="notranslate" translate="no">maxComputeWorkgroupSizeZ</code>：64</li>
+</ul>
+<p>如你所见，第一个限制 <code class="notranslate" translate="no">maxComputeInvocationsPerWorkgroup</code> 意味着 <code class="notranslate" translate="no">@workgroup_size</code> 的三个参数相乘不能大于 256。换句话说</p>
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">   @workgroup_size(256, 1, 1)   // 可行
+   @workgroup_size(128, 2, 1)   // 可行
+   @workgroup_size(16, 16, 1)   // 可行
+   @workgroup_size(16, 16, 2)   // 不可行 16 * 16 * 2 = 512
+</pre>
+<p>遗憾的是，最佳大小因 GPU 而异，WebGPU 无法提供这些信息。
+<strong>WebGPU 的一般建议是选择 64 的工作组大小</strong>，除非你有特定的理由选择其他大小。显然大多数 GPU 可以高效地以 64 为单位锁步运行。如果选择的数字更高，而 GPU 无法将其作为快速路径处理，就会选择较慢的路径。反之，如果你选择的数字低于 GPU 的能力，可能无法获得最佳性能。</p>
+<h2 id="计算着色器中的竞态条件"><a href="../a-race-conditions"></a>计算着色器中的竞态条件</h2>
+<p>WebGPU 中的一个常见错误是没有处理竞态条件。竞态条件是指多个线程同时运行，它们实际上在争夺谁先或最后完成。</p>
+<p>假设你有这个计算着色器</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read_write&gt; result: array&lt;f32&gt;;
+
+@compute @workgroup_size(32) fn computeSomething(
+    @builtin(local_invocation_id) local_invocation_id : vec3&lt;u32&gt;,
+) {
+  result[0] = local_invocation_id.x;
+`;
+</pre>
+<p>如果这不容易理解，这里有一个类似的 JavaScript 代码</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const result = [];
+for (let i = 0; i &lt; 32; ++i) {
+  result[0] = i;
+}
+</pre>
+<p>在 JavaScript 的情况下，代码运行后，<code class="notranslate" translate="no">result[0]</code> 显然是 31。但在计算着色器中，着色器的全部 32 个迭代都是并行运行的。最后完成的那个线程的值会留在 <code class="notranslate" translate="no">result[0]</code> 中。哪个先运行、哪个最后完成是不确定的。</p>
+<p>根据规范：</p>
+<blockquote>
+<p>WebGPU 不提供以下保证：</p>
+<ul>
+<li>
+<p>不同 workgroup 的调用是否同时执行。也就是说，你不能假设一次只执行一个 workgroup。</p>
+</li>
+<li>
+<p>一旦 workgroup 的调用开始执行，其他 workgroup 是否被阻止执行。也就是说，你不能假设一次只有一个 workgroup 在执行。在 workgroup 执行期间，实现可以选择同时执行其他 workgroup，或者其他排队但未被阻止的工作。</p>
+</li>
+<li>
+<p>某个特定 workgroup 的调用是否在另一个 workgroup 的调用之前开始执行。也就是说，你不能假设 workgroup 按特定顺序启动。</p>
+</li>
+</ul>
+</blockquote>
+<p>我们将在以后的示例中介绍一些处理这个问题的方法。目前，我们上面的两个示例都没有竞态条件，因为计算着色器的每次迭代所做的操作都不受其他迭代的影响。</p>
+<p>接下来：<a href="webgpu-compute-shaders-histogram.html">计算着色器示例 - 图像直方图</a></p>
 
     </div>
     <div class="lesson-sidebar">
@@ -197,6 +500,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-compute-shaders.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-compute-shaders.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-compute-shaders.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-compute-shaders.html">Українська
@@ -204,10 +508,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-  <li>Data for Shaders</li>
+  <li>着色器数据传递</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
@@ -222,9 +527,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">即时变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
         </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
@@ -268,32 +573,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">一维查找表（1D-LUT）</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">三维查找表（3D-LUT）</a></li>
         </ul>
-  <li>Editor</li>
+  <li>编辑器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">高亮显示</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">拾取</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">计算着色器基础</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">图像直方图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">图像直方图 进阶</a></li>
         </ul>
   <li>杂项</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">多画布</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">点</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGL 到 WebGPU</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">速度与优化</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">调试与错误</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">资源 / 参考</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -306,13 +611,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 计算着色器基础`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

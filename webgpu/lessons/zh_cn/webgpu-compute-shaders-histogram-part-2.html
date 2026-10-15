@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="WebGPU Compute Shaders - Image Histogram Part 2">
+
+<meta name="description" content="使用图像直方图实时调整视频">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram-part-2_zh-cn.jpg">
+
+<meta property="og:title" content="WebGPU 计算着色器 - 图像直方图2">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Using an image histogram to adjust video in real time.">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram-part-2_zh-cn.jpg">
+<meta property="og:description" content="使用图像直方图实时调整视频">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="WebGPU Compute Shaders - Image Histogram Part 2">
+<meta name="twitter:title" content="WebGPU 计算着色器 - 图像直方图2">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">
-<meta name="twitter:description" content="Using an image histogram to adjust video in real time.">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="使用图像直方图实时调整视频">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram-part-2_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-compute-shaders-histogram-part-2_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html",
+      "inLanguage":"zh-cn",
+      "name":"WebGPU 计算着色器 - 图像直方图2",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>WebGPU Compute Shaders - Image Histogram Part 2</title>
+<title>WebGPU 计算着色器 - 图像直方图2</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -60,6 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-compute-shaders-histogram-part-2.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders-histogram-part-2.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-compute-shaders-histogram-part-2.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-compute-shaders-histogram-part-2.html">Українська
@@ -182,13 +229,922 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>WebGPU Compute Shaders - Image Histogram Part 2</h1>
+    <h1>WebGPU 计算着色器 - 图像直方图2</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-compute-shaders-histogram-part-2.html">英文原版地址</a></p>
+      <p>在<a href="webgpu-compute-shaders-histogram.html">上一篇文章</a>中，我们介绍了如何在 JavaScript 中制作图像直方图，然后将其转换为使用 WebGPU，并经历了多个优化步骤。</p>
+<p>接下来让我们用它再做几件事。</p>
+<h2 id="一次性生成-4-个直方图">一次性生成 4 个直方图</h2>
+<p>给定这样一张图片</p>
+<div class="webgpu_center">
+  <div>
+    <div><img src="../../resources/images/pexels-chevanon-photography-1108099.jpg" style="max-width: 700px;"></div>
+    <div style="text-align: center;"><a href="https://www.pexels.com/photo/two-yellow-labrador-retriever-puppies-1108099/">照片来源：Chevanon Photography</a></div>
+  </div>
+</div>
+<p>通常会生成多个直方图</p>
+<div class="webgpu_center side-by-side">
+  <div>
+    <div><img src="../resources/histogram-colors-photoshop-02.png" style="width: 237px;" class="nobg"></div>
+  </div>
+  <div>
+    <div><img src="../resources/histogram-luminosity-photoshop-02.png" style="width: 237px;" class="nobg"> </div>
+  </div>
+</div>
+<p>左边有 3 个直方图，分别是红色、绿色和蓝色的数值。它们是重叠绘制的。右边是亮度直方图，就像我们在<a href="webgpu-compute-shaders-histogram.html">上一篇文章</a>中生成的那样。</p>
+<p>一次性生成 4 个直方图只是一个微小的改动。</p>
+<p>在 JavaScript 中，生成 4 个直方图的改动如下</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function computeHistogram(numBins, imgData) {
+  const {width, height, data} = imgData;
+-  const bins = new Array(numBins).fill(0);
++  const bins = new Array(numBins * 4).fill(0);
+  for (let y = 0; y &lt; height; ++y) {
+    for (let x = 0; x &lt; width; ++x) {
+      const offset = (y * width + x) * 4;
+
+-      const r = data[offset + 0] / 255;
+-      const g = data[offset + 1] / 255;
+-      const b = data[offset + 2] / 255;
+-      const v = srgbLuminance(r, g, b);
+-
+-      const bin = Math.min(numBins - 1, v * numBins) | 0;
+-      ++bins[bin];
+
++       for (const ch = 0; ch &lt; 4; ++ch) {
++          const v = ch &lt; 3
++             ? data[offset + ch] / 255
++             : srgbLuminance(data[offset + 0] / 255,
++                             data[offset + 1] / 255,
++                             data[offset + 2] / 255);
++          const bin = Math.min(numBins - 1, v * numBins) | 0;
++          ++bins[bin * 4 + ch];
++       }
+    }
+  }
+  return bins;
+}
+</pre>
+<p>这将生成交织的直方图，r、g、b、l、r、g、b、l、r、g、b、l …</p>
+<p>我们可以更新代码来渲染它们</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function drawHistogram(histogram, numEntries, channels, height = 100) {
+-  const numBins = histogram.length;
+-  const max = Math.max(...histogram);
+-  const scale = Math.max(1 / max);//, 0.2 * numBins / numEntries);
++  // 为每个通道找到最大值
++  const numBins = histogram.length / 4;
++  const max = [0, 0, 0, 0];
++  histogram.forEach((v, ndx) =&gt; {
++    const ch = ndx % 4;
++    max[ch] = Math.max(max[ch], v);
++  });
++  const scale = max.map(max =&gt; Math.max(1 / max, 0.2 * numBins / numEntries));
+
+  const canvas = document.createElement('canvas');
+  canvas.width = numBins;
+  canvas.height = height;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
++  const colors = [
++    'rgb(255, 0, 0)',
++    'rgb(0, 255, 0)',
++    'rgb(0, 0, 255)',
++    'rgb(255, 255, 255)',
++  ];
+
+-  ctx.fillStyle = '#fff';
++  ctx.globalCompositeOperation = 'screen';
+
+  for (let x = 0; x &lt; numBins; ++x) {
+-    const v = histogram[x] * scale * height;
+-    ctx.fillRect(x, height - v, 1, v);
++    const offset = x * 4;
++    for (const ch of channels) {
++      const v = histogram[offset + ch] * scale[ch] * height;
++      ctx.fillStyle = colors[ch];
++      ctx.fillRect(x, height - v, 1, v);
++    }
+  }
+}
+</pre>
+<p>然后调用该函数两次，一次渲染彩色直方图，一次渲染亮度直方图</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const histogram = computeHistogram(numBins, imgData);
+
+  showImageBitmap(imgBitmap);
+
++  // 绘制红、绿、蓝通道
+  const numEntries = imgData.width * imgData.height;
+-  drawHistogram(histogram, numEntries);
++  drawHistogram(histogram, numEntries, [0, 1, 2]);
++
++  // 绘制亮度通道
++  drawHistogram(histogram, numEntries, [3]);
+</pre>
+<p>现在我们得到了这些结果。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-4ch-javascript.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-4ch-javascript.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>对我们的 WGSL 示例做同样的改动甚至更简单</p>
+<p>例如我们的第一个太慢的示例可以这样改动</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">-@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;u32&gt;;
++@group(0) @binding(0) var&lt;storage, read_write&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+// 来源: https://www.w3.org/WAI/GL/wiki/Relative_luminance
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(1, 1, 1) fn cs() {
+  let size = textureDimensions(ourTexture, 0);
+  let numBins = f32(arrayLength(&amp;bins));
+  let lastBinIndex = u32(numBins - 1);
+  for (var y = 0u; y &lt; size.y; y++) {
+    for (var x = 0u; x &lt; size.x; x++) {
+      let position = vec2u(x, y);
+-      let color = textureLoad(ourTexture, position, 0);
+-      let v = srgbLuminance(color.rgb);
+-      let bin = min(u32(v * numBins), lastBinIndex);
+-      bins[bin] += 1;
++      var channels = textureLoad(ourTexture, position, 0);
++      channels.w = srgbLuminance(channels.rgb);
++      for (var ch = 0; ch &lt; 4; ch++) {
++        let v = channels[ch];
++        let bin = min(u32(v * numBins), lastBinIndex);
++        bins[bin][ch] += 1;
++      }
+    }
+  }
+}
+
+</pre>
+<p>我们需要将 <code class="notranslate" translate="no">bins</code> 从 <code class="notranslate" translate="no">array&lt;u32&gt;</code> 改为 <code class="notranslate" translate="no">array&lt;vec4u&gt;</code>，为所有 4 个通道腾出空间。</p>
+<p>然后我们从纹理中取出颜色，计算亮度并将其放入 <code class="notranslate" translate="no">channels</code> 的 <code class="notranslate" translate="no">w</code> 元素中</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  var channels = textureLoad(ourTexture, position, 0);
+  channels.w = srgbLuminance(channels.rgb);
+</pre>
+<p>这样我们就可以遍历 4 个通道，并增加对应箱子的计数。</p>
+<p>唯一还需要做的改动是分配 4 倍的内存用于缓冲区</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const histogramBuffer = device.createBuffer({
+-    size: numBins * 4, // 256 entries * 4 bytes per (u32)
++    size: 256 * 4 * 4, // 256 entries * 4 (rgba) * 4 bytes per (u32)
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+  });
+</pre>
+<p>这就是我们的慢速 WebGPU 版本，一次生成 4 个直方图</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-4ch-slow.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-4ch-slow.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>对我们的最快版本做类似的改动：</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const chunkWidth = 256;
+const chunkHeight = 1;
+const chunkSize = chunkWidth * chunkHeight;
+-var&lt;workgroup&gt; bins: array&lt;atomic&lt;u32&gt;, chunkSize&gt;;
+-@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
++var&lt;workgroup&gt; bins: array&lt;array&lt;atomic&lt;u32&gt;, 4&gt;, chunkSize&gt;;
++@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;vec4u, chunkSize&gt;&gt;;
+@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
+
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(chunkWidth, chunkHeight, 1)
+fn cs(
+  @builtin(workgroup_id) workgroup_id: vec3u,
+  @builtin(local_invocation_id) local_invocation_id: vec3u,
+) {
+  let size = textureDimensions(ourTexture, 0);
+  let position = workgroup_id.xy * vec2u(chunkWidth, chunkHeight) +
+                 local_invocation_id.xy;
+  if (all(position &lt; size)) {
+    let numBins = f32(chunkSize);
+    let lastBinIndex = u32(numBins - 1);
+-    let color = textureLoad(ourTexture, position, 0);
+-    let v = srgbLuminance(color.rgb);
+-    let bin = min(u32(v * numBins), lastBinIndex);
+-    atomicAdd(&amp;bins[bin], 1u);
++    var channels = textureLoad(ourTexture, position, 0);
++    channels.w = srgbLuminance(channels.rgb);
++    for (var ch = 0; ch &lt; 4; ch++) {
++      let v = channels[ch];
++      let bin = min(u32(v * numBins), lastBinIndex);
++      atomicAdd(&amp;bins[bin][ch], 1u);
++    }
+  }
+
+  workgroupBarrier();
+
+  let chunksAcross = (size.x + chunkWidth - 1) / chunkWidth;
+  let chunk = workgroup_id.y * chunksAcross + workgroup_id.x;
+  let bin = local_invocation_id.y * chunkWidth + local_invocation_id.x;
+
+-  chunks[chunk][bin] = atomicLoad(&amp;bins[bin]);
++  chunks[chunk][bin] = vec4u(
++    atomicLoad(&amp;bins[bin][0]),
++    atomicLoad(&amp;bins[bin][1]),
++    atomicLoad(&amp;bins[bin][2]),
++    atomicLoad(&amp;bins[bin][3]),
++  );
+}
+</pre>
+<p>对于归约着色器也是类似</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const chunkWidth = 256;
+const chunkHeight = 1;
+const chunkSize = chunkWidth * chunkHeight;
+
+struct Uniforms {
+  stride: u32,
+};
+
+-@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;u32, chunkSize&gt;&gt;;
++@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;vec4u, chunkSize&gt;&gt;;
+@group(0) @binding(1) var&lt;uniform&gt; uni: Uniforms;
+
+@compute @workgroup_size(chunkSize, 1, 1) fn cs(
+  @builtin(local_invocation_id) local_invocation_id: vec3u,
+  @builtin(workgroup_id) workgroup_id: vec3u,
+) {
+  let chunk0 = workgroup_id.x * uni.stride * 2;
+  let chunk1 = chunk0 + uni.stride;
+
+  let sum = chunks[chunk0][local_invocation_id.x] +
+            chunks[chunk1][local_invocation_id.x];
+  chunks[chunk0][local_invocation_id.x] = sum;
+}
+</pre>
+<p>和前面的示例一样，我们需要增大缓冲区大小</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const chunksBuffer = device.createBuffer({
+-    size: numChunks * chunkSize * 4,  // 4 bytes per (u32)
++    size: numChunks * chunkSize * 4 * 4,  // 16 bytes per (vec4u)
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+  });
+
+  const resultBuffer = device.createBuffer({
+-    size: chunkSize * 4,
++    size: chunkSize * 4 * 4,
+    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+  });
+</pre>
+<p>就这样。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-4ch-optimized-more.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-4ch-optimized-more.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>在上一篇文章中我们还尝试了另外两个步骤。一个是每个像素使用一个工作组。另一个是每个箱子使用一个调用来汇总块，而不是归约箱子。</p>
+<p>以下是测试这 4 通道版本的一些计时信息。</p>
+<div class="webgpu_center data-table">
+  <div data-diagram="timings4ch"></div>
+</div>
+<p>您可以与上一篇文章中的单通道版本进行比较。</p>
+<div class="webgpu_center data-table">
+  <div data-diagram="timings"></div>
+</div>
+<h2 id="在-gpu-上绘制直方图">在 GPU 上绘制直方图</h2>
+<p>让我们在 GPU 上绘制直方图。在 JavaScript 中，我们使用 canvas 2d API 为每个箱子绘制一个 1 × height 的矩形，这非常容易。我们也可以用 WebGPU 来做，但我认为对于绘制直方图这个特定问题有一个更好的方法。</p>
+<p>让我们改为绘制一个矩形。
+关于绘制矩形，我们在<a href="webgpu-textures.html">纹理相关的文章</a>中的大多数示例都使用矩形。</p>
+<p>对于直方图，在片段着色器中，我们可以传入纹理坐标，并将水平部分从 0 -&gt; 1 转换为 0 -&gt; numBins - 1。
+然后查找该箱子中的值，并计算一个 0 到 1 范围的高度。然后将其与垂直纹理坐标进行比较。如果纹理坐标高于高度，我们可以绘制 0，如果低于高度，我们可以绘制某种颜色。</p>
+<p>这适用于单个通道，但我们希望绘制多个通道。所以，我们改为设置一个位，每个高于高度的通道一个位，然后使用这 4 个位来查找 16 种颜色中的一种。这也可以让我们选择我们想要的颜色来表示每个通道及其组合。</p>
+<p>以下是这样的片段着色器</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,  // &lt;- 由顶点着色器使用
+  colors: array&lt;vec4f, 16&gt;,
+  channelMult: vec4u,
+};
+
+@group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var&lt;uniform&gt; uni: Uniforms;
+@group(0) @binding(2) var&lt;storage, read_write&gt; scale: vec4f;
+
+@fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+  let numBins = arrayLength(&amp;bins);
+  let lastBinIndex = u32(numBins - 1);
+  let bin = clamp(
+      u32(fsInput.texcoord.x * f32(numBins)),
+      0,
+      lastBinIndex);
+  let heights = vec4f(bins[bin]) * scale;
+  let bits = heights &gt; vec4f(fsInput.texcoord.y);
+  let ndx = dot(select(vec4u(0), uni.channelMult, bits), vec4u(1));
+  return uni.colors[ndx];
+}
+</pre>
+<p>第一部分是根据水平纹理坐标计算属于哪个箱子</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let numBins = arrayLength(&amp;bins);
+  let lastBinIndex = u32(numBins - 1);
+  let bin = clamp(
+      u32(fsInput.texcoord.x * f32(numBins)),
+      0,
+      lastBinIndex);
+</pre>
+<p>下一部分是获取所有 4 个通道的高度。我们乘以 <code class="notranslate" translate="no">scale</code>，就像在 JavaScript 中做的那样。我们稍后需要提供这个值。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let heights = vec4f(bins[bin]) * scale;
+</pre>
+<p>接下来我们在一个 <code class="notranslate" translate="no">vec4&lt;bool&gt;</code> 中设置 4 个布尔值，每个通道一个。如果该箱子的高度高于纹理坐标，则为 true。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">    let bits = heights &gt; vec4f(fsInput.texcoord.y);
+</pre>
+<p>下一部分将根据这 4 个布尔值从 <code class="notranslate" translate="no">uni.channelMult</code> 中选择值，然后将 4 个值相加。
+能够传入 <code class="notranslate" translate="no">uni.channelMult</code> 类似于我们在 JavaScript 中所做的，让我们选择绘制哪些通道。例如，如果我们设置 <code class="notranslate" translate="no">channelMult</code> 为 <code class="notranslate" translate="no">1, 2, 4, 0</code>，那么我们将得到红色、绿色和蓝色直方图。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  let ndx = dot(select(vec4u(0), uni.channelMult, bits), vec4u(1));
+</pre>
+<p>最后一部分是查找 16 种颜色中的一种。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">  return uni.colors[ndx];
+</pre>
+<p>我们还需要一个着色器来计算 <code class="notranslate" translate="no">scale</code>。在 JavaScript 中我们是这样做的</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const numBins = histogram.length / 4;
+  const max = [0, 0, 0, 0];
+  histogram.forEach((v, ndx) =&gt; {
+    const ch = ndx % 4;
+    max[ch] = Math.max(max[ch], v);
+  });
+  const scale = max.map(max =&gt; Math.max(1 / max, 0.2 * numBins / numEntries));
+</pre>
+<p>要在计算着色器中做同样的事情，我们可以这样写</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; scale: vec4f;
+@group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
+
+@compute @workgroup_size(1, 1, 1) fn cs() {
+  let size = textureDimensions(ourTexture, 0);
+  let numEntries = f32(size.x * size.y);
+  var m = vec4u(0);
+  let numBins = arrayLength(&amp;bins);
+  for (var i = 0u ; i &lt; numBins; i++) {
+    m = max(m, bins[i]);
+  }
+  scale = max(1.0 / vec4f(m), vec4f(0.2 * f32(numBins) / numEntries));
+}
+</pre>
+<p>注意，我们传入 <code class="notranslate" translate="no">ourTexture</code> 的唯一原因是为了获取其大小，这样我们就可以计算 <code class="notranslate" translate="no">numEntries</code>，而在 JavaScript 中我们是传入 <code class="notranslate" translate="no">numEntries</code> 的。我们也可以使用 uniform 来传入 <code class="notranslate" translate="no">numEntries</code>，但那样我们就必须创建一个 uniform 缓冲区，用 <code class="notranslate" translate="no">numEntries</code> 的值更新它，绑定它，等等… 直接引用纹理似乎更简单。</p>
+<p>另一个需要考虑的是，这是我们只使用单个核心的另一个地方。我们也可以在这里做归约，但只有 <code class="notranslate" translate="no">numBins</code> 步，也就是只有 256 步。分派一堆归约步骤的开销<em>可能</em>会超过并行化的好处。我测试过，被告知大约是 0.1ms，至少在一台机器上是如此。</p>
+<p>那么，剩下的就是把这些部分组合起来</p>
+<p>由于我们要用 GPU 绘制到画布上，我们需要获取首选的画布格式</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+
+</pre>
+<p>我们需要用上面的两个着色器创建着色器模块，并为每个着色器创建管线。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const scaleModule = device.createShaderModule({
+    label: 'histogram scale shader',
+    code: /* wgsl */ `
+      @group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+      @group(0) @binding(1) var&lt;storage, read_write&gt; scale: vec4f;
+      @group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
+
+      @compute @workgroup_size(1, 1, 1) fn cs() {
+        let size = textureDimensions(ourTexture, 0);
+        let numEntries = f32(size.x * size.y);
+        var m = vec4u(0);
+        let numBins = arrayLength(&amp;bins);
+        for (var i = 0u ; i &lt; numBins; i++) {
+          m = max(m, bins[i]);
+        }
+        scale = max(1.0 / vec4f(m), vec4f(0.2 * f32(numBins) / numEntries));
+      }
+    `,
+  });
+
+  const drawHistogramModule = device.createShaderModule({
+    label: 'draw histogram shader',
+    code: /* wgsl */ `
+      struct OurVertexShaderOutput {
+        @builtin(position) position: vec4f,
+        @location(0) texcoord: vec2f,
+      };
+
+      struct Uniforms {
+        matrix: mat4x4f,
+        colors: array&lt;vec4f, 16&gt;,
+        channelMult: vec4u,
+      };
+
+      @group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+      @group(0) @binding(1) var&lt;uniform&gt; uni: Uniforms;
+      @group(0) @binding(2) var&lt;storage, read_write&gt; scale: vec4f;
+
+      @vertex fn vs(
+        @builtin(vertex_index) vertexIndex : u32
+      ) -&gt; OurVertexShaderOutput {
+        let pos = array(
+          // 第一个三角形
+          vec2f( 0.0,  0.0),  // 中心
+          vec2f( 1.0,  0.0),  // 右, 中心
+          vec2f( 0.0,  1.0),  // 中心, 上
+
+          // 第二个三角形
+          vec2f( 0.0,  1.0),  // 中心, 上
+          vec2f( 1.0,  0.0),  // 右, 中心
+          vec2f( 1.0,  1.0),  // 右, 上
+        );
+
+        var vsOutput: OurVertexShaderOutput;
+        let xy = pos[vertexIndex];
+        vsOutput.position = uni.matrix * vec4f(xy, 0.0, 1.0);
+        vsOutput.texcoord = xy;
+        return vsOutput;
+      }
+
+      @fragment fn fs(fsInput: OurVertexShaderOutput) -&gt; @location(0) vec4f {
+        let numBins = arrayLength(&amp;bins);
+        let lastBinIndex = u32(numBins - 1);
+        let bin = clamp(
+            u32(fsInput.texcoord.x * f32(numBins)),
+            0,
+            lastBinIndex);
+        let heights = vec4f(bins[bin]) * scale;
+        let bits = heights &gt; vec4f(fsInput.texcoord.y);
+        let ndx = dot(select(vec4u(0), uni.channelMult, bits), vec4u(1));
+        return uni.colors[ndx];
+      }
+    `,
+  });
+
+  const scalePipeline = device.createComputePipeline({
+    label: 'scale',
+    layout: 'auto',
+    compute: {
+      module: scaleModule,
+    },
+  });
+
+  const drawHistogramPipeline = device.createRenderPipeline({
+    label: 'draw histogram',
+    layout: 'auto',
+    vertex: {
+      module: drawHistogramModule,
+    },
+    fragment: {
+      module: drawHistogramModule,
+      targets: [{ format: presentationFormat }],
+    },
+  });
+</pre>
+<p>我们不再需要结果缓冲区，因为我们不会把值读回来，但我们需要一个 scale 缓冲区来存储我们要计算的 scale。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const resultBuffer = device.createBuffer({
+-    size: chunkSize * 4 * 4,
+-    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+-  });
++  const scaleBuffer = device.createBuffer({
++    size: 4 * 4,
++    usage: GPUBufferUsage.STORAGE,
++  });
+</pre>
+<p>我们需要为 scale 管线创建一个绑定组，包含块、scale 缓冲区和纹理</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const scaleBindGroup = device.createBindGroup({
+    layout: scalePipeline.getBindGroupLayout(0),
+    entries: [
+      {
+        binding: 0,
+        resource: {
+          buffer: chunksBuffer,
+          size: chunkSize * 4 * 4,
+        },
+      },
+      { binding: 1, resource: scaleBuffer },
+      { binding: 2, resource: texture },
+    ],
+  });
+</pre>
+<p>上面我们为 <code class="notranslate" translate="no">chunksBuffer</code> 的绑定设置了大小，只设置为第一个块的大小。这样，在着色器中这段代码</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">      @group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+
+      ...
+
+        let numBins = arrayLength(&amp;bins);
+</pre>
+<p>将获得正确的值。如果我们不指定大小，那么整个 <code class="notranslate" translate="no">chunksBuffer</code> 的大小都可用，<code class="notranslate" translate="no">numBins</code> 将从所有块中计算，而不仅仅是第一个。</p>
+<p>现在，在我们将块归约为一个块之后，我们可以运行 scale 计算着色器来计算 scale，
+由于我们不再有结果缓冲区，我们不再需要将第一个块复制到结果缓冲区，
+也不需要映射结果缓冲区，也不需要传入 <code class="notranslate" translate="no">numEntries</code>（因为我们用它在计算 scale，但我们已经做了）。
+我们也不会传入 <code class="notranslate" translate="no">histogram</code>，这是我们从结果缓冲区获得的数据。我们的数据已经在 <code class="notranslate" translate="no">chunksBuffer</code> 中了。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+  // 计算通道的缩放值
++  pass.setPipeline(scalePipeline);
++  pass.setBindGroup(0, scaleBindGroup);
++  pass.dispatchWorkgroups(1);
+  pass.end();
+
+-  encoder.copyBufferToBuffer(chunksBuffer, 0, resultBuffer, 0, resultBuffer.size);
+  const commandBuffer = encoder.finish();
+  device.queue.submit([commandBuffer]);
+
+-  await resultBuffer.mapAsync(GPUMapMode.READ);
+-  const histogram = new Uint32Array(resultBuffer.getMappedRange());
+
+  showImageBitmap(imgBitmap);
+
+  // 绘制红、绿、蓝通道
+-  const numEntries = texture.width * texture.height;
+-  drawHistogram(histogram, numEntries, [0, 1, 2]);
++  drawHistogram([0, 1, 2]);
+
+  // 绘制亮度通道
+-  drawHistogram(histogram, numEntries, [3]);
++  drawHistogram([3]);
+
+-  resultBuffer.unmap();
+</pre>
+<p>现在我们需要更新 <code class="notranslate" translate="no">drawHistogram</code> 函数来用 GPU 渲染。</p>
+<p>首先我们需要创建一个 uniform 缓冲区来传递我们的 uniform。以下是我们将用来绘制直方图的着色器中的 uniform 作为参考</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct Uniforms {
+  matrix: mat4x4f,
+  colors: array&lt;vec4f, 16&gt;,
+  channelMult: vec4u,
+};
+</pre>
+<p>所以，以下是创建缓冲区并填充 channelMult 和 colors 的代码</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function drawHistogram(channels, height = 100) {
+    const numBins = chunkSize;
+
+    //  matrix: mat4x4f;
+    //  colors: array&lt;vec4f, 16&gt;;
+    //  channelMult; vec4u,
+    const uniformValuesAsF32 = new Float32Array(16 + 64 + 4 + 4);
+    const uniformValuesAsU32 = new Uint32Array(uniformValuesAsF32.buffer);
+    const uniformBuffer = device.createBuffer({
+      label: 'draw histogram uniform buffer',
+      size: uniformValuesAsF32.byteLength,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    const subpart = (view, offset, length) =&gt; view.subarray(offset, offset + length);
+    const matrix = subpart(uniformValuesAsF32, 0, 16);
+    const colors = subpart(uniformValuesAsF32, 16, 64);
+    const channelMult = subpart(uniformValuesAsU32, 16 + 64, 4);
+    channelMult.set(range(4, i =&gt; channels.indexOf(i) &gt;= 0 ? 2 ** i : 0));
+    colors.set([
+      [0, 0, 0, 1],
+      [1, 0, 0, 1],
+      [0, 1, 0, 1],
+      [1, 1, 0, 1],
+      [0, 0, 1, 1],
+      [1, 0, 1, 1],
+      [0, 1, 1, 1],
+      [0.5, 0.5, 0.5, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+    ].flat());
+    const range = (i, fn) =&gt; new Array(i).fill(0).map((_, i) =&gt; fn(i));
+    channelMult.set(range(4, i =&gt; channels.indexOf(i) &gt;= 0 ? 2 ** i : 0));
+</pre>
+<p>我们还需要使用矩阵数学来计算矩阵，就像在<a href="webgpu-translation.html">关于矩阵数学的文章系列</a>中介绍的那样。</p>
+<p>特别是，我们的着色器有一个硬编码的单位四边形，从 0 到 1 在 X 和 Y。如果我们用 2 在 X 和 Y 上缩放它，然后减去 1，我们将得到一个从 -1 到 +1 在两个方向的四边形，覆盖裁剪空间。这种使用单个单位四边形的方式很常见，因为我们可以只用一点矩阵数学来绘制任意位置和方向的矩形，而不需要制作特殊的顶点数据。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    mat4.identity(matrix);
+    mat4.translate(matrix, [-1, -1, 0], matrix);
+    mat4.scale(matrix, [2, 2, 1], matrix);
+    device.queue.writeBuffer(uniformBuffer, 0, uniformValuesAsF32);
+</pre>
+<p>我们需要为所有这些创建一个 bindGroup</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const bindGroup = device.createBindGroup({
+      layout: drawHistogramPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
+        { binding: 1, resource: uniformBuffer  },
+        { binding: 2, resource: scaleBuffer },
+      ],
+    });
+</pre>
+<p>我们需要为 WebGPU 配置一个画布</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('webgpu');
+    context.configure({
+      device,
+      format: presentationFormat,
+    });
+    canvas.width = numBins;
+    canvas.height = height;
+    document.body.appendChild(canvas);
+</pre>
+<p>最后我们可以渲染了</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // 从画布上下文中获取当前纹理，并
+    // 将其设置为渲染目标。
+    const renderPassDescriptor = {
+      label: 'our basic canvas renderPass',
+      colorAttachments: [
+        {
+          view: context.getCurrentTexture().createView(),
+          clearValue: [0.3, 0.3, 0.3, 1],
+          loadOp: 'clear',
+          storeOp: 'store',
+        },
+      ],
+    };
+
+    const encoder = device.createCommandEncoder({ label: 'render histogram' });
+    const pass = encoder.beginRenderPass(renderPassDescriptor);
+    pass.setPipeline(drawHistogramPipeline);
+    pass.setBindGroup(0, bindGroup);
+    pass.draw(6);  // 调用顶点着色器 6 次
+    pass.end();
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+  }
+</pre>
+<p>通过所有这些，我们现在在 GPU 上渲染了</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-4ch-optimized-more-gpu-draw.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-4ch-optimized-more-gpu-draw.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>让我们做最后一件事，让我们获取视频的直方图。
+我们基本上要将<a href="webgpu-textures-external-video.html">使用外部视频的文章</a>中的示例和我们之前的示例合并。</p>
+<p>我们需要更新 HTML 和 CSS 来匹配视频示例</p>
+<pre class="prettyprint showlinemods notranslate lang-html" translate="no">    &lt;style&gt;
+      @import url(resources/webgpu-lesson.css);
++html, body {
++  margin: 0;       /* 移除默认边距          */
++  height: 100%;    /* 让 html,body 填满页面   */
++}
+canvas {
++  display: block;  /* 让画布表现得像块元素   */
++  width: 100%;     /* 让画布填满其容器 */
++  height: 100%;
+-  max-width: 256px;
+-  border: 1px solid #888;
+}
++#start {
++  position: fixed;
++  left: 0;
++  top: 0;
++  width: 100%;
++  height: 100%;
++  display: flex;
++  justify-content: center;
++  align-items: center;
++}
++#start&gt;div {
++  font-size: 200px;
++  cursor: pointer;
++}
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
++    &lt;canvas&gt;&lt;/canvas&gt;
++    &lt;div id="start"&gt;
++      &lt;div&gt;▶️&lt;/div&gt;
++    &lt;/div&gt;
+  &lt;/body&gt;
+</pre>
+<p>我们一开始就要设置一个画布</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 从画布获取 WebGPU 上下文并配置它
+  const canvas = document.querySelector('canvas');
+  const context = canvas.getContext('webgpu');
+  const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+  context.configure({
+    device,
+    format: presentationFormat,
+  });
+</pre>
+<p>因为我们使用的是外部纹理，我们需要为这种纹理更改着色器。例如，直方图块生成着色器需要这些更改</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">const chunkSize = chunkWidth * chunkHeight;
+var&lt;workgroup&gt; bins: array&lt;array&lt;atomic&lt;u32&gt;, 4&gt;, chunkSize&gt;;
+@group(0) @binding(0) var&lt;storage, read_write&gt; chunks: array&lt;array&lt;vec4u, chunkSize&gt;&gt;;
+-@group(0) @binding(1) var ourTexture: texture_2d&lt;f32&gt;;
++@group(0) @binding(1) var ourTexture: texture_external;
+
+const kSRGBLuminanceFactors = vec3f(0.2126, 0.7152, 0.0722);
+fn srgbLuminance(color: vec3f) -&gt; f32 {
+  return saturate(dot(color, kSRGBLuminanceFactors));
+}
+
+@compute @workgroup_size(chunkWidth, chunkHeight, 1)
+fn cs(
+  @builtin(workgroup_id) workgroup_id: vec3u,
+  @builtin(local_invocation_id) local_invocation_id: vec3u,
+) {
+-  let size = textureDimensions(ourTexture, 0);
++  let size = textureDimensions(ourTexture);
+  let position = workgroup_id.xy * vec2u(chunkWidth, chunkHeight) +
+                 local_invocation_id.xy;
+  if (all(position &lt; size)) {
+    let numBins = f32(chunkSize);
+    let lastBinIndex = u32(numBins - 1);
+-    var channels = textureLoad(ourTexture, position, 0);
++    var channels = textureLoad(ourTexture, position);
+    channels.w = srgbLuminance(channels.rgb);
+    for (var ch = 0; ch &lt; 4; ch++) {
+      let v = channels[ch];
+      let bin = min(u32(v * numBins), lastBinIndex);
+      atomicAdd(&amp;bins[bin][ch], 1u);
+    }
+  }
+
+...
+</pre>
+<p>scale 计算着色器有类似的更改</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">@group(0) @binding(0) var&lt;storage, read&gt; bins: array&lt;vec4u&gt;;
+@group(0) @binding(1) var&lt;storage, read_write&gt; scale: vec4f;
+-@group(0) @binding(2) var ourTexture: texture_2d&lt;f32&gt;;
++@group(0) @binding(2) var ourTexture: texture_external;
+
+@compute @workgroup_size(1, 1, 1) fn cs() {
+-  let size = textureDimensions(ourTexture, 0);
++  let size = textureDimensions(ourTexture);
+  let numEntries = f32(size.x * size.y);
+
+  ...
+</pre>
+<p>绘制视频的着色器模块直接从视频文章复制过来，渲染管线的创建以及视频的采样器和 uniform 缓冲区以及渲染 pass 也一样。我们有相同的代码来等待点击并开始播放视频。</p>
+<p>视频开始后，我们可以设置计算直方图。唯一的更改是我们不从纹理获取大小，而是从视频获取。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  const imgBitmap = await loadImageBitmap('resources/images/pexels-francesco-ungaro-96938-mid.jpg');
+-  const texture = createTextureFromSource(device, imgBitmap);
+
+-  const chunksAcross = Math.ceil(texture.width / k.chunkWidth);
+-  const chunksDown = Math.ceil(texture.height / k.chunkHeight);
++  const chunksAcross = Math.ceil(video.videoWidth / k.chunkWidth);
++  const chunksDown = Math.ceil(vide.videoHeight / k.chunkHeight);
+</pre>
+<p>我们之前在 <code class="notranslate" translate="no">drawHistogram</code> 中有绘制直方图的代码，但那段代码创建了自己的画布并创建了其他只使用一次的东西。我们将删除 <code class="notranslate" translate="no">drawHistogram</code>，并为我们要绘制的 2 个直方图各制作一些代码来设置 uniform 缓冲区和绑定组</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const histogramDrawInfos = [
+    [0, 1, 2],
+    [3],
+  ].map(channels =&gt; {
+    //        matrix: mat4x4f;
+    //        colors: array&lt;vec4f, 16&gt;;
+    //        channelMult; vec4u,
+    const uniformValuesAsF32 = new Float32Array(16 + 64 + 4 + 4);
+    const uniformValuesAsU32 = new Uint32Array(uniformValuesAsF32.buffer);
+    const uniformBuffer = device.createBuffer({
+      label: 'draw histogram uniform buffer',
+      size: uniformValuesAsF32.byteLength,
+      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    thingsToDestroy.push(uniformBuffer);
+    const subpart = (view, offset, length) =&gt; view.subarray(offset, offset + length);
+    const matrix = subpart(uniformValuesAsF32, 0, 16);
+    const colors = subpart(uniformValuesAsF32, 16, 64);
+    const channelMult = subpart(uniformValuesAsU32, 16 + 64, 4);
+    colors.set([
+      [0, 0, 0, 1],
+      [1, 0, 0, 1],
+      [0, 1, 0, 1],
+      [1, 1, 0, 1],
+      [0, 0, 1, 1],
+      [1, 0, 1, 1],
+      [0, 1, 1, 1],
+      [0.5, 0.5, 0.5, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+      [1, 1, 1, 1],
+    ].flat());
+
+    const drawHistogramBindGroup = device.createBindGroup({
+      layout: drawHistogramPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
+        { binding: 1, resource: uniformBuffer  },
+        { binding: 2, resource: scaleBuffer },
+      ],
+    });
+
+    return {
+      drawHistogramBindGroup,
+      matrix,
+      uniformBuffer,
+      uniformValuesAsF32,
+    };
+  });
+</pre>
+<p>在渲染时，首先我们导入视频纹理。记住，它只对这个 JavaScript 事件有效，所以我们必须每帧都创建引用该纹理的绑定组</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
+    const texture = device.importExternalTexture({source: video});
+
+    // 为从这个视频纹理创建直方图制作一个绑定组
+    const histogramBindGroup = device.createBindGroup({
+      layout: histogramChunkPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: chunksBuffer },
+        { binding: 1, resource: texture },
+      ],
+    });
+
+    const scaleBindGroup = device.createBindGroup({
+      layout: scalePipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: chunksBuffer, size: chunkSize * 4 * 4 }},
+        { binding: 1, resource: scaleBuffer },
+        { binding: 2, resource: texture },
+      ],
+    });
+
+    ... 在这里插入直方图计算代码 ...
+</pre>
+<p>至于渲染，渲染视频类似于关于渲染外部视频的文章。唯一不同的是计算矩阵的代码。我们像上面提到的直方图那样做乘以 2、减 1 的事情，但我们对 y 使用 -2 并加 1 以翻转 Y。我们还缩放以获得<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size#cover">cover 效果</a>，这样视频总是填满画布但保持正确的宽高比。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // 绘制到画布
+    {
+      const canvasTexture = context.getCurrentTexture().createView();
+      renderPassDescriptor.colorAttachments[0].view = canvasTexture;
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+      // 绘制视频
+      const bindGroup = device.createBindGroup({
+        layout: videoPipeline.getBindGroupLayout(0),
+        entries: [
+          { binding: 0, resource: videoSampler },
+          { binding: 1, resource: texture },
+          { binding: 2, resource: videoUniformBuffer },
+        ],
+      });
+
+      // 'cover' 画布
+      const canvasAspect = canvas.clientWidth / canvas.clientHeight;
+      const videoAspect = video.videoWidth / video.videoHeight;
+      const scale = canvasAspect &gt; videoAspect
+         ? [1, canvasAspect / videoAspect, 1]
+         : [videoAspect / canvasAspect, 1, 1];
+
+      const matrix = mat4.identity(videoMatrix);
+      mat4.scale(matrix, scale, matrix);
+      mat4.translate(matrix, [-1, 1, 0], matrix);
+      mat4.scale(matrix, [2, -2, 1], matrix);
+
+      device.queue.writeBuffer(videoUniformBuffer, 0, videoUniformValues);
+
+      pass.setPipeline(videoPipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(6);  // 调用顶点着色器 6 次
+</pre>
+<p>绘制直方图只是把 <code class="notranslate" translate="no">drawHistogram</code> 中的代码移上来</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">      // 绘制直方图
+      histogramDrawInfos.forEach(({
+        matrix,
+        uniformBuffer,
+        uniformValuesAsF32,
+        drawHistogramBindGroup,
+      }, i) =&gt; {
+        mat4.identity(matrix);
+        mat4.translate(matrix, [-0.95 + i, -1, 0], matrix);
+        mat4.scale(matrix, [0.9, 0.5, 1], matrix);
+
+        device.queue.writeBuffer(uniformBuffer, 0, uniformValuesAsF32);
+
+        pass.setPipeline(drawHistogramPipeline);
+        pass.setBindGroup(0, drawHistogramBindGroup);
+        pass.draw(6);  // 调用顶点着色器 6 次
+      });
+
+      pass.end();
+    }
+
+    const commandBuffer = encoder.finish();
+    device.queue.submit([commandBuffer]);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</pre>
+<p>上面的矩阵数学绘制了一个四边形，在左半边或右半边，宽度为画布宽度的一半的 90%，居中，高度为画布的 1/4。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-compute-shaders-histogram-video.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-compute-shaders-histogram-video.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<div class="webgpu_center">
+   <div>视频作者：<a href="https://www.pexels.com/video/timelapse-video-of-the-city-5750980/">Ekaterina Martynova</a>
+   </div>
+</div>
+<p>那么，为什么要计算直方图呢？
+有几件事可以用直方图来做：</p>
+<ul>
+<li>展示给用户，以便他们可以对图像调整做出明智的决策</li>
+<li>对图像应用<a href="https://www.google.com/search?q=histogram+equalization">直方图均衡化</a></li>
+<li>对图像应用<a href="https://www.google.com/search?q=adaptive+histogram+equalization">自适应直方图均衡化</a></li>
+<li>用于<a href="https://www.google.com/search?q=histogram+based+image+segmentation">基于直方图的图像分割</a></li>
+<li>使用<a href="https://www.google.com/search?q=histogram+thresholding">直方图阈值化</a>进行色调分离</li>
+</ul>
+<p>还有很多其他技术。也许以后我们可以介绍一些。
+我希望这些是有用的例子。我们从一些计算直方图的 JavaScript 和绘制直方图的 JavaScript，
+到所有工作都在 GPU 上完成，包括渲染，希望速度足够快，可以实时运行。</p>
+<!-- keep this at the bottom of the article -->
+<link rel="stylesheet" href="../webgpu-compute-shaders-histogram.css">
+<script type="module" src="../webgpu-compute-shaders-histogram.js"></script>
 
     </div>
     <div class="lesson-sidebar">
@@ -197,6 +1153,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-compute-shaders-histogram-part-2.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-compute-shaders-histogram-part-2.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-compute-shaders-histogram-part-2.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-compute-shaders-histogram-part-2.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-compute-shaders-histogram-part-2.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-compute-shaders-histogram-part-2.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-compute-shaders-histogram-part-2.html">Українська
@@ -204,10 +1161,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-  <li>Data for Shaders</li>
+  <li>着色器数据传递</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
@@ -222,9 +1180,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">即时变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
         </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
@@ -268,32 +1226,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">一维查找表（1D-LUT）</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">三维查找表（3D-LUT）</a></li>
         </ul>
-  <li>Editor</li>
+  <li>编辑器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">高亮显示</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">拾取</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">计算着色器基础</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">图像直方图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">图像直方图 进阶</a></li>
         </ul>
   <li>杂项</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">多画布</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">点</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGL 到 WebGPU</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">速度与优化</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">调试与错误</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">资源 / 参考</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -306,13 +1264,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `WebGPU 计算着色器 - 图像直方图2`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

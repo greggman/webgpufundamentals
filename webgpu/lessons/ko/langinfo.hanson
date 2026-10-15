@@ -26,6 +26,8 @@
   here: '여기',
   categoryMapping: {
     'basics': '기초',
+    'passing-data': '셰이더용 데이터',
+    'editor': '에디터',
     'misc': '기타',
     'textures': '텍스처',
     'reference': '참조',

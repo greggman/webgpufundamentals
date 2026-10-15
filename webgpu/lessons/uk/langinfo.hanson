@@ -26,6 +26,7 @@
   here: 'ви тут',
   categoryMapping: {
     'basics': 'Основи',
+    'passing-data': 'Дані для шейдерів',
     'misc': 'Різне',
     'textures': 'Текстури',
     'techniques': 'Техніки',
@@ -35,6 +36,8 @@
     '3d-math': '3D математика',
     'lighting': 'Освітлення',
     'compute-shaders': 'Обчислювальні шейдери',
+    'post-processing': 'Постобробка',
+    'editor': 'Редактор',
   },
 }
 

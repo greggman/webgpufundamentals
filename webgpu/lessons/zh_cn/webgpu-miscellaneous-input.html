@@ -1,22 +1,22 @@
-<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/langinfo.hanson. Do not edited directly --><!--
-Copyright 2020, Gregg Tavares
+<!DOCTYPE html><!-- this file is auto-generated from webgpu/lessons/zh_cn/webgpu-miscellaneous-input.md. Do not edited directly --><!--
+Copyright 2023, GfxFundamentals Contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following disclaimer
-      in the documentation and/or other materials provided with the
-      distribution.
+* Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following disclaimer
+  in the documentation and/or other materials provided with the
+  distribution.
 
-    * Neither the name of Gregg Tavares nor the names of the
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
+* Neither the name of GfxFundamentals nor the names of the
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,27 +29,73 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 --><html lang="zh-cn"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="Miscellaneous Shader Input">
+
+<meta name="description" content="向着色器传递数据的替代方法。">
+<meta name="keywords" content="webgpu graphics">
+<meta name="thumbnail" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-miscellaneous-input_zh-cn.jpg">
+
+<meta property="og:title" content="着色器杂项输入">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
-<meta property="og:description" content="Alternate ways to pass data to a shader.">
+<meta property="og:image" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-miscellaneous-input_zh-cn.jpg">
+<meta property="og:description" content="向着色器传递数据的替代方法。">
 <meta property="og:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@greggman">
 <meta name="twitter:creator" content="@greggman">
 <meta name="twitter:domain" content="webgpufundamentals.org">
-<meta name="twitter:title" content="Miscellaneous Shader Input">
+<meta name="twitter:title" content="着色器杂项输入">
 <meta name="twitter:url" content="https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">
-<meta name="twitter:description" content="Alternate ways to pass data to a shader.">
-<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/resources/webgpufundamentals.jpg">
+<meta name="twitter:description" content="向着色器传递数据的替代方法。">
+<meta name="twitter:image:src" content="https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-miscellaneous-input_zh-cn.jpg">
 
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://webgpufundamentals.org/#website",
+      "url":"https://webgpufundamentals.org/",
+      "name":"webgpufundamentals"
+    },
+    {
+      "@type":"ImageObject",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html#primaryimage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/screenshots/webgpu-miscellaneous-input_zh-cn.jpg",
+      "width":1200,
+      "height":630
+    },
+    {
+      "@type":"WebPage",
+      "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html#webpage",
+      "url":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html",
+      "inLanguage":"zh-cn",
+      "name":"着色器杂项输入",
+      "keywords":"webgpu graphics programming",
+      "isPartOf":{
+        "@id":"https://webgpufundamentals.org/#website"
+      },
+      "primaryImageOfPage":{
+        "@id":"https://webgpufundamentals.org/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html#primaryimage"
+      }
+    }
+  ]
+}
+</script>
 
-<title>Miscellaneous Shader Input</title>
+<title>着色器杂项输入</title>
 <link href="/webgpu/lessons/resources/webgpufundamentals-icon.png" rel="shortcut icon" type="image/png">
+<link rel="apple-touch-icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+<link rel="icon" href="/webgpu/lessons/resources/webgpufundamentals-icon.png">
+
+<link rel="stylesheet" href="/webgpu/lessons/lang.css">
+<link rel="stylesheet" href="/webgpu/lessons/zh_cn/lang.css">
 <link rel="stylesheet" href="/webgpu/lessons/resources/lesson.css">
 </head>
 <body>
@@ -60,6 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-miscellaneous-input.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-miscellaneous-input.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-miscellaneous-input.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-miscellaneous-input.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-miscellaneous-input.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-miscellaneous-input.html">Українська
@@ -182,13 +229,143 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <div class="container">
   <div class="lesson-title">
-    <h1>Miscellaneous Shader Input</h1>
+    <h1>着色器杂项输入</h1>
+  </div>
+  <div id="need-newer-webgpu" style="display: none">
+    <div>This browser is missing a few WebGPU features. Please update your browser.</div>
   </div>
   <div class="lesson">
     <div class="lesson-main">
-      <p>本课程还没有简体中文版翻译哦  (~￣△￣)~</p>
-<p><a href="https://github.com/webgpu/webgpufundamentals">欢迎参加翻译</a>! 😄
-<a href="/webgpu/lessons/webgpu-miscellaneous-input.html">英文原版地址</a></p>
+      <p>本文是系列文章之一，介绍了向着色器传递数据的各种方法。每一篇都建立在前一篇的基础之上，因此按顺序阅读将有助于您更好地理解。</p>
+<p></p><ol>
+  <li><a href="webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
+  <li><a href="webgpu-uniforms.html">Uniforms</a></li>
+  <li><a href="webgpu-storage-buffers.html">存储缓冲区（Storage Buffer）</a></li>
+  <li><a href="webgpu-vertex-buffers.html">顶点缓冲区（Vertex Buffers）</a></li>
+  <li><a href="webgpu-textures.html">纹理</a></li>
+  <li><a href="webgpu-importing-textures.html">加载图像</a></li>
+  <li><a href="webgpu-textures-external-video.html">高效使用视频</a></li>
+  <li><a href="webgpu-cube-maps.html">立方体贴图</a></li>
+  <li><a href="webgpu-storage-textures.html">存储纹理</a></li>
+  <li><a href="webgpu-multisampling.html">多重采样 / MSAA</a></li>
+  <li><a href="webgpu-immediates.html">即时变量</a></li>
+  <li><a href="webgpu-constants.html">常量</a></li>
+  <li><a href="webgpu-miscellaneous-input.html">着色器杂项输入</a> ⬅ 你在此处</li>
+</ol><p></p>
+<p>在前面的文章中，我们介绍了向着色器传入和传出数据的标准方法。阶段间变量、Uniform 缓冲区、存储缓冲区、顶点缓冲区以及纹理。</p>
+<p>还有一些不太常见的方法，但它们在某些场景下仍然非常有用。</p>
+<p>一种方法是，在调用 <code class="notranslate" translate="no">draw</code> 或 <code class="notranslate" translate="no">drawIndexed</code> 命令时，我们可以传入一个 <code class="notranslate" translate="no">firstInstance</code> 值。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">pass.draw(numVertices,
+          numInstances = 1,
+          firstVertex = 0,
+          firstInstance = 0); // &lt;== 这里
+pass.drawIndexed(indexCount,
+                 instanceCount = 1,
+                 firstIndex = 0,
+                 baseVertex = 0,
+                 firstInstance = 0); // &lt;== 这里
+</pre>
+<p>这个值会作为 <code class="notranslate" translate="no">@builtin(instance_index)</code> 出现在着色器中。这意味着如果我们没有像前面的文章那样真正使用它来进行实例化，就可以用它来选择数据。</p>
+<p>例如，我们可以修改<a href="webgpu-fundamentals.html">第一篇文章</a>中的简单三角形示例。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">+struct VertexOut {
++  @builtin(position) pos: vec4f,
++  @location(0) @interpolate(flat, either) colorNdx: u32,
++};
+
+@vertex fn vs(
+*  @builtin(vertex_index) vertexIndex : u32,
++  @builtin(instance_index) instanceIndex: u32,
+) -&gt; VertexOut {
+  let pos = array(
+    vec2f( 0.0,  0.5),  // 顶部中心
+    vec2f(-0.5, -0.5),  // 左下
+    vec2f( 0.5, -0.5)   // 右下
+  );
++  let offsets = array(
++    vec2f( 0.0,  0.5),  // 顶部中间
++    vec2f(-0.5, -0.5),  // 左下
++    vec2f( 0.5, -0.5),  // 右下
++  );
+
+-  return vec4f(pos[vertexIndex], 0.0, 1.0);
++  return VertexOut(
++    vec4f(pos[vertexIndex] + offsets[instanceIndex], 0.0, 1.0),
++    instanceIndex,
++  );
+}
+
+-@fragment fn fs() -&gt; @location(0) vec4f {
+-  return vec4f(1, 0, 0, 1);
+-}
++@fragment fn fs(in: VertexOut) -&gt; @location(0) vec4f {
++  let colors = array(
++    vec4f(1, 1, 0, 1),  // 黄色
++    vec4f(0, 1, 1, 1),  // 青色
++    vec4f(1, 0, 1, 1),  // 洋红色
++  );
++  return colors[in.colorNdx];
++}
+</pre>
+<p>上面的代码使用 <code class="notranslate" translate="no">instanceIndex</code> 来选择一个偏移量。然后将其作为阶段间变量 <code class="notranslate" translate="no">@interpolate(flat, either)</code> 传递给片段着色器。<code class="notranslate" translate="no">@interpolate(flat, either)</code> 中的 <code class="notranslate" translate="no">flat</code> 表示"不进行插值"。<code class="notranslate" translate="no">either</code> 表示取每个三角形的第一个或最后一个顶点的值。由于我们为所有顶点传递相同的值，取第一个还是最后一个并不重要，但选择 <code class="notranslate" translate="no">either</code> 在兼容性模式下可以正常工作，所以它是更好的选择。</p>
+<p>最后，我们只需要更新 <code class="notranslate" translate="no">draw</code> 调用，绘制 3 次。</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">    function render() {
+      // 从画布上下文获取当前纹理，并
+      // 将其设置为要渲染的纹理。
+      renderPassDescriptor.colorAttachments[0].view =
+        context.getCurrentTexture().createView();
+
+      const encoder = device.createCommandEncoder({ label: 'our encoder' });
+      const pass = encoder.beginRenderPass(renderPassDescriptor);
+      pass.setPipeline(pipeline);
+      pass.draw(3);  // 调用顶点着色器 3 次
++      pass.draw(3, 1, 0, 1); // 传入 1 作为 instance_index
++      pass.draw(3, 1, 0, 2); // 传入 2 作为 instance_index
+      pass.end();
+
+      const commandBuffer = encoder.finish();
+      device.queue.submit([commandBuffer]);
+    }
+</pre>
+<p>运行后得到如下结果。</p>
+<p></p><div class="webgpu_example_container">
+  <div><iframe class="webgpu_example" style=" " src="/webgpu/resources/editor.html?url=/webgpu/lessons/..%2Fwebgpu-misc-instance-index.html"></iframe></div>
+  <a class="webgpu_center" href="/webgpu/lessons/../webgpu-misc-instance-index.html" target="_blank">点此在新窗口中浏览</a>
+</div>
+
+<p></p>
+<p>我们在着色器中硬编码了一些数组，但同样可以用它来从存储缓冲区数组中选择数据。</p>
+<pre class="prettyprint showlinemods notranslate lang-wgsl" translate="no">struct VertexOut {
+  @builtin(position) pos: vec4f,
+  @location(0) @interpolate(flat, either) instanceIndex: u32,
+};
+
+struct PerInstanceInfo {
+  matrix: mat4x4f,
+  color: vec4f,
+};
+
+@group(0) @binding(0) var&lt;storage, read&gt; perInst: array&lt;PerInstanceInfo&gt;;
+
+@vertex fn vs(
+  @location(0) position: vec4f,
+  @builtin(instance_index) instanceIndex: u32,
+) -&gt; VertexOut {
+  let info = perInst[instanceIndex];
+
+  return VertexOut(
+    info.matrix * position,
+    instanceIndex,
+  );
+}
+
+@fragment fn fs(in: VertexOut) -&gt; @location(0) vec4f {
+  let info = perInst[in.instanceIndex];
+  return info.color;
+}
+</pre>
+<p>何时使用这种方法取决于你自己。你也可以使用<a href="webgpu-immediates.html">即时变量</a>来在不同的 draw 之间传递少量数据。使用 <code class="notranslate" translate="no">firstInstance</code> 的优势是减少了对 WebGPU 的调用次数，而且我们不需要为了传递一个数字而专门创建一个 <code class="notranslate" translate="no">ArrayBufferView</code>。</p>
+<p>在<a href="webgpu-compatibility-mode.html#a-generating-mipmaps">让我们的 mipmap 生成代码兼容兼容性模式</a>时，我们将使用这种方法，因为它可以轻松地从二维数组或立方体贴图的切片中进行选择，而无需设置 uniform 缓冲区。</p>
+<p>注意，你也可以用同样的方式控制 <code class="notranslate" translate="no">vertex_index</code>。它也是 <code class="notranslate" translate="no">draw</code> 调用中的一个参数。但是，用它来传递数据的情况比较少见，因为你通常需要用它来选择顶点。</p>
 
     </div>
     <div class="lesson-sidebar">
@@ -197,6 +374,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-miscellaneous-input.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-miscellaneous-input.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-miscellaneous-input.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-miscellaneous-input.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-miscellaneous-input.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-miscellaneous-input.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-miscellaneous-input.html">Українська
@@ -204,10 +382,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </option></select>
 
 
-        <ul>  <li>基础概念</li>
+        <div id="toc">
+          <ul>  <li>基础概念</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-fundamentals.html">基础知识</a></li>
-  <li>Data for Shaders</li>
+  <li>着色器数据传递</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-inter-stage-variables.html">Inter-stage 变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-uniforms.html">Uniforms</a></li>
@@ -222,9 +401,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <li><a href="/webgpu/lessons/zh_cn/webgpu-storage-textures.html">存储纹理</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-multisampling.html">多重采样 / MSAA</a></li>
         </ul>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">Immediates</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-immediates.html">即时变量</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-constants.html">常量</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">Miscellaneous Shader Input</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-miscellaneous-input.html">着色器杂项输入</a></li>
         </ul>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-memory-layout.html">数据内存布局</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-transparency.html">透明度与混合</a></li>
@@ -268,32 +447,32 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li>后处理</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-post-processing.html">基础 CRT 效果</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">Image Adjustments</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">1D Lookup Table (LUT)</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">3D Lookup Table (LUT)</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-image-adjustments.html">图像调整</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-1dlut.html">一维查找表（1D-LUT）</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-3dlut.html">三维查找表（3D-LUT）</a></li>
         </ul>
-  <li>Editor</li>
+  <li>编辑器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">Highlighting</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">Camera Controls</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">Picking</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-highlighting.html">高亮显示</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-camera-controls.html">相机控制</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-picking.html">拾取</a></li>
         </ul>
         </ul>
   <li>计算着色器</li>
         <ul>
-          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">Compute Shader Basics</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">Image Histogram</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">Image Histogram Part 2</a></li>
+          <li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders.html">计算着色器基础</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram.html">图像直方图</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-compute-shaders-histogram-part-2.html">图像直方图 进阶</a></li>
         </ul>
   <li>杂项</li>
         <ul>
           <li><a href="/webgpu/lessons/zh_cn/webgpu-resizing-the-canvas.html">Resizing the Canvas</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">Multiple Canvases</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">Points</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGPU from WebGL</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">Speed and Optimization</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">Debugging and Errors</a></li>
-<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">Resources / References</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-multiple-canvases.html">多画布</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-points.html">点</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-from-webgl.html">WebGL 到 WebGPU</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-optimization.html">速度与优化</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-debugging.html">调试与错误</a></li>
+<li><a href="/webgpu/lessons/zh_cn/webgpu-resources.html">资源 / 参考</a></li>
 <li><a href="/webgpu/lessons/zh_cn/webgpu-wgsl-function-reference.html">WGSL Function Reference</a></li>
 <li><a href="/webgpu/lessons/resources/wgsl-offset-computer.html">WGSL Offset Computer</a></li>
         </ul></ul>
@@ -306,13 +485,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <li><a href="https://webgpureport.org">WebGPUReport.org</a></li>
   <li><a href="https://web3dsurvey.com/webgpu">Web3DSurvey.com</a></li>
 </ul>
+        </div>
+    </div>
+    <div class="lesson-comments">
+        
+<div>有疑问? <a href="https://stackoverflow.com/questions/tagged/webgpu">在stackoverflow上提问</a>.</div>
+<div>Issue/Bug? <a href="https://github.com/webgpu/webgpufundamentals/issues">在GitHub上提issue</a>.</div>
+  
+
+        <div id="disqus_thread"></div>
+        <script>
+            var disqus_config = function () {
+              this.page.url = `${window.location.origin}${window.location.pathname}`;
+              this.page.identifier = `着色器杂项输入`;
+            };
+            (function() { // DON'T EDIT BELOW THIS LINE
+                if (window.location.hostname.indexOf("webgpufundamentals.org") < 0) {
+                    return;
+                }
+                var d = document, s = d.createElement('script');
+                s.src = 'https://webgpufundamentals-org.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 </div>
 
+<script>
+const settings = {
+  contribTemplate: "感谢 <a href=\"${html_url}\"><img src=\"${avatar_url}\"> ${login}</a><br>的 <a href=\"https://github.com/${owner}/${repo}/commits?author=${login}\">${contributions} 次贡献</a>",
+  owner: "gfxfundamentals",
+  repo: "webgpufundamentals",
+};
+</script>
+<script src="/contributors.js"></script>
+<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="/3rdparty/jquery-3.3.1.slim.min.js"></script>
 <script src="/webgpu/lessons/resources/js/prettify.js"></script>
-<script src="/webgpu/lessons/resources/js/lesson.js"></script>
+<script src="/webgpu/lessons/resources/js/lesson.js" type="module"></script>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-92BFT5PE4H"></script>
 <script>

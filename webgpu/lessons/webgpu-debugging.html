@@ -105,6 +105,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-debugging.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-debugging.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-debugging.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-debugging.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-debugging.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-debugging.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-debugging.html">Українська
@@ -488,7 +489,7 @@ into the full shader code.</p>
 (this is effectively the same info as linePos, lineNum)</li>
 <li><code class="notranslate" translate="no">length</code>: the length to highlight</li>
 </ul>
-<h2 id="webgpu-dev-extension">WebGPU-Dev-Extension</h2>
+<h2 id="webgpu-dev-extension"><a id="webgpu-dev-extension"></a> WebGPU-Dev-Extension</h2>
 <p>The <a href="https://github.com/greggman/webgpu-dev-extension">WebGPU-Dev-Extension</a> provides features to help debug.</p>
 <p>Some things it can do</p>
 <ul>
@@ -537,6 +538,11 @@ that caused the error.</p>
 <p>Like the example above, the webgpu-dev-extension has an option
 to show the errors interleaved with the source WGSL, rather than
 just a terse error message. (the default)</p>
+</li>
+<li>
+<p><a id="check-for-multiple-updates"></a> Check for Multiple Updates</p>
+<p>Checks if you updated a buffer or texture more than once per submit.
+<a href="#multiple-updates">See below</a> for what that means.</p>
 </li>
 </ul>
 <h2 id="webgpu-inspector">WebGPU-Inspector</h2>
@@ -704,6 +710,67 @@ the texture they might go higher so <code class="notranslate" translate="no">fra
 the vertex shader must be bad. And indeed, this example is uploading the
 vertex data as <code class="notranslate" translate="no">float32x3</code> values but mistakenly specified them as <code class="notranslate" translate="no">float16x2</code>
 in the render pipeline descriptor.</p>
+<h2 id="other-common-issues">Other common issues</h2>
+<h3 id="remembering-that-command-buffers-dont-execute-until-you-submit-them"><a id="multiple-updates"></a> Remembering that command buffers don’t execute until you submit them</h3>
+<p>It’s common to run into a version of this problem</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const encoder = device.createCommandEncoder();
+  const pass = encoder.beginRenderPass(renderPassDesc);
+  pass.setPipeline(somePipeline);
+  pass.setBindGroup(0, someBindGroupThatUsesSomeBuffer);
+  device.queue.writeBuffer(someBuffer, 0, data0ForBuffer);
+  pass.draw(numVertices);
+  device.queue.writeBuffer(someBuffer, 0, data1ForBuffer); // ERROR!?
+  pass.draw(numVertices);
+  pass.end();
+  device.queue.submit([encoder.finish()]);
+</pre>
+<p>The code above is updating <code class="notranslate" translate="no">someBuffer</code> by calling <code class="notranslate" translate="no">queue.writeBuffer</code>. That function
+executes immediately where as the <code class="notranslate" translate="no">draw</code> function does not execute, it just adds
+a command to a command buffer. That command buffer gets executed later.</p>
+<p>Usually this type of situation is not as obvious as the code above. It’s more common
+to call some various functions and have one update a buffer that’s already being used
+earlier.</p>
+<p>One way to find this kind of bug is to use
+<a href="https://github.com/brendan-duncan/webgpu_inspector">the WebGPU-Inspector</a>
+which either defaults to, or has an option, to order the commands in
+the order they will be executed rather then the order they were created
+in your code. This can be helpful to see what your code is actually doing
+vs what you thought it was doing.</p>
+<p>Another is to use the <a href="#check-for-multiple-updates">WebGPU-Dev-Extension</a></p>
+<h3 id="remembering-that-canvas-textures-are-only-valid-until-the-next-event">Remembering that Canvas Textures are only valid until the next event</h3>
+<p>You call <code class="notranslate" translate="no">someWebGPUContext.getCurrentTexture</code> to get the texture for a canvas.
+That texture only exists for the current event. So for example, code like this
+will fail</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">  const texture = context.getCurrentTexture();
+
+  // This ends the current event and waits for another
+  await someAsyncFunction();
+
+  // ERROR: The canvas texture no longer exist
+  encoder.beginRenderPass({
+    colorTarget: { view: texture, ...},  
+  });
+  ...
+</pre>
+<p>You need to call <code class="notranslate" translate="no">getCurrentTexture</code> at the last possible moment and then apply
+all uses without <code class="notranslate" translate="no">async</code> or any other events or callbacks.</p>
+<h3 id="external-textures-expire-at-the-next-event">External textures expire at the next event</h3>
+<p><code class="notranslate" translate="no">importExternalTexture</code> imports a texture from a video. Like the canvas texture,
+the external texture is only valid until the end of the current event.</p>
+<h3 id="waiting-for-images-to-load">Waiting for images to load</h3>
+<p>This issue is not unique to WebGPU but images (and videos) load asynchronously
+so if you’re going to pass them to WebGPU you need to make sure they’re loaded.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const img = new Image();
+   img.src = 'someUrl';
+   device.write.copyExternalImageToTexture({ source: img }, ...); // ERROR!
+</pre>
+<p>The code above will fail because <code class="notranslate" translate="no">img</code> has not loaded yet.</p>
+<p>How you wait is up to you. One example:</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">   const img = new Image();
+   img.src = 'someUrl';
+   await img.decode();
+   device.write.copyExternalImageToTexture({ source: img }, ...);
+</pre>
 <!-- keep this at the bottom of the article -->
 <link href="webgpu-debugging.css" rel="stylesheet">
 <script type="module" src="webgpu-debugging.js"></script>
@@ -715,6 +782,7 @@ in the render pipeline descriptor.</p>
     </option><option value="/webgpu/lessons/es/webgpu-debugging.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-debugging.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-debugging.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-debugging.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-debugging.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-debugging.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-debugging.html">Українська

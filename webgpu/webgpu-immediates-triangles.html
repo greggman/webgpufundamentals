@@ -21,7 +21,6 @@ canvas {
     <canvas></canvas>
   </body>
   <script type="module">
-/* global GPURenderPassEncoder */
 async function main() {
   const adapter = await navigator.gpu?.requestAdapter();
   const device = await adapter?.requestDevice();
@@ -31,8 +30,7 @@ async function main() {
   }
 
   // You can probably remove this check by 2027 🙏
-  const canUseImmediates = !!GPURenderPassEncoder?.prototype.setImmediates;
-  if (!canUseImmediates) {
+  if (!navigator.gpu.wgslLanguageFeatures.has('immediate_address_space')) {
     fail('need a browser that supports WebGPU immediates');
     return;
   }

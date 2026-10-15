@@ -105,6 +105,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </option><option value="/webgpu/lessons/es/webgpu-immediates.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-immediates.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-immediates.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-immediates.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-immediates.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-immediates.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-immediates.html">Українська
@@ -256,8 +257,9 @@ them easiest to understand by reading them in order.</p>
 Immediates are a new (2026) feature of WebGPU. They are supposed to be a **core** feature,
 meaning, they are suppose to be available everywhere, regardless of device.
 They will hopefully be shipping in all browsers by the end of 2026.
-You can check for support by checking for the existence of the function to set the,
-<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const canUseImmediates = !!GPURenderPassEncoder?.prototype.setImmediates;
+You can check if they are supported by checking if <code class="notranslate" translate="no">wgslLanguageFeatures</code>
+has <code class="notranslate" translate="no">'immediate_address_space'</code>.
+<pre class="prettyprint showlinemods notranslate notranslate" translate="no">const canUseImmediates = navigator.gpu.wgslLanguageFeatures.has('immediate_address_space');
 </pre>
 Ideally, by 2027, you should no longer need this check.
 </div>
@@ -661,6 +663,7 @@ how to take advantage of them.</p>
     </option><option value="/webgpu/lessons/es/webgpu-immediates.html">Español
     </option><option value="/webgpu/lessons/ja/webgpu-immediates.html">日本語
     </option><option value="/webgpu/lessons/ko/webgpu-immediates.html">한국어
+    </option><option value="/webgpu/lessons/pt-br/webgpu-immediates.html">Português (Brasil)
     </option><option value="/webgpu/lessons/ru/webgpu-immediates.html">Русский
     </option><option value="/webgpu/lessons/tr/webgpu-immediates.html">Türkçe
     </option><option value="/webgpu/lessons/uk/webgpu-immediates.html">Українська
