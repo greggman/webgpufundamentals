@@ -1235,9 +1235,92 @@ sampler filters set to `linear`, sampling a 3d texture would require looking at
 texels. It's possible a 1d texture only needs 4 but I have no idea if any GPUs
 actually optimize for 1d textures.
 
-### Texture Views
+### <a id="create-view"></a>Texture Views
 
-There are 6 types of texture views
+When we call `createBindGroup` or `beginRenderPass` we've been using textures
+directly
+
+```js
+const bg = device.createBindGroup({
+  layout: pipeline.getBindGroupLayout(0),
+  entries: [
+    { binding: 1, resource: someTexture }, // directly using texture
+  ],
+});
+
+...
+
+const renderPassDescriptor = {
+  label: 'our basic canvas renderPass',
+  colorAttachments: [
+    {
+      // view:
+      clearValue: [0.3, 0.3, 0.3, 1],
+      loadOp: 'clear',
+      storeOp: 'store',
+    },
+  ],
+};  
+
+...
+
+renderPassDescriptor.colorAttachments[0].view =
+    context.getCurrentTexture(); // directly using texture
+
+...
+
+const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+```
+
+That syntax is actually shortcut for calling `texture.createView()` with no parameters.
+The code above is equivalent to
+
+```js
+const bg = device.createBindGroup({
+  layout: pipeline.getBindGroupLayout(0),
+  entries: [
+-    { binding: 1, resource: someTexture }, // directly using texture
++    { binding: 1, resource: someTexture.createView() },
+  ],
+});
+
+...
+
+const renderPassDescriptor = {
+  label: 'our basic canvas renderPass',
+  colorAttachments: [
+    {
+      // view:
+      clearValue: [0.3, 0.3, 0.3, 1],
+      loadOp: 'clear',
+      storeOp: 'store',
+    },
+  ],
+};  
+
+...
+
+renderPassDescriptor.colorAttachments[0].view =
+-   context.getCurrentTexture(); // directly using texture
++   context.getCurrentTexture().createView();
+
+...
+
+const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+```
+
+The point of `createView` is to allow you to select how a texture is used
+and what portion of it is used. You can chose a subset of mip levels,
+a subset of array layers, a dimension, and a few other things.
+
+We'll use the ability to select a mip level in the next article
+when we switch to generating mips on the GPU.
+
+#### <a id="texture-view-dimension"></a> Texture View Dimensions
+
+There are 6 types of texture view dimensions
 
 * "1d"
 * "2d"
@@ -1247,11 +1330,15 @@ There are 6 types of texture views
 * "cube-array"
 
 "1d" textures can only have a "1d" view. "3d" textures can only have a "3d" view.
-"2d" texture can have a "2d-array" view. If a "2d" texture has 6 layers it can
+"2d" texture can have a "2d-array" view. If a "2d" texture has 6 or more layers it can
 have a "cube" view. If it has a multiple of 6 layers it can have a "cube-array"
 view. You can choose how to view a texture when you call `someTexture.createView`.
 Texture views default to the same as their dimension but you can pass a different
 dimension to `someTexture.createView`.
+
+```js
+const view = someTexture.createView({ dimension: 'cube' });
+```
 
 We'll cover "3d" textures [in the article on tone mapping / 3dLUTs](webgpu-3dluts.html)
 
@@ -1261,7 +1348,7 @@ that in [the article on cube maps](webgpu-cube-maps.html)
 
 A "2d-array" is an array of 2d textures. You can then choose which texture of
 the array to access in your shader. They are commonly used for terrain rendering
-among other things.
+among other things where each layer holds a different kind of terrain (sand, grass, snow, ...)
 
 A "cube-array" is an array of cube textures.
 
