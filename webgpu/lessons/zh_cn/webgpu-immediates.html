@@ -325,7 +325,7 @@ Immediates（即时变量）是 WebGPU 的一项新功能（2026年）。它被�
 以不同的颜色和不同的位置绘制。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder({ label: 'our encoder' });
     const pass = encoder.beginRenderPass(renderPassDescriptor);
@@ -589,7 +589,7 @@ var&lt;immediate&gt; imm: MyImmediates;
 使渲染适应画布的宽高比，然后将其上传到共享缓冲区。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
 +    const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
 +    mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);
@@ -598,7 +598,7 @@ var&lt;immediate&gt; imm: MyImmediates;
 <p>然后我们可以渲染所有模型：</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
     mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);

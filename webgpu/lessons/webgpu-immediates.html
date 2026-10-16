@@ -330,7 +330,7 @@ using <code class="notranslate" translate="no">setImmediates</code> each time to
 location.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const encoder = device.createCommandEncoder({ label: 'our encoder' });
     const pass = encoder.beginRenderPass(renderPassDescriptor);
@@ -606,7 +606,7 @@ that will make our rendering fit the aspect of our canvas and upload
 it to the shared buffer.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
 +    const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
 +    mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);
@@ -615,7 +615,7 @@ it to the shared buffer.</p>
 <p>Then we can render all of our models</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
     mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);

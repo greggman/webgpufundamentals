@@ -380,7 +380,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       ]),
     );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);

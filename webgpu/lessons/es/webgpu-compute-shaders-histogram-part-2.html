@@ -832,7 +832,7 @@ struct Uniforms {
       label: 'our basic canvas renderPass',
       colorAttachments: [
         {
-          view: context.getCurrentTexture().createView(),
+          view: context.getCurrentTexture(),
           clearValue: [0.3, 0.3, 0.3, 1],
           loadOp: 'clear',
           storeOp: 'store',
@@ -1048,7 +1048,7 @@ fn cs(
 <p>En cuanto al renderizado, renderizar el vídeo es similar al artículo sobre renderizado de vídeo externo. La única diferencia es el código que calcula la matriz. Estamos escalando por 2 y restando 1 como mencionamos arriba para el histograma, pero estamos usando -2 para la Y y sumando 1 para que se invierta la Y. También estamos escalando para obtener un <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size#cover">efecto de cobertura</a> de modo que el vídeo siempre llene el canvas manteniendo la relación de aspecto correcta.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // Dibujar en el canvas
     {
-      const canvasTexture = context.getCurrentTexture().createView();
+      const canvasTexture = context.getCurrentTexture();
       renderPassDescriptor.colorAttachments[0].view = canvasTexture;
       const pass = encoder.beginRenderPass(renderPassDescriptor);
 

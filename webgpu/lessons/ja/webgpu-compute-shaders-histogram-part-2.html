@@ -835,7 +835,7 @@ struct Uniforms {
       label: 'our basic canvas renderPass',
       colorAttachments: [
         {
-          view: context.getCurrentTexture().createView(),
+          view: context.getCurrentTexture(),
           clearValue: [0.3, 0.3, 0.3, 1],
           loadOp: 'clear',
           storeOp: 'store',
@@ -1051,7 +1051,7 @@ fn cs(
 <p>レンダリングに関しては、ビデオのレンダリングは外部ビデオのレンダリングに関する記事と似ています。1つの違いは、行列を計算するコードです。ヒストグラムについて上記で述べたように、2倍にスケーリングして1を引くことを行っていますが、Yを反転させるためにyに-2を使用し、1を加えています。また、<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size#cover">カバー効果</a>を得るためにスケーリングしているので、ビデオは常にキャンバスを埋めますが、正しいアスペクト比を維持します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // キャンバスに描画
     {
-      const canvasTexture = context.getCurrentTexture().createView();
+      const canvasTexture = context.getCurrentTexture();
       renderPassDescriptor.colorAttachments[0].view = canvasTexture;
       const pass = encoder.beginRenderPass(renderPassDescriptor);
 

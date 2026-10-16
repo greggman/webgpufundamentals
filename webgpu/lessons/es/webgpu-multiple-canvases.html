@@ -262,7 +262,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     // Obtén la textura actual del contexto del canvas y
     // establécela como la textura en la que renderizar.
 *    renderPassDescriptor.colorAttachments[0].view =
-*        context.getCurrentTexture().createView();
+*        context.getCurrentTexture();
 
     // crea un encoder de comandos para empezar a codificar comandos
     const encoder = device.createCommandEncoder({ label: 'nuestro encoder' });
@@ -308,7 +308,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // Obtén la textura actual del contexto del canvas y
       // establécela como la textura en la que renderizar.
       renderPassDescriptor.colorAttachments[0].view =
-          context.getCurrentTexture().createView();
+          context.getCurrentTexture();
 
       // crea un encoder de render pass para codificar comandos específicos de renderizado
       const pass = encoder.beginRenderPass(renderPassDescriptor);
@@ -518,7 +518,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // Obtén la textura actual del contexto del canvas y
       // establécela como la textura en la que renderizar.
       renderPassDescriptor.colorAttachments[0].view =
-          context.getCurrentTexture().createView();
+          context.getCurrentTexture();
 +      renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
 +
 +      const { canvas } = context;
@@ -690,7 +690,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        // Obtén la textura actual del contexto del canvas y
        // establécela como la textura en la que renderizar.
        renderPassDescriptor.colorAttachments[0].view =
-           context.getCurrentTexture().createView();
+           context.getCurrentTexture();
        renderPassDescriptor.colorAttachments[0].clearValue = clearValue;
 
 -      const { canvas } = context;

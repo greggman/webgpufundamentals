@@ -1002,7 +1002,7 @@ async function main() {
   }
 
   function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -1684,7 +1684,7 @@ async function main() {
   function renderToTexture(
       encoder, target, pipeline, viewProjectionMatrix, meshes) {
     objectNdx = 0;
-    renderPassDescriptor.colorAttachments[0].view = target.createView();
+    renderPassDescriptor.colorAttachments[0].view = target;
 
     depthTexture = makeNewTextureIfSizeDifferent(
       depthTexture,
@@ -1692,7 +1692,7 @@ async function main() {
       'depth24plus',
       GPUTextureUsage.RENDER_ATTACHMENT,
     );
-    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 
     {
       const pass = encoder.beginRenderPass(renderPassDescriptor);
@@ -1735,7 +1735,7 @@ async function main() {
       );
       setupPostProcess(postTexture);
 
-      renderPassDescriptor.colorAttachments[0].view = postTexture.createView();
+      renderPassDescriptor.colorAttachments[0].view = postTexture;
       const pass = encoder.beginRenderPass(renderPassDescriptor);
       pass.setPipeline(pipeline);
 

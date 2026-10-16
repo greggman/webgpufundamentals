@@ -578,7 +578,7 @@ WebGPUで生成するオブジェクトは、ほぼすべてについて<code cl
     // canvasのコンテキストから、カレントテクスチャを得る。
 	// それをレンダーパスに設定して、描画対象として指定する。
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     // コマンドエンコーダを生成する。コマンドのエンコードができる状態にする。
 	const encoder = device.createCommandEncoder({ label: 'our encoder' });
@@ -595,8 +595,8 @@ WebGPUで生成するオブジェクトは、ほぼすべてについて<code cl
 
   render();
 </pre>
-<p>最初に<code class="notranslate" translate="no">context.getCurrentTexture()</code>を呼んで、canvasが持っているテクスチャを取得しています。<code class="notranslate" translate="no">createView</code>では、テクスチャの一部の範囲だけを切り出す指定ができますが、ここでは引数なし＝デフォルトの範囲、としています。
-今回は、配列<code class="notranslate" translate="no">colorAttachments</code>の要素はひとつだけとしていました。この<code class="notranslate" translate="no">colorAttachments[0]</code>に、先ほど取得したcanvasのテクスチャ(texture view)を設定します。
+<p>最初に<code class="notranslate" translate="no">context.getCurrentTexture()</code>を呼んで、canvasが持っているテクスチャを取得しています。
+今回は、配列<code class="notranslate" translate="no">colorAttachments</code>の要素はひとつだけとしていました。この<code class="notranslate" translate="no">colorAttachments[0]</code>に、先ほど取得したcanvasのテクスチャを設定します。
 先だって述べたように、この<code class="notranslate" translate="no">colorAttachments[0]</code>は、フラグメントシェーダの返り値の設定で記述した<code class="notranslate" translate="no">location(0)</code>に対応するものです。</p>
 <p>次の部分では、コマンドエンコーダを用意しています。コマンドエンコーダは、コマンドバッファを生成するために使われます。コマンドエンコーダを使って、各種コマンドをコマンドバッファに並べて行きます。"submit"でコマンドバッファを送信すると、コマンドが実行されます。</p>
 <p>次は、コマンドエンコーダの<code class="notranslate" translate="no">beginRenderPass</code>を使って、レンダーパスエンコーダを生成しています。レンダーパスエンコーダは、レンダリング関連のコマンドを生成することに特化したエンコーダです。

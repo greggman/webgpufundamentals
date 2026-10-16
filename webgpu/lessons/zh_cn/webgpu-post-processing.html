@@ -315,7 +315,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +      format: 'rgba8unorm',
 +      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
 +    });
-+    const renderTargetView = renderTarget.createView();
++    const renderTargetView = renderTarget;
 +    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
 +  }
 
@@ -328,7 +328,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -    // 从画布上下文获取当前纹理，
 -    // 并将其设置为要渲染到的纹理。
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 +    const canvasTexture = context.getCurrentTexture();
 +    setupPostProcess(canvasTexture);
 
@@ -355,7 +355,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </pre>
 <p>仅这些更改就会开始将原始场景渲染到渲染目标纹理上，但我们仍然需要在画布上绘制一些内容，否则我们什么都看不到，所以让我们这样做。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -507,7 +507,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +      ]),
 +    );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -611,7 +611,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       ]),
     );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -750,7 +750,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +      ],
 +    });
 
--    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
 -    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
 +    const pass = encoder.beginComputePass();
     pass.setPipeline(postProcessPipeline);

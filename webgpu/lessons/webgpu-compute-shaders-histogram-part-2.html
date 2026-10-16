@@ -909,7 +909,7 @@ having to make special vertex data.</p>
       label: 'our basic canvas renderPass',
       colorAttachments: [
         {
-          view: context.getCurrentTexture().createView(),
+          view: context.getCurrentTexture(),
           clearValue: [0.3, 0.3, 0.3, 1],
           loadOp: 'clear',
           storeOp: 'store',
@@ -1146,7 +1146,7 @@ for y and adding 1 so that we flip Y. We’re also scaling to
 get a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size#cover">cover effect</a> so the video always fills the canvas but keeps the correct aspect ratio.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // Draw to canvas
     {
-      const canvasTexture = context.getCurrentTexture().createView();
+      const canvasTexture = context.getCurrentTexture();
       renderPassDescriptor.colorAttachments[0].view = canvasTexture;
       const pass = encoder.beginRenderPass(renderPassDescriptor);
 

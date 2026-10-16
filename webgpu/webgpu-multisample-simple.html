@@ -114,12 +114,10 @@ async function main() {
     }
 
     // Set the multisample texture as the texture to render to
-    renderPassDescriptor.colorAttachments[0].view =
-        multisampleTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = multisampleTexture;
     // Set the canvas texture as the texture to "resolve"
     // the multisample texture to.
-    renderPassDescriptor.colorAttachments[0].resolveTarget =
-        canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].resolveTarget = canvasTexture;
 
     const encoder = device.createCommandEncoder({ label: 'our encoder' });
     const pass = encoder.beginRenderPass(renderPassDescriptor);

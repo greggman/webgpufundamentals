@@ -232,7 +232,7 @@ async function main() {
 
   function render() {
     renderPassDescriptor.colorAttachments[0].view =
-        context.getCurrentTexture().createView();
+        context.getCurrentTexture();
 
     const aspect = context.canvas.clientWidth / context.canvas.clientHeight;
     mat4.ortho(-aspect, aspect, -1, 1, -1, 1, sharedData);

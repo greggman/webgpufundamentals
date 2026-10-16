@@ -841,7 +841,7 @@ struct Uniforms {
       label: 'our basic canvas renderPass',
       colorAttachments: [
         {
-          view: context.getCurrentTexture().createView(),
+          view: context.getCurrentTexture(),
           clearValue: [0.3, 0.3, 0.3, 1],
           loadOp: 'clear',
           storeOp: 'store',
@@ -1058,7 +1058,7 @@ fn cs(
 <p>至于渲染，渲染视频类似于关于渲染外部视频的文章。唯一不同的是计算矩阵的代码。我们像上面提到的直方图那样做乘以 2、减 1 的事情，但我们对 y 使用 -2 并加 1 以翻转 Y。我们还缩放以获得<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size#cover">cover 效果</a>，这样视频总是填满画布但保持正确的宽高比。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    // 绘制到画布
     {
-      const canvasTexture = context.getCurrentTexture().createView();
+      const canvasTexture = context.getCurrentTexture();
       renderPassDescriptor.colorAttachments[0].view = canvasTexture;
       const pass = encoder.beginRenderPass(renderPassDescriptor);
 

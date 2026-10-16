@@ -342,7 +342,7 @@ async function setup() {
   }
 
   function postProcess(encoder, srcTexture, dstTexture, postProcessPipeline) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -598,7 +598,7 @@ async function setup() {
     // set it as the texture to render to.
     const context = canvas.getContext('webgpu');
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     // If we don't have a depth texture OR if its size is different
     // from the canvasTexture when make a new depth texture
@@ -608,7 +608,7 @@ async function setup() {
       'depth24plus',
       GPUTextureUsage.RENDER_ATTACHMENT,
     );
-    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
 
     const aspect = canvas.clientWidth / canvas.clientHeight;
     const projection = mat4.perspective(
@@ -658,10 +658,10 @@ async function setup() {
 
       switch (mode) {
         case 'selected':
-          renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+          renderPassDescriptor.colorAttachments[0].view = canvasTexture;
           break;
         default:
-          renderPassDescriptor.colorAttachments[0].view = postTexture.createView();
+          renderPassDescriptor.colorAttachments[0].view = postTexture;
           break;
       }
       const pass = encoder.beginRenderPass(renderPassDescriptor);

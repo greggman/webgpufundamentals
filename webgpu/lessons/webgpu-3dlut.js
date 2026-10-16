@@ -261,7 +261,6 @@ async function setup() {
   });
 
   let renderTarget;
-  let renderTargetView;
   let postProcessBindGroup;
 
   function setupPostProcess(canvasTexture, lutTexture, lutSampler) {
@@ -273,14 +272,13 @@ async function setup() {
         format: 'rgba8unorm',
         usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
       });
-      renderTargetView = renderTarget.createView();
-      renderPassDescriptor.colorAttachments[0].view = renderTargetView;
+      renderPassDescriptor.colorAttachments[0].view = renderTarget;
     }
 
     postProcessBindGroup = device.createBindGroup({
       layout: postProcessPipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: renderTargetView },
+        { binding: 0, resource: renderTarget },
         { binding: 1, resource: postProcessSampler },
         { binding: 2, resource: lutTexture },
         { binding: 3, resource: lutSampler },
@@ -289,7 +287,7 @@ async function setup() {
   }
 
   function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);

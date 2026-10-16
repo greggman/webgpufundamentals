@@ -315,8 +315,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +      format: 'rgba8unorm',
 +      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
 +    });
-+    const renderTargetView = renderTarget.createView();
-+    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
++    renderPassDescriptor.colorAttachments[0].view = renderTarget;
 +  }
 
   let then = 0;
@@ -328,7 +327,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -    // Get the current texture from the canvas context and
 -    // set it as the texture to render to.
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 +    const canvasTexture = context.getCurrentTexture();
 +    setupPostProcess(canvasTexture);
 
@@ -355,7 +354,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </pre>
 <p>これらの変更だけでも、元のシーンをこのレンダーターゲットテクスチャにレンダリングし始めますが、キャンバスに何かを描画しないと何も表示されないため、それを行いましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -480,7 +479,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    postProcessBindGroup = device.createBindGroup({
       layout: postProcessPipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: renderTargetView },
+        { binding: 0, resource: renderTarget },
         { binding: 1, resource: postProcessSampler },
 +        { binding: 2, resource: postProcessUniformBuffer },
       ],
@@ -508,7 +507,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +      ]),
 +    );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -612,7 +611,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       ]),
     );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -751,7 +750,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +      ],
 +    });
 
--    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
 -    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
 +    const pass = encoder.beginComputePass();
     pass.setPipeline(postProcessPipeline);

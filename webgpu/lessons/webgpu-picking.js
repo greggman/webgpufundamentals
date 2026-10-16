@@ -285,7 +285,7 @@ async function idRender(elem) {
   }
 
   function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -525,7 +525,7 @@ async function idRender(elem) {
     device.queue.writeBuffer(sharedUniformBuffer, 0, sharedUniformValues.arrayBuffer);
 
     const canvasTexture = context.getCurrentTexture();
-    renderPassDescriptor.colorAttachments[0].view = canvasTexture.createView();
+    renderPassDescriptor.colorAttachments[0].view = canvasTexture;
 
     // If we don't have a depth texture OR if its size is different
     // from the canvasTexture when make a new depth texture
@@ -541,8 +541,8 @@ async function idRender(elem) {
       'r32uint',
       GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
     );
-    renderPassDescriptor.depthStencilAttachment.view = depthTexture.createView();
-    renderPassDescriptor.colorAttachments[1].view = idTexture.createView();
+    renderPassDescriptor.depthStencilAttachment.view = depthTexture;
+    renderPassDescriptor.colorAttachments[1].view = idTexture;
 
     setupPostProcess(idTexture);
 

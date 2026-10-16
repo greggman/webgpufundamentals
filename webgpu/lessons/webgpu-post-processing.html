@@ -329,8 +329,7 @@ to the canvas, we need it to render to a separate texture.</p>
 +      format: 'rgba8unorm',
 +      usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
 +    });
-+    const renderTargetView = renderTarget.createView();
-+    renderPassDescriptor.colorAttachments[0].view = renderTargetView;
++    renderPassDescriptor.colorAttachments[0].view = renderTarget;
 +  }
 
   let then = 0;
@@ -342,7 +341,7 @@ to the canvas, we need it to render to a separate texture.</p>
 -    // Get the current texture from the canvas context and
 -    // set it as the texture to render to.
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 +    const canvasTexture = context.getCurrentTexture();
 +    setupPostProcess(canvasTexture);
 
@@ -375,7 +374,7 @@ it for the format of this texture</p>
 render target texture but we still need to draw something to the canvas
 or we won’t see anything so lets do that.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function postProcess(encoder, srcTexture, dstTexture) {
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -511,7 +510,7 @@ the effect on and off so we can compare effect to no effect.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">    postProcessBindGroup = device.createBindGroup({
       layout: postProcessPipeline.getBindGroupLayout(0),
       entries: [
-        { binding: 0, resource: renderTargetView },
+        { binding: 0, resource: renderTarget },
         { binding: 1, resource: postProcessSampler },
 +        { binding: 2, resource: postProcessUniformBuffer },
       ],
@@ -539,7 +538,7 @@ the effect on and off so we can compare effect to no effect.</p>
 +      ]),
 +    );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -650,7 +649,7 @@ can affect each channel independently.</p>
       ]),
     );
 
-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
     const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
     pass.setPipeline(postProcessPipeline);
     pass.setBindGroup(0, postProcessBindGroup);
@@ -801,7 +800,7 @@ no longer have <code class="notranslate" translate="no">fsInput.texcoord</code> 
 +      ],
 +    });
 
--    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture.createView();
+-    postProcessRenderPassDescriptor.colorAttachments[0].view = dstTexture;
 -    const pass = encoder.beginRenderPass(postProcessRenderPassDescriptor);
 +    const pass = encoder.beginComputePass();
     pass.setPipeline(postProcessPipeline);

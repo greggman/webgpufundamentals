@@ -355,15 +355,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-    // キャンバスコンテキストから現在のテクスチャを取得し、
 -    // レンダリングするテクスチャとして設定します。
 -    renderPassDescriptor.colorAttachments[0].view =
--        context.getCurrentTexture().createView();
+-        context.getCurrentTexture();
 
 +    // マルチサンプルテクスチャをレンダリングするテクスチャとして設定します
 +    renderPassDescriptor.colorAttachments[0].view =
-+        multisampleTexture.createView();
++        multisampleTexture;
 +    // キャンバステクスチャを、マルチサンプルテクスチャを「解決」する
 +    // テクスチャとして設定します。
 +    renderPassDescriptor.colorAttachments[0].resolveTarget =
-+        canvasTexture.createView();
++        canvasTexture;
 </pre>
 <p><em>解決</em>とは、マルチサンプルテクスチャを取得し、本当に欲しかったテクスチャのサイズに変換するプロセスです。この場合、キャンバスです。上記では、4倍のバージョンで、4倍のテクスチャを1倍のテクスチャにバイリニアフィルタリングすることで、この手順を手動で行いました。これは同様のプロセスですが、実際にはマルチサンプルテクスチャを使用したバイリニアフィルタリングではありません。<a href="#a-not-a-grid">下記参照</a></p>
 <p>そして、これが</p>
