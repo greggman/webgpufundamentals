@@ -1320,8 +1320,82 @@ sampler filters set to <code class="notranslate" translate="no">linear</code>, s
 16 texels and blending them all together. Sampling a 2d texture only needs 8
 texels. It’s possible a 1d texture only needs 4 but I have no idea if any GPUs
 actually optimize for 1d textures.</p>
-<h3 id="texture-views">Texture Views</h3>
-<p>There are 6 types of texture views</p>
+<h3 id="texture-views"><a id="create-view"></a>Texture Views</h3>
+<p>When we call <code class="notranslate" translate="no">createBindGroup</code> or <code class="notranslate" translate="no">beginRenderPass</code> we’ve been using textures
+directly</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bg = device.createBindGroup({
+  layout: pipeline.getBindGroupLayout(0),
+  entries: [
+    { binding: 1, resource: someTexture }, // directly using texture
+  ],
+});
+
+...
+
+const renderPassDescriptor = {
+  label: 'our basic canvas renderPass',
+  colorAttachments: [
+    {
+      // view:
+      clearValue: [0.3, 0.3, 0.3, 1],
+      loadOp: 'clear',
+      storeOp: 'store',
+    },
+  ],
+};  
+
+...
+
+renderPassDescriptor.colorAttachments[0].view =
+    context.getCurrentTexture(); // directly using texture
+
+...
+
+const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+</pre>
+<p>That syntax is actually shortcut for calling <code class="notranslate" translate="no">texture.createView()</code> with no parameters.
+The code above is equivalent to</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const bg = device.createBindGroup({
+  layout: pipeline.getBindGroupLayout(0),
+  entries: [
+-    { binding: 1, resource: someTexture }, // directly using texture
++    { binding: 1, resource: someTexture.createView() },
+  ],
+});
+
+...
+
+const renderPassDescriptor = {
+  label: 'our basic canvas renderPass',
+  colorAttachments: [
+    {
+      // view:
+      clearValue: [0.3, 0.3, 0.3, 1],
+      loadOp: 'clear',
+      storeOp: 'store',
+    },
+  ],
+};  
+
+...
+
+renderPassDescriptor.colorAttachments[0].view =
+-   context.getCurrentTexture(); // directly using texture
++   context.getCurrentTexture().createView();
+
+...
+
+const pass = encoder.beginRenderPass(renderPassDescriptor);
+
+</pre>
+<p>The point of <code class="notranslate" translate="no">createView</code> is to allow you to select how a texture is used
+and what portion of it is used. You can chose a subset of mip levels,
+a subset of array layers, a dimension, and a few other things.</p>
+<p>We’ll use the ability to select a mip level in the next article
+when we switch to generating mips on the GPU.</p>
+<h4 id="texture-view-dimensions"><a id="texture-view-dimension"></a> Texture View Dimensions</h4>
+<p>There are 6 types of texture view dimensions</p>
 <ul>
 <li>“1d”</li>
 <li>“2d”</li>
@@ -1331,18 +1405,20 @@ actually optimize for 1d textures.</p>
 <li>“cube-array”</li>
 </ul>
 <p>“1d” textures can only have a “1d” view. “3d” textures can only have a “3d” view.
-“2d” texture can have a “2d-array” view. If a “2d” texture has 6 layers it can
+“2d” texture can have a “2d-array” view. If a “2d” texture has 6 or more layers it can
 have a “cube” view. If it has a multiple of 6 layers it can have a “cube-array”
 view. You can choose how to view a texture when you call <code class="notranslate" translate="no">someTexture.createView</code>.
 Texture views default to the same as their dimension but you can pass a different
 dimension to <code class="notranslate" translate="no">someTexture.createView</code>.</p>
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const view = someTexture.createView({ dimension: 'cube' });
+</pre>
 <p>We’ll cover “3d” textures <a href="webgpu-3dluts.html">in the article on tone mapping / 3dLUTs</a></p>
 <p>A “cube” texture is a texture that represents the 6 faces of a cube. Cube textures
 are often used to draw sky boxes and for reflections and environment maps. We’ll cover
 that in <a href="webgpu-cube-maps.html">the article on cube maps</a></p>
 <p>A “2d-array” is an array of 2d textures. You can then choose which texture of
 the array to access in your shader. They are commonly used for terrain rendering
-among other things.</p>
+among other things where each layer holds a different kind of terrain (sand, grass, snow, …)</p>
 <p>A “cube-array” is an array of cube textures.</p>
 <p>Each type of texture has its own corresponding type in WGSL.</p>
 <div class="webgpu_center data-table" style="max-width: 500px;">
