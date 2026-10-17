@@ -18,6 +18,9 @@ TOC: 资源 / 参考
 # 示例
 
 * [WebGPU 示例](https://webgpu.github.io/webgpu-samples/)
+* [WebGPU Aquarium](https://github.com/greggman/webgpu-aquarium)
+* [WebGPU Driving](https://github.com/greggman/webgpu-driving)
+* [Cyber Web City](https://github.com/greggman/cyber-web-city)
 * [WebGPU 延迟渲染](https://github.com/toji/burrow)
 * [WebGPU 阴影游乐场](https://toji.github.io/webgpu-shadow-playground/)
 * [WebGPU 变形球](https://toji.github.io/webgpu-metaballs/)

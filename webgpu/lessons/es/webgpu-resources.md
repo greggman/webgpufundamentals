@@ -18,6 +18,9 @@ Aquí tienes algunos otros recursos de WebGPU:
 # Ejemplos
 
 * [WebGPU Samples](https://webgpu.github.io/webgpu-samples/)
+* [WebGPU Aquarium](https://github.com/greggman/webgpu-aquarium)
+* [WebGPU Driving](https://github.com/greggman/webgpu-driving)
+* [Cyber Web City](https://github.com/greggman/cyber-web-city)
 * [WebGPU Deferred Rendering](https://github.com/toji/burrow)
 * [WebGPU Shadow Playground](https://toji.github.io/webgpu-shadow-playground/)
 * [WebGPU Metaballs](https://toji.github.io/webgpu-metaballs/)

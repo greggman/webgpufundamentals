@@ -20,6 +20,9 @@ TOC: リソース / 参考文献
 # 例
 
 * [WebGPUサンプル](https://webgpu.github.io/webgpu-samples/)
+* [WebGPU水族館](https://github.com/greggman/webgpu-aquarium)
+* [WebGPUドライブ](https://github.com/greggman/webgpu-driving)
+* [サイバーウエブシティー](https://github.com/greggman/cyber-web-city)
 * [WebGPU遅延レンダリング](https://github.com/toji/burrow)
 * [WebGPUシャドウプレイグラウンド](https://toji.github.io/webgpu-shadow-playground/)
 * [WebGPUメタボール](https://toji.github.io/webgpu-metaballs/)

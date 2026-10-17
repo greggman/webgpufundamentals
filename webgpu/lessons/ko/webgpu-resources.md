@@ -18,6 +18,9 @@ TOC: 리소스 / 참고자료
 # 예제
 
 * [WebGPU Samples](https://webgpu.github.io/webgpu-samples/) - WebGPU 샘플
+* [WebGPU Aquarium](https://github.com/greggman/webgpu-aquarium)
+* [WebGPU Driving](https://github.com/greggman/webgpu-driving)
+* [Cyber Web City](https://github.com/greggman/cyber-web-city)
 * [WebGPU Deferred Rendering](https://github.com/toji/burrow) - WebGPU 지연 렌더링
 * [WebGPU Shadow Playground](https://toji.github.io/webgpu-shadow-playground/) - WebGPU 그림자 플레이그라운드
 * [WebGPU Metaballs](https://toji.github.io/webgpu-metaballs/) - WebGPU 메타볼
